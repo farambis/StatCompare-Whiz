@@ -743,7 +743,7 @@ sd_combined2 <- function(x = NULL, INDEX = NULL, sd1, sd2, n1, n2, type = c("equ
                 "equal" = sqrt((((n1 - 1) * sd1^2) + ((n2 - 1) * sd2^2)) / (n1 + n2 - 2)),
                 "unequal" = sqrt((sd1^2 + sd2^2) / 2))
   
-  return(res)
+  return(list(res))
   
 }
 
