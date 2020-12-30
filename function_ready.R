@@ -853,7 +853,7 @@ hedges_corr <- function(x = NULL, INDEX = NULL, n1, n2){
   res <-  1 - (3/(4*(n1 + n2 -2)-1))
 
   
-  return(res)
+  return(list(res))
 }
 
 
