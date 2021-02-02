@@ -1,4 +1,4 @@
-#TODO beim Upload prügen, dass in der Gruppierungsvariable eh keine NAs vorhanden
+#TODO beim Upload prüfen, dass in der Gruppierungsvariable eh keine NAs vorhanden
 # sind - diese werden nämlich bei Funktionen wie tapply ohne Warnung ignoriert
 
 #TODO User sollen angeben wie die Faktoren zu rangreihen sind, damit in der server
@@ -141,6 +141,9 @@ smd_corr <- function(x = NULL, INDEX = NULL, n1, n2, df, trim, type = c("hedges"
 
 
 
+# smd_stats ---------------------------------------------------------------
+
+
 
 smd_stats <- function(x, INDEX, trim = 0.2, type = c("univariate", "multivariate"), 
                       winvar = FALSE, na.rm = FALSE){
@@ -276,6 +279,9 @@ sd_combined <- function(x = NULL, INDEX = NULL, var1, var2, n1, n2, winvar1,
 
 
 
+
+
+# standard mean deviation univariate -------------------------------------------------
 
 
 smd_uni <- function(effsize = c("cohen_d", "hedges_g", "glass_d", "glass_d_corr", 
@@ -662,6 +668,24 @@ t_test <- function(x = NULL, INDEX = NULL, m1, m2, var1, var2, n1, n2, trm1, trm
 
 
 
+# Mann_Whitney_U ----------------------------------------------------------
+
+mann_whitney_u <- function(dataset1, dataset2) {
+  u <- calculate_u(dataset1, dataset2)
+  u/(length(dataset1)*length(dataset2))
+}
+
+calculate_u <- function(dataset1, dataset2) { 
+  u<- 0
+  for (i in dataset1)
+    for (j in dataset2) {
+      if (i > j)
+        u<-u+ 1
+      else if (i == j)
+        u<-u+ 0.5
+    }
+  u
+}
 
 
 
