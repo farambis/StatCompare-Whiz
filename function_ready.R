@@ -688,6 +688,26 @@ calculate_u <- function(dataset1, dataset2) {
 }
 
 
+# p-value for mann-whitney u
+p_value_for_mann_whitney_u <- function(dataset1, dataset2) {
+  calculate_p_value_from_z(calculate_z_for_u_statistic(dataset1, dataset2))
+}
+
+calculate_p_value_from_z <- function(z) {
+  result <- 2*pnorm(-abs(z))
+}
+
+calculate_z_for_u_statistic <- function(dataset1, dataset2) {
+  u <- calculate_u(dataset1, dataset2)
+  n1 <- length(dataset1) 
+  n2 <- length(dataset2) 
+  numerator <- u-((n1*n2)/2)
+  denominator <- sqrt((n1*n2*(n1+n2+1))/12)
+  result <- numerator/denominator
+  result
+}
+
+
 
 
 
