@@ -668,14 +668,17 @@ t_test <- function(x = NULL, INDEX = NULL, m1, m2, var1, var2, n1, n2, trm1, trm
 
 
 
-# mann_whitney_based_es ----------------------------------------------------------
+# Effect Sizes beyond the mean  -------------------------------------------
+
+
 
 mann_whitney_based_es <- function(dataset1, dataset2) {
-  u <- calculate_u(dataset1, dataset2)
+  # Mann Whitney u -----
+  u <- calculate_u_with_ties(dataset1, dataset2)
   u/(length(dataset1)*length(dataset2))
 }
 
-calculate_u <- function(dataset1, dataset2) { 
+calculate_u_with_ties <- function(dataset1, dataset2) { 
   u<- 0
   for (i in dataset1)
     for (j in dataset2) {
@@ -688,7 +691,7 @@ calculate_u <- function(dataset1, dataset2) {
 }
 
 
-# p-value for mann-whitney u
+
 p_value_for_mann_whitney_based_es <- function(dataset1, dataset2) { # deviates by 0.02 from stat wilcoxin test which is continuity corrected
   calculate_p_value_from_z(calculate_z_for_u_statistic(dataset1, dataset2))
 }
@@ -698,7 +701,7 @@ calculate_p_value_from_z <- function(z) {
 }
 
 calculate_z_for_u_statistic <- function(dataset1, dataset2) {
-  u <- calculate_u(dataset1, dataset2)
+  u <- calculate_u_with_ties(dataset1, dataset2)
   n1 <- length(dataset1) 
   n2 <- length(dataset2) 
   numerator <- u-((n1*n2)/2)
@@ -714,12 +717,12 @@ confidence_interval_for_mann_whitney_based_es <- # based on Hanley-McNeil Wald m
     mann_whitney_ps <- mann_whitney_based_es(dataset1, dataset2)
     q1 <- 0
     for (x in dataset1) {
-      counter <- calculate_u(x, dataset2)
+      counter <- calculate_u_with_ties(x, dataset2)
       q1 <- q1 + counter ^ 2 / (m * (n ^ 2))
     }
     q2 <- 0
     for (x in dataset2) {
-      counter <- calculate_u(x, dataset1)
+      counter <- calculate_u_with_ties(x, dataset1)
       q2 <- q2 + counter ^ 2 / ((m ^ 2) * n)
     }
     variance <-
@@ -734,7 +737,29 @@ confidence_interval_for_mann_whitney_based_es <- # based on Hanley-McNeil Wald m
   }
 
 
-
+ps_for_dependent_groups <-
+  function(dataset1, dataset2, ignore_ties = FALSE) {
+    # probability of superiority for dependent groups ----
+    if (length(dataset1) != length(dataset2))
+      stop("\n length of datasets for dependent groups has to be the same!")
+    n <- length(dataset1)
+    w <- 0
+    ties <- 0
+    for (i in seq_along(dataset1)) {
+      if (dataset1[i] > dataset2[i]) {
+        w <- w + 1
+      }
+      else if (dataset1[i] == dataset2[i]) {
+        if (!ignore_ties) {
+          w <- w + 0.5
+        }
+        else
+          ties <- ties + 1
+      }
+    }
+    return (w / (n - ties))
+  }
+#TODO add method to calculate exact confidence interval 
 
 
 
