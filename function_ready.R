@@ -668,9 +668,9 @@ t_test <- function(x = NULL, INDEX = NULL, m1, m2, var1, var2, n1, n2, trm1, trm
 
 
 
-# Mann_Whitney_U ----------------------------------------------------------
+# mann_whitney_based_es ----------------------------------------------------------
 
-mann_whitney_u <- function(dataset1, dataset2) {
+mann_whitney_based_es <- function(dataset1, dataset2) {
   u <- calculate_u(dataset1, dataset2)
   u/(length(dataset1)*length(dataset2))
 }
@@ -689,7 +689,7 @@ calculate_u <- function(dataset1, dataset2) {
 
 
 # p-value for mann-whitney u
-p_value_for_mann_whitney_u <- function(dataset1, dataset2) {
+p_value_for_mann_whitney_based_es <- function(dataset1, dataset2) { # deviates by 0.02 from stat wilcoxin test which is continuity corrected
   calculate_p_value_from_z(calculate_z_for_u_statistic(dataset1, dataset2))
 }
 
@@ -706,6 +706,32 @@ calculate_z_for_u_statistic <- function(dataset1, dataset2) {
   result <- numerator/denominator
   result
 }
+
+confidence_interval_for_mann_whitney_based_es <- # based on Hanley-McNeil Wald method in Newcombe - Method 1 
+  function(dataset1, dataset2) {
+    m <- length(dataset1)
+    n <- length(dataset2)
+    mann_whitney_ps <- mann_whitney_based_es(dataset1, dataset2)
+    q1 <- 0
+    for (x in dataset1) {
+      counter <- calculate_u(x, dataset2)
+      q1 <- q1 + counter ^ 2 / (m * (n ^ 2))
+    }
+    q2 <- 0
+    for (x in dataset2) {
+      counter <- calculate_u(x, dataset1)
+      q2 <- q2 + counter ^ 2 / ((m ^ 2) * n)
+    }
+    variance <-
+      (
+        mann_whitney_ps * (1 - mann_whitney_ps) + (n - 1) * (q1 - mann_whitney_ps ^
+                                                               2) + (m - 1) * (q2 - mann_whitney_ps ^ 2)
+      ) / (m * n)
+    z <- 1.959964
+    upper_limit <- mann_whitney_ps - z * sqrt(variance)
+    lower_limit <- mann_whitney_ps + z * sqrt(variance)
+    return (list(upper_limit = upper_limit,lower_limit =  lower_limit))
+  }
 
 
 
