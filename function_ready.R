@@ -761,6 +761,15 @@ ps_for_dependent_groups <-
   }
 #TODO add method to calculate exact confidence interval 
 
+generalized_odds_ratio <- function(dataset1, dataset2, dependent = FALSE) {
+  # generalized odds ratio-----
+  if (!dependent) ps <- mann_whitney_based_es(dataset1, dataset2) 
+  else ps <- ps_for_dependent_groups(dataset1, dataset2)
+  return (ps/(1-ps))
+}
+
+
+
 
 
 
