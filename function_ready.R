@@ -790,6 +790,22 @@ ps_with_ignoring_ties <- function(dataset1, dataset2) {
   print((u / (n * m - ties)))
   return (u / (n * m - ties))
 }
+#TODO method for exact confidence interval
+
+common_language_es <- function(x, INDEX) { 
+  # common language effect size based on del guidice-----
+  d <- smd_uni(effsize = "cohen_d", x= x, INDEX = INDEX)[[1]]
+  return (pnorm(abs(d)/sqrt(2)))
+}
+
+common_language_es_ci <- function(dataset1, dataset2, cohen_d) {
+  cis <- smd_ci(effsize = "cohen_d", val = abs(cohen_d), n1 = length(dataset1), n2 = length(dataset2), var1 = var(dataset1), var2 = var(dataset2))
+  lower_limit <- pnorm(cis[[1]]/sqrt(2))
+  upper_limit <- pnorm(cis[[2]]/sqrt(2))
+  return(list(lower_limit = lower_limit, upper_limit = upper_limit))
+}
+
+
 
 
 
