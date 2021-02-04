@@ -668,7 +668,7 @@ t_test <- function(x = NULL, INDEX = NULL, m1, m2, var1, var2, n1, n2, trm1, trm
 
 
 
-# Effect Sizes beyond the mean  -------------------------------------------
+# Effect Sizes that go beyond comparison of the mean  -------------------------------------------
 
 
 
@@ -768,6 +768,24 @@ generalized_odds_ratio <- function(dataset1, dataset2, dependent = FALSE) {
   return (ps/(1-ps))
 }
 
+ci_for_odds_ratio<- function(x, INDEX) {
+  #TODO implement method for exact confidence interal 
+}
+
+
+dominance_measure_based_es <- function(dataset1, dataset2) {
+  # dominance measure ----
+  ties <- 0
+  u <- 0 
+  n <- length(dataset1)
+  m <- length(dataset2)
+  for (x in dataset1)
+    for (y in dataset2){
+      if (x > y) u <- u+1
+      else if (x == y) ties = ties + 1
+    }
+  return (u / (n * m - 1))
+}
 
 
 
