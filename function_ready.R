@@ -710,31 +710,43 @@ calculate_z_for_u_statistic <- function(dataset1, dataset2) {
   result
 }
 
-confidence_interval_for_mann_whitney_based_es <- # based on Hanley-McNeil Wald method in Newcombe - Method 1 
-  function(dataset1, dataset2) {
-    m <- length(dataset1)
-    n <- length(dataset2)
-    mann_whitney_ps <- mann_whitney_based_es(dataset1, dataset2)
-    q1 <- 0
-    for (x in dataset1) {
-      counter <- calculate_u_with_ties(x, dataset2)
-      q1 <- q1 + counter ^ 2 / (m * (n ^ 2))
-    }
-    q2 <- 0
-    for (x in dataset2) {
-      counter <- calculate_u_with_ties(x, dataset1)
-      q2 <- q2 + counter ^ 2 / ((m ^ 2) * n)
-    }
-    variance <-
-      (
-        mann_whitney_ps * (1 - mann_whitney_ps) + (n - 1) * (q1 - mann_whitney_ps ^
-                                                               2) + (m - 1) * (q2 - mann_whitney_ps ^ 2)
-      ) / (m * n)
-    z <- 1.959964
-    upper_limit <- mann_whitney_ps - z * sqrt(variance)
-    lower_limit <- mann_whitney_ps + z * sqrt(variance)
-    return (list(upper_limit = upper_limit,lower_limit =  lower_limit))
+mann_whitney_es_ci <- function(dataset1, dataset2, alpha = 0.05) {
+  #based on long et al. 2009 - no correction for delta = 0 or delta = 1 since it does not lead to meaningful results
+  if(max(dataset1)<min(dataset2)) return (list(lower_bound = 0, upper_bound = 0))
+  else if (max(dataset2)<min(dataset1)) return (list(lower_bound = 1, upper_bound = 1))
+  delta <- mann_whitney_based_es(dataset1, dataset2)
+  var_dl <- non_parametric_estimation_of_variance(dataset1, dataset2, delta)
+  z <- qnorm(1-alpha/2)
+  transformed_delta <- log(delta/(1-delta), exp(1))
+  lower_bound <- transformed_delta - z*((sqrt(var_dl))/(delta*(1-delta)))
+  lower_bound <- exp(lower_bound)/(1+exp(lower_bound)) # retransformation
+  upper_bound <- transformed_delta + z*((sqrt(var_dl))/(delta*(1-delta)))
+  upper_bound <- exp(upper_bound)/(1+exp(upper_bound)) # retransformation
+  return (list(lower_bound = lower_bound, upper_bound = upper_bound))
+}
+
+non_parametric_estimation_of_variance <- function(dataset1, dataset2, delta){
+  m <- length(dataset1)
+  n <- length(dataset2) 
+  var_elements_group1 <- unlist(lapply(dataset1, FUN = vi, dataset=dataset2)) 
+  var_elements_group2 <- unlist(lapply(dataset2, FUN = vi, dataset=dataset1))
+  sum_group1 <- 0 
+  sum_group2 <- 0 
+  for (x in var_elements_group1) 
+    sum_group1 <- sum_group1 + (x - delta)^2
+  for (x in var_elements_group2)
+    sum_group2 <- sum_group2 + (x - delta)^2
+  return ((1/m)*(1/(m-1)*sum_group1) + (1/n)*(1/(n-1))*sum_group2)
+}
+
+vi <- function(value, dataset) {
+  count <- 0 
+  for (x in dataset) {
+    if (value > x) count <- count + 1
+    else if (value == x) count <- count + 0.5
   }
+  return (count/length(dataset))
+}
 
 
 ps_for_dependent_groups <-
