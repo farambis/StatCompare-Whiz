@@ -780,7 +780,7 @@ generalized_odds_ratio <- function(dataset1, dataset2, dependent = FALSE) {
   return (ps/(1-ps))
 }
 
-ci_for_odds_ratio<- function(x, INDEX) {
+odds_ratio_ci<- function(x, INDEX) {
   #TODO implement method for exact confidence interal 
 }
 
@@ -799,7 +799,14 @@ ps_without_counting_ties <- function(dataset1, dataset2) {
     }
   return (u / (n * m))
 }
-#TODO method for exact confidence interval
+
+dominance_measure_ci <- function(dataset1, dataset2) {
+  cis <- mann_whitney_es_ci(dataset1, dataset2)
+  lower_bound <- 2 * cis[[1]] - 1
+  upper_bound <- 2 * cis[[2]] - 1
+  return (list(lower_bound = lower_bound, upper_bound = upper_bound))
+}
+
 
 common_language_es <- function(x, INDEX) { 
   # common language effect size based on del guidice-----
