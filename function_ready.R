@@ -786,21 +786,18 @@ ci_for_odds_ratio<- function(x, INDEX) {
 
 dominance_measure_based_es <- function(dataset1, dataset2) {
   # dominance measure ----
-  return (ps_with_ignoring_ties(dataset1, dataset2) - ps_with_ignoring_ties(dataset2, dataset1))
+  return (ps_without_counting_ties(dataset1, dataset2) - ps_without_counting_ties(dataset2, dataset1))
 }
 
-ps_with_ignoring_ties <- function(dataset1, dataset2) {
-  ties <- 0
+ps_without_counting_ties <- function(dataset1, dataset2) {
   u <- 0 
   n <- length(dataset1)
   m <- length(dataset2)
   for (x in dataset1)
     for (y in dataset2){
       if (x > y) u <- u+1
-      else if (x == y) ties = ties + 1
     }
-  print((u / (n * m - ties)))
-  return (u / (n * m - ties))
+  return (u / (n * m))
 }
 #TODO method for exact confidence interval
 
