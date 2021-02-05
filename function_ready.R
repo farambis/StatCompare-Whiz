@@ -717,11 +717,8 @@ mann_whitney_es_ci <- function(dataset1, dataset2, alpha = 0.05) {
   delta <- mann_whitney_based_es(dataset1, dataset2)
   var_dl <- non_parametric_estimation_of_variance(dataset1, dataset2, delta)
   z <- qnorm(1-alpha/2)
-  transformed_delta <- log(delta/(1-delta), exp(1))
-  lower_bound <- transformed_delta - z*((sqrt(var_dl))/(delta*(1-delta)))
-  lower_bound <- exp(lower_bound)/(1+exp(lower_bound)) # retransformation
-  upper_bound <- transformed_delta + z*((sqrt(var_dl))/(delta*(1-delta)))
-  upper_bound <- exp(upper_bound)/(1+exp(upper_bound)) # retransformation
+  lower_bound <- delta - z*((sqrt(var_dl)))
+  upper_bound <- delta + z*((sqrt(var_dl)))
   return (list(lower_bound = lower_bound, upper_bound = upper_bound))
 }
 
@@ -820,8 +817,6 @@ common_language_es_ci <- function(dataset1, dataset2, cohen_d) {
   upper_limit <- pnorm(cis[[2]]/sqrt(2))
   return(list(lower_limit = lower_limit, upper_limit = upper_limit))
 }
-
-
 
 
 
