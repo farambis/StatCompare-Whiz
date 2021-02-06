@@ -771,7 +771,34 @@ ps_for_dependent_groups <-
     }
     return (w / (n - ties))
   }
-#TODO add method to calculate exact confidence interval 
+
+ps_depenent_groups_ci <- function(dataset1, dataset2, alpha = 0.05) {
+  #Pratt's confidence interval 
+  if (length(dataset1) != length(dataset2))
+    stop("\n length of datasets for dependent groups has to be the same!")
+  n <- length(dataset1)
+  w <- 0 
+  for (i in seq_along(dataset1)) {
+    if (dataset1[i] > dataset2[i]) w <- w + 1
+    else if (dataset1[i] > dataset2[i]) w <- w + 0.5
+  }
+  # upper boundary of ci
+  z <- qnorm(1 - alpha/2)
+  a <- ((w+1)/(n-w))^2
+  b <- 81*(w+1)*(n-w)-9*n - 8 
+  c <- -3*z*sqrt(9*(w+1)*(n-w)*(9*n+5-z^2)+n+1) 
+  d <- 81*(w + 1)^2 - 9*(w+1)*(2+z^2) + 1
+  e <- 1+a*((b+c)/d)^3
+  upper_bound <- 1/e
+  # lower boundary of ci 
+  a <- (w/n-w-1)^2
+  b <- 81*w*(n-w-1) - 9*n - 8 
+  c <- 3*z*sqrt(9*(n-w-1)*(9*n+5-z^2)+n+1)
+  d <- 81*w^2 - 9 *w*(2+z^2)+1
+  e <- 1+a*((b+c)/d)^3
+  lower_bound <- 1/e
+  return (list(lower_bound = lower_bound, upper_bound = upper_bound))
+}
 
 generalized_odds_ratio <- function(dataset1, dataset2, dependent = FALSE) {
   # generalized odds ratio-----
@@ -816,9 +843,9 @@ common_language_es <- function(x, INDEX) {
 
 common_language_es_ci <- function(dataset1, dataset2, cohen_d) {
   cis <- smd_ci(effsize = "cohen_d", val = abs(cohen_d), n1 = length(dataset1), n2 = length(dataset2), var1 = var(dataset1), var2 = var(dataset2))
-  lower_limit <- pnorm(cis[[1]]/sqrt(2))
-  upper_limit <- pnorm(cis[[2]]/sqrt(2))
-  return(list(lower_limit = lower_limit, upper_limit = upper_limit))
+  lower_bound <- pnorm(cis[[1]]/sqrt(2))
+  upper_bound <- pnorm(cis[[2]]/sqrt(2))
+  return(list(lower_bound = lower_bound, upper_bound = upper_bound))
 }
 
 
