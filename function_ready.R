@@ -711,41 +711,26 @@ calculate_z_for_u_statistic <- function(dataset1, dataset2) {
 }
 
 mann_whitney_es_ci <- function(dataset1, dataset2, alpha = 0.05) {
-  #based on long et al. 2009 - no correction for delta = 0 or delta = 1 since it does not lead to meaningful results
-  if(max(dataset1)<min(dataset2)) return (list(lower_bound = 0, upper_bound = 0))
-  else if (max(dataset2)<min(dataset1)) return (list(lower_bound = 1, upper_bound = 1))
+  # based on Cliff's method in Wilcox(2012) but may return resuls <0 or >1 if delta is near 0 or 1
+  n1 <- length(dataset1)
+  n2 <- length(dataset2)
   delta <- mann_whitney_based_es(dataset1, dataset2)
-  var_dl <- non_parametric_estimation_of_variance(dataset1, dataset2, delta)
+  di <- 1/n2*(unlist(lapply(dataset1, FUN = calculate_u_with_ties, dataset2 = dataset2)))
+  dh <- 1/n1*(unlist(lapply(dataset2, FUN = calculate_u_with_ties, dataset2 = dataset1)))
+  var1 <- 1/(n1-1) * sum(unlist(lapply(di, FUN = function(x){(x - delta)^2})))
+  var2 <- 1/(n2-1) * sum(unlist(lapply(dh, FUN = function(x){(x - delta)^2})))
+  est_var <- 1/(n1*n2)* sum(unlist(lapply(dataset2, FUN = function(y){lapply(dataset2, FUN = calculate_win, y = y)})))
+  var <- ((n1-1)*var1+(n2-1)*var2+est_var)/(n1*n2)
   z <- qnorm(1-alpha/2)
-  transformed_delta <- log(delta/(1-delta), exp(1))
-  lower_bound <- transformed_delta - z*((sqrt(var_dl))/(delta*(1-delta)))
-  lower_bound <- exp(lower_bound)/(1+exp(lower_bound)) # retransformation
-  upper_bound <- transformed_delta + z*((sqrt(var_dl))/(delta*(1-delta)))
-  upper_bound <- exp(upper_bound)/(1+exp(upper_bound)) # retransformation
+  lower_bound <- (delta-delta^3)-z*sqrt(var)*sqrt((1-delta^2)^2+z^2*var)/(1-delta^2+z^2*var)
+  upper_bound <- (delta-delta^3)+z*sqrt(var)*sqrt((1-delta^2)^2+z^2*var)/(1-delta^2+z^2*var)
   return (list(lower_bound = lower_bound, upper_bound = upper_bound))
 }
 
-non_parametric_estimation_of_variance <- function(dataset1, dataset2, delta){
-  m <- length(dataset1)
-  n <- length(dataset2) 
-  var_elements_group1 <- unlist(lapply(dataset1, FUN = vi, dataset=dataset2)) 
-  var_elements_group2 <- unlist(lapply(dataset2, FUN = vi, dataset=dataset1))
-  sum_group1 <- 0 
-  sum_group2 <- 0 
-  for (x in var_elements_group1) 
-    sum_group1 <- sum_group1 + (x - delta)^2
-  for (x in var_elements_group2)
-    sum_group2 <- sum_group2 + (x - delta)^2
-  return ((1/m)*(1/(m-1)*sum_group1) + (1/n)*(1/(n-1))*sum_group2)
-}
-
-vi <- function(value, dataset) {
-  count <- 0 
-  for (x in dataset) {
-    if (value > x) count <- count + 1
-    else if (value == x) count <- count + 0.5
-  }
-  return (count/length(dataset))
+calculate_win <- function(x, y) {
+  if (x > y ) return (1) 
+  else if (x == y  ) return (0.5)
+  return (0)
 }
 
 
