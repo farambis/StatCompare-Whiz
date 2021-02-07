@@ -834,6 +834,29 @@ common_language_es_ci <- function(dataset1, dataset2, cohen_d) {
 }
 
 
+# overlap measures ----
+overlap_measure <- function(dataset1, dataset2) {
+  num_intervals <- 10
+  d1 <- density(dataset1)
+  d2 <- density(dataset2)
+  f1 <- approxfun(d1$x, d1$y)
+  f2 <- approxfun(d2$x, d2$y)
+  min <-
+    max(min(d1$x), min(d2$x)) #we need the max value of the minimums since the other function is not defined in the true min of both functions
+  max <-
+    min(max(d1$x), max(d2$x)) #we need the min value of the maximums since the other function is not defined in the true max of both functions
+  stepsize <- (max - min) / num_intervals
+  interval <- seq(min, max, by = stepsize)
+  sum <- 0
+  #approximation based on Trapezoid rule
+  for (x in seq(length(interval) - 1)) {
+    sum <-
+      sum + 1 / 2 * (min(f1(interval[x]), f2(interval[x])) + min(f1(interval[x +
+                                                                               1]), f2(interval[x + 1])))
+  }
+  return ((max - min) / num_intervals * sum)
+}
+
 
 
 
