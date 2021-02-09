@@ -1,4 +1,4 @@
-#TODO beim Upload prügen, dass in der Gruppierungsvariable eh keine NAs vorhanden
+#TODO beim Upload prüfen, dass in der Gruppierungsvariable eh keine NAs vorhanden
 # sind - diese werden nämlich bei Funktionen wie tapply ohne Warnung ignoriert
 
 #TODO User sollen angeben wie die Faktoren zu rangreihen sind, damit in der server
@@ -141,6 +141,9 @@ smd_corr <- function(x = NULL, INDEX = NULL, n1, n2, df, trim, type = c("hedges"
 
 
 
+# smd_stats ---------------------------------------------------------------
+
+
 
 smd_stats <- function(x, INDEX, trim = 0.2, type = c("univariate", "multivariate"), 
                       winvar = FALSE, na.rm = FALSE){
@@ -276,6 +279,9 @@ sd_combined <- function(x = NULL, INDEX = NULL, var1, var2, n1, n2, winvar1,
 
 
 
+
+
+# standard mean deviation univariate -------------------------------------------------
 
 
 smd_uni <- function(effsize = c("cohen_d", "hedges_g", "glass_d", "glass_d_corr", 
@@ -662,9 +668,194 @@ t_test <- function(x = NULL, INDEX = NULL, m1, m2, var1, var2, n1, n2, trm1, trm
 
 
 
+# Effect Sizes that go beyond comparison of the mean  -------------------------------------------
 
 
 
+mann_whitney_based_es <- function(dataset1, dataset2) {
+  # Mann Whitney u -----
+  u <- calculate_u_with_ties(dataset1, dataset2)
+  u/(length(dataset1)*length(dataset2))
+}
+
+calculate_u_with_ties <- function(dataset1, dataset2) { 
+  u<- 0
+  for (i in dataset1)
+    for (j in dataset2) {
+      if (i > j)
+        u<-u+ 1
+      else if (i == j)
+        u<-u+ 0.5
+    }
+  u
+}
+
+
+
+p_value_for_mann_whitney_based_es <- function(dataset1, dataset2) { # deviates by 0.02 from stat wilcoxin test which is continuity corrected
+  calculate_p_value_from_z(calculate_z_for_u_statistic(dataset1, dataset2))
+}
+
+calculate_p_value_from_z <- function(z) {
+  result <- 2*pnorm(-abs(z))
+}
+
+calculate_z_for_u_statistic <- function(dataset1, dataset2) {
+  u <- calculate_u_with_ties(dataset1, dataset2)
+  n1 <- length(dataset1) 
+  n2 <- length(dataset2) 
+  numerator <- u-((n1*n2)/2)
+  denominator <- sqrt((n1*n2*(n1+n2+1))/12)
+  result <- numerator/denominator
+  result
+}
+
+mann_whitney_es_ci <- function(dataset1, dataset2, alpha = 0.05) {
+  # based on Cliff's method in Wilcox(2012) but may return resuls <0 or >1 if delta is near 0 or 1
+  n1 <- length(dataset1)
+  n2 <- length(dataset2)
+  delta <- mann_whitney_based_es(dataset1, dataset2)
+  di <- 1/n2*(unlist(lapply(dataset1, FUN = calculate_u_with_ties, dataset2 = dataset2)))
+  dh <- 1/n1*(unlist(lapply(dataset2, FUN = calculate_u_with_ties, dataset2 = dataset1)))
+  var1 <- 1/(n1-1) * sum(unlist(lapply(di, FUN = function(x){(x - delta)^2})))
+  var2 <- 1/(n2-1) * sum(unlist(lapply(dh, FUN = function(x){(x - delta)^2})))
+  est_var <- 1/(n1*n2)* sum(unlist(lapply(dataset2, FUN = function(y){lapply(dataset2, FUN = calculate_win, y = y)})))
+  var <- ((n1-1)*var1+(n2-1)*var2+est_var)/(n1*n2)
+  z <- qnorm(1-alpha/2)
+  lower_bound <- (delta-delta^3)-z*sqrt(var)*sqrt((1-delta^2)^2+z^2*var)/(1-delta^2+z^2*var)
+  upper_bound <- (delta-delta^3)+z*sqrt(var)*sqrt((1-delta^2)^2+z^2*var)/(1-delta^2+z^2*var)
+  return (list(lower_bound = lower_bound, upper_bound = upper_bound))
+}
+
+calculate_win <- function(x, y) {
+  if (x > y ) return (1) 
+  else if (x == y  ) return (0.5)
+  return (0)
+}
+
+
+ps_for_dependent_groups <-
+  function(dataset1, dataset2, ignore_ties = FALSE) {
+    # probability of superiority for dependent groups ----
+    if (length(dataset1) != length(dataset2))
+      stop("\n length of datasets for dependent groups has to be the same!")
+    n <- length(dataset1)
+    w <- 0
+    ties <- 0
+    for (i in seq_along(dataset1)) {
+      if (dataset1[i] > dataset2[i]) {
+        w <- w + 1
+      }
+      else if (dataset1[i] == dataset2[i]) {
+        if (!ignore_ties) {
+          w <- w + 0.5
+        }
+        else
+          ties <- ties + 1
+      }
+    }
+    return (w / (n - ties))
+  }
+
+ps_depenent_groups_ci <- function(dataset1, dataset2, alpha = 0.05) {
+  #Pratt's confidence interval 
+  if (length(dataset1) != length(dataset2))
+    stop("\n length of datasets for dependent groups has to be the same!")
+  n <- length(dataset1)
+  w <- 0 
+  for (i in seq_along(dataset1)) {
+    if (dataset1[i] > dataset2[i]) w <- w + 1
+    else if (dataset1[i] > dataset2[i]) w <- w + 0.5
+  }
+  # upper boundary of ci
+  z <- qnorm(1 - alpha/2)
+  a <- ((w+1)/(n-w))^2
+  b <- 81*(w+1)*(n-w)-9*n - 8 
+  c <- -3*z*sqrt(9*(w+1)*(n-w)*(9*n+5-z^2)+n+1) 
+  d <- 81*(w + 1)^2 - 9*(w+1)*(2+z^2) + 1
+  e <- 1+a*((b+c)/d)^3
+  upper_bound <- 1/e
+  # lower boundary of ci 
+  a <- (w/n-w-1)^2
+  b <- 81*w*(n-w-1) - 9*n - 8 
+  c <- 3*z*sqrt(9*(n-w-1)*(9*n+5-z^2)+n+1)
+  d <- 81*w^2 - 9 *w*(2+z^2)+1
+  e <- 1+a*((b+c)/d)^3
+  lower_bound <- 1/e
+  return (list(lower_bound = lower_bound, upper_bound = upper_bound))
+}
+
+generalized_odds_ratio <- function(dataset1, dataset2, dependent = FALSE) {
+  # generalized odds ratio-----
+  if (!dependent) ps <- mann_whitney_based_es(dataset1, dataset2) 
+  else ps <- ps_for_dependent_groups(dataset1, dataset2)
+  return (ps/(1-ps))
+}
+
+odds_ratio_ci<- function(x, INDEX) {
+  #TODO implement method for exact confidence interal 
+}
+
+dominance_measure_based_es <- function(dataset1, dataset2) {
+  # dominance measure ----
+  return (ps_without_counting_ties(dataset1, dataset2) - ps_without_counting_ties(dataset2, dataset1))
+}
+
+ps_without_counting_ties <- function(dataset1, dataset2) {
+  u <- 0 
+  n <- length(dataset1)
+  m <- length(dataset2)
+  for (x in dataset1)
+    for (y in dataset2){
+      if (x > y) u <- u+1
+    }
+  return (u / (n * m))
+}
+
+dominance_measure_ci <- function(dataset1, dataset2) {
+  cis <- mann_whitney_es_ci(dataset1, dataset2)
+  lower_bound <- 2 * cis[[1]] - 1
+  upper_bound <- 2 * cis[[2]] - 1
+  return (list(lower_bound = lower_bound, upper_bound = upper_bound))
+}
+
+
+common_language_es <- function(x, INDEX) { 
+  # common language effect size based on del guidice-----
+  d <- smd_uni(effsize = "cohen_d", x= x, INDEX = INDEX)[[1]]
+  return (pnorm(abs(d)/sqrt(2)))
+}
+
+common_language_es_ci <- function(dataset1, dataset2, cohen_d) {
+  cis <- smd_ci(effsize = "cohen_d", val = abs(cohen_d), n1 = length(dataset1), n2 = length(dataset2), var1 = var(dataset1), var2 = var(dataset2))
+  lower_bound <- pnorm(cis[[1]]/sqrt(2))
+  upper_bound <- pnorm(cis[[2]]/sqrt(2))
+  return(list(lower_bound = lower_bound, upper_bound = upper_bound))
+}
+
+
+# overlap measures ----
+overlap_measure <- function(dataset1, dataset2) {
+  num_intervals <- 10
+  d1 <- density(dataset1)
+  d2 <- density(dataset2)
+  f1 <- approxfun(d1$x, d1$y)
+  f2 <- approxfun(d2$x, d2$y)
+  min <-
+    max(min(d1$x), min(d2$x)) #we need the max value of the minimums since the other function is not defined in the true min of both functions
+  max <-
+    min(max(d1$x), max(d2$x)) #we need the min value of the maximums since the other function is not defined in the true max of both functions
+  stepsize <- (max - min) / num_intervals
+  interval <- seq(min, max, by = stepsize)
+  sum <- 0
+  #approximation based on Trapezoid rule
+  for (x in seq(length(interval) - 1)) {
+    sum <-
+      sum + 1 / 2 * (min(f1(interval[x]), f2(interval[x])) + min(f1(interval[x +
+                                                                               1]), f2(interval[x + 1])))
+  }
+  return ((max - min) / num_intervals * sum)
+}
 
 
 
