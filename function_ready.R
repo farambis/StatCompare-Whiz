@@ -796,9 +796,10 @@ odds_ratio_ci<- function(x, INDEX) {
   #TODO implement method for exact confidence interal 
 }
 
-dominance_measure_based_es <- function(dataset1, dataset2) {
+dominance_measure_based_es <- function(dataset1, dataset2, dependent = FALSE) {
   # dominance measure ----
-  return (ps_without_counting_ties(dataset1, dataset2) - ps_without_counting_ties(dataset2, dataset1))
+  if (!dependent)return (ps_without_counting_ties(dataset1, dataset2) - ps_without_counting_ties(dataset2, dataset1))
+  return (ps_for_dependent_groups(dataset1, dataset2) - ps_for_dependent_groups(dataset2, dataset1))
 }
 
 ps_without_counting_ties <- function(dataset1, dataset2) {
