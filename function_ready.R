@@ -813,8 +813,9 @@ ps_without_counting_ties <- function(dataset1, dataset2) {
   return (u / (n * m))
 }
 
-dominance_measure_ci <- function(dataset1, dataset2) {
-  cis <- mann_whitney_es_ci(dataset1, dataset2)
+dominance_measure_ci <- function(dataset1, dataset2, dependent = FALSE) {
+  if (!dependent) cis <- mann_whitney_es_ci(dataset1, dataset2)
+  else cis <- ps_depenent_groups_ci(dataset1, dataset2)
   lower_bound <- 2 * cis[[1]] - 1
   upper_bound <- 2 * cis[[2]] - 1
   return (list(lower_bound = lower_bound, upper_bound = upper_bound))
