@@ -711,27 +711,26 @@ calculate_z_for_u_statistic <- function(dataset1, dataset2) {
 }
 
 mann_whitney_es_ci <- function(dataset1, dataset2, alpha = 0.05) {
-  # based on Cliff's method in Wilcox(2012) but may return resuls <0 or >1 if delta is near 0 or 1
-  n1 <- length(dataset1)
-  n2 <- length(dataset2)
+  #second method from Newcombe (2005)
+  m <- length(dataset1)
+  n <- length(dataset2)
   delta <- mann_whitney_based_es(dataset1, dataset2)
-  di <- 1/n2*(unlist(lapply(dataset1, FUN = calculate_u_with_ties, dataset2 = dataset2)))
-  dh <- 1/n1*(unlist(lapply(dataset2, FUN = calculate_u_with_ties, dataset2 = dataset1)))
-  var1 <- 1/(n1-1) * sum(unlist(lapply(di, FUN = function(x){(x - delta)^2})))
-  var2 <- 1/(n2-1) * sum(unlist(lapply(dh, FUN = function(x){(x - delta)^2})))
-  est_var <- 1/(n1*n2)* sum(unlist(lapply(dataset2, FUN = function(y){lapply(dataset2, FUN = calculate_win, y = y)})))
-  var <- ((n1-1)*var1+(n2-1)*var2+est_var)/(n1*n2)
-  z <- qnorm(1-alpha/2)
-  lower_bound <- (delta-delta^3)-z*sqrt(var)*sqrt((1-delta^2)^2+z^2*var)/(1-delta^2+z^2*var)
-  upper_bound <- (delta-delta^3)+z*sqrt(var)*sqrt((1-delta^2)^2+z^2*var)/(1-delta^2+z^2*var)
-  return (list(lower_bound = lower_bound, upper_bound = upper_bound))
+  variance <- delta * (1-delta) *(1+(n-1)*(1-delta)/(2-delta)+(m-1)*delta/(1+delta))/(m*n)
+  z <- qnorm(1 - alpha)
+  lower_limit <- delta - z * sqrt(variance)
+  if (lower_limit < 0) {
+    lower_limit <- 0 
+    warning("The lower limit of the confidence interval was set to 0 since it can not be smaller than 0")
+  } 
+  upper_limit <- delta + z * sqrt(variance)
+  if (upper_limit>1) {
+    upper_limit <- 1 
+    warning("The upper limit of the confidence interval was set to 1 since it cannot be larger than 1")
+  } 
+  return (list(lower_limit = lower_limit, upper_limit =  upper_limit))
 }
 
-calculate_win <- function(x, y) {
-  if (x > y ) return (1) 
-  else if (x == y  ) return (0.5)
-  return (0)
-}
+
 
 
 ps_for_dependent_groups <-
@@ -796,9 +795,10 @@ odds_ratio_ci<- function(x, INDEX) {
   #TODO implement method for exact confidence interal 
 }
 
-dominance_measure_based_es <- function(dataset1, dataset2) {
+dominance_measure_based_es <- function(dataset1, dataset2, dependent = FALSE) {
   # dominance measure ----
-  return (ps_without_counting_ties(dataset1, dataset2) - ps_without_counting_ties(dataset2, dataset1))
+  if (!dependent)return (ps_without_counting_ties(dataset1, dataset2) - ps_without_counting_ties(dataset2, dataset1))
+  return (ps_for_dependent_groups(dataset1, dataset2) - ps_for_dependent_groups(dataset2, dataset1))
 }
 
 ps_without_counting_ties <- function(dataset1, dataset2) {
@@ -812,8 +812,9 @@ ps_without_counting_ties <- function(dataset1, dataset2) {
   return (u / (n * m))
 }
 
-dominance_measure_ci <- function(dataset1, dataset2) {
-  cis <- mann_whitney_es_ci(dataset1, dataset2)
+dominance_measure_ci <- function(dataset1, dataset2, dependent = FALSE) {
+  if (!dependent) cis <- mann_whitney_es_ci(dataset1, dataset2)
+  else cis <- ps_depenent_groups_ci(dataset1, dataset2)
   lower_bound <- 2 * cis[[1]] - 1
   upper_bound <- 2 * cis[[2]] - 1
   return (list(lower_bound = lower_bound, upper_bound = upper_bound))
