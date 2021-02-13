@@ -834,6 +834,23 @@ common_language_es_ci <- function(dataset1, dataset2, cohen_d) {
   return(list(lower_bound = lower_bound, upper_bound = upper_bound))
 }
 
+probability_of_correct_classification_es <- function(x, INDEX) {
+ # probability of correct classification----
+  # when assumptions of normality and equality of variances/coveriances are not satisfied this gives inadequate results
+  d <- smd_uni(effsize = "cohen_d", x = x, INDEX = INDEX)[[1]]
+  return (pnorm(abs(d)/2))
+}
+
+probability_of_correct_classification_ci <- function(x, INDEX) {
+ dataset1 <- split(x, INDEX)[[1]]
+ dataset2 <- split(x, INDEX)[[2]]
+ cohen_d <- abs(smd_uni(effsize = "cohen_d", x = x, INDEX = INDEX)[[1]])
+ cis <- smd_ci(effsize = "cohen_d", val = cohen_d, n1 = length(dataset1), n2 = length(dataset2), var1 = var(dataset1), var2 = var(dataset2))
+ lower_bound <- pnorm(cis[[1]]/2)
+ upper_bound <- pnorm(cis[[2]]/2)
+ return (list(c(lower_bound = lower_bound, upper_bound = upper_bound)))
+}
+
 
 # overlap measures ----
 overlapping_coefficient <- function(dataset1, dataset2) {
