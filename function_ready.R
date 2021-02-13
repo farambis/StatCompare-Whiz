@@ -882,8 +882,6 @@ cohens_u3_ci <- function(x, INDEX) {
   return (list(c(lower_bound = lower_bound, upper_bound = upper_bound)))
 }
 
-cohens_u3_es(vals, grp)
-cohens_u3_ci(vals, grp)
 
 # Old versions ------------------------------------------------------------
 
