@@ -887,7 +887,7 @@ cohens_coefficient_of_nonoverlap_u1 <- function(dataset1, dataset2) {
 
 cohens_u3_es <- function(x, INDEX) {
   pnorm(abs(smd_uni(effsize = "cohen_d", x = x, INDEX = INDEX)[[1]]))
-}^
+}
 
 cohens_u3_ci <- function(x, INDEX) {
   dataset1 <- split(x, INDEX)[[1]]
