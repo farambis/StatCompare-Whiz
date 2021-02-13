@@ -836,7 +836,7 @@ common_language_es_ci <- function(dataset1, dataset2, cohen_d) {
 
 
 # overlap measures ----
-overlap_measure <- function(dataset1, dataset2) {
+overlapping_coefficient <- function(dataset1, dataset2) {
   num_intervals <- 10
   d1 <- density(dataset1)
   d2 <- density(dataset2)
@@ -858,8 +858,32 @@ overlap_measure <- function(dataset1, dataset2) {
   return ((max - min) / num_intervals * sum)
 }
 
+overlapping_coefficient_two <- function(dataset1, dataset2) {
+  ovl <- overlapping_coefficient(dataset1, dataset2)
+  return (ovl/(2-ovl))
+}
 
+cohens_coefficient_of_nonoverlap_u1 <- function(dataset1, dataset2) {
+  ovl <- overlapping_coefficient(dataset1, dataset2) 
+  return (1-ovl/(2-ovl))
+}
 
+cohens_u3_es <- function(x, INDEX) {
+  pnorm(abs(smd_uni(effsize = "cohen_d", x = x, INDEX = INDEX)[[1]]))
+}^
+
+cohens_u3_ci <- function(x, INDEX) {
+  dataset1 <- split(x, INDEX)[[1]]
+  dataset2 <- split(x, INDEX)[[2]]
+  cohen_d <- abs(smd_uni(effsize = "cohen_d", x = x, INDEX = INDEX))
+  cohen_d_cis <- smd_ci(effsize = "cohen_d", val = cohen_d, n1 = length(dataset1), n2 = length(dataset2), var1 = var(dataset1), var2 = var(dataset2))
+  lower_bound <- pnorm(cohen_d_cis[[1]])
+  upper_bound <- pnorm(cohen_d_cis[[2]])
+  return (list(c(lower_bound = lower_bound, upper_bound = upper_bound)))
+}
+
+cohens_u3_es(vals, grp)
+cohens_u3_ci(vals, grp)
 
 # Old versions ------------------------------------------------------------
 
