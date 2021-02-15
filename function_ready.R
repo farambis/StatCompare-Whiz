@@ -907,11 +907,26 @@ cohens_coefficient_of_nonoverlap_u1 <- function(x, INDEX, parametric = FALSE) {
   return (1-ovl/(2-ovl))
 }
 
-cohens_u3_es <- function(x, INDEX) {
+non_parametric_cohens_u3_ci <- function(x, INDEX) {
+  dataset <- split(x, INDEX)
+  dataset1 <- dataset[[1]]
+  dataset2 <- dataset[[2]]
+  mean_1 <- mean(dataset1)
+  mean_2 <- mean(dataset2) 
+  if (mean_1 < mean_2) {
+    dataset1 <- dataset[[2]]
+    dataset2 <- dataset[[1]]
+  }
+  median <- median(dataset2) 
+  result <- 1/length(dataset1) * sum(unlist(lapply(dataset1, function(x){ if (x>median) 1 else 0})))
+  return(result)
+}
+
+parametric_cohens_u3_es <- function(x, INDEX) {
   pnorm(abs(smd_uni(effsize = "cohen_d", x = x, INDEX = INDEX)[[1]]))
 }
 
-cohens_u3_ci <- function(x, INDEX) {
+parametric_cohens_u3_ci <- function(x, INDEX) {
   dataset1 <- split(x, INDEX)[[1]]
   dataset2 <- split(x, INDEX)[[2]]
   cohen_d <- abs(smd_uni(effsize = "cohen_d", x = x, INDEX = INDEX))
