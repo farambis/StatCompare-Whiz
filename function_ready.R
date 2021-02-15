@@ -856,31 +856,107 @@ common_language_es_ci <- function(dataset1, dataset2, cohen_d) {
   return(list(lower_bound = lower_bound, upper_bound = upper_bound))
 }
 
+probability_of_correct_classification_es <- function(x, INDEX) {
+ # probability of correct classification----
+  # when assumptions of normality and equality of variances/coveriances are not satisfied this gives inadequate results
+  d <- smd_uni(effsize = "cohen_d", x = x, INDEX = INDEX)[[1]]
+  return (pnorm(abs(d)/2))
+}
 
-# overlap measures ----
-overlap_measure <- function(dataset1, dataset2) {
-  num_intervals <- 10
-  d1 <- density(dataset1)
-  d2 <- density(dataset2)
-  f1 <- approxfun(d1$x, d1$y)
-  f2 <- approxfun(d2$x, d2$y)
-  min <-
-    max(min(d1$x), min(d2$x)) #we need the max value of the minimums since the other function is not defined in the true min of both functions
-  max <-
-    min(max(d1$x), max(d2$x)) #we need the min value of the maximums since the other function is not defined in the true max of both functions
-  stepsize <- (max - min) / num_intervals
-  interval <- seq(min, max, by = stepsize)
-  sum <- 0
-  #approximation based on Trapezoid rule
-  for (x in seq(length(interval) - 1)) {
-    sum <-
-      sum + 1 / 2 * (min(f1(interval[x]), f2(interval[x])) + min(f1(interval[x +
-                                                                               1]), f2(interval[x + 1])))
-  }
-  return ((max - min) / num_intervals * sum)
+probability_of_correct_classification_ci <- function(x, INDEX) {
+ dataset1 <- split(x, INDEX)[[1]]
+ dataset2 <- split(x, INDEX)[[2]]
+ cohen_d <- abs(smd_uni(effsize = "cohen_d", x = x, INDEX = INDEX)[[1]])
+ cis <- smd_ci(effsize = "cohen_d", val = cohen_d, n1 = length(dataset1), n2 = length(dataset2), var1 = var(dataset1), var2 = var(dataset2))
+ lower_bound <- pnorm(cis[[1]]/2)
+ upper_bound <- pnorm(cis[[2]]/2)
+ return (list(c(lower_bound = lower_bound, upper_bound = upper_bound)))
 }
 
 
+# overlap measures ----
+non_parametric_overlapping_coefficient <-
+  function(x,
+           INDEX,
+           bw = "nrd0",
+           kernel = c(
+             "gaussian",
+             "epanechnikov",
+             "rectangular",
+             "triangular",
+             "biweight",
+             "cosine",
+             "optcosine"
+           )) {
+    original_dataset <- split(x, INDEX)
+    num_intervals <- 10
+    d1 <- density(original_dataset[[1]], bw = bw, kernel = kernel)
+    d2 <- density(original_dataset[[2]], bw = bw, kernel = kernel)
+    f1 <- approxfun(d1$x, d1$y)
+    f2 <- approxfun(d2$x, d2$y)
+    min <-
+      max(min(d1$x), min(d2$x)) #we need the max value of the minimums since the other function is not defined in the true min of both functions
+    max <-
+      min(max(d1$x), max(d2$x)) #we need the min value of the maximums since the other function is not defined in the true max of both functions
+    stepsize <- (max - min) / num_intervals
+    interval <- seq(min, max, by = stepsize)
+    sum <- 0
+    #approximation based on Trapezoid rule
+    for (x in seq(length(interval) - 1)) {
+      sum <-
+        sum + 1 / 2 * (min(f1(interval[x]), f2(interval[x])) + min(f1(interval[x +
+                                                                                 1]), f2(interval[x + 1])))
+    }
+    return ((max - min) / num_intervals * sum)
+  }
+
+parametric_overlapping_coefficient <- function(x, INDEX) {
+  cohens_d <- smd_uni(effsize = "cohen_d", x = x, INDEX = INDEX)[[1]]
+  return(2*pnorm(-abs(cohens_d)/2))
+}
+
+
+overlapping_coefficient_two <- function(x, INDEX, parametric = FALSE) {
+  if (!parametric) ovl <- non_parametric_overlapping_coefficient(x, INDEX)
+  else ovl <- parametric_overlapping_coefficient(x, INDEX)
+  return (ovl/(2-ovl))
+}
+
+
+cohens_coefficient_of_nonoverlap_u1 <- function(x, INDEX, parametric = FALSE) {
+  if(!parametric) ovl <- non_parametric_overlapping_coefficient(x, INDEX)
+  else ovl <- parametric_overlapping_coefficient(x, INDEX)
+  return (1-ovl/(2-ovl))
+}
+
+non_parametric_cohens_u3_ci <- function(x, INDEX) {
+  dataset <- split(x, INDEX)
+  dataset1 <- dataset[[1]]
+  dataset2 <- dataset[[2]]
+  mean_1 <- mean(dataset1)
+  mean_2 <- mean(dataset2) 
+  if (mean_1 < mean_2) {
+    dataset1 <- dataset[[2]]
+    dataset2 <- dataset[[1]]
+  }
+  median <- median(dataset2) 
+  result <- 1/length(dataset1) * sum(unlist(lapply(dataset1, function(x){ if (x>median) 1 else 0})))
+  return(result)
+}
+
+parametric_cohens_u3_es <- function(x, INDEX) {
+  pnorm(abs(smd_uni(effsize = "cohen_d", x = x, INDEX = INDEX)[[1]]))
+}
+
+parametric_cohens_u3_ci <- function(x, INDEX) {
+  dataset1 <- split(x, INDEX)[[1]]
+  dataset2 <- split(x, INDEX)[[2]]
+  cohen_d <- abs(smd_uni(effsize = "cohen_d", x = x, INDEX = INDEX))
+  cohen_d_cis <- smd_ci(effsize = "cohen_d", val = cohen_d, n1 = length(dataset1), n2 = length(dataset2), var1 = var(dataset1), var2 = var(dataset2))
+  lower_bound <- pnorm(cohen_d_cis[[1]])
+  upper_bound <- pnorm(cohen_d_cis[[2]])
+  return (list(c(lower_bound = lower_bound, upper_bound = upper_bound)))
+}
 
 
 # Old versions ------------------------------------------------------------
