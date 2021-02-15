@@ -791,8 +791,19 @@ generalized_odds_ratio <- function(dataset1, dataset2, dependent = FALSE) {
   return (ps/(1-ps))
 }
 
-odds_ratio_ci<- function(x, INDEX) {
-  #TODO implement method for exact confidence interal 
+generalized_odds_ratio_ci<- function(x, INDEX, reverse = FALSE) {
+  dataset1 <- split(x, INDEX)[[1]]
+  dataset2 <- split(x, INDEX)[[2]]
+  if (!reverse)cohen_d <- smd_uni(effsize = "cohen_d", x, INDEX)
+  else cohen_d <- smd_uni(effsize = "cohen_d",n1 = length(dataset2), n2=length(dataset1), m1 = mean(dataset2), m2 = mean(dataset1), var1 = var(dataset2), var2 = var(dataset1))
+  cohen_d_ci <- smd_ci(effsize = "cohen_d", val = cohen_d, n1 = length(dataset1), n2 = length(dataset2), var1 = var(dataset1), var2 = var(dataset2))
+  delta_l <- cohen_d_ci[[1]] 
+  delta_u <- cohen_d_ci[[2]] 
+  w_l <- pnorm(delta_l/sqrt(2))
+  w_u <- pnorm(delta_u/sqrt(2))
+  lower_bound <- w_l/(1-w_l)
+  upper_bound <- w_u/(1 - w_u)
+  return(list(c(lower_bound = lower_bound, upper_bound = upper_bound)))
 }
 
 dominance_measure_based_es <- function(dataset1, dataset2, dependent = FALSE) {
