@@ -421,11 +421,22 @@ smd_boot <- function(x, INDEX, effsize = c("cohen_d", "hedges_g", "glass_d", "gl
   
 }
 
-
-
-
-
-
+boot <- function(x, INDEX, alpha = 0.05, n_boot = 200,  FUN) {
+  
+  original <- split(x = x, f = INDEX)
+  boot_dat <- rep(list(numeric(length = length(x))), times = n_boot)
+  boot_dat <- lapply(boot_dat, function(y){c(sample(original[[1]], size = length(original[[1]]),  replace = TRUE), sample(original[[2]], size = length(original[[2]]),  replace = TRUE))})
+  boot_val <- sort(
+    unlist(
+      lapply(boot_dat, function(x) {FUN(x[1:length(original[[1]])], x[length(original[[1]]+1): length(x)])}), # give datasets to es function
+      use.names = FALSE)
+  )
+  lower <- n_boot * (alpha/2)
+  upper <- n_boot - lower
+  cl_lower <- boot_val[lower + 1]
+  cl_upper <- boot_val[upper]
+  return(list(cil = cl_lower, ciu = cl_upper))
+}
 
 
 
