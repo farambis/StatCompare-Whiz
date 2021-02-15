@@ -853,9 +853,9 @@ probability_of_correct_classification_ci <- function(x, INDEX) {
 
 
 # overlap measures ----
-overlap_measure <-
-  function(dataset1,
-           dataset2,
+non_parametric_overlapping_coefficient <-
+  function(x,
+           INDEX,
            bw = "nrd0",
            kernel = c(
              "gaussian",
@@ -866,9 +866,10 @@ overlap_measure <-
              "cosine",
              "optcosine"
            )) {
+    original_dataset <- split(x, INDEX)
     num_intervals <- 10
-    d1 <- density(dataset1, bw = bw, kernel = kernel)
-    d2 <- density(dataset2)
+    d1 <- density(original_dataset[[1]], bw = bw, kernel = kernel)
+    d2 <- density(original_dataset[[2]], bw = bw, kernel = kernel)
     f1 <- approxfun(d1$x, d1$y)
     f2 <- approxfun(d2$x, d2$y)
     min <-
@@ -887,13 +888,22 @@ overlap_measure <-
     return ((max - min) / num_intervals * sum)
   }
 
-overlapping_coefficient_two <- function(dataset1, dataset2) {
-  ovl <- overlapping_coefficient(dataset1, dataset2)
+parametric_overlapping_coefficient <- function(x, INDEX) {
+  cohens_d <- smd_uni(effsize = "cohen_d", x = x, INDEX = INDEX)[[1]]
+  return(2*pnorm(-abs(cohens_d)/2))
+}
+
+
+overlapping_coefficient_two <- function(x, INDEX, parametric = FALSE) {
+  if (!parametric) ovl <- non_parametric_overlapping_coefficient(x, INDEX)
+  else ovl <- parametric_overlapping_coefficient(x, INDEX)
   return (ovl/(2-ovl))
 }
 
-cohens_coefficient_of_nonoverlap_u1 <- function(dataset1, dataset2) {
-  ovl <- overlapping_coefficient(dataset1, dataset2) 
+
+cohens_coefficient_of_nonoverlap_u1 <- function(x, INDEX, parametric = FALSE) {
+  if(!parametric) ovl <- non_parametric_overlapping_coefficient(x, INDEX)
+  else ovl <- parametric_overlapping_coefficient(x, INDEX)
   return (1-ovl/(2-ovl))
 }
 
