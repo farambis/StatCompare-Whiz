@@ -853,27 +853,39 @@ probability_of_correct_classification_ci <- function(x, INDEX) {
 
 
 # overlap measures ----
-overlapping_coefficient <- function(dataset1, dataset2) {
-  num_intervals <- 10
-  d1 <- density(dataset1)
-  d2 <- density(dataset2)
-  f1 <- approxfun(d1$x, d1$y)
-  f2 <- approxfun(d2$x, d2$y)
-  min <-
-    max(min(d1$x), min(d2$x)) #we need the max value of the minimums since the other function is not defined in the true min of both functions
-  max <-
-    min(max(d1$x), max(d2$x)) #we need the min value of the maximums since the other function is not defined in the true max of both functions
-  stepsize <- (max - min) / num_intervals
-  interval <- seq(min, max, by = stepsize)
-  sum <- 0
-  #approximation based on Trapezoid rule
-  for (x in seq(length(interval) - 1)) {
-    sum <-
-      sum + 1 / 2 * (min(f1(interval[x]), f2(interval[x])) + min(f1(interval[x +
-                                                                               1]), f2(interval[x + 1])))
+overlap_measure <-
+  function(dataset1,
+           dataset2,
+           bw = "nrd0",
+           kernel = c(
+             "gaussian",
+             "epanechnikov",
+             "rectangular",
+             "triangular",
+             "biweight",
+             "cosine",
+             "optcosine"
+           )) {
+    num_intervals <- 10
+    d1 <- density(dataset1, bw = bw, kernel = kernel)
+    d2 <- density(dataset2)
+    f1 <- approxfun(d1$x, d1$y)
+    f2 <- approxfun(d2$x, d2$y)
+    min <-
+      max(min(d1$x), min(d2$x)) #we need the max value of the minimums since the other function is not defined in the true min of both functions
+    max <-
+      min(max(d1$x), max(d2$x)) #we need the min value of the maximums since the other function is not defined in the true max of both functions
+    stepsize <- (max - min) / num_intervals
+    interval <- seq(min, max, by = stepsize)
+    sum <- 0
+    #approximation based on Trapezoid rule
+    for (x in seq(length(interval) - 1)) {
+      sum <-
+        sum + 1 / 2 * (min(f1(interval[x]), f2(interval[x])) + min(f1(interval[x +
+                                                                                 1]), f2(interval[x + 1])))
+    }
+    return ((max - min) / num_intervals * sum)
   }
-  return ((max - min) / num_intervals * sum)
-}
 
 overlapping_coefficient_two <- function(dataset1, dataset2) {
   ovl <- overlapping_coefficient(dataset1, dataset2)
