@@ -683,8 +683,11 @@ t_test <- function(x = NULL, INDEX = NULL, m1, m2, var1, var2, n1, n2, trm1, trm
 
 
 
-mann_whitney_based_es <- function(dataset1, dataset2, ignore_ties = FALSE) {
+mann_whitney_based_es <- function(x, INDEX, ignore_ties = FALSE) {
   # Mann Whitney u -----
+  dataset <- split(x, INDEX)
+  dataset1 <- dataset[[1]]
+  dataset2 <- dataset[[2]]
   if(!ignore_ties) {
     u <- calculate_u_with_ties(dataset1, dataset2)
     return (u/(length(dataset1)*length(dataset2)))
@@ -716,8 +719,9 @@ calculate_ps_ignoring_ties <- function(dataset1, dataset2) {
   count/(length(dataset1)*length(dataset2)-ties)
 }
 
-p_value_for_mann_whitney_based_es <- function(dataset1, dataset2) { # deviates by 0.02 from stat wilcoxin test which is continuity corrected
-  calculate_p_value_from_z(calculate_z_for_u_statistic(dataset1, dataset2))
+p_value_for_mann_whitney_based_es <- function(x, INDEX) { # deviates by 0.02 from stat wilcoxin test which is continuity corrected
+  dataset <- split(x, INDEX)
+  return(calculate_p_value_from_z(calculate_z_for_u_statistic(dataset[[1]], dataset[[2]])))
 }
 
 calculate_p_value_from_z <- function(z) {
@@ -734,11 +738,12 @@ calculate_z_for_u_statistic <- function(dataset1, dataset2) {
   result
 }
 
-mann_whitney_es_ci <- function(dataset1, dataset2, alpha = 0.05) {
+mann_whitney_es_ci <- function(x, INDEX, alpha = 0.05) {
   #second method from Newcombe (2005)
-  m <- length(dataset1)
-  n <- length(dataset2)
-  delta <- mann_whitney_based_es(dataset1, dataset2)
+  dataset <- split(vals, grp)
+  m <- length(dataset[[1]])
+  n <- length(dataset[[2]])
+  delta <- mann_whitney_based_es(x, INDEX)
   variance <- delta * (1-delta) *(1+(n-1)*(1-delta)/(2-delta)+(m-1)*delta/(1+delta))/(m*n)
   z <- qnorm(1 - alpha)
   lower_limit <- delta - z * sqrt(variance)
@@ -755,11 +760,12 @@ mann_whitney_es_ci <- function(dataset1, dataset2, alpha = 0.05) {
 }
 
 
-
-
 ps_for_dependent_groups <-
-  function(dataset1, dataset2, ignore_ties = FALSE) {
+  function(x, INDEX, ignore_ties = FALSE) {
     # probability of superiority for dependent groups ----
+    dataset <- split(x, INDEX)
+    dataset1 <- dataset[[1]]
+    dataset2 <- dataset[[2]]
     if (length(dataset1) != length(dataset2))
       stop("\n length of datasets for dependent groups has to be the same!")
     n <- length(dataset1)
@@ -780,8 +786,12 @@ ps_for_dependent_groups <-
     return (w / (n - ties))
   }
 
-ps_depenent_groups_ci <- function(dataset1, dataset2, alpha = 0.05) {
+
+ps_dependent_groups_ci <- function(x, INDEX, alpha = 0.05) {
   #Pratt's confidence interval 
+  dataset <- split(x, INDEX)
+  dataset1 <- dataset[[1]]
+  dataset2 <- dataset[[2]]
   if (length(dataset1) != length(dataset2))
     stop("\n length of datasets for dependent groups has to be the same!")
   n <- length(dataset1)
@@ -808,11 +818,13 @@ ps_depenent_groups_ci <- function(dataset1, dataset2, alpha = 0.05) {
   return (list(lower_bound = lower_bound, upper_bound = upper_bound))
 }
 
-generalized_odds_ratio <- function(dataset1, dataset2, dependent = FALSE, ignore_ties = FALSE) {
+generalized_odds_ratio <- function(x, INDEX, dependent = FALSE, ignore_ties = FALSE) {
   # generalized odds ratio-----
   # ties are counted as 0.5
-  if (!dependent) ps <- mann_whitney_based_es(dataset1, dataset2, ignore_ties = ignore_ties) 
-  else ps <- ps_for_dependent_groups(dataset1, dataset2, ignore_ties = ignore_ties)
+  if (!dependent) ps <- mann_whitney_based_es(x, INDEX, ignore_ties = ignore_ties) 
+  else {
+    dataset <- split(x, INDEX)
+    ps <- ps_for_dependent_groups(dataset[[1]], dataset[[2]], ignore_ties = ignore_ties)}
   return (ps/(1-ps))
 }
 
@@ -831,8 +843,11 @@ generalized_odds_ratio_ci<- function(x, INDEX, reverse = FALSE) {
   return(list(c(lower_bound = lower_bound, upper_bound = upper_bound)))
 }
 
-dominance_measure_based_es <- function(dataset1, dataset2, dependent = FALSE) {
+dominance_measure_based_es <- function(x, INDEX, dependent = FALSE) {
   # dominance measure ----
+  dataset <- split(x, INDEX)
+  dataset1 <- dataset[[1]]
+  dataset2 <- dataset[[2]]
   if (!dependent)return (ps_without_counting_ties(dataset1, dataset2) - ps_without_counting_ties(dataset2, dataset1))
   return (ps_for_dependent_groups(dataset1, dataset2) - ps_for_dependent_groups(dataset2, dataset1))
 }
@@ -848,9 +863,9 @@ ps_without_counting_ties <- function(dataset1, dataset2) {
   return (u / (n * m))
 }
 
-dominance_measure_ci <- function(dataset1, dataset2, dependent = FALSE) {
-  if (!dependent) cis <- mann_whitney_es_ci(dataset1, dataset2)
-  else cis <- ps_depenent_groups_ci(dataset1, dataset2)
+dominance_measure_ci <- function(x, INDEX, dependent = FALSE) {
+  if (!dependent) cis <- mann_whitney_es_ci(x, INDEX)
+  else cis <- ps_dependent_groups_ci(x, INDEX)
   lower_bound <- 2 * cis[[1]] - 1
   upper_bound <- 2 * cis[[2]] - 1
   return (list(lower_bound = lower_bound, upper_bound = upper_bound))
@@ -863,8 +878,9 @@ common_language_es <- function(x, INDEX) {
   return (pnorm(abs(d)/sqrt(2)))
 }
 
-common_language_es_ci <- function(dataset1, dataset2, cohen_d) {
-  cis <- smd_ci(effsize = "cohen_d", val = abs(cohen_d), n1 = length(dataset1), n2 = length(dataset2), var1 = var(dataset1), var2 = var(dataset2))
+common_language_es_ci <- function(x, INDEX, cohen_d) {
+  split(x, INDEX)
+  cis <- smd_ci(effsize = "cohen_d", val = abs(cohen_d), n1 = length(dataset[[1]]), n2 = length(dataset[[2]]), var1 = var(dataset[[1]]), var2 = var(dataset[[2]]))
   lower_bound <- pnorm(cis[[1]]/sqrt(2))
   upper_bound <- pnorm(cis[[2]]/sqrt(2))
   return(list(lower_bound = lower_bound, upper_bound = upper_bound))
