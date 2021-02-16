@@ -683,10 +683,13 @@ t_test <- function(x = NULL, INDEX = NULL, m1, m2, var1, var2, n1, n2, trm1, trm
 
 
 
-mann_whitney_based_es <- function(dataset1, dataset2) {
+mann_whitney_based_es <- function(dataset1, dataset2, ignore_ties = FALSE) {
   # Mann Whitney u -----
-  u <- calculate_u_with_ties(dataset1, dataset2)
-  u/(length(dataset1)*length(dataset2))
+  if(!ignore_ties) {
+    u <- calculate_u_with_ties(dataset1, dataset2)
+    return (u/(length(dataset1)*length(dataset2)))
+  }
+  return(calculate_ps_ignoring_ties(dataset1, dataset2))
 }
 
 calculate_u_with_ties <- function(dataset1, dataset2) { 
@@ -701,7 +704,17 @@ calculate_u_with_ties <- function(dataset1, dataset2) {
   u
 }
 
-
+calculate_ps_ignoring_ties <- function(dataset1, dataset2) {
+  ties <- 0 
+  count <- 0 
+  for (x in seq_along(dataset1)) {
+    for (y in seq_along(dataset2)){
+      if (dataset1[x]>dataset2[y]) count <- count + 1
+      else if (dataset1[x] == dataset2[y]) ties <- ties +1
+    }
+  }
+  count/(length(dataset1)*length(dataset2)-ties)
+}
 
 p_value_for_mann_whitney_based_es <- function(dataset1, dataset2) { # deviates by 0.02 from stat wilcoxin test which is continuity corrected
   calculate_p_value_from_z(calculate_z_for_u_statistic(dataset1, dataset2))
@@ -795,10 +808,11 @@ ps_depenent_groups_ci <- function(dataset1, dataset2, alpha = 0.05) {
   return (list(lower_bound = lower_bound, upper_bound = upper_bound))
 }
 
-generalized_odds_ratio <- function(dataset1, dataset2, dependent = FALSE) {
+generalized_odds_ratio <- function(dataset1, dataset2, dependent = FALSE, ignore_ties = FALSE) {
   # generalized odds ratio-----
-  if (!dependent) ps <- mann_whitney_based_es(dataset1, dataset2) 
-  else ps <- ps_for_dependent_groups(dataset1, dataset2)
+  # ties are counted as 0.5
+  if (!dependent) ps <- mann_whitney_based_es(dataset1, dataset2, ignore_ties = ignore_ties) 
+  else ps <- ps_for_dependent_groups(dataset1, dataset2, ignore_ties = ignore_ties)
   return (ps/(1-ps))
 }
 
