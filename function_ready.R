@@ -683,8 +683,11 @@ t_test <- function(x = NULL, INDEX = NULL, m1, m2, var1, var2, n1, n2, trm1, trm
 
 
 
-mann_whitney_based_es <- function(dataset1, dataset2, ignore_ties = FALSE) {
+mann_whitney_based_es <- function(x, INDEX, ignore_ties = FALSE) {
   # Mann Whitney u -----
+  dataset <- split(x, INDEX)
+  dataset1 <- dataset[[1]]
+  dataset2 <- dataset[[2]]
   if(!ignore_ties) {
     u <- calculate_u_with_ties(dataset1, dataset2)
     return (u/(length(dataset1)*length(dataset2)))
@@ -716,8 +719,9 @@ calculate_ps_ignoring_ties <- function(dataset1, dataset2) {
   count/(length(dataset1)*length(dataset2)-ties)
 }
 
-p_value_for_mann_whitney_based_es <- function(dataset1, dataset2) { # deviates by 0.02 from stat wilcoxin test which is continuity corrected
-  calculate_p_value_from_z(calculate_z_for_u_statistic(dataset1, dataset2))
+p_value_for_mann_whitney_based_es <- function(x, INDEX) { # deviates by 0.02 from stat wilcoxin test which is continuity corrected
+  dataset <- split(x, INDEX)
+  return(calculate_p_value_from_z(calculate_z_for_u_statistic(dataset[[1]], dataset[[2]])))
 }
 
 calculate_p_value_from_z <- function(z) {
@@ -734,11 +738,12 @@ calculate_z_for_u_statistic <- function(dataset1, dataset2) {
   result
 }
 
-mann_whitney_es_ci <- function(dataset1, dataset2, alpha = 0.05) {
+mann_whitney_es_ci <- function(x, INDEX, alpha = 0.05) {
   #second method from Newcombe (2005)
-  m <- length(dataset1)
-  n <- length(dataset2)
-  delta <- mann_whitney_based_es(dataset1, dataset2)
+  dataset <- split(vals, grp)
+  m <- length(dataset[[1]])
+  n <- length(dataset[[2]])
+  delta <- mann_whitney_based_es(x, INDEX)
   variance <- delta * (1-delta) *(1+(n-1)*(1-delta)/(2-delta)+(m-1)*delta/(1+delta))/(m*n)
   z <- qnorm(1 - alpha)
   lower_limit <- delta - z * sqrt(variance)
@@ -755,11 +760,12 @@ mann_whitney_es_ci <- function(dataset1, dataset2, alpha = 0.05) {
 }
 
 
-
-
 ps_for_dependent_groups <-
-  function(dataset1, dataset2, ignore_ties = FALSE) {
+  function(x, INDEX, ignore_ties = FALSE) {
     # probability of superiority for dependent groups ----
+    dataset <- split(x, INDEX)
+    dataset1 <- dataset[[1]]
+    dataset2 <- dataset[[2]]
     if (length(dataset1) != length(dataset2))
       stop("\n length of datasets for dependent groups has to be the same!")
     n <- length(dataset1)
@@ -780,8 +786,12 @@ ps_for_dependent_groups <-
     return (w / (n - ties))
   }
 
-ps_depenent_groups_ci <- function(dataset1, dataset2, alpha = 0.05) {
+
+ps_dependent_groups_ci <- function(x, INDEX, alpha = 0.05) {
   #Pratt's confidence interval 
+  dataset <- split(x, INDEX)
+  dataset1 <- dataset[[1]]
+  dataset2 <- dataset[[2]]
   if (length(dataset1) != length(dataset2))
     stop("\n length of datasets for dependent groups has to be the same!")
   n <- length(dataset1)
@@ -808,11 +818,13 @@ ps_depenent_groups_ci <- function(dataset1, dataset2, alpha = 0.05) {
   return (list(lower_bound = lower_bound, upper_bound = upper_bound))
 }
 
-generalized_odds_ratio <- function(dataset1, dataset2, dependent = FALSE, ignore_ties = FALSE) {
+generalized_odds_ratio <- function(x, INDEX, dependent = FALSE, ignore_ties = FALSE) {
   # generalized odds ratio-----
   # ties are counted as 0.5
-  if (!dependent) ps <- mann_whitney_based_es(dataset1, dataset2, ignore_ties = ignore_ties) 
-  else ps <- ps_for_dependent_groups(dataset1, dataset2, ignore_ties = ignore_ties)
+  if (!dependent) ps <- mann_whitney_based_es(x, INDEX, ignore_ties = ignore_ties) 
+  else {
+    dataset <- split(x, INDEX)
+    ps <- ps_for_dependent_groups(dataset[[1]], dataset[[2]], ignore_ties = ignore_ties)}
   return (ps/(1-ps))
 }
 
@@ -831,8 +843,11 @@ generalized_odds_ratio_ci<- function(x, INDEX, reverse = FALSE) {
   return(list(c(lower_bound = lower_bound, upper_bound = upper_bound)))
 }
 
-dominance_measure_based_es <- function(dataset1, dataset2, dependent = FALSE) {
+dominance_measure_based_es <- function(x, INDEX, dependent = FALSE) {
   # dominance measure ----
+  dataset <- split(x, INDEX)
+  dataset1 <- dataset[[1]]
+  dataset2 <- dataset[[2]]
   if (!dependent)return (ps_without_counting_ties(dataset1, dataset2) - ps_without_counting_ties(dataset2, dataset1))
   return (ps_for_dependent_groups(dataset1, dataset2) - ps_for_dependent_groups(dataset2, dataset1))
 }
@@ -848,9 +863,9 @@ ps_without_counting_ties <- function(dataset1, dataset2) {
   return (u / (n * m))
 }
 
-dominance_measure_ci <- function(dataset1, dataset2, dependent = FALSE) {
-  if (!dependent) cis <- mann_whitney_es_ci(dataset1, dataset2)
-  else cis <- ps_depenent_groups_ci(dataset1, dataset2)
+dominance_measure_ci <- function(x, INDEX, dependent = FALSE) {
+  if (!dependent) cis <- mann_whitney_es_ci(x, INDEX)
+  else cis <- ps_dependent_groups_ci(x, INDEX)
   lower_bound <- 2 * cis[[1]] - 1
   upper_bound <- 2 * cis[[2]] - 1
   return (list(lower_bound = lower_bound, upper_bound = upper_bound))
@@ -863,8 +878,9 @@ common_language_es <- function(x, INDEX) {
   return (pnorm(abs(d)/sqrt(2)))
 }
 
-common_language_es_ci <- function(dataset1, dataset2, cohen_d) {
-  cis <- smd_ci(effsize = "cohen_d", val = abs(cohen_d), n1 = length(dataset1), n2 = length(dataset2), var1 = var(dataset1), var2 = var(dataset2))
+common_language_es_ci <- function(x, INDEX, cohen_d) {
+  split(x, INDEX)
+  cis <- smd_ci(effsize = "cohen_d", val = abs(cohen_d), n1 = length(dataset[[1]]), n2 = length(dataset[[2]]), var1 = var(dataset[[1]]), var2 = var(dataset[[2]]))
   lower_bound <- pnorm(cis[[1]]/sqrt(2))
   upper_bound <- pnorm(cis[[2]]/sqrt(2))
   return(list(lower_bound = lower_bound, upper_bound = upper_bound))
@@ -971,384 +987,5 @@ parametric_cohens_u3_ci <- function(x, INDEX) {
   upper_bound <- pnorm(cohen_d_cis[[2]])
   return (list(c(lower_bound = lower_bound, upper_bound = upper_bound)))
 }
-
-
-# Old versions ------------------------------------------------------------
-
-
-# sd_combined -------------------------------------------------------------
-
-#sd_combined2
-sd_combined2 <- function(x = NULL, INDEX = NULL, sd1, sd2, n1, n2, type = c("equal", "unequal"), 
-                    winsorize = FALSE, trim = 0.2, na.rm = FALSE){
-  
-  # this function computes different versions of combined standard variations (SDs)
-  #
-  # x ................. numeric vector
-  # INDEX ............. vector indicating group membership of every element in x
-  # sd1, sd2, n1, n2 .. summary data of two groups
-  # type .............. computations type - depends on whether population 
-  #                     SDs are considered equal/unequal
-  #                     "equal": pooled standard deviation computed
-  #                     "unequal": mean of the two SDs computed
-  # winsorize ......... logical, indicating whether x should be winsorized
-  # trim .............. the percentage of values at both tails to winsorize
-  # na.rm ............. logical, indicating whether NAs in x should be removed
-  #
-  # Either a numeric vector and an INDEX vector of the same length are given or 
-  # summary statistics of two groups are passed to combine the SDs of the groups.
-  
-  
-  if(!is.null(x) && !is.null(INDEX)){
-    
-    if(!is.numeric(x)) stop("\nx must be numeric")
-    
-    if(length(x) != length(INDEX)) stop("\nx and INDEX must have the same length")
-    
-    if(!(na.rm %in% c(TRUE, FALSE))) stop("\nna.rm must be set to TRUE or FALSE")
-    
-    if(!(winsorize %in% c(TRUE, FALSE))) stop("\nwinsorize must be set to TRUE or FALSE")
-    
-    i_NA <- is.na(x)
-    if(na.rm) {
-      x <- x[!i_NA]
-      INDEX <- INDEX[!i_NA]
-    }
-    if(!na.rm && any(i_NA)){
-      stop("\nNAs present in x")
-    }
-    if(winsorize == TRUE){
-      x <- unlist(tapply(x, INDEX, winsor, na.rm = na.rm, trim = trim))
-      INDEX <- sort(INDEX)
-      
-    } 
-    
-    ngroups <- length(unique(INDEX))
-    
-    sd_n <- function(x, na.rm = na.rm){
-      std <- sd(x, na.rm = na.rm)
-      n <- length(!is.na(x))
-      return(list(std, n))
-    }
-    
-    sds_ns <- tapply(X = x, INDEX = INDEX, sd_n, na.rm = na.rm) 
-    sds_ns <- matrix(unlist(sds_ns), byrow = TRUE, nrow = ngroups)
-    
-    names_char <- matrix(c(paste0("sd", 1:ngroups), paste0("n", 1:ngroups)), nrow = ngroups)
-    
-    for(i in 1:ngroups){
-      assign(names_char[i, 1], sds_ns[i, 1])
-      assign(names_char[i, 2], sds_ns[i, 2])
-    }
-    
-  }
-  
-  res <- switch(type,
-                "equal" = sqrt((((n1 - 1) * sd1^2) + ((n2 - 1) * sd2^2)) / (n1 + n2 - 2)),
-                "unequal" = sqrt((sd1^2 + sd2^2) / 2))
-  
-  return(list(res))
-  
-}
-
-
-
-
-#sd_combined3
-sd_combined3 <- function(x = NULL, INDEX = NULL, sd1, sd2, n1, n2, winsor = FALSE, trim = 0.2, type = c("pooled", "mean", "grp_1", "grp_2"),  na.rm = FALSE){
-  
-  
-  if(!is.null(x) && !is.null(INDEX)){
-    
-    if(!is.numeric(x)) stop("\nx must be numeric")
-    
-    if(length(x) != length(INDEX)) stop("\nx and INDEX must have the same length")
-    
-    grps <- unique(INDEX)
-    if(length(grps) < 2 || length(grps) > 2) stop("\nINDEX should contain two unique values")
-    if(any(is.na(grps))) stop("\nNAs present in INDEX")
-    
-    if(!(na.rm %in% c(TRUE, FALSE))) stop("\nna.rm must be set to TRUE or FALSE")
-    
-    if(!(winsor %in% c(TRUE, FALSE))) stop("\nwinsorize must be set to TRUE or FALSE")
-    
-    i_NA <- is.na(x)
-    if(na.rm) {
-      x <- x[!i_NA]
-      INDEX <- INDEX[!i_NA]
-    }
-    if(!na.rm && any(i_NA)){
-      return(NA)
-      stop("\nNAs present in x")
-    }
-    
-    if(winsor == TRUE){
-      if(trim < 0 || trim > 0.5) stop("\ntrim < 0 or > 0.5, specify a value within these bounds")
-      x <- unlist(tapply(x, INDEX, winsor, na.rm = na.rm, trim = trim))
-      INDEX <- sort(INDEX)
-    }
-    
-    if(type == "pooled") {
-      
-      var_n <- function(x){
-        v <- var(x)
-        n <- length(x)
-        return(c(v, n))
-      }
-      
-      vars_ns <- tapply(X = x, INDEX = INDEX, var_n)
-      vars_ns <- matrix(unlist(vars_ns), byrow = TRUE, nrow = 2)
-      
-      res <- sqrt((((vars_ns[1, 2] - 1) * vars_ns[1, 1]) + ((vars_ns[2, 2] - 1) * vars_ns[2, 1])) / (sum(vars_ns[, 2]) - 2))
-      return(res)
-    }
-    
-    res <- switch(type,
-                  "mean" = sqrt(mean(tapply(X = x, INDEX = INDEX, var))),
-                  "grp_1" = sd(split(x, INDEX)[[1]]),
-                  "grp_2" = sd(split(x, INDEX)[[2]]))
-    
-    
-    return(res)
-  }
-  
-  res <- switch(type,
-                "pooled" = sqrt((((n1 - 1) * sd1^2) + ((n2 - 1) * sd2^2)) / (n1 + n2 - 2)),
-                "mean" = sqrt((sd1^2 + sd2^2) / 2),
-                "grp_1" = sd1,
-                "grp_2" = sd2
-  )
-  
-  return(res)
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# correction factors -----------------------------------------------------
-
-# hedges_corr
-
-hedges_corr <- function(x = NULL, INDEX = NULL, n1, n2){
-  
-  
-  if(!is.null(x) && !is.null(INDEX)){
-    
-    ngroups <- length(unique(INDEX))
-    
-    ns <- tapply(x, INDEX, length, simplify = FALSE)
-    for(i in 1:ngroups){
-      assign(paste0("n", i), ns[[i]])
-    }
-  }
-  
- 
-  res <-  1 - (3/(4*(n1 + n2 -2)-1))
-
-  
-  return(list(res))
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# smd_uni -----------------------------------------------------------------
-
-# smd_uni2
-smd_uni2 <- function(effsize = c("cohen_d", "hedges_g", "glass_d", "glass_d_corr", 
-                                "bonett_d", "bonett_d_corr", "AKP_eqvar", "AKP_uneqvar"), 
-                    x = NULL, INDEX = NULL, m1, m2, sd1, sd2, n1, n2, na.rm = FALSE, trim = 0.2){
-  
-  # this function
-  
-  
-  if(!is.null(x) && !is.null(INDEX)){
-    
-    if(!is.numeric(x)) stop("\nX must be numeric")
-    
-    if(length(x) != length(INDEX)) stop("\nx and INDEX must have the same length")
-    
-    grps <- unique(INDEX)
-    if(length(grps) < 2 || length(grps) > 2) stop("\nINDEX should contain two unique values")
-    if(any(is.na(grps))) stop("\nNAs present in INDEX")
-    
-    if(!(na.rm %in% c(TRUE, FALSE))) stop("\nna.rm must be set to TRUE or FALSE")
-    
-    i_NA <- is.na(x)
-    if(na.rm) {
-      x <- x[!i_NA]
-      INDEX <- INDEX[!i_NA]
-    }
-    if(!na.rm && any(i_NA)){
-      stop("\nNAs present in x")
-    }
-    
-    if(effsize %in% c("AKP_eqvar", "AKP_uneqvar")){
-      if(trim < 0 || trim > 0.5) stop("\ntrim < 0 or > 0.5, specify a value within these bounds")
-      means <- tapply(x, INDEX, mean, trim = trim)
-    } else{
-      means <- tapply(x, INDEX, mean)
-    }
-    
-    
-    
-    for(i in 1:ngroups){
-      assign(paste0("m", i), means[[i]])
-    }
-    
-    res <- switch(effsize, 
-                  "cohen_d" = (m1 - m2)/sd_combined(x, INDEX, type = "pooled"),
-                  "hedges_g" = hedges_corr(x, INDEX) * (m1 - m2)/sd_combined(x, INDEX, type = "pooled"),
-                  "glass_d" = (m1 - m2)/sd(split(x, INDEX)[[1]]),
-                  "glass_d_corr" = hedges_corr(x, INDEX) * (m1 - m2)/sd(split(x, INDEX)[[1]]), 
-                  "bonett_d" = (m1 - m2)/sd_combined(x, INDEX, type = "mean"),
-                  "bonett_d_corr" = hedges_corr(x, INDEX) * (m1 - m2)/sd_combined(x, INDEX, type = "mean"),
-                  "AKP_eqvar" = (m1 - m2)/sd_combined(x, INDEX, type = "pooled", winsor = TRUE, trim = trim),
-                  "AKP_uneqvar" = (m1 - m2)/sd(winsor(split(x, INDEX)[[1]]))) # TODO check what the standardizer should be when variances are not thoought of as equal in the akp measure
-    
-    return(round(res, digits = 3))
-  }
-  
-  res <- switch(effsize, 
-                "cohen_d" = (m1 - m2)/sd_combined(sd1 = sd1, sd2 = sd2, n1 = n1, n2 = n2, type = "pooled"),
-                "hedges_g" = hedges_corr(n1 = n1, n2 = n2) * (m1 - m2)/sd_combined(sd1 = sd1, sd2 = sd2, n1 = n1, n2 = n2, type = "pooled"),
-                "glass_d" = (m1 - m2)/sd1,
-                "glass_d_corr" = hedges_corr(n1 = n1, n2 = n2) * (m1 - m2)/sd1, 
-                "bonett_d" = (m1 - m2)/sd_combined(sd1 = sd1, sd2 = sd2, type = "mean"),
-                "bonett_d_corr" = hedges_corr(n1 = n1, n2 = n2) * (m1 - m2)/sd_combined(sd1 = sd1, sd2 = sd2, type = "mean"))
-  
-  return(round(res, digits = 3))
-  
-}
-
-
-
-
-# smd_uni3
-smd_uni3 <- function(effsize = c("cohen_d", "hedges_g", "glass_d", "glass_d_corr", 
-                                "bonett_d", "bonett_d_corr", "AKP_eqvar", "AKP_uneqvar"), 
-                    x = NULL, INDEX = NULL, m1, m2, sd1, sd2, n1, n2, na.rm = FALSE, trim = 0.2){
-  
-  # this function
-  
-  
-  if(!is.null(x) && !is.null(INDEX)){
-    
-    if(!is.numeric(x)) stop("\nX must be numeric")
-    
-    if(length(x) != length(INDEX)) stop("\nx and INDEX must have the same length")
-    
-    grps <- unique(INDEX)
-    if(length(grps) < 2 || length(grps) > 2) stop("\nINDEX should contain two unique values")
-    if(any(is.na(grps))) stop("\nNAs present in INDEX")
-    
-    if(!(na.rm %in% c(TRUE, FALSE))) stop("\nna.rm must be set to TRUE or FALSE")
-    
-    i_NA <- is.na(x)
-    if(na.rm) {
-      x <- x[!i_NA]
-      INDEX <- INDEX[!i_NA]
-    }
-    if(!na.rm && any(i_NA)){
-      stop("\nNAs present in x")
-    }
-    if(effsize %in% c("AKP_eqvar", "AKP_uneqvar")){
-      if(trim < 0 || trim > 0.5) stop("\ntrim < 0 or > 0.5, specify a value within these bounds")
-      means <- tapply(x, INDEX, mean, trim = trim)
-    } else{
-      means <- tapply(x, INDEX, mean)
-    }
-    
-    
-    for(i in 1:ngroups){
-      assign(paste0("m", i), means[[i]])
-    }
-    
-  }
-  
-  res <- switch(effsize, 
-                "cohen_d" = (m1 - m2)/sd_combined3(x, INDEX, sd1, sd2, n1, n2, type = "pooled"),
-                "hedges_g" = hedges_corr(x, INDEX, n1, n2) * (m1 - m2)/sd_combined3(x, INDEX, sd1, sd2, n1, n2, type = "pooled"),
-                "glass_d" = (m1 - m2)/sd_combined3(x, INDEX, sd1, type = "grp_1"),
-                "glass_d_corr" = hedges_corr(x, INDEX, n1, n2) * (m1 - m2)/sd_combined3(x, INDEX, sd1, type = "grp_1"), 
-                "bonett_d" = (m1 - m2)/sd_combined3(x, INDEX, sd1, sd2, type = "mean"),
-                "bonett_d_corr" = hedges_corr(x, INDEX, n1, n2) * (m1 - m2)/sd_combined3(x, INDEX, sd1, sd2, type = "mean"),
-                "AKP_eqvar" = (m1 - m2)/sd_combined3(x, INDEX, type = "pooled", winsor = TRUE, trim = trim),
-                "AKP_uneqvar" = (m1 - m2)/sd_combined3(x, INDEX, type = "grp_1", winsor = TRUE))
-  
-  return(round(res, digits = 3))
-  
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
