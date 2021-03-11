@@ -1,10 +1,11 @@
 library(shiny)
 
-sidebarPanel(
-  
+esSidebarPanel <- function(id) {
+  ns <- NS(id)
+  sidebarPanel(
   fileInput(inputId = ns("file"),
             label = "Upload your datafile",
-            accept = accept),
+            accept = ".csv"),
   
   selectInput(inputId = ns("group_var"),
               label = "Select the group variable:",
@@ -14,3 +15,4 @@ sidebarPanel(
               label = "Select data vector:",
               choices = NULL)
 )
+}
