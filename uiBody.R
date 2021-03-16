@@ -1,4 +1,4 @@
-source_body <- list.files(pattern = '^ti_')
+source_body <- list.files(pattern = '^ti')
 lapply(source_body, source)
 
 body <- dashboardBody(

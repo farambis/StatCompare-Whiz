@@ -1,10 +1,10 @@
 library(shiny)
 library(shinydashboard)
-source('ui_sidebar.R')
-source('ui_body.R')
+source('uiNavigationSidebar.R')
+source('uiBody.R')
 ui <- dashboardPage(
   dashboardHeader(),
-  sidebar = sidebar,
+  sidebar = navigationSidebar,
   body = body
 )
 

@@ -1,3 +1,3 @@
-source('ui_tabItemGeneratingFunction.R')
+source('uiTabItemGeneratingFunction.R')
 independentGroupsParametricUnivariate <-
   tabItem(tabName = 'independentGroupsParametricUnivariate', generalUI("independentGroupsParametricUnivariate"))
