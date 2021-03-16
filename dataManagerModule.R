@@ -23,7 +23,7 @@ dataManagerUI <-
     
     dataManagerIO[["fileInput"]] <- fileInput(inputId = ns("file"),
                                               label = "Upload your datafile",
-                                              acceptedFormats = acceptedFormats)
+                                              accept = acceptedFormats)
     
     if (design %in% c("indGrps", "mixed")) {
       dataManagerIO[["selectInputGroup"]] <-
