@@ -3,12 +3,16 @@ lapply(source_body, source)
 
 body <- dashboardBody(
   tabItems(
-    independentGroupsParametricUnivariate,
-    independentGroupsParametricMultivariate,
+    independentGroupsParametricUnivariateRawData,
+    independentGroupsParametricMultivariateEducational,
+    independentGroupsParametricUnivariateRawData,
+    independentGroupsParametricMultivariateEducational,
     independentGroupsNonparametric, 
-    dependentGroupsParametric, 
+    dependentGroupsParametricRawData, 
+    dependentGroupsParametricEducational, 
     dependentGroupsNonparametric, 
-    mixedDesignParametric, 
+    mixedDesignParametricRawData,
+    mixedDesignParametricEducational,
     mixedDesignNonParametric
   )
 )
