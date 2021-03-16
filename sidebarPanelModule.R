@@ -12,9 +12,9 @@ sidebarPanelUI <-
     
     if (mode == "rawData") {
       inputList <-
-        dataManagerUI(id = ns("data"),
+        sidebarPanel(dataManagerUI(id = ns("data"),
                       acceptedFormats = acceptedFormats,
-                      design = design)
+                      design = design))
       
       
     } else if (mode == "educational") {
