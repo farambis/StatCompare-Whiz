@@ -1,11 +1,10 @@
-source_body <- list.files(pattern = '^ti')
-lapply(source_body, source)
+source("tabItems.R")
 
 body <- dashboardBody(
   tabItems(
     independentGroupsParametricUnivariateRawData,
-    independentGroupsParametricMultivariateEducational,
-    independentGroupsParametricUnivariateRawData,
+    independentGroupsParametricUnivariateEducational,
+    independentGroupsParametricMultivariateRawData,
     independentGroupsParametricMultivariateEducational,
     independentGroupsNonparametric, 
     dependentGroupsParametricRawData, 
