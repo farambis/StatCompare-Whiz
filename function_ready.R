@@ -11,7 +11,7 @@
 
 
 # variables for examples:
-rm(list = ls())
+#rm(list = ls())
 
 m1 <- 100
 m2 <- 110
@@ -35,8 +35,8 @@ sd1 <- sd(split(vals, grp)[[1]])
 sd2 <- sd(split(vals, grp)[[2]])
 var1 <- var(split(vals, grp)[[1]])
 var2 <- var(split(vals, grp)[[2]])
-winvar1 <- var(winsor((split(vals, grp))[[1]]))
-winvar2 <- var(winsor((split(vals, grp))[[2]]))
+#winvar1 <- var(winsor((split(vals, grp))[[1]]))
+#winvar2 <- var(winsor((split(vals, grp))[[2]]))
 trim <- 0.2
 ntr1 <- n1 - (2 * floor(trim * n1))
 ntr2 <- n2 - (2 * floor(trim * n2))
@@ -46,17 +46,61 @@ trm2 <- mean(split(vals, grp)[[2]], trim = trim)
 effsize <- list("cohen_d", "hedges_g", "glass_d", "glass_d_corr", 
                 "bonett_d", "bonett_d_corr", "AKP_eqvar", "AKP_uneqvar")
 
+all_eff_sizes <- list(cohen_d = "cohen_d", hedges_g = "hedges_g", glass_d = "glass_d", glass_d_corr = "glass_d_corr", 
+                      bonnet_d = "bonett_d", bonnet_d_corr = "bonett_d_corr", AKP_equvar = "AKP_eqvar", AKP_uneqvar = "AKP_uneqvar", mann_whitney_based_ps = "mann_whitney_based_ps", ovl_parametric = "ovl_parametric")
+
+all_test_statistics <- list(student_t_test = "student_t_test")
 
 
+generate_es_dataframe <- function(es_list, INDEX, x) {
+  dataset1 <- split(unlist(x), unlist(INDEX))[[1]] # if interface of smd_ci function fits in the x, INDEX structure we do not need to do this here
+  dataset2 <- split(unlist(x), unlist(INDEX))[[2]]
+  es_result <- c()
+  es_ci_lower <- c()
+  es_ci_upper <- c()
+  for (i in es_list) {
+    if (! i %in% all_eff_sizes) stop ("this is no offered effect size!\n")
+    res <- switch(i, 
+           "cohen_d" = c(smd_uni(effsize = "cohen_d", x = x, INDEX = INDEX), smd_ci(effsize = "cohen_d",val = smd_uni(effsize = "cohen_d", x = x, INDEX = INDEX), n1 = length(dataset1), n2 = length(dataset2))),
+           "mann_whitney_based_ps" = c(mann_whitney_based_ps(x = x, INDEX = INDEX), mann_whitney_based_ps_ci(x = x, INDEX = INDEX)), 
+           "ovl_parametric" = c(ovl_parametric(x = x, INDEX = INDEX), ovl_parametric_ci(x = x, INDEX = INDEX))
+           )
+    es_result <- c(es_result,res[[1]])
+    es_ci_lower <- c(es_ci_lower, res[[2]])
+    es_ci_upper <- c(es_ci_upper, res[[3]])
+  }
+   es_dataframe <- data.frame(
+    es_list, 
+    es_result, 
+    es_ci_lower, 
+    es_ci_upper
+   )
+   colnames(es_dataframe) <- c("Name", "Effect Size", "Ci lower limit", "Ci upper limit")
+   es_dataframe
+}
 
-
-
-
-
-
-
-
-
+generate_ts_dataframe <- function(ts_list, INDEX, x) {
+  ts_t_value <- c()
+  ts_p_value <- c()
+  ts_df <- c()
+  for (i in ts_list) {
+    if (! i %in% all_test_statistics) stop ("this is no offered test statistic!\n")
+    res <- switch(i, 
+              "student_t_test" = t_test(x = x, INDEX = INDEX, type = "student")[1:3]
+              )
+  ts_t_value <- c(ts_t_value, res[[1]])
+  ts_p_value <- c(ts_p_value, res[[2]])
+  ts_df <- c(ts_df, res[[3]])
+  }
+  ts_dataframe <- data.frame(
+    ts_list, 
+    ts_t_value, 
+    ts_p_value, 
+    ts_df
+  )
+  colnames(ts_dataframe) <- c("Name", "df", "t", "p")
+  ts_dataframe
+}
 
 
 # winsor function
@@ -557,32 +601,14 @@ smd_ci <- function(effsize = c("cohen_d", "hedges_g", "glass_d", "glass_d_corr",
 
 
 # smd_cis example:
-effsizes <- lapply(effsize, smd_uni, x = vals, INDEX = grp)
-effsizes_cis <- rep(list(numeric(length = 2)), times = length(effsizes))
-for(i in seq_len(length(effsizes))){
+#effsizes <- lapply(effsize, smd_uni, x = vals, INDEX = grp)
+#effsizes_cis <- rep(list(numeric(length = 2)), times = length(effsizes))
+#for(i in seq_len(length(effsizes))){
   
-  effsizes_cis[[i]] <- smd_ci(effsize = names(effsizes[[i]]), val = effsizes[[i]], n1 = n1, n2 = n2, var1 = var1, var2 = var2, winvar1 = winvar1, winvar2 = winvar2, ntr1 = ntr1, ntr2 = ntr2, trim = trim)
-}
+ # effsizes_cis[[i]] <- smd_ci(effsize = names(effsizes[[i]]), val = effsizes[[i]], n1 = n1, n2 = n2, var1 = var1, var2 = var2, winvar1 = winvar1, winvar2 = winvar2, ntr1 = ntr1, ntr2 = ntr2, trim = trim)
+#}
 
-effsizes_cis
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#effsizes_cis
 
 
 
@@ -683,7 +709,7 @@ t_test <- function(x = NULL, INDEX = NULL, m1, m2, var1, var2, n1, n2, trm1, trm
 
 
 
-mann_whitney_based_es <- function(x, INDEX, ignore_ties = FALSE) {
+mann_whitney_based_ps <- function(x, INDEX, ignore_ties = FALSE) {
   # Mann Whitney u -----
   dataset <- split(x, INDEX)
   dataset1 <- dataset[[1]]
@@ -692,7 +718,7 @@ mann_whitney_based_es <- function(x, INDEX, ignore_ties = FALSE) {
     u <- calculate_u_with_ties(dataset1, dataset2)
     return (u/(length(dataset1)*length(dataset2)))
   }
-  return(calculate_ps_ignoring_ties(dataset1, dataset2))
+  calculate_ps_ignoring_ties(dataset1, dataset2)
 }
 
 calculate_u_with_ties <- function(dataset1, dataset2) { 
@@ -719,7 +745,7 @@ calculate_ps_ignoring_ties <- function(dataset1, dataset2) {
   count/(length(dataset1)*length(dataset2)-ties)
 }
 
-p_value_for_mann_whitney_based_es <- function(x, INDEX) { # deviates by 0.02 from stat wilcoxin test which is continuity corrected
+p_value_for_mann_whitney_based_ps <- function(x, INDEX) { # deviates by 0.02 from stat wilcoxin test which is continuity corrected
   dataset <- split(x, INDEX)
   return(calculate_p_value_from_z(calculate_z_for_u_statistic(dataset[[1]], dataset[[2]])))
 }
@@ -738,12 +764,12 @@ calculate_z_for_u_statistic <- function(dataset1, dataset2) {
   result
 }
 
-mann_whitney_es_ci <- function(x, INDEX, alpha = 0.05) {
+mann_whitney_based_ps_ci <- function(x, INDEX, alpha = 0.05) {
   #second method from Newcombe (2005)
   dataset <- split(vals, grp)
   m <- length(dataset[[1]])
   n <- length(dataset[[2]])
-  delta <- mann_whitney_based_es(x, INDEX)
+  delta <- mann_whitney_based_ps(x, INDEX)
   variance <- delta * (1-delta) *(1+(n-1)*(1-delta)/(2-delta)+(m-1)*delta/(1+delta))/(m*n)
   z <- qnorm(1 - alpha)
   lower_limit <- delta - z * sqrt(variance)
@@ -821,7 +847,7 @@ ps_dependent_groups_ci <- function(x, INDEX, alpha = 0.05) {
 generalized_odds_ratio <- function(x, INDEX, dependent = FALSE, ignore_ties = FALSE) {
   # generalized odds ratio-----
   # ties are counted as 0.5
-  if (!dependent) ps <- mann_whitney_based_es(x, INDEX, ignore_ties = ignore_ties) 
+  if (!dependent) ps <- mann_whitney_based_ps(x, INDEX, ignore_ties = ignore_ties) 
   else {
     dataset <- split(x, INDEX)
     ps <- ps_for_dependent_groups(dataset[[1]], dataset[[2]], ignore_ties = ignore_ties)}
@@ -840,7 +866,7 @@ generalized_odds_ratio_ci<- function(x, INDEX, reverse = FALSE) {
   w_u <- pnorm(delta_u/sqrt(2))
   lower_bound <- w_l/(1-w_l)
   upper_bound <- w_u/(1 - w_u)
-  return(list(c(lower_bound = lower_bound, upper_bound = upper_bound)))
+  return(list(lower_bound = lower_bound, upper_bound = upper_bound))
 }
 
 dominance_measure_based_es <- function(x, INDEX, dependent = FALSE) {
@@ -864,7 +890,7 @@ ps_without_counting_ties <- function(dataset1, dataset2) {
 }
 
 dominance_measure_ci <- function(x, INDEX, dependent = FALSE) {
-  if (!dependent) cis <- mann_whitney_es_ci(x, INDEX)
+  if (!dependent) cis <- mann_whitney_based_ps_ci(x, INDEX)
   else cis <- ps_dependent_groups_ci(x, INDEX)
   lower_bound <- 2 * cis[[1]] - 1
   upper_bound <- 2 * cis[[2]] - 1
@@ -900,7 +926,7 @@ probability_of_correct_classification_ci <- function(x, INDEX) {
  cis <- smd_ci(effsize = "cohen_d", val = cohen_d, n1 = length(dataset1), n2 = length(dataset2), var1 = var(dataset1), var2 = var(dataset2))
  lower_bound <- pnorm(cis[[1]]/2)
  upper_bound <- pnorm(cis[[2]]/2)
- return (list(c(lower_bound = lower_bound, upper_bound = upper_bound)))
+ return (list(lower_bound = lower_bound, upper_bound = upper_bound))
 }
 
 
@@ -940,9 +966,19 @@ non_parametric_overlapping_coefficient <-
     return ((max - min) / num_intervals * sum)
   }
 
-parametric_overlapping_coefficient <- function(x, INDEX) {
+ovl_parametric <- function(x, INDEX) {
   cohens_d <- smd_uni(effsize = "cohen_d", x = x, INDEX = INDEX)[[1]]
-  return(2*pnorm(-abs(cohens_d)/2))
+  2*pnorm(-abs(cohens_d)/2)
+}
+
+ovl_parametric_ci <- function(x, INDEX) {
+  dataset1 <- split(x, INDEX)[[1]]
+  dataset2 <- split(x, INDEX)[[2]]
+  cohen_d <- smd_uni(effsize = "cohen_d", x = x, INDEX = INDEX)[[1]]
+  cohen_d_cis <- smd_ci(effsize = "cohen_d", val = cohen_d, n1 = length(dataset1), n2 = length(dataset2), var1 = var(dataset1), var2 = var(dataset2))
+  lower_bound <- 2*pnorm(-abs(cohen_d_cis[[1]])/2)
+  upper_bound <- 2*pnorm(-abs(cohen_d_cis[[2]])/2)
+  list(lower_bound = lower_bound, upper_bound = upper_bound)
 }
 
 
@@ -985,7 +1021,7 @@ parametric_cohens_u3_ci <- function(x, INDEX) {
   cohen_d_cis <- smd_ci(effsize = "cohen_d", val = cohen_d, n1 = length(dataset1), n2 = length(dataset2), var1 = var(dataset1), var2 = var(dataset2))
   lower_bound <- pnorm(cohen_d_cis[[1]])
   upper_bound <- pnorm(cohen_d_cis[[2]])
-  return (list(c(lower_bound = lower_bound, upper_bound = upper_bound)))
+  return (list(lower_bound = lower_bound, upper_bound = upper_bound))
 }
 
 

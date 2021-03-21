@@ -1,13 +1,12 @@
 library(shiny)
 library(shinydashboard)
+source('function_ready.R')
 source('uiNavigationSidebar.R')
 source('uiBody.R')
-ui <- dashboardPage(
-  dashboardHeader(),
-  sidebar = navigationSidebar,
-  body = body
-)
+source('esServer.R')
+rm(list = ls())
+ui <- dashboardPage(dashboardHeader(),
+                    sidebar = navigationSidebar,
+                    body = body)
 
-server <- function(input, output) { }
-
-shinyApp(ui, server)
+shinyApp(ui, esServer)
