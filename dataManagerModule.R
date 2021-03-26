@@ -64,6 +64,7 @@ dataManagerUI <-
 dataManagerServer <-
   function(id,
            design = c("indGrps", "depGrps", "mixed")) {
+    stopifnot(!is.reactive(design))
     moduleServer(
       id = id,
       module = function(input, output, session) {
