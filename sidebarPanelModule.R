@@ -1,5 +1,5 @@
 source(file = "dataManagerModule.R", local = TRUE)
-source(file = "inputNumericGroupModule.R", local = TRUE)
+source(file = "summaryStatisticsInputModule.R", local = TRUE)
 library(shiny)
 
 sidebarPanelUI <-
@@ -7,25 +7,21 @@ sidebarPanelUI <-
            acceptedFormats,
            design = c("indGrps", "depGrps", "mixed"),
            mode = c("educational", "rawData")) {
+    
     ns <- NS(namespace = id)
+    
     inputList <- tagList()
     
     if (mode == "rawData") {
       inputList <-
-        sidebarPanel(dataManagerUI(id = ns("data"),
-                      acceptedFormats = acceptedFormats,
-                      design = design))
-      
-      
+        sidebarPanel(dataManagerUI(id = ns("uploadedData"),
+                                   acceptedFormats = acceptedFormats,
+                                   design = design))
     } else if (mode == "educational") {
-      # inputList <- c(inputList, numericInputGroup(ns = ns, group = "mean", design = design, value = 100))
-      #
-      # inputList <- c(inputList, numericInputGroup(ns = ns, group = "standard deviation", design = design, value = 10))
-      #
-      # inputList <- c(inputList, numericInputGroup(ns = ns, group = "sample size", design = design, value = 20))
-      
+      inputList <-
+        summaryStatisticsInput(id = ns("summaryStatisticsInput"),
+                               design = design)
     }
-    
     return(inputList)
   }
 
@@ -34,18 +30,18 @@ sidebarPanelServer <-
   function(id,
            design = c("indGrps", "depGrps", "mixed"),
            mode = c("educational", "rawData")) {
+    stopifnot(!is.reactive(design))
+    stopifnot(!is.reactive(mode))
     moduleServer(
       id = id,
       module = function(input, output, session) {
         if (mode == "rawData") {
-          inputDataVariables <- dataManagerServer("data", design)
-          
+          inputDataVariables <- dataManagerServer("uploadedData", design)
           return(inputDataVariables)
-          
+        } else if(mode == "educational"){
+          inputSummaryStatistics <- summaryStatisticsServer("summaryStatisticsInput")
+          return(inputSummaryStatistics)
         }
-        
       }
-      
-      
     )
   }
