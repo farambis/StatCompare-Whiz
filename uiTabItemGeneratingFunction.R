@@ -16,12 +16,33 @@ generalServer <- function(id, design, mode) {
                function(input, output, session) {
                  sidebarPanelResult <-
                    sidebarPanelServer("sidebarPanel", design, mode)
+                 if (mode == "rawData") {
                  MainPanelServer <-
-                   esMainPanelServer(
+                   esMainPanelRawDataServer(
                      "esMainPanel",
                      sidebarPanelResult$data,
                      sidebarPanelResult$inputDataIndex,
-                     sidebarPanelResult$inputDataX
-                   )
+                     sidebarPanelResult$inputDataX, 
+                     sidebarPanelResult$inputDataY, design
+                   )} 
+                 else {
+                   MainPanelEducationalServer <- 
+                     esMainPanelEducationalServer(
+                       "esMainPanel", 
+                       sidebarPanelResult$mean1, 
+                       sidebarPanelResult$standardDeviation1, 
+                       sidebarPanelResult$sampleSize1, 
+                       sidebarPanelResult$correlation1, 
+                       sidebarPanelResult$standardDeviationDiff1, 
+                       sidebarPanelResult$mean2, 
+                       sidebarPanelResult$standardDeviation2, 
+                       sidebarPanelResult$sampleSize2, 
+                       sidebarPanelResult$mean3, 
+                       sidebarPanelResult$standardDeviation3, 
+                       sidebarPanelResult$mean4, 
+                       sidebarPanelResult$standardDeviation4,
+                       sidebarPanelResult$correlation2, 
+                       sidebarPanelResult$standardDeviationDiff2
+                     )}
                })
 }

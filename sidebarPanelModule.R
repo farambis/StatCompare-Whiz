@@ -19,8 +19,8 @@ sidebarPanelUI <-
                                    design = design))
     } else if (mode == "educational") {
       inputList <-
-        summaryStatisticsInput(id = ns("summaryStatisticsInput"),
-                               design = design)
+        sidebarPanel(summaryStatisticsInput(id = ns("summaryStatisticsInput"),
+                               design = design))
     }
     return(inputList)
   }

@@ -19,7 +19,14 @@ independentGroupsParametricUnivariateRawData <-
 
 independentGroupsParametricUnivariateEducational <-
   tabItem(tabName = 'independentGroupsParametricUnivariateEducational',
-          'Hello independentGroupsParametricUnivariateEducational')
+          generalUI(
+            "independentGroupsParametricUnivariateEducational", 
+            ".csv", 
+            "indGrps", 
+            "educational",
+            list(all_eff_sizes$cohen_d, all_eff_sizes$ovl_parametric), 
+            list(all_test_statistics$student_t_test)
+          ))
 
 independentGroupsParametricMultivariateRawData <-
   tabItem(tabName = 'independentGroupsParametricMultivariateRawData',
@@ -43,7 +50,15 @@ dependentGroupsParametricEducational <-
   tabItem(tabName = 'dependentGroupsParametricEducational', 'Hello dependentGroupsParametricEducational')
 
 dependentGroupsNonparametric <-
-  tabItem(tabName = 'dependentGroupsNonparametric',  'Hello dependentGroupsNonparametric')
+  tabItem(tabName = 'dependentGroupsNonparametric', 
+          generalUI(
+            "dependentGroupsNonparametric",
+            ".csv", 
+            "depGrps", 
+            "rawData",
+            list(all_eff_sizes$ps_dependent), 
+            list()
+          ))
 
 
 
