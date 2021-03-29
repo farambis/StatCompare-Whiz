@@ -37,7 +37,7 @@ summaryStatisticsInput <- function(id,
     uiColumn(
       design = design,
       measurement = "posttest",
-      group = "a",
+      group = "b",
       info = "perGrp",
       firstInput = numericInputs$means$mean2,
       secondInput = numericInputs$standardDeviations$standardDeviation2,

@@ -8,16 +8,31 @@ esAndTsUi <- function(id, esChoices, tsChoices) {
           )
 }
 
-esAndTsServer <- function(id, dat, index, x) {
+esAndTsRawDataServer <- function(id, dat, index, x, y, design) {
   moduleServer(id,
                function(input, output, session) {
                  selectedEs <- checkboxGroupServer("esCheckboxGroup")
                  output$esTable <- renderTable({
-                   generate_es_dataframe(selectedEs(), index(), x())
+                   if(design == "indGrps")generate_es_raw_data_dataframe(es_list = selectedEs(), INDEX =  index(), x =  x(), y =  y())
+                   else generate_es_raw_data_dataframe(es_list = selectedEs(), x =  x(), y =  y())
                  })
                  selectedTs <- checkboxGroupServer("tsCheckboxGroup")
                  output$tsTable <- renderTable({
-                   generate_ts_dataframe(selectedTs(), index(), x())
+                   generate_ts_dataframe(selectedTs(), index(), x(), y())
+                 })
+               })
+}
+
+esAndTsEducationalServer <- function(id,  mean1, standardDeviation1, sampleSize1, correlation1, standardDeviationDiff1, mean2, standardDeviation2, sampleSize2, mean3, standardDeviation3, mean4, standardDeviation4, correlation2, standardDeviationDiff2) {
+  moduleServer(id, 
+               function(input, output, session) {
+                 selectedEs <- checkboxGroupServer("esCheckboxGroup")
+                 output$esTable <- renderTable({
+                   generate_es_educational_dataframe(selectedEs(),  mean1(), standardDeviation1(), sampleSize1(), correlation1(), standardDeviationDiff1(), mean2(), standardDeviation2(), sampleSize2(), mean3(), standardDeviation3(), mean4(), standardDeviation4(), correlation2(), standardDeviationDiff2())
+                 })
+                 selectedTs <- checkboxGroupServer("tsCheckboxGroup")
+                 output$tsTable <- renderTable({
+                   generate_ts_dataframe(ts_list = selectedTs(), m1 = mean1(), m2 = mean2(), standardDeviation1 = standardDeviation1(), standardDeviation2 = standardDeviation2(), n1 = sampleSize1(), n2 = sampleSize2())
                  })
                })
 }

@@ -47,14 +47,14 @@ effsize <- list("cohen_d", "hedges_g", "glass_d", "glass_d_corr",
                 "bonett_d", "bonett_d_corr", "AKP_eqvar", "AKP_uneqvar")
 
 all_eff_sizes <- list(cohen_d = "cohen_d", hedges_g = "hedges_g", glass_d = "glass_d", glass_d_corr = "glass_d_corr", 
-                      bonnet_d = "bonett_d", bonnet_d_corr = "bonett_d_corr", AKP_equvar = "AKP_eqvar", AKP_uneqvar = "AKP_uneqvar", mann_whitney_based_ps = "mann_whitney_based_ps", ovl_parametric = "ovl_parametric")
+                      bonnet_d = "bonett_d", bonnet_d_corr = "bonett_d_corr", AKP_equvar = "AKP_eqvar", AKP_uneqvar = "AKP_uneqvar", mann_whitney_based_ps = "mann_whitney_based_ps", ovl_parametric = "ovl_parametric", ps_dependent = "ps_dependent")
 
-all_test_statistics <- list(student_t_test = "student_t_test")
+all_test_statistics <- list(student_t_test = "student_t_test", mann_whitney = "mann_whitney")
 
 
-generate_es_dataframe <- function(es_list, INDEX, x) {
-  dataset1 <- split(unlist(x), unlist(INDEX))[[1]] # if interface of smd_ci function fits in the x, INDEX structure we do not need to do this here
-  dataset2 <- split(unlist(x), unlist(INDEX))[[2]]
+generate_es_raw_data_dataframe <- function(es_list, INDEX = NULL, x, y) {
+  if(!is.null(INDEX))dataset1 <- split(unlist(x), unlist(INDEX))[[1]] # if interface of smd_ci function fits in the x, INDEX structure we do not need to do this here
+  if(!is.null(INDEX))dataset2 <- split(unlist(x), unlist(INDEX))[[2]]
   es_result <- c()
   es_ci_lower <- c()
   es_ci_upper <- c()
@@ -63,7 +63,8 @@ generate_es_dataframe <- function(es_list, INDEX, x) {
     res <- switch(i, 
            "cohen_d" = c(smd_uni(effsize = "cohen_d", x = x, INDEX = INDEX), smd_ci(effsize = "cohen_d",val = smd_uni(effsize = "cohen_d", x = x, INDEX = INDEX), n1 = length(dataset1), n2 = length(dataset2))),
            "mann_whitney_based_ps" = c(mann_whitney_based_ps(x = x, INDEX = INDEX), mann_whitney_based_ps_ci(x = x, INDEX = INDEX)), 
-           "ovl_parametric" = c(ovl_parametric(x = x, INDEX = INDEX), ovl_parametric_ci(x = x, INDEX = INDEX))
+           "ovl_parametric" = c(ovl_parametric(x = x, INDEX = INDEX), ovl_parametric_ci(x = x, INDEX = INDEX)), 
+           "ps_dependent" = c(ps_dependent_groups(x, y), ps_dependent_groups_ci(x, y))
            )
     es_result <- c(es_result,res[[1]])
     es_ci_lower <- c(es_ci_lower, res[[2]])
@@ -79,15 +80,44 @@ generate_es_dataframe <- function(es_list, INDEX, x) {
    es_dataframe
 }
 
-generate_ts_dataframe <- function(ts_list, INDEX, x) {
+generate_es_educational_dataframe <- function(es_list,  mean1, standardDeviation1, sampleSize1, correlation1, standardDeviationDiff1, mean2, standardDeviation2, sampleSize2, mean3, standardDeviation3, mean4, standardDeviation4, correlation2, standardDeviationDiff2) {
+   es_result <- c() 
+   es_ci_lower <- c()
+   es_ci_upper <- c()
+  for (i in es_list) {
+    if (! i %in% all_eff_sizes) stop ("this is no offered effect size!\n")
+    res <- switch(i, 
+                  "cohen_d" = c(smd_uni(effsize = "cohen_d", m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2 ), smd_ci("cohen_d", val = smd_uni(effsize = "cohen_d", m1 = mean1, m2 = mean2, var1 = standardDeviation1, var2 = standardDeviation2, n1 = sampleSize1, n2 = sampleSize2), n1 = mean1, n2 = mean2, var1 = standardDeviation1, var2 = standardDeviation2 )),
+                  "ovl_parametric" = c(ovl_parametric(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2), ovl_parametric_ci(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2))
+                  )
+    es_result <- c(es_result, res[[1]])
+    es_ci_lower <- c(es_ci_lower, res[[2]])
+    es_ci_upper <- c(es_ci_upper, res[[3]])
+  }
+  es_dataframe <- data.frame(
+    es_list, 
+    es_result,
+    es_ci_lower, 
+    es_ci_upper
+  )
+  colnames(es_dataframe) <- c("Name", "Effect Size", "Ci lower limit", "Ci upper limit")
+  es_dataframe
+}
+
+generate_ts_dataframe <- function(ts_list, INDEX = NULL, x = NULL, m1, m2, standardDeviation1, standardDeviation2, n1, n2) {
   ts_t_value <- c()
   ts_p_value <- c()
   ts_df <- c()
   for (i in ts_list) {
     if (! i %in% all_test_statistics) stop ("this is no offered test statistic!\n")
-    res <- switch(i, 
+    if (!is.null(x)){
+      res <- switch(i, 
               "student_t_test" = t_test(x = x, INDEX = INDEX, type = "student")[1:3]
-              )
+              )}
+    else {
+      res <- switch(i, 
+                       "student_t_test" = t_test(m1 = m1, m2 = m2, var1 = standardDeviation1^2, var2 = standardDeviation2^2,n1 =  n1, n2 = n2, type = "student")[1:3]
+    )}
   ts_t_value <- c(ts_t_value, res[[1]])
   ts_p_value <- c(ts_p_value, res[[2]])
   ts_df <- c(ts_df, res[[3]])
@@ -617,8 +647,6 @@ t_test <- function(x = NULL, INDEX = NULL, m1, m2, var1, var2, n1, n2, trm1, trm
   
   
   
-  
-  
   if(!(paired %in% c(TRUE, FALSE))) stop("\npaired must be set to TRUE or FALSE")
   
   if(!paired){
@@ -786,12 +814,11 @@ mann_whitney_based_ps_ci <- function(x, INDEX, alpha = 0.05) {
 }
 
 
-ps_for_dependent_groups <-
-  function(x, INDEX, ignore_ties = FALSE) {
+ps_dependent_groups <-
+  function(x, y, ignore_ties = FALSE) {
     # probability of superiority for dependent groups ----
-    dataset <- split(x, INDEX)
-    dataset1 <- dataset[[1]]
-    dataset2 <- dataset[[2]]
+    dataset1 <- x
+    dataset2 <- y
     if (length(dataset1) != length(dataset2))
       stop("\n length of datasets for dependent groups has to be the same!")
     n <- length(dataset1)
@@ -813,11 +840,10 @@ ps_for_dependent_groups <-
   }
 
 
-ps_dependent_groups_ci <- function(x, INDEX, alpha = 0.05) {
+ps_dependent_groups_ci <- function(x, y, alpha = 0.05) {
   #Pratt's confidence interval 
-  dataset <- split(x, INDEX)
-  dataset1 <- dataset[[1]]
-  dataset2 <- dataset[[2]]
+  dataset1 <- x
+  dataset2 <- y
   if (length(dataset1) != length(dataset2))
     stop("\n length of datasets for dependent groups has to be the same!")
   n <- length(dataset1)
@@ -966,16 +992,21 @@ non_parametric_overlapping_coefficient <-
     return ((max - min) / num_intervals * sum)
   }
 
-ovl_parametric <- function(x, INDEX) {
-  cohens_d <- smd_uni(effsize = "cohen_d", x = x, INDEX = INDEX)[[1]]
+ovl_parametric <- function(x = NULL, INDEX = NULL, m1, m2, var1, var2, n1, n2 ) {
+  if (!is.null(x)) cohens_d <- smd_uni(effsize = "cohen_d", x = x, INDEX = INDEX)[[1]]
+  else cohens_d <- smd_uni(effsize = "cohen_d", m1 =  m1, m2 =  m2, var1 =  var1, var2 = var2, n1 =  n1, n2 = n2)
   2*pnorm(-abs(cohens_d)/2)
 }
 
-ovl_parametric_ci <- function(x, INDEX) {
-  dataset1 <- split(x, INDEX)[[1]]
-  dataset2 <- split(x, INDEX)[[2]]
-  cohen_d <- smd_uni(effsize = "cohen_d", x = x, INDEX = INDEX)[[1]]
-  cohen_d_cis <- smd_ci(effsize = "cohen_d", val = cohen_d, n1 = length(dataset1), n2 = length(dataset2), var1 = var(dataset1), var2 = var(dataset2))
+ovl_parametric_ci <- function(x = NULL, INDEX = NULL, m1, m2, var1, var2, n1, n2) {
+  if (!is.null(x)) {
+    dataset1 <- split(x, INDEX)[[1]]
+    dataset2 <- split(x, INDEX)[[2]]
+    cohen_d <- smd_uni(effsize = "cohen_d", x = x, INDEX = INDEX)[[1]]
+  }
+  else cohen_d <- smd_uni(effsize = "cohen_d", m1 =  m1, m2 =  m2, var1 =  var1, var2 = var2, n1 =  n1, n2 = n2)
+  if(!is.null(x))cohen_d_cis <- smd_ci(effsize = "cohen_d", val = cohen_d, n1 = length(dataset1), n2 = length(dataset2), var1 = var(dataset1), var2 = var(dataset2))
+  else cohen_d_cis <- smd_ci(effsize = "cohen_d", val = cohen_d, n1 = m1, n2 = m2, var1 = var1, var2 = var2 )
   lower_bound <- 2*pnorm(-abs(cohen_d_cis[[1]])/2)
   upper_bound <- 2*pnorm(-abs(cohen_d_cis[[2]])/2)
   list(lower_bound = lower_bound, upper_bound = upper_bound)
