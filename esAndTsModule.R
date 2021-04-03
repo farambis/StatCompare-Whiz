@@ -8,13 +8,12 @@ esAndTsUi <- function(id, esChoices, tsChoices) {
           )
 }
 
-esAndTsRawDataServer <- function(id, dat, index, x, y, design) {
+esAndTsRawDataServer <- function(id, dat, index, x, y) {
   moduleServer(id,
                function(input, output, session) {
                  selectedEs <- checkboxGroupServer("esCheckboxGroup")
                  output$esTable <- renderTable({
-                   if(design == "indGrps")generate_es_raw_data_dataframe(es_list = selectedEs(), INDEX =  index(), x =  x(), y =  y())
-                   else generate_es_raw_data_dataframe(es_list = selectedEs(), x =  x(), y =  y())
+                   generate_es_raw_data_dataframe(es_list = selectedEs(), INDEX =  index(), x =  x(), y =  y())
                  })
                  selectedTs <- checkboxGroupServer("tsCheckboxGroup")
                  output$tsTable <- renderTable({

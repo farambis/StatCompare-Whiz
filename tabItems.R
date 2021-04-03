@@ -11,8 +11,11 @@ independentGroupsParametricUnivariateRawData <-
       ".csv",
       "indGrps",
       "rawData",
-      list(all_eff_sizes$cohen_d, all_eff_sizes$ovl_parametric), 
-      list(all_test_statistics$student_t_test)
+      list(all_eff_sizes$cohen_d, all_eff_sizes$hedges_g, all_eff_sizes$glass_d,
+           all_eff_sizes$glass_d_corr, all_eff_sizes$bonett_d, all_eff_sizes$bonett_d_corr,
+           all_eff_sizes$AKP_eqvar, all_eff_sizes$AKP_uneqvar,all_eff_sizes$ovl_parametric), 
+      list(all_test_statistics$student_t_test, all_test_statistics$welch_t_test,
+           all_test_statistics$yuen_t_test)
     )
   )
 
@@ -24,8 +27,10 @@ independentGroupsParametricUnivariateEducational <-
             ".csv", 
             "indGrps", 
             "educational",
-            list(all_eff_sizes$cohen_d, all_eff_sizes$ovl_parametric), 
-            list(all_test_statistics$student_t_test)
+            list(all_eff_sizes$cohen_d, all_eff_sizes$hedges_g, all_eff_sizes$glass_d,
+                 all_eff_sizes$glass_d_corr, all_eff_sizes$bonett_d, all_eff_sizes$bonett_d_corr, 
+                 all_eff_sizes$ovl_parametric), 
+            list(all_test_statistics$student_t_test, all_test_statistics$welch_t_test)
           ))
 
 independentGroupsParametricMultivariateRawData <-

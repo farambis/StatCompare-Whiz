@@ -11,14 +11,14 @@ esMainPanel <- function(id, esChoices, tsChoices) {
 }
 
 
-esMainPanelRawDataServer <- function(id, dat, index, x, y, design) {
+esMainPanelRawDataServer <- function(id, dat, index, x, y) {
   moduleServer(id,
                function(input, output, session) {
                  output$dataTable <- renderTable({
                    req(dat())
                    dat()[1:10, ]
                  })
-                 esAndTsRawDataServer("esAndTs", dat, index, x, y, design)
+                 esAndTsRawDataServer("esAndTs", dat, index, x, y)
                })
 }
 

@@ -23,7 +23,7 @@ generalServer <- function(id, design, mode) {
                      sidebarPanelResult$data,
                      sidebarPanelResult$inputDataIndex,
                      sidebarPanelResult$inputDataX, 
-                     sidebarPanelResult$inputDataY, design
+                     sidebarPanelResult$inputDataY
                    )} 
                  else {
                    MainPanelEducationalServer <- 
