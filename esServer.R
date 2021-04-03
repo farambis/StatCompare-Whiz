@@ -9,4 +9,7 @@ esServer <- function(input, output) {
                 "depGrps", 
                 "rawData"
                 )
+  generalServer("independentGroupsNonparametric", 
+                "indGrps", 
+                "rawData")
 }

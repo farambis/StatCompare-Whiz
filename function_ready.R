@@ -30,8 +30,8 @@ sd1 <- sd(split(vals, grp)[[1]])
 sd2 <- sd(split(vals, grp)[[2]])
 var1 <- var(split(vals, grp)[[1]])
 var2 <- var(split(vals, grp)[[2]])
-winvar1 <- var(winsor((split(vals, grp))[[1]]))
-winvar2 <- var(winsor((split(vals, grp))[[2]]))
+#winvar1 <- var(winsor((split(vals, grp))[[1]]))
+#winvar2 <- var(winsor((split(vals, grp))[[2]]))
 trim <- 0.2
 ntr1 <- n1 - (2 * floor(trim * n1))
 ntr2 <- n2 - (2 * floor(trim * n2))
@@ -43,7 +43,7 @@ trm2 <- mean(split(vals, grp)[[2]], trim = trim)
 ## List of every effect size and test statistic ----
 all_eff_sizes <- list(cohen_d = "cohen_d", hedges_g = "hedges_g", glass_d = "glass_d", glass_d_corr = "glass_d_corr", 
                       bonett_d = "bonett_d", bonett_d_corr = "bonett_d_corr", AKP_eqvar = "AKP_eqvar", AKP_uneqvar = "AKP_uneqvar", 
-                      mann_whitney_based_ps = "mann_whitney_based_ps", ovl_parametric = "ovl_parametric", ps_dependent = "ps_dependent")
+                      mann_whitney_based_ps = "mann_whitney_based_ps", ovl_parametric = "ovl_parametric", ps_dependent = "ps_dependent", ovl_nonparametric = "ovl_nonparametric")
 
 all_test_statistics <- list(student_t_test = "student_t_test", dependent_student_t_test = "dependent_student_t_test",
                             welch_t_test = "welch_t_test", yuen_t_test = "yuen_t_test", mann_whitney = "mann_whitney")
@@ -70,6 +70,7 @@ generate_es_raw_data_dataframe <- function(es_list, INDEX = NULL, x, y) {
            "AKP_uneqvar" = c(smd_ci(effsize = i, val = smd_uni(effsize = i, x = x, INDEX = INDEX), x = x, INDEX = INDEX)),
            "mann_whitney_based_ps" = c(mann_whitney_based_ps(x = x, INDEX = INDEX), mann_whitney_based_ps_ci(x = x, INDEX = INDEX)), 
            "ovl_parametric" = c(ovl_parametric(x = x, INDEX = INDEX), ovl_parametric_ci(x = x, INDEX = INDEX)), 
+           "ovl_nonparametric" = c(non_parametric_overlapping_coefficient(x, INDEX), ovl_parametric_ci(x, INDEX)), # parametric ci 
            "ps_dependent" = c(ps_dependent_groups(x, y), ps_dependent_groups_ci(x, y))
            )
     es_result <- c(es_result,res[[1]])
@@ -126,7 +127,7 @@ generate_ts_dataframe <- function(ts_list, INDEX = NULL, x = NULL, m1, m2, stand
               "student_t_test" = t_test(type = i, x = x, INDEX = INDEX),
               "welch_t_test" = t_test(type = i, x = x, INDEX = INDEX),
               "yuen_t_test" = t_test(type = i, x = x, INDEX = INDEX),
-              "dependent_student_t_test" = t_test(type = i, x = x, y = y)
+              "dependent_student_t_test" = t_test(type = i, x = x, y = y),
               )}
     else {
       res <- switch(i, 
@@ -145,6 +146,19 @@ generate_ts_dataframe <- function(ts_list, INDEX = NULL, x = NULL, m1, m2, stand
   )
   colnames(ts_dataframe) <- c("Name", "t", "df", "p")
   return(ts_dataframe)
+}
+
+generate_non_parametric_ts_dataframe <- function(ts_list, INDEX, x) {
+  ts_p_value <- vector(mode="double", length = 0L)
+  for (i in ts_list) {
+    res <- switch(i, 
+                  "mann_whitney" = p_value_for_mann_whitney_based_ps(x = x, INDEX = INDEX))
+    ts_p_value <- c(ts_p_value, res)
+  }
+  ts_dataframe <- data.frame(
+    ts_list, 
+    ts_p_value
+  )
 }
 
 # Helper functions ----

@@ -42,14 +42,30 @@ independentGroupsParametricMultivariateEducational <-
           'Hello independentGroupsParametricMultivariateEducational')
 
 independentGroupsNonparametric <-
-  tabItem(tabName = 'independentGroupsNonparametric', 'Hello independentGroupsNonparametric')
+  tabItem(tabName = 'independentGroupsNonparametric',
+          generalUI(
+            "independentGroupsNonparametric", 
+            ".csv", 
+            "indGrps", 
+            "rawData", 
+            list(all_eff_sizes$mann_whitney_based_ps, all_eff_sizes$ovl_nonparametric), 
+            list(all_test_statistics$mann_whitney)
+          ))
 
 
 # dependent Groups --------------------------------------------------------
 
 
 dependentGroupsParametricRawData <-
-  tabItem(tabName = 'dependentGroupsParametricRawData', 'Hello dependentGroupsParametricRawData')
+  tabItem(tabName = 'dependentGroupsParametricRawData',
+          generalUI(
+            "dependentGroupsParametricRawData", 
+            ".csv", 
+            "indGrps", 
+            "rawData", 
+            list(), 
+            list()
+          ))
 
 dependentGroupsParametricEducational <-
   tabItem(tabName = 'dependentGroupsParametricEducational', 'Hello dependentGroupsParametricEducational')
