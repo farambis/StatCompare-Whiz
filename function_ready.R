@@ -4,15 +4,8 @@
 #TODO User sollen angeben wie die Faktoren zu rangreihen sind, damit in der server
 # funktion die Gruppierungsvariable richtig faktorisiert werden kann
 
-
-#TODO ask UST why the degrees of freedom is different in stats::t.test for the 
-# Welch t-test than on the wikipedia and the Bortz and Schuster text book
-
-
-
-# variables for examples:
-#rm(list = ls())
-
+# variables for examples ----
+# parameters:
 m1 <- 100
 m2 <- 110
 sd1 <- 10
@@ -21,11 +14,13 @@ n1 <-30
 n2 <- 37
 # n_NA <- 10
 
+RNGversion(vstr = "4.0.2")
+set.seed(123)
 vals <- c(rnorm(n1, m1, sd1), rnorm(n2, m2, sd2))
 # vals <- c(rnorm(n = n1 - n_NA/2, mean = m1, sd = sd1), rnorm(n = n2 - n_NA/2, mean = m2, sd = sd2), rep(NA, times = n_NA))
 # vals <- vals[sample(1:length(vals))]
 grp <- factor(rep(1:2, times = c(n1, n2)))
-mat <- cbind(vals, c(rnorm(n1, m1, sd1), rnorm(n2, m2, sd2)), grp)
+#mat <- cbind(vals, c(rnorm(n1, m1, sd1), rnorm(n2, m2, sd2)), grp)
 
 
 
@@ -35,33 +30,44 @@ sd1 <- sd(split(vals, grp)[[1]])
 sd2 <- sd(split(vals, grp)[[2]])
 var1 <- var(split(vals, grp)[[1]])
 var2 <- var(split(vals, grp)[[2]])
-#winvar1 <- var(winsor((split(vals, grp))[[1]]))
-#winvar2 <- var(winsor((split(vals, grp))[[2]]))
+winvar1 <- var(winsor((split(vals, grp))[[1]]))
+winvar2 <- var(winsor((split(vals, grp))[[2]]))
 trim <- 0.2
 ntr1 <- n1 - (2 * floor(trim * n1))
 ntr2 <- n2 - (2 * floor(trim * n2))
 trm1 <- mean(split(vals, grp)[[1]], trim = trim)
 trm2 <- mean(split(vals, grp)[[2]], trim = trim)
 
-effsize <- list("cohen_d", "hedges_g", "glass_d", "glass_d_corr", 
-                "bonett_d", "bonett_d_corr", "AKP_eqvar", "AKP_uneqvar")
 
+# Grand functions computing every effect size and test statistic for the app ----
+## List of every effect size and test statistic ----
 all_eff_sizes <- list(cohen_d = "cohen_d", hedges_g = "hedges_g", glass_d = "glass_d", glass_d_corr = "glass_d_corr", 
-                      bonnet_d = "bonett_d", bonnet_d_corr = "bonett_d_corr", AKP_equvar = "AKP_eqvar", AKP_uneqvar = "AKP_uneqvar", mann_whitney_based_ps = "mann_whitney_based_ps", ovl_parametric = "ovl_parametric", ps_dependent = "ps_dependent")
+                      bonett_d = "bonett_d", bonett_d_corr = "bonett_d_corr", AKP_eqvar = "AKP_eqvar", AKP_uneqvar = "AKP_uneqvar", 
+                      mann_whitney_based_ps = "mann_whitney_based_ps", ovl_parametric = "ovl_parametric", ps_dependent = "ps_dependent")
 
-all_test_statistics <- list(student_t_test = "student_t_test", mann_whitney = "mann_whitney")
+all_test_statistics <- list(student_t_test = "student_t_test", dependent_student_t_test = "dependent_student_t_test",
+                            welch_t_test = "welch_t_test", yuen_t_test = "yuen_t_test", mann_whitney = "mann_whitney")
 
-
+es_list <- c("cohen_d", "hedges_g", "glass_d", "glass_d_corr", "bonett_d", "bonett_d_corr")
+ts_list <- c("student_t_test", "welch_t_test", "yuen_t_test")
+## ES for raw data ----
 generate_es_raw_data_dataframe <- function(es_list, INDEX = NULL, x, y) {
-  if(!is.null(INDEX))dataset1 <- split(unlist(x), unlist(INDEX))[[1]] # if interface of smd_ci function fits in the x, INDEX structure we do not need to do this here
-  if(!is.null(INDEX))dataset2 <- split(unlist(x), unlist(INDEX))[[2]]
-  es_result <- c()
-  es_ci_lower <- c()
-  es_ci_upper <- c()
+
+  es_result <- vector(mode = "double", length = 0L)
+  es_ci_lower <- vector(mode = "double", length = 0L)
+  es_ci_upper <- vector(mode = "double", length = 0L)
+  
   for (i in es_list) {
     if (! i %in% all_eff_sizes) stop ("this is no offered effect size!\n")
     res <- switch(i, 
-           "cohen_d" = c(smd_uni(effsize = "cohen_d", x = x, INDEX = INDEX), smd_ci(effsize = "cohen_d",val = smd_uni(effsize = "cohen_d", x = x, INDEX = INDEX), n1 = length(dataset1), n2 = length(dataset2))),
+           "cohen_d" = c(smd_ci(effsize = i, val = smd_uni(effsize = i, x = x, INDEX = INDEX), x = x, INDEX = INDEX)),
+           "hedges_g" = c(smd_ci(effsize = i, val = smd_uni(effsize = i, x = x, INDEX = INDEX), x = x, INDEX = INDEX)),
+           "glass_d" = c(smd_ci(effsize = i, val = smd_uni(effsize = i, x = x, INDEX = INDEX), x = x, INDEX = INDEX)),
+           "glass_d_corr" = c(smd_ci(effsize = i, val = smd_uni(effsize = i, x = x, INDEX = INDEX), x = x, INDEX = INDEX)),
+           "bonett_d" = c(smd_ci(effsize = i, val = smd_uni(effsize = i, x = x, INDEX = INDEX), x = x, INDEX = INDEX)),
+           "bonett_d_corr" = c(smd_ci(effsize = i, val = smd_uni(effsize = i, x = x, INDEX = INDEX), x = x, INDEX = INDEX)),
+           "AKP_eqvar" = c(smd_ci(effsize = i, val = smd_uni(effsize = i, x = x, INDEX = INDEX), x = x, INDEX = INDEX)),
+           "AKP_uneqvar" = c(smd_ci(effsize = i, val = smd_uni(effsize = i, x = x, INDEX = INDEX), x = x, INDEX = INDEX)),
            "mann_whitney_based_ps" = c(mann_whitney_based_ps(x = x, INDEX = INDEX), mann_whitney_based_ps_ci(x = x, INDEX = INDEX)), 
            "ovl_parametric" = c(ovl_parametric(x = x, INDEX = INDEX), ovl_parametric_ci(x = x, INDEX = INDEX)), 
            "ps_dependent" = c(ps_dependent_groups(x, y), ps_dependent_groups_ci(x, y))
@@ -77,17 +83,22 @@ generate_es_raw_data_dataframe <- function(es_list, INDEX = NULL, x, y) {
     es_ci_upper
    )
    colnames(es_dataframe) <- c("Name", "Effect Size", "Ci lower limit", "Ci upper limit")
-   es_dataframe
+   return(es_dataframe)
 }
-
+## ES for educational mode ----
 generate_es_educational_dataframe <- function(es_list,  mean1, standardDeviation1, sampleSize1, correlation1, standardDeviationDiff1, mean2, standardDeviation2, sampleSize2, mean3, standardDeviation3, mean4, standardDeviation4, correlation2, standardDeviationDiff2) {
-   es_result <- c() 
-   es_ci_lower <- c()
-   es_ci_upper <- c()
+   es_result <- vector(mode = "double", length = 0L) 
+   es_ci_lower <- vector(mode = "double", length = 0L)
+   es_ci_upper <- vector(mode = "double", length = 0L)
   for (i in es_list) {
     if (! i %in% all_eff_sizes) stop ("this is no offered effect size!\n")
     res <- switch(i, 
-                  "cohen_d" = c(smd_uni(effsize = "cohen_d", m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2 ), smd_ci("cohen_d", val = smd_uni(effsize = "cohen_d", m1 = mean1, m2 = mean2, var1 = standardDeviation1, var2 = standardDeviation2, n1 = sampleSize1, n2 = sampleSize2), n1 = mean1, n2 = mean2, var1 = standardDeviation1, var2 = standardDeviation2 )),
+                  "cohen_d" = c(smd_ci(effsize = i, val = smd_uni(effsize = i, m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2), n1 = sampleSize1, n2 = sampleSize2, var1 = standardDeviation1^2, var2 = standardDeviation2^2)),
+                  "hedges_g" = c(smd_ci(effsize = i, val = smd_uni(effsize = i, m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2), n1 = sampleSize1, n2 = sampleSize2, var1 = standardDeviation1^2, var2 = standardDeviation2^2)),
+                  "glass_d" = c(smd_ci(effsize = i, val = smd_uni(effsize = i, m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2), n1 = sampleSize1, n2 = sampleSize2, var1 = standardDeviation1^2, var2 = standardDeviation2^2)),
+                  "glass_d_corr" = c(smd_ci(effsize = i, val = smd_uni(effsize = i, m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2), n1 = sampleSize1, n2 = sampleSize2, var1 = standardDeviation1^2, var2 = standardDeviation2^2)),
+                  "bonett_d" = c(smd_ci(effsize = i, val = smd_uni(effsize = i, m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2), n1 = sampleSize1, n2 = sampleSize2, var1 = standardDeviation1^2, var2 = standardDeviation2^2)),
+                  "bonett_d_corr" = c(smd_ci(effsize = i, val = smd_uni(effsize = i, m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2), n1 = sampleSize1, n2 = sampleSize2, var1 = standardDeviation1^2, var2 = standardDeviation2^2)),
                   "ovl_parametric" = c(ovl_parametric(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2), ovl_parametric_ci(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2))
                   )
     es_result <- c(es_result, res[[1]])
@@ -101,40 +112,64 @@ generate_es_educational_dataframe <- function(es_list,  mean1, standardDeviation
     es_ci_upper
   )
   colnames(es_dataframe) <- c("Name", "Effect Size", "Ci lower limit", "Ci upper limit")
-  es_dataframe
+  return(es_dataframe)
 }
-
+## Test statistics for raw data & educational mode ----
 generate_ts_dataframe <- function(ts_list, INDEX = NULL, x = NULL, m1, m2, standardDeviation1, standardDeviation2, n1, n2) {
-  ts_t_value <- c()
-  ts_p_value <- c()
-  ts_df <- c()
+  ts_t_value <- vector(mode = "double", length = 0L)
+  ts_df <- vector(mode = "double", length = 0L)
+  ts_p_value <- vector(mode = "double", length = 0L)
   for (i in ts_list) {
     if (! i %in% all_test_statistics) stop ("this is no offered test statistic!\n")
     if (!is.null(x)){
       res <- switch(i, 
-              "student_t_test" = t_test(x = x, INDEX = INDEX, type = "student")[1:3]
+              "student_t_test" = t_test(type = i, x = x, INDEX = INDEX),
+              "welch_t_test" = t_test(type = i, x = x, INDEX = INDEX),
+              "yuen_t_test" = t_test(type = i, x = x, INDEX = INDEX),
+              "dependent_student_t_test" = t_test(type = i, x = x, y = y)
               )}
     else {
       res <- switch(i, 
-                       "student_t_test" = t_test(m1 = m1, m2 = m2, var1 = standardDeviation1^2, var2 = standardDeviation2^2,n1 =  n1, n2 = n2, type = "student")[1:3]
+                    "student_t_test" = t_test(type = i, m1 = m1, m2 = m2, var1 = standardDeviation1^2, var2 = standardDeviation2^2,n1 =  n1, n2 = n2),
+                    "welch_t_test" = t_test(type = i, m1 = m1, m2 = m2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = n1, n2 = n2)
     )}
   ts_t_value <- c(ts_t_value, res[[1]])
-  ts_p_value <- c(ts_p_value, res[[2]])
-  ts_df <- c(ts_df, res[[3]])
+  ts_df <- c(ts_df, res[[2]])
+  ts_p_value <- c(ts_p_value, res[[3]])
   }
   ts_dataframe <- data.frame(
     ts_list, 
     ts_t_value, 
-    ts_p_value, 
-    ts_df
+    ts_df,
+    ts_p_value
   )
-  colnames(ts_dataframe) <- c("Name", "df", "t", "p")
-  ts_dataframe
+  colnames(ts_dataframe) <- c("Name", "t", "df", "p")
+  return(ts_dataframe)
 }
 
+# Helper functions ----
+## Error detector function ----
+error_detector <- function(x, INDEX, trim, na.rm){
+  if(!is.numeric(x)) stop("\nx must be numeric")
+  
+  if(length(x) != length(INDEX)) stop("\nx and INDEX must have the same length")
+  
+  n_grps <- unique(INDEX[!is.na(INDEX)])
+  if(length(n_grps) < 2 || length(n_grps) > 2) stop("\nINDEX should contain two unique values")
+  
+  if(typeof(na.rm) != "logical") stop("\nna.rm must be set to TRUE or FALSE")
+  
+  if(trim < 0 || trim > 0.5) stop("\ntrim < 0 or > 0.5, specify a value within these bounds")
+  
+  i_NA <- complete.cases(x, INDEX)
+  if(!na.rm && any(!i_NA)){
+    stop("\nNAs present in x and/or INDEX")
+  }
 
-# winsor function
-winsor <- function(x, trim = 0.2, na.rm = FALSE){
+}
+## Winsorized Variances ----
+
+winsor <- function(x, trim = 0.2, na.rm = TRUE){
   
   # this function winsorizes a vector
   # 
@@ -173,146 +208,94 @@ winsor <- function(x, trim = 0.2, na.rm = FALSE){
   
 }
 
+## Determine sample size after trimming ----
 
+n_trim <- function(x = NULL, n, trim = 0.2){
+  if(!is.null(x)) n <- length(x)
+  ntr <- n - (2 * floor(trim * n))
+  return(ntr)
+}
 
+## Determine degrees of freedom -----
+degrees_freedom <- function(effsize, n1, n2, ntr1, ntr2, comparison_group = NULL){
 
+  df <- switch(effsize,
+                "cohen_d" = n1 + n2 - 2,
+                "hedges_g" = n1 + n2 - 2,
+                "glass_d" = ifelse(comparison_group == "a", n1, n2) - 1,
+                "glass_d_corr" = ifelse(comparison_group == "a", n1, n2) - 1,
+                "bonett_d" = n1 + n2 - 2,
+                "bonett_d_corr" = n1 + n2 - 2,
+                "AKP_eqvar" = ntr1 + ntr2 - 2,
+                "AKP_uneqvar" = ifelse(comparison_group == "a", ntr1, ntr2) - 1)
+  
+  return(df)
+}
 
+## Various correction factors ----
 
-
-
-smd_corr <- function(x = NULL, INDEX = NULL, n1, n2, df, trim, type = c("hedges", "AKP", "bonett")){
+smd_corr <- function(n1, n2, df, trim, type = c("hedges", "AKP", "bonett")){
   
   
-  if(!is.null(x) && !is.null(INDEX)){
-    
-    ngroups <- length(unique(INDEX))
-    
-    ns <- tapply(x, INDEX, length, simplify = FALSE)
-    for(i in 1:ngroups){
-      assign(paste0("n", i), ns[[i]])
-    }
-  }
-  
-
   res <-switch(type,
                "hedges" = exp(lgamma(df/2) - log(sqrt(df/2)) - lgamma((df - 1)/2)),
                "bonett" = sqrt((n1 + n2 - 2)/(n1 + n2 - 1)),
-               "AKP" = sqrt(integrate(function(x){x^2*dnorm(x)}, qnorm(trim), qnorm(1 - trim))$value + 2 * qnorm(trim)^2 * trim)
+               "AKP" = sqrt(integrate(f = function(x){x^2*dnorm(x)}, lower = qnorm(trim), upper = qnorm(1 - trim))$value + 2 * qnorm(trim)^2 * trim)
                 )
 
   return(res)
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-# smd_stats ---------------------------------------------------------------
-
-
-
-smd_stats <- function(x, INDEX, trim = 0.2, type = c("univariate", "multivariate"), 
-                      winvar = FALSE, na.rm = FALSE){
-  
-  
-  
-  if(!is.numeric(x)) stop("\nx must be numeric")
-  
-  if(length(x) != length(INDEX)) stop("\nx and INDEX must have the same length")
-  
-  grps <- unique(INDEX)
-  if(length(grps) < 2 || length(grps) > 2) stop("\nINDEX should contain two unique values")
-  if(any(is.na(grps))) stop("\nNAs present in INDEX")
-  
-  if(!(na.rm %in% c(TRUE, FALSE))) stop("\nna.rm must be set to TRUE or FALSE")
-  
-  if(trim < 0 || trim > 0.5) stop("\ntrim < 0 or > 0.5, specify a value within these bounds")
-  
-  i_NA <- is.na(x)
-  if(na.rm) {
-    x <- x[!i_NA]
-    INDEX <- INDEX[!i_NA]
+## Summary statistics functions ----
+### Univariate summary statistics ----
+univar_stats <- function(x, trim = trim, winvar = winvar){
+  m <- mean(x)
+  n <- length(x)
+  v <- var(x)
+  trm <- mean(x, trim = trim)
+  ntr <- n_trim(n = n, trim = trim)
+  if(winvar){
+    winvar <- var(winsor(x, trim = trim))
+  } else{
+    winvar <- NULL
   }
-  if(!na.rm && any(i_NA)){
-    return(NA)
-    stop("\nNAs present in x")
+  return(list(m = m, n = n, var = v, trm = trm, ntr = ntr, winvar = winvar))
+}
+
+### Grand summary statistics function ----
+smd_stats <- function(x, INDEX, trim = 0.2, type = c("univariate", "multivariate"), 
+                      winvar = FALSE, na.rm = TRUE){
+  
+  error_detector(x, INDEX, trim, na.rm)
+  i_NA <- complete.cases(x, INDEX)
+  if(na.rm) {
+    x <- x[i_NA]
+    INDEX <- INDEX[i_NA]
   }
   
   if("univariate" %in% type){
-    univar_stats <- function(x, trim = trim, winvar = winvar){
-      m <- mean(x)
-      n <- length(x)
-      v <- var(x)
-      trm <- mean(x, trim = trim)
-      ntr <- n - (2 * floor(trim * n))
-      if(winvar){
-        winvar <- var(winsor(x, trim = trim))
-      } else{
-        winvar <- NULL
-      }
-      return(list(m = m, n = n, var = v, trm = trm, ntr = ntr, winvar = winvar))
-    }
-    
-    univariate_res <- tapply(x, INDEX, univar_stats, trim = trim, winvar = winvar, simplify = FALSE)
-    var_names <- names(univariate_res[[1]])
-    univariate_res_names <- paste0(var_names, rep(1:2, each = length(var_names)))
-    univariate_res <- unlist(univariate_res, recursive = FALSE)
-    names(univariate_res) <- univariate_res_names
-    
+    univariate_stats <- tapply(X = x, INDEX = INDEX, FUN = univar_stats, trim = trim, winvar = winvar, simplify = FALSE)
+    stats_names <- names(univariate_stats[[1]])
+    stats_names <- paste0(stats_names, rep(1:2, each = length(stats_names)))
+    univariate_stats <- unlist(univariate_stats, recursive = FALSE)
+    names(univariate_stats) <- stats_names
+    return(univariate_stats)
   }
-  return(univariate_res)
+  
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+## Various standard deviations: ----
 sd_combined <- function(x = NULL, INDEX = NULL, var1, var2, n1, n2, winvar1, 
-                        winvar2, ntr1, ntr2, winsor = FALSE, trim = 0.2, na.rm = FALSE,
+                        winvar2, ntr1, ntr2, winsor = FALSE, trim = 0.2, na.rm = TRUE,
                         type = c("pooled", "mean", "grp_1", "grp_2", "se_pooled", "se_welch", "se_yuen")){
   
   
   if(!is.null(x) && !is.null(INDEX)){
-    
-    if(!is.numeric(x)) stop("\nx must be numeric")
-    
-    if(length(x) != length(INDEX)) stop("\nx and INDEX must have the same length")
-    
-    grps <- unique(INDEX)
-    if(length(grps) < 2 || length(grps) > 2) stop("\nINDEX should contain two unique values")
-    if(any(is.na(grps))) stop("\nNAs present in INDEX")
-    
-    if(!(na.rm %in% c(TRUE, FALSE))) stop("\nna.rm must be set to TRUE or FALSE")
-    
-    if(!(winsor %in% c(TRUE, FALSE))) stop("\nwinsorize must be set to TRUE or FALSE")
-    
-    if(trim < 0 || trim > 0.5) stop("\ntrim < 0 or > 0.5, specify a value within these bounds")
-    
-    i_NA <- is.na(x)
+    error_detector(x, INDEX, trim, na.rm)
+    i_NA <- complete.cases(x, INDEX)
     if(na.rm) {
-      x <- x[!i_NA]
-      INDEX <- INDEX[!i_NA]
-    }
-    if(!na.rm && any(i_NA)){
-      return(NA)
-      stop("\nNAs present in x")
+      x <- x[i_NA]
+      INDEX <- INDEX[i_NA]
     }
     
     univar_stats <- smd_stats(x = x, INDEX = INDEX, trim = trim, type = "univariate", winvar = winsor)
@@ -324,6 +307,8 @@ sd_combined <- function(x = NULL, INDEX = NULL, var1, var2, n1, n2, winvar1,
     } else{
       var1 <- univar_stats[["winvar1"]]
       var2 <- univar_stats[["winvar2"]]
+      ntr1 <- univar_stats[["ntr1"]]
+      ntr2 <- univar_stats[["ntr2"]]
     }
     
     
@@ -333,7 +318,6 @@ sd_combined <- function(x = NULL, INDEX = NULL, var1, var2, n1, n2, winvar1,
       var2 <- winvar2
     }
   }
-  
   
   res <- switch(type,
                 "pooled" = sqrt((((n1 - 1) * var1) + ((n2 - 1) * var2)) / (n1 + n2 - 2)),
@@ -355,39 +339,24 @@ sd_combined <- function(x = NULL, INDEX = NULL, var1, var2, n1, n2, winvar1,
 
 
 
-# standard mean deviation univariate -------------------------------------------------
-
+# Univariate SMDs for independent groups design ----
 
 smd_uni <- function(effsize = c("cohen_d", "hedges_g", "glass_d", "glass_d_corr", 
                                  "bonett_d", "bonett_d_corr", "AKP_eqvar", "AKP_uneqvar"), 
                      x = NULL, INDEX = NULL, m1, m2, var1, var2, n1, n2, trm1, 
-                    trm2, winvar1, winvar2, ntr1, ntr2, na.rm = FALSE, trim = 0.2){
+                    trm2, winvar1, winvar2, ntr1, ntr2, na.rm = TRUE, trim = 0.2){
   
   # this function
   
   
   if(!is.null(x) && !is.null(INDEX)){
-    
-    if(!is.numeric(x)) stop("\nX must be numeric")
-    
-    if(length(x) != length(INDEX)) stop("\nx and INDEX must have the same length")
-    
-    grps <- unique(INDEX)
-    if(length(grps) < 2 || length(grps) > 2) stop("\nINDEX should contain two unique values")
-    if(any(is.na(grps))) stop("\nNAs present in INDEX")
-    
-    if(trim < 0 || trim > 0.5) stop("\ntrim < 0 or > 0.5, specify a value within these bounds")
-    
-    if(!(na.rm %in% c(TRUE, FALSE))) stop("\nna.rm must be set to TRUE or FALSE")
-    
-    i_NA <- is.na(x)
+    error_detector(x, INDEX, trim, na.rm)
+    i_NA <- complete.cases(x, INDEX)
     if(na.rm) {
-      x <- x[!i_NA]
-      INDEX <- INDEX[!i_NA]
+      x <- x[i_NA]
+      INDEX <- INDEX[i_NA]
     }
-    if(!na.rm && any(i_NA)){
-      stop("\nNAs present in x")
-    }
+    
     if("AKP_eqvar" %in% effsize || "AKP_uneqvar" %in% effsize){
       winvar <- TRUE
     } else{
@@ -403,55 +372,129 @@ smd_uni <- function(effsize = c("cohen_d", "hedges_g", "glass_d", "glass_d_corr"
   
   res <- switch(effsize, 
                 "cohen_d" = (m1 - m2)/sd_combined(var1 = var1, var2 = var2, n1 = n1, n2 = n2, type = "pooled"),
-                "hedges_g" = smd_corr(df = n1 + n2 - 2, type = "hedges") * (m1 - m2)/sd_combined(var1 = var1, var2 = var2, n1 = n1, n2 = n2, type = "pooled"),
+                "hedges_g" = smd_corr(df = degrees_freedom(effsize, n1, n2), type = "hedges") * (m1 - m2)/sd_combined(var1 = var1, var2 = var2, n1 = n1, n2 = n2, type = "pooled"),
                 "glass_d" = (m1 - m2)/sd_combined(var1 = var1, type = "grp_1"),
-                "glass_d_corr" = smd_corr(df = n1 - 1, type = "hedges") * (m1 - m2)/sd_combined(var1 = var1, type = "grp_1"), 
+                "glass_d_corr" = smd_corr(df = degrees_freedom(effsize, n1, comparison_group = "a"), type = "hedges") * (m1 - m2)/sd_combined(var1 = var1, type = "grp_1"), 
                 "bonett_d" = (m1 - m2)/sd_combined(var1 = var1, var2 = var2, type = "mean"),
-                "bonett_d_corr" = smd_corr(df = n1 + n2 - 2, type = "hedges") * (m1 - m2)/sd_combined(var1 = var1, var2 = var2, type = "mean"),
+                "bonett_d_corr" = smd_corr(df = degrees_freedom(effsize, n1, n2), type = "hedges") * (m1 - m2)/sd_combined(var1 = var1, var2 = var2, type = "mean"),
                 "AKP_eqvar" = smd_corr(n1 = n1, n2 = n2, trim = trim, type = "AKP") * (trm1 - trm2)/sd_combined(winvar1 = winvar1, winvar2 = winvar2, n1 = n1, n2 = n2, type = "pooled", winsor = TRUE, trim = trim),
                 "AKP_uneqvar" = smd_corr(n1 = n1, n2 = n2, trim = trim, type = "AKP") * (trm1 - trm2)/sd_combined(winvar1 = winvar1, winvar2 = winvar2, type = "grp_1", winsor = TRUE, trim = trim))
   
   names(res) <- effsize
-
-  
   return(res)
 
 }
 
+# CIs for univariate SMDs  ----
+## confidence intervals for noncentrality parameters ----
+ncp_ci <- function(ncp, df, alpha){
+  cibound_candidates <- c(min(-5, -abs(ncp) * 7), max(5, abs(ncp)*7))
+  
+  ncp_ci_lower <- suppressWarnings(
+    uniroot(f = function(x){
+      pt(q = ncp, df = df, ncp = x) - (1-(alpha/2))
+    },
+    interval = cibound_candidates)
+  )$root
+  
+  
+  ncp_ci_upper <- suppressWarnings(
+    uniroot(f = function(x){
+      pt(q = ncp, df = df, ncp = x) - alpha/2
+    },
+    interval = cibound_candidates)
+  )$root
+  
+  ncp_cis <- c(ncp_ci_lower, ncp_ci_upper)
+  return(ncp_cis)
+}
+
+## CI for univariate independent samples SMD ----
+smd_ci <- function(effsize = c("cohen_d", "hedges_g", "glass_d", "glass_d_corr", 
+                               "bonett_d", "bonett_d_corr", "AKP_eqvar", "AKP_uneqvar"),
+                   x = NULL, INDEX = NULL, val, n1, n2, n, var1, var2, ntr1, ntr2, 
+                   winvar1, winvar2, trim = 0.2, alpha = 0.05){
+  
+  # this function computes confidence intervals (ci) for various effect sizes using 
+  # exact/approximate formulas 
+  # 
+  # effsize ... name of the effect size for which to compute the ci
+  # val ....... value of the effect size
+  # n1 ........ sample size of group 1 
+  # n2 ........ sample size of group 2
+  # n ......... total sample size
+  # var1 ...... variance in group 1
+  # var2 ...... variance in group 2
+  # ntr1 ...... sample size of group 1 after trimming
+  # ntr2 ...... sample size of group 2 after trimming
+  # winvar1 ... winsorized variance in group 1
+  # winvar2 ... winsorized variance in group 2
+  # trim ...... percent of the values trimmed in the upper and lower tail of each group
+  #
+  # for cohen's d, hedges' g, glass' delta, hedges corrected glass' delta, the 
+  # robust effect sizes akp for equal and unequal variances, confidence intervals
+  # based on noncentral t-distributions are computed. For the effect size 
+  # recommended by Bonett (2008), the confidence interval is computed using the 
+  # formula for the variance of the effect size based on large sample theory. 
+  
+  
+  if(!is.null(x) && !is.null(INDEX)){
+    if("AKP_eqvar" %in% effsize || "AKP_uneqvar" %in% effsize){
+      winvar <- TRUE
+    } else{
+      winvar <- FALSE
+    }
+    univar_stats <- smd_stats(x = x, INDEX = INDEX, trim = trim, winvar = winvar, 
+                              type = "univariate")
+    for(i in 1:length(univar_stats)){
+      assign(names(univar_stats)[[i]], univar_stats[[i]])
+    }
+    
+  }
+  
+  df <- degrees_freedom(effsize, n1, n2, ntr1, ntr2, comparison_group = "a")
+  
+  if(effsize %in% c("bonett_d", "bonett_d_corr")){
+    sdm <- sd_combined(var1 = var1, var2 = var2, type = "mean")
+    
+    ls_var <- switch(effsize,
+                     "bonett_d" = val^2 * (var1^2/(n1 - 1) + var2^2/(n2 - 1))/(8 * sdm^4) + (var1/(sdm^2 * (n1 - 1))) + var2/(sdm^2 * (n2 - 1)),
+                     "bonett_d_corr" = (val^2 * (var1^2/(n1 - 1) + var2^2/(n2 - 1))/(8 * sdm^4) + (var1/(sdm^2 * (n1 - 1))) + var2/(sdm^2 * (n2 - 1))) * (smd_corr(df = n1 + n2 - 2, type = "hedges")^2)
+    )
+  } else{
+    
+    ncp <- switch(effsize,
+                  "cohen_d" = val/sqrt((1/n1) + (1/n2)),
+                  "hedges_g" = val/(smd_corr(df = df, type = "hedges") * sqrt((1/n1) + (1/n2))),
+                  "glass_d" = val/sqrt((1/n1) +(var2/(n2 * var1))),
+                  "glass_d_corr" = val/(smd_corr(df = df, type = "hedges") * sqrt((1/n1) +(var2/(n2 * var1)))),
+                  "AKP_eqvar" = sqrt((ntr1 * ntr2)/(ntr1 + ntr2)) * ((trm1 - trm2)/sqrt(((n1 + n2 - 2) * (sd_combined(winvar1 = winvar1, winvar2 = winvar2, n1 = n1, n2 = n2, type = "pooled", winsor = TRUE, trim = trim)^2))/(ntr1 + ntr2 - 2))),
+                  "AKP_uneqvar" = val/(smd_corr(n1 = n1, n2 = n2, trim = trim, type = "AKP") * sqrt(((n1 - 1)/(ntr1*(ntr1 - 1))) + (((n2 - 1) * winvar2)/((ntr2 * (ntr2 - 1)) * winvar1))))
+    )
+    
+    ncp_cis <- ncp_ci(ncp, df, alpha)
+    
+  } 
+  
+  smd_ci <- switch(effsize,
+                   "cohen_d" = ncp_cis * sqrt((1/n1) + (1/n2)),
+                   "hedges_g" = ncp_cis * (smd_corr(df = df, type = "hedges") * sqrt((1/n1) + (1/n2))),
+                   "glass_d" = ncp_cis * sqrt((1/n1) +(var2/(n2 * var1))),
+                   "glass_d_corr" = ncp_cis * (smd_corr(df = df, type = "hedges") * sqrt((1/n1) +(var2/(n2 * var1)))),
+                   "bonett_d" = val + (c(qnorm(alpha/2), qnorm(1-(alpha/2))) * sqrt(ls_var)),
+                   "bonett_d_corr" = val + (c(qnorm(alpha/2), qnorm(1 - (alpha/2))) * sqrt(ls_var)),
+                   "AKP_eqvar" = ncp_cis * (smd_corr(n1 = n1, n2 = n2, trim = trim, type = "AKP") * sqrt(((ntr1 + ntr2)*(n1 + n2 - 2))/(ntr1 * ntr2 * (ntr1 + ntr2 - 2)))),
+                   "AKP_uneqvar" = ncp_cis * (smd_corr(n1 = n1, n2 = n2, trim = trim, type = "AKP") * sqrt(((n1 - 1)/(ntr1*(ntr1 - 1))) + (((n2 - 1) * winvar2)/((ntr2 * (ntr2 - 1)) * winvar1))))
+  )
+  
+  res <- list(effsize = unname(val), 
+              cil = smd_ci[[1]], 
+              ciu = smd_ci[[2]])
+  return(res)
+}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# Percentile Bootstrap CI function ----
 
 smd_boot <- function(x, INDEX, effsize = c("cohen_d", "hedges_g", "glass_d", "glass_d_corr", 
                                            "bonett_d", "bonett_d_corr", "AKP_eqvar", "AKP_uneqvar"),
@@ -514,166 +557,69 @@ boot <- function(x, INDEX, alpha = 0.05, n_boot = 200,  FUN) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# exact/approximate cis for standardized mean differences
-smd_ci <- function(effsize = c("cohen_d", "hedges_g", "glass_d", "glass_d_corr", 
-                               "bonett_d", "bonett_d_corr", "AKP_eqvar", "AKP_uneqvar"),
-                   val, n1, n2, n, var1, var2, ntr1, ntr2, winvar1, winvar2, trim, alpha = 0.05){
-  
-  # this function computes confidence intervals (ci) for various effect sizes using 
-  # exact/approximate formulas 
-  # 
-  # effsize ... name of the effect size for which to compute the ci
-  # val ....... value of the effect size
-  # n1 ........ sample size of group 1 
-  # n2 ........ sample size of group 2
-  # n ......... total sample size
-  # var1 ...... variance in group 1
-  # var2 ...... variance in group 2
-  # ntr1 ...... sample size of group 1 after trimming
-  # ntr2 ...... sample size of group 2 after trimming
-  # winvar1 ... winsorized variance in group 1
-  # winvar2 ... winsorized variance in group 2
-  # trim ...... percent of the values trimmed in the upper and lower tail of each group
-  #
-  # for cohen's d, hedges' g, glass' delta, hedges corrected glass' delta, the 
-  # robust effect sizes akp for equal and unequal variances, confidence intervals
-  # based on noncentral t-distributions are computed. For the effect size 
-  # recommended by Bonett (2008), the confidence interval is computed using the 
-  # formula for the variance of the effect size based on large sample theory. 
-  
-  
-  tail <- 1 - alpha/2
-  
-  df <- switch(effsize,
-               "cohen_d" = n1 + n2 - 2,
-               "hedges_g" = n1 + n2 - 2,
-               "glass_d" = n1 - 1,
-               "glass_d_corr" = n1 - 1,
-               "bonett" = n1 + n2 - 2,
-               "bonett_d_corr" = n1 + n2 - 2,
-               "AKP_eqvar" = ntr1 + ntr2 - 2,
-               "AKP_uneqvar" = ntr1 - 1)
-  
-  if(effsize %in% c("bonett_d", "bonett_d_corr")){
-    sdm <- sd_combined(var1 = var1, var2 = var2, type = "mean")
-    
-    ls_var <- switch(effsize,
-                     "bonett_d" = val^2 * (var1^2/(n1 - 1) + var2^2/(n2 - 1))/(8 * sdm^4) + (var1/(sdm^2 * (n1 - 1))) + var2/(sdm^2 * (n2 - 1)),
-                     "bonett_d_corr" = (val^2 * (var1^2/(n1 - 1) + var2^2/(n2 - 1))/(8 * sdm^4) + (var1/(sdm^2 * (n1 - 1))) + var2/(sdm^2 * (n2 - 1))) * (smd_corr(df = n1 + n2 - 2, type = "hedges")^2)
-    )
-  } else{
-    
-    ncp <- switch(effsize,
-                  "cohen_d" = val/sqrt((1/n1) + (1/n2)),
-                  "hedges_g" = val/(smd_corr(df = df, type = "hedges") * sqrt((1/n1) + (1/n2))),
-                  "glass_d" = val/sqrt((1/n1) +(var2/(n2 * var1))),
-                  "glass_d_corr" = val/(smd_corr(df = df, type = "hedges") * sqrt((1/n1) +(var2/(n2 * var1)))),
-                  "AKP_eqvar" = sqrt((ntr1 * ntr2)/(ntr1 + ntr2)) * ((trm1 - trm2)/sqrt(((n1 + n2 - 2) * (sd_combined(winvar1 = winvar1, winvar2 = winvar2, n1 = n1, n2 = n2, type = "pooled", winsor = TRUE, trim = trim)^2))/(ntr1 + ntr2 - 2))),
-                  "AKP_uneqvar" = val/(smd_corr(n1 = n1, n2 = n2, trim = trim, type = "AKP") * sqrt(((n1 - 1)/(ntr1*(ntr1 - 1))) + (((n2 - 1) * winvar2)/((ntr2 * (ntr2 - 1)) * winvar1))))
-    )
-    
-    
-    
-    
-    
-    cibound_candidates <- c(min(-5, -abs(ncp) * 7), max(5, abs(ncp)*7))
-    
-    
-    ncp_ci_lower <- suppressWarnings(
-      uniroot(f = function(x){
-        pt(q = ncp, df = df, ncp = x) - tail
-      },
-      interval = cibound_candidates)
-    )$root
-    
-    
-    ncp_ci_upper <- suppressWarnings(
-      uniroot(f = function(x){
-        pt(q = ncp, df = df, ncp = x) - alpha/2
-      },
-      interval = cibound_candidates)
-    )$root
-    
-    ncp_cis <- c(ncp_ci_lower, ncp_ci_upper)
-    
-  } 
-  
-  
-  
-  smd_ci <- switch(effsize,
-                   "cohen_d" = ncp_cis * sqrt((1/n1) + (1/n2)),
-                   "hedges_g" = ncp_cis * (smd_corr(df = df, type = "hedges") * sqrt((1/n1) + (1/n2))),
-                   "glass_d" = ncp_cis * sqrt((1/n1) +(var2/(n2 * var1))),
-                   "glass_d_corr" = ncp_cis * (smd_corr(df = df, type = "hedges") * sqrt((1/n1) +(var2/(n2 * var1)))),
-                   "bonett_d" = val + (c(qnorm(alpha/2), qnorm(tail)) * sqrt(ls_var)),
-                   "bonett_d_corr" = val + (c(qnorm(alpha/2), qnorm(tail)) * sqrt(ls_var)),
-                   "AKP_eqvar" = ncp_cis * (smd_corr(n1 = n1, n2 = n2, trim = trim, type = "AKP") * sqrt(((ntr1 + ntr2)*(n1 + n2 - 2))/(ntr1 * ntr2 * (ntr1 + ntr2 - 2)))),
-                   "AKP_uneqvar" = ncp_cis * (smd_corr(n1 = n1, n2 = n2, trim = trim, type = "AKP") * sqrt(((n1 - 1)/(ntr1*(ntr1 - 1))) + (((n2 - 1) * winvar2)/((ntr2 * (ntr2 - 1)) * winvar1))))
-  )
-  
-  res <- list(cil = smd_ci[[1]], ciu = smd_ci[[2]])
-  return(res)
+# t-test functions(student, welch, yuen, ...) ---- 
+## independent groups student's t-test: ----
+student_t <- function(m1, m2, var1, var2, n1, n2){
+  t_val <- (m1 - m2)/sd_combined(var1 = var1, var2 = var2, n1 = n1, n2 = n2, type = "se_pooled")
+  df <- n1 + n2 - 2
+  p_val <- 2 * (1 - pt(q = abs(t_val), df = df))
+  return(list(t_val = t_val,
+              df = df,
+              p_val = p_val))
 }
 
+## dependent groups student's t-test: ----
+dependent_student_t <- function(m1, m2, sd_diff, n_diff){
+  t_val <- (m1 - m2)/(sd_diff/sqrt(n_diff))
+  df <- n_diff - 1
+  p_val <- 2 * (1 - pt(q = abs(t_val), df = df))
+  return(list(t_val = t_val,
+              df = df,
+              p_val = p_val))
+}
 
-# smd_cis example:
-#effsizes <- lapply(effsize, smd_uni, x = vals, INDEX = grp)
-#effsizes_cis <- rep(list(numeric(length = 2)), times = length(effsizes))
-#for(i in seq_len(length(effsizes))){
-  
- # effsizes_cis[[i]] <- smd_ci(effsize = names(effsizes[[i]]), val = effsizes[[i]], n1 = n1, n2 = n2, var1 = var1, var2 = var2, winvar1 = winvar1, winvar2 = winvar2, ntr1 = ntr1, ntr2 = ntr2, trim = trim)
-#}
+## independent groups welch's t-test: ----
+welch_t <- function(m1, m2, var1, var2, n1, n2){
+  se_welch <- sd_combined(var1 = var1, var2 = var2, n1 = n1, n2 = n2, type = "se_welch")
+  t_val <- (m1 - m2)/se_welch
+  df_num <- se_welch^4
+  df_denom <- (var1^2/(n1^2 * (n1 - 1))) + (var2^2/(n2^2 * (n2 - 1)))
+  df <- df_num/df_denom
+  p_val <- 2 * (1 - pt(q = abs(t_val), df = df))
+  return(list(t_val = t_val,
+              df = df,
+              p_val = p_val))
+}
 
-#effsizes_cis
+## independent groups yuen's t-test: ----
+yuen_t <- function(trm1, trm2, winvar1, winvar2, n1, n2, ntr1, ntr2){
+  d1 <- (n1 - 1) * winvar1/(ntr1*(ntr1 - 1))
+  d2 <- (n2 - 1) * winvar2/(ntr2*(ntr2 - 1))
+  t_val <- (trm1 - trm2)/sqrt(d1 + d2)
+  df_num <- (d1 + d2)^2
+  df_denom <- d1^2/(ntr1 - 1) + d2^2/(ntr2 - 1)
+  df <- df_num/df_denom
+  p_val <- 2 * (1 - pt(q = abs(t_val), df = df))
+  return(list(t_val = t_val,
+              df = df,
+              p_val = p_val))
+}
 
-
-
-t_test <- function(x = NULL, INDEX = NULL, m1, m2, var1, var2, n1, n2, trm1, trm2, winvar1, winvar2, ntr1, ntr2,
-                   paired = FALSE, alpha = 0.05, na.rm = TRUE, type = c("student", "welch", "yuen")){
-  
-  
-  
-  if(!(paired %in% c(TRUE, FALSE))) stop("\npaired must be set to TRUE or FALSE")
-  
-  if(!paired){
+## grand t-test function: ----
+t_test <- function(x = NULL, INDEX = NULL, y = NULL, m1, m2, var1, var2, n1, n2, trm1, trm2, 
+                   winvar1, winvar2, ntr1, ntr2, dependent = FALSE, n_diff, sd_diff, alpha = 0.05, 
+                   na.rm = TRUE, type = c("student_t_test", "dependent_student_t_test", "welch_t_test", "yuen_t_test")){
+  if(!dependent){
     
     if(!is.null(x) && !is.null(INDEX)){
-      
-      if(!is.numeric(x)) stop("\nX must be numeric")
-      
-      if(length(x) != length(INDEX)) stop("\nx and INDEX must have the same length")
-      
-      grps <- unique(INDEX)
-      if(length(grps) < 2 || length(grps) > 2) stop("\nINDEX should contain two unique values")
-      if(any(is.na(grps))) stop("\nNAs present in INDEX")
-      
-      if(trim < 0 || trim > 0.5) stop("\ntrim < 0 or > 0.5, specify a value within these bounds")
-      
-      if(!(na.rm %in% c(TRUE, FALSE))) stop("\nna.rm must be set to TRUE or FALSE")
-      
-      i_NA <- is.na(x)
+            error_detector(x, INDEX, trim, na.rm)
+      i_NA <- complete.cases(x, INDEX)
       if(na.rm) {
-        x <- x[!i_NA]
-        INDEX <- INDEX[!i_NA]
+        x <- x[i_NA]
+        INDEX <- INDEX[i_NA]
       }
-      if(!na.rm && any(i_NA)){
-        stop("\nNAs present in x")
-      }
-      if("yuen" %in% type){
+      
+      if("yuen_t_test" %in% type){
         winvar <- TRUE
       } else{
         winvar <- FALSE
@@ -686,48 +632,17 @@ t_test <- function(x = NULL, INDEX = NULL, m1, m2, var1, var2, n1, n2, trm1, trm
       
     }
     
-    if("student" %in% type){
-      t_student <- (m1 - m2)/sd_combined(var1 = var1, var2 = var2, n1 = n1, n2 = n2, type = "se_pooled")
-      df_student <- n1 + n2 - 2
-      p_student <- 2 * (1 - pt(q = abs(t_student), df = df_student))
-    } else{
-      t_student <- NULL
-      df_student <- NULL
-      p_student <- NULL
-    }
-    
-    if("welch" %in% type){
-      se_welch <- sd_combined(var1 = var1, var2 = var2, n1 = n1, n2 = n2, type = "se_welch")
-      t_welch <- (m1 - m2)/se_welch
-      df_welch_num <- se_welch^4
-      df_welch_denom <- (var1^2/(n1^2 * (n1 - 1))) + (var2^2/(n2^2 * (n2 - 1)))
-      df_welch <- df_welch_num/df_welch_denom
-      p_welch <- 2 * (1 - pt(q = abs(t_welch), df = df_welch))
-    } else{
-      t_welch <- NULL
-      df_welch <- NULL
-      p_welch <- NULL
-    }
-    
-    if("yuen" %in% type){
-      d1 <- (n1 - 1) * winvar1/(ntr1*(ntr1 - 1))
-      d2 <- (n2 - 1) * winvar2/(ntr2*(ntr2 - 1))
-      t_yuen <- (trm1 - trm2)/sqrt(d1 + d2)
-      df_yuen_num <- (d1 + d2)^2
-      df_yuen_denom <- d1^2/(ntr1 - 1) + d2^2/(ntr2 - 1)
-      df_yuen <- df_yuen_num/df_yuen_denom
-      p_yuen <- 2 * (1 - pt(q = abs(t_yuen), df = df_yuen))
-    } else{
-      t_yuen <- NULL
-      df_yuen <- NULL
-      p_yuen <- NULL
-    }
-    
-    return(list(t_student = t_student, df_student = df_student, p_student = p_student, 
-                t_welch = t_welch, df_welch = df_welch, p_welch = p_welch, 
-                t_yuen = t_yuen, df_yuen = df_yuen, p_yuen = p_yuen))
   }
   
+  res <- switch(type,
+                student_t_test = student_t(m1, m2, var1, var2, n1, n2),
+           #     dependent_student_t_test = dependent_student_t(m1, m2, sd_diff, n_diff),
+                welch_t_test = welch_t(m1, m2, var1, var2, n1, n2),
+                yuen_t_test = yuen_t(trm1, trm2, winvar1, winvar2, n1, n2, ntr1, ntr2))
+  
+  
+  
+  return(res)
   
 }
 
@@ -885,7 +800,7 @@ generalized_odds_ratio_ci<- function(x, INDEX, reverse = FALSE) {
   dataset2 <- split(x, INDEX)[[2]]
   if (!reverse)cohen_d <- smd_uni(effsize = "cohen_d", x, INDEX)
   else cohen_d <- smd_uni(effsize = "cohen_d",n1 = length(dataset2), n2=length(dataset1), m1 = mean(dataset2), m2 = mean(dataset1), var1 = var(dataset2), var2 = var(dataset1))
-  cohen_d_ci <- smd_ci(effsize = "cohen_d", val = cohen_d, n1 = length(dataset1), n2 = length(dataset2), var1 = var(dataset1), var2 = var(dataset2))
+  cohen_d_ci <- smd_ci(effsize = "cohen_d", val = cohen_d, n1 = length(dataset1), n2 = length(dataset2), var1 = var(dataset1), var2 = var(dataset2))[2:3]
   delta_l <- cohen_d_ci[[1]] 
   delta_u <- cohen_d_ci[[2]] 
   w_l <- pnorm(delta_l/sqrt(2))
@@ -932,7 +847,7 @@ common_language_es <- function(x, INDEX) {
 
 common_language_es_ci <- function(x, INDEX, cohen_d) {
   split(x, INDEX)
-  cis <- smd_ci(effsize = "cohen_d", val = abs(cohen_d), n1 = length(dataset[[1]]), n2 = length(dataset[[2]]), var1 = var(dataset[[1]]), var2 = var(dataset[[2]]))
+  cis <- smd_ci(effsize = "cohen_d", val = abs(cohen_d), n1 = length(dataset[[1]]), n2 = length(dataset[[2]]), var1 = var(dataset[[1]]), var2 = var(dataset[[2]]))[2:3]
   lower_bound <- pnorm(cis[[1]]/sqrt(2))
   upper_bound <- pnorm(cis[[2]]/sqrt(2))
   return(list(lower_bound = lower_bound, upper_bound = upper_bound))
@@ -949,7 +864,7 @@ probability_of_correct_classification_ci <- function(x, INDEX) {
  dataset1 <- split(x, INDEX)[[1]]
  dataset2 <- split(x, INDEX)[[2]]
  cohen_d <- abs(smd_uni(effsize = "cohen_d", x = x, INDEX = INDEX)[[1]])
- cis <- smd_ci(effsize = "cohen_d", val = cohen_d, n1 = length(dataset1), n2 = length(dataset2), var1 = var(dataset1), var2 = var(dataset2))
+ cis <- smd_ci(effsize = "cohen_d", val = cohen_d, n1 = length(dataset1), n2 = length(dataset2), var1 = var(dataset1), var2 = var(dataset2))[2:3]
  lower_bound <- pnorm(cis[[1]]/2)
  upper_bound <- pnorm(cis[[2]]/2)
  return (list(lower_bound = lower_bound, upper_bound = upper_bound))
@@ -1005,8 +920,8 @@ ovl_parametric_ci <- function(x = NULL, INDEX = NULL, m1, m2, var1, var2, n1, n2
     cohen_d <- smd_uni(effsize = "cohen_d", x = x, INDEX = INDEX)[[1]]
   }
   else cohen_d <- smd_uni(effsize = "cohen_d", m1 =  m1, m2 =  m2, var1 =  var1, var2 = var2, n1 =  n1, n2 = n2)
-  if(!is.null(x))cohen_d_cis <- smd_ci(effsize = "cohen_d", val = cohen_d, n1 = length(dataset1), n2 = length(dataset2), var1 = var(dataset1), var2 = var(dataset2))
-  else cohen_d_cis <- smd_ci(effsize = "cohen_d", val = cohen_d, n1 = m1, n2 = m2, var1 = var1, var2 = var2 )
+  if(!is.null(x))cohen_d_cis <- smd_ci(effsize = "cohen_d", val = cohen_d, n1 = length(dataset1), n2 = length(dataset2), var1 = var(dataset1), var2 = var(dataset2))[2:3]
+  else cohen_d_cis <- smd_ci(effsize = "cohen_d", val = cohen_d, n1 = m1, n2 = m2, var1 = var1, var2 = var2 )[2:3]
   lower_bound <- 2*pnorm(-abs(cohen_d_cis[[1]])/2)
   upper_bound <- 2*pnorm(-abs(cohen_d_cis[[2]])/2)
   list(lower_bound = lower_bound, upper_bound = upper_bound)
@@ -1049,7 +964,7 @@ parametric_cohens_u3_ci <- function(x, INDEX) {
   dataset1 <- split(x, INDEX)[[1]]
   dataset2 <- split(x, INDEX)[[2]]
   cohen_d <- abs(smd_uni(effsize = "cohen_d", x = x, INDEX = INDEX))
-  cohen_d_cis <- smd_ci(effsize = "cohen_d", val = cohen_d, n1 = length(dataset1), n2 = length(dataset2), var1 = var(dataset1), var2 = var(dataset2))
+  cohen_d_cis <- smd_ci(effsize = "cohen_d", val = cohen_d, n1 = length(dataset1), n2 = length(dataset2), var1 = var(dataset1), var2 = var(dataset2))[2:3]
   lower_bound <- pnorm(cohen_d_cis[[1]])
   upper_bound <- pnorm(cohen_d_cis[[2]])
   return (list(lower_bound = lower_bound, upper_bound = upper_bound))
