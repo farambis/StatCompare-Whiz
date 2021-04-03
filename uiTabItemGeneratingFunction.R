@@ -11,7 +11,7 @@ generalUI <- function (id, acceptedFormat, design, mode, esChoices, tsChoices) {
 }
 
 
-generalServer <- function(id, design, mode) {
+generalServer <- function(id, design, mode, prerequisite = "parametric") {
   moduleServer(id = id,
                function(input, output, session) {
                  sidebarPanelResult <-
@@ -20,6 +20,7 @@ generalServer <- function(id, design, mode) {
                  MainPanelServer <-
                    esMainPanelRawDataServer(
                      "esMainPanel",
+                     prerequisite,
                      sidebarPanelResult$data,
                      sidebarPanelResult$inputDataIndex,
                      sidebarPanelResult$inputDataX, 

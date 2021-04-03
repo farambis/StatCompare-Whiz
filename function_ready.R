@@ -43,10 +43,12 @@ trm2 <- mean(split(vals, grp)[[2]], trim = trim)
 ## List of every effect size and test statistic ----
 all_eff_sizes <- list(cohen_d = "cohen_d", hedges_g = "hedges_g", glass_d = "glass_d", glass_d_corr = "glass_d_corr", 
                       bonett_d = "bonett_d", bonett_d_corr = "bonett_d_corr", AKP_eqvar = "AKP_eqvar", AKP_uneqvar = "AKP_uneqvar", 
-                      mann_whitney_based_ps = "mann_whitney_based_ps", ovl_parametric = "ovl_parametric", ps_dependent = "ps_dependent", ovl_nonparametric = "ovl_nonparametric")
+                      mann_whitney_based_ps = "mann_whitney_based_ps", ovl_parametric = "ovl_parametric", ps_dependent = "ps_dependent",
+                      ovl_nonparametric = "ovl_nonparametric", generalized_odds_ratio = "generalized_odds_ratio", 
+                      generalized_odds_ratio_dependent = "generalized_odds_ratio_dependent", common_language = "common_language", ovl2 = "ovl2", ovl2_parametric = "ovl2_parametric")
 
 all_test_statistics <- list(student_t_test = "student_t_test", dependent_student_t_test = "dependent_student_t_test",
-                            welch_t_test = "welch_t_test", yuen_t_test = "yuen_t_test", mann_whitney = "mann_whitney")
+                            welch_t_test = "welch_t_test", yuen_t_test = "yuen_t_test", mann_whitney = "mann_whitney", mann_whitney_dependent = "mann_whitney_dependent")
 
 es_list <- c("cohen_d", "hedges_g", "glass_d", "glass_d_corr", "bonett_d", "bonett_d_corr")
 ts_list <- c("student_t_test", "welch_t_test", "yuen_t_test")
@@ -71,7 +73,10 @@ generate_es_raw_data_dataframe <- function(es_list, INDEX = NULL, x, y) {
            "mann_whitney_based_ps" = c(mann_whitney_based_ps(x = x, INDEX = INDEX), mann_whitney_based_ps_ci(x = x, INDEX = INDEX)), 
            "ovl_parametric" = c(ovl_parametric(x = x, INDEX = INDEX), ovl_parametric_ci(x = x, INDEX = INDEX)), 
            "ovl_nonparametric" = c(non_parametric_overlapping_coefficient(x, INDEX), ovl_parametric_ci(x, INDEX)), # parametric ci 
-           "ps_dependent" = c(ps_dependent_groups(x, y), ps_dependent_groups_ci(x, y))
+           "ps_dependent" = c(ps_dependent_groups(x, y), ps_dependent_groups_ci(x, y)), 
+           "generalized_odds_ratio" = c(generalized_odds_ratio(x = x, INDEX = INDEX), generalized_odds_ratio_ci(x=x, INDEX=INDEX)), 
+           "generalized_odds_ratio_dependent" = c(generalized_odds_ratio(x = x, INDEX = INDEX, y = y), generalized_odds_ratio_ci(x = x, y = y)), 
+           "common_language" = c(common_language_es(x = x, INDEX = INDEX), common_language_es_ci(x = x, INDEX = INDEX))
            )
     es_result <- c(es_result,res[[1]])
     es_ci_lower <- c(es_ci_lower, res[[2]])
@@ -148,11 +153,13 @@ generate_ts_dataframe <- function(ts_list, INDEX = NULL, x = NULL, m1, m2, stand
   return(ts_dataframe)
 }
 
-generate_non_parametric_ts_dataframe <- function(ts_list, INDEX, x) {
+generate_non_parametric_ts_dataframe <- function(ts_list, INDEX, x, y) {
   ts_p_value <- vector(mode="double", length = 0L)
   for (i in ts_list) {
     res <- switch(i, 
-                  "mann_whitney" = p_value_for_mann_whitney_based_ps(x = x, INDEX = INDEX))
+                  "mann_whitney" = p_value_for_mann_whitney_based_ps(x = x, INDEX = INDEX), 
+                  "mann_whitney_dependent" = p_value_for_mann_whitney_based_ps(x=x, y=y)
+                  )
     ts_p_value <- c(ts_p_value, res)
   }
   ts_dataframe <- data.frame(
@@ -702,9 +709,10 @@ calculate_ps_ignoring_ties <- function(dataset1, dataset2) {
   count/(length(dataset1)*length(dataset2)-ties)
 }
 
-p_value_for_mann_whitney_based_ps <- function(x, INDEX) { # deviates by 0.02 from stat wilcoxin test which is continuity corrected
-  dataset <- split(x, INDEX)
-  return(calculate_p_value_from_z(calculate_z_for_u_statistic(dataset[[1]], dataset[[2]])))
+p_value_for_mann_whitney_based_ps <- function(INDEX, x, y = NULL) { # deviates by 0.02 from stat wilcoxin test which is continuity corrected
+  if (is.null(y)) { dataset <- split(x, INDEX)
+    return(calculate_p_value_from_z(calculate_z_for_u_statistic(dataset[[1]], dataset[[2]])))}
+  else return(calculate_p_value_from_z(calculate_z_for_u_statistic(x, y)))
 }
 
 calculate_p_value_from_z <- function(z) {
@@ -799,20 +807,25 @@ ps_dependent_groups_ci <- function(x, y, alpha = 0.05) {
   return (list(lower_bound = lower_bound, upper_bound = upper_bound))
 }
 
-generalized_odds_ratio <- function(x, INDEX, dependent = FALSE, ignore_ties = FALSE) {
+generalized_odds_ratio <- function(x, INDEX = NULL, y = NULL, ignore_ties = FALSE) {
   # generalized odds ratio-----
   # ties are counted as 0.5
-  if (!dependent) ps <- mann_whitney_based_ps(x, INDEX, ignore_ties = ignore_ties) 
+  if (is.null(y)) ps <- mann_whitney_based_ps(x, INDEX, ignore_ties = ignore_ties) 
   else {
-    dataset <- split(x, INDEX)
-    ps <- ps_for_dependent_groups(dataset[[1]], dataset[[2]], ignore_ties = ignore_ties)}
+    ps <- ps_dependent_groups(x, y, ignore_ties = ignore_ties)}
   return (ps/(1-ps))
 }
 
-generalized_odds_ratio_ci<- function(x, INDEX, reverse = FALSE) {
-  dataset1 <- split(x, INDEX)[[1]]
-  dataset2 <- split(x, INDEX)[[2]]
-  if (!reverse)cohen_d <- smd_uni(effsize = "cohen_d", x, INDEX)
+generalized_odds_ratio_ci<- function(INDEX, x, y = NULL, reverse = FALSE) {
+  if (is.null(y)) {
+    dataset1 <- split(x, INDEX)[[1]]
+    dataset2 <- split(x, INDEX)[[2]]
+  } 
+  else {
+    dataset1 <- x
+    dataset2 <- y
+  }
+  if (!reverse)cohen_d <- smd_uni(effsize = "cohen_d",n1 = length(dataset1), n2=length(dataset2), m1 = mean(dataset1), m2 = mean(dataset2), var1 = var(dataset1), var2 = var(dataset2))
   else cohen_d <- smd_uni(effsize = "cohen_d",n1 = length(dataset2), n2=length(dataset1), m1 = mean(dataset2), m2 = mean(dataset1), var1 = var(dataset2), var2 = var(dataset1))
   cohen_d_ci <- smd_ci(effsize = "cohen_d", val = cohen_d, n1 = length(dataset1), n2 = length(dataset2), var1 = var(dataset1), var2 = var(dataset2))[2:3]
   delta_l <- cohen_d_ci[[1]] 
@@ -824,13 +837,14 @@ generalized_odds_ratio_ci<- function(x, INDEX, reverse = FALSE) {
   return(list(lower_bound = lower_bound, upper_bound = upper_bound))
 }
 
-dominance_measure_based_es <- function(x, INDEX, dependent = FALSE) {
+dominance_measure_based_es <- function(x, INDEX, y = NULL) {
   # dominance measure ----
-  dataset <- split(x, INDEX)
+  if (!is.null(y)) {dataset <- split(x, INDEX)
   dataset1 <- dataset[[1]]
   dataset2 <- dataset[[2]]
-  if (!dependent)return (ps_without_counting_ties(dataset1, dataset2) - ps_without_counting_ties(dataset2, dataset1))
-  return (ps_for_dependent_groups(dataset1, dataset2) - ps_for_dependent_groups(dataset2, dataset1))
+  }
+  if (!is.null(y))return (ps_without_counting_ties(dataset1, dataset2) - ps_without_counting_ties(dataset2, dataset1))
+  return (ps_for_dependent_groups(x, y) - ps_for_dependent_groups(x, y))
 }
 
 ps_without_counting_ties <- function(dataset1, dataset2) {
@@ -860,7 +874,8 @@ common_language_es <- function(x, INDEX) {
 }
 
 common_language_es_ci <- function(x, INDEX, cohen_d) {
-  split(x, INDEX)
+  dataset <- split(x, INDEX)
+  cohen_d <- smd_uni(effsize = "cohen_d", x = x, INDEX = INDEX)
   cis <- smd_ci(effsize = "cohen_d", val = abs(cohen_d), n1 = length(dataset[[1]]), n2 = length(dataset[[2]]), var1 = var(dataset[[1]]), var2 = var(dataset[[2]]))[2:3]
   lower_bound <- pnorm(cis[[1]]/sqrt(2))
   upper_bound <- pnorm(cis[[2]]/sqrt(2))

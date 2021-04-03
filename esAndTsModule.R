@@ -8,7 +8,7 @@ esAndTsUi <- function(id, esChoices, tsChoices) {
           )
 }
 
-esAndTsRawDataServer <- function(id, dat, index, x, y) {
+esAndTsRawDataServer <- function(id, prerequisite, dat, index, x, y) {
   moduleServer(id,
                function(input, output, session) {
                  selectedEs <- checkboxGroupServer("esCheckboxGroup")
@@ -17,8 +17,8 @@ esAndTsRawDataServer <- function(id, dat, index, x, y) {
                  })
                  selectedTs <- checkboxGroupServer("tsCheckboxGroup")
                  output$tsTable <- renderTable({
-                   if ("mann_whitney" %in% selectedTs()) generate_non_parametric_ts_dataframe(ts_list = selectedTs(),INDEX =  index(),x =  x()) 
-                   else generate_ts_dataframe(selectedTs(), index(), x(), y())
+                   if (prerequisite == "nonparametric") generate_non_parametric_ts_dataframe(ts_list = selectedTs(),INDEX =  index(),x =  x(), y()) 
+                   else generate_ts_dataframe(ts_list = selectedTs(), INDEX = index(), x = x())
                  })
                })
 }
