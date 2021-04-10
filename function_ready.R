@@ -155,17 +155,22 @@ generate_ts_dataframe <- function(ts_list, INDEX = NULL, x = NULL, m1, m2, stand
 
 generate_non_parametric_ts_dataframe <- function(ts_list, INDEX, x, y) {
   ts_p_value <- vector(mode="double", length = 0L)
+  ts_z_value <- vector(mode="double", length = 0L)
   for (i in ts_list) {
     res <- switch(i, 
-                  "mann_whitney" = p_value_for_mann_whitney_based_ps(x = x, INDEX = INDEX), 
-                  "mann_whitney_dependent" = p_value_for_mann_whitney_based_ps(x=x, y=y)
+                  "mann_whitney" = ts_for_mann_whitney_based_ps(x = x, INDEX = INDEX), 
+                  "mann_whitney_dependent" = ts_for_mann_whitney_based_ps(x=x, y=y)
                   )
-    ts_p_value <- c(ts_p_value, res)
+    ts_p_value <- c(ts_p_value, res[1])
+    ts_z_value <- c(ts_z_value, res[2])
   }
   ts_dataframe <- data.frame(
     ts_list, 
-    ts_p_value
+    ts_p_value, 
+    ts_z_value
   )
+  colnames(ts_dataframe) <- c("Name", "p", "z")
+  return(ts_dataframe)
 }
 
 # Helper functions ----
@@ -709,10 +714,14 @@ calculate_ps_ignoring_ties <- function(dataset1, dataset2) {
   count/(length(dataset1)*length(dataset2)-ties)
 }
 
-p_value_for_mann_whitney_based_ps <- function(INDEX, x, y = NULL) { # deviates by 0.02 from stat wilcoxin test which is continuity corrected
-  if (is.null(y)) { dataset <- split(x, INDEX)
-    return(calculate_p_value_from_z(calculate_z_for_u_statistic(dataset[[1]], dataset[[2]])))}
-  else return(calculate_p_value_from_z(calculate_z_for_u_statistic(x, y)))
+ts_for_mann_whitney_based_ps <- function(INDEX, x, y = NULL) { # deviates by 0.02 from stat wilcoxin test which is continuity corrected
+  if (is.null(y)) {
+    dataset <- split(x, INDEX)
+    x <- dataset[1]
+    y <- dataset[2]}
+    z_value <- calculate_z_for_u_statistic(x, y)
+    p_value <- calculate_p_value_from_z(z_value)
+    return(list(p = p_value, z = z_value))
 }
 
 calculate_p_value_from_z <- function(z) {
@@ -876,7 +885,7 @@ common_language_es <- function(x, INDEX) {
 common_language_es_ci <- function(x, INDEX, cohen_d) {
   dataset <- split(x, INDEX)
   cohen_d <- smd_uni(effsize = "cohen_d", x = x, INDEX = INDEX)
-  cis <- smd_ci(effsize = "cohen_d", val = abs(cohen_d), n1 = length(dataset[[1]]), n2 = length(dataset[[2]]), var1 = var(dataset[[1]]), var2 = var(dataset[[2]]))[2:3]
+  cis <- smd_ci(effsize = "cohen_d", val = cohen_d, x = x, INDEX = INDEX)[2:3]
   lower_bound <- pnorm(cis[[1]]/sqrt(2))
   upper_bound <- pnorm(cis[[2]]/sqrt(2))
   return(list(lower_bound = lower_bound, upper_bound = upper_bound))
