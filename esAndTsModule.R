@@ -8,7 +8,7 @@ esAndTsUi <- function(id, esChoices, tsChoices) {
           )
 }
 
-esAndTsRawDataServer <- function(id, dat, index, x, y) {
+esAndTsRawDataServer <- function(id, assumption, dat, index, x, y) {
   moduleServer(id,
                function(input, output, session) {
                  selectedEs <- checkboxGroupServer("esCheckboxGroup")
@@ -17,7 +17,8 @@ esAndTsRawDataServer <- function(id, dat, index, x, y) {
                  })
                  selectedTs <- checkboxGroupServer("tsCheckboxGroup")
                  output$tsTable <- renderTable({
-                   generate_ts_dataframe(selectedTs(), index(), x(), y())
+                   if (assumption == "nonparametric") generate_non_parametric_ts_dataframe(ts_list = selectedTs(),INDEX =  index(),x =  x(), y()) 
+                   else generate_ts_dataframe(ts_list = selectedTs(), INDEX = index(), x = x())
                  })
                })
 }
@@ -32,6 +33,7 @@ esAndTsEducationalServer <- function(id,  mean1, standardDeviation1, sampleSize1
                  selectedTs <- checkboxGroupServer("tsCheckboxGroup")
                  output$tsTable <- renderTable({
                    generate_ts_dataframe(ts_list = selectedTs(), m1 = mean1(), m2 = mean2(), standardDeviation1 = standardDeviation1(), standardDeviation2 = standardDeviation2(), n1 = sampleSize1(), n2 = sampleSize2())
-                 })
+                 
+                   })
                })
 }
