@@ -30,8 +30,8 @@ sd1 <- sd(split(vals, grp)[[1]])
 sd2 <- sd(split(vals, grp)[[2]])
 var1 <- var(split(vals, grp)[[1]])
 var2 <- var(split(vals, grp)[[2]])
-winvar1 <- var(winsor((split(vals, grp))[[1]]))
-winvar2 <- var(winsor((split(vals, grp))[[2]]))
+#winvar1 <- var(winsor((split(vals, grp))[[1]]))
+#winvar2 <- var(winsor((split(vals, grp))[[2]]))
 trim <- 0.2
 ntr1 <- n1 - (2 * floor(trim * n1))
 ntr2 <- n2 - (2 * floor(trim * n2))
@@ -650,7 +650,112 @@ t_test <- function(x = NULL, INDEX = NULL, y = NULL, m1, m2, var1, var2, n1, n2,
 
 # Effect Sizes that go beyond comparison of the mean  -------------------------------------------
 
+## Variance ratio ----
+variance_ratio <- function(x = NULL, INDEX = NULL, s1, s2, ref = c("grp1", "grp2"), log = FALSE){
+  if(!is.null(x) & !is.null(INDEX)){
+    sds <- tapply(x, INDEX, sd)
+    s1 <- sds[[1]]
+    s2 <- sds[[2]]
+  }
+  
+  denom <- ifelse(ref %in% "grp1", s1^2, s2^2)
+  num <- ifelse(ref %in% "grp1", s2^2, s1^2)
+  vr <- ifelse(log, log(denom/num), denom/num)
+  return(vr)
+}
 
+
+## Tail ratios: ----
+### Parametric tail ratios: ----
+parametric_tr <- function(x = NULL, INDEX = NULL, m1, m2, s1, s2, ref = c("grp1", "grp2"),
+                          tail = c("lower", "upper"), cutoff){
+  
+  if(!is.null(x) && !is.null(INDEX)){
+    univar_stats <- smd_stats(x, INDEX, type = "univariate")
+    for(i in names(univar_stats)){
+      assign(i, univar_stats[[i]])
+    }
+    s1 <- sqrt(var1)
+    s2 <- sqrt(var2)
+  }
+  
+  cdf_grp1 <- pnorm(cutoff, m1, s1)
+  cdf_grp2 <- pnorm(cutoff, m2, s2)
+  
+  tr <-   switch(ref,
+                 "grp1" = ifelse(tail %in% "lower", cdf_grp1/cdf_grp2, (1-cdf_grp1)/(1-cdf_grp2)),
+                 "grp2" = ifelse(tail %in% "lower", cdf_grp2/cdf_grp1, (1-cdf_grp2)/(1-cdf_grp1)),
+                 NULL)
+  return(tr)
+}
+
+### Non-parametric tail ratios: ----
+# Apprxomiate tail ratios based on a kernel density estimator of choice:
+non_parametric_tr_approx <- function(x, INDEX, ref = c("grp1", "grp2"), tail = c("lower", "upper"), 
+                                     cutoff, bw = "nrd0", kernel = c("gaussian",
+                                                                     "epanechnikov",
+                                                                     "rectangular",
+                                                                     "triangular",
+                                                                     "biweight",
+                                                                     "cosine",
+                                                                     "optcosine")){
+  dat <- split(x, INDEX)
+  num_intervals <- abs(diff(range(unlist(dat)))) * 10
+  d1 <- density(dat[[1]], bw = bw, kernel = kernel)
+  d2 <- density(dat[[2]], bw = bw, kernel = kernel)
+  f1 <- approxfun(d1$x, d1$y)
+  f2 <- approxfun(d2$x, d2$y)
+  min <- ifelse(tail %in% "lower", max(min(d1$x), min(d2$x)), cutoff)
+  max <- ifelse(tail %in% "lower", cutoff, min(max(d1$x), max(d2$x)))
+  interval <- seq(min, max, length.out = num_intervals)
+  grp1_tail <- integrate(f1, min, max)$value
+  grp2_tail <- integrate(f2, min, max)$value
+  tr <- ifelse(ref %in% "grp1", grp1_tail/grp2_tail, grp2_tail/grp1_tail)
+  return(tr)
+  
+}
+
+# give exact tail ratios (equivalent to risk ratios) when enough observations are
+# present below the cutoff in each group - otherwise call non_parametric_approx
+# to yield approximate tail ratios.
+non_parametric_tr <- function(x, INDEX, ref = c("grp1", "grp2"), tail = c("lower", "upper"), cutoff,
+                              bw = "nrd0", kernel = c("gaussian",
+                                                      "epanechnikov",
+                                                      "rectangular",
+                                                      "triangular",
+                                                      "biweight",
+                                                      "cosine",
+                                                      "optcosine")){
+  dat <- split(x, INDEX)
+  n1 <- length(dat[[1]])
+  n2 <- length(dat[[2]])
+  
+  n1_below <- sum(dat[[1]] <= cutoff)
+  n1_above <- sum(dat[[1]] >= cutoff)
+  
+  n2_below <- sum(dat[[2]] <= cutoff)
+  n2_above <- sum(dat[[2]] >= cutoff)
+  
+  bool <- ifelse(tail %in% "lower", any(c(n1_below, n2_below) == 0), any(c(n1_above, n2_above) == 0))
+  if(bool){
+    return(non_parametric_tr_approx(x, INDEX, ref, tail, cutoff, bw, kernel))
+  } else{
+    grp1_below <- n1_below/n1
+    grp1_above <- n1_above/n1
+    grp2_below <- n2_below/n2
+    grp2_above <- n2_above/n2
+    
+    tr <-   switch(ref,
+                   grp1 = ifelse(tail %in% "lower", grp1_below/grp2_below, grp1_above/grp2_above),
+                   grp2 = ifelse(tail %in% "lower", grp2_below/grp1_below, grp2_above/grp1_above)
+    )
+    
+    return(tr)
+  }
+  
+}
+
+## Mann Whitney ----
 
 mann_whitney_based_ps <- function(x, INDEX, ignore_ties = FALSE) {
   # Mann Whitney u -----
