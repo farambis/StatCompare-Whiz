@@ -4,41 +4,6 @@
 #TODO User sollen angeben wie die Faktoren zu rangreihen sind, damit in der server
 # funktion die Gruppierungsvariable richtig faktorisiert werden kann
 
-# variables for examples ----
-# parameters:
-m1 <- 100
-m2 <- 110
-sd1 <- 10
-sd2 <- 15
-n1 <-30
-n2 <- 37
-# n_NA <- 10
-
-RNGversion(vstr = "4.0.2")
-set.seed(123)
-vals <- c(rnorm(n1, m1, sd1), rnorm(n2, m2, sd2))
-# vals <- c(rnorm(n = n1 - n_NA/2, mean = m1, sd = sd1), rnorm(n = n2 - n_NA/2, mean = m2, sd = sd2), rep(NA, times = n_NA))
-# vals <- vals[sample(1:length(vals))]
-grp <- factor(rep(1:2, times = c(n1, n2)))
-#mat <- cbind(vals, c(rnorm(n1, m1, sd1), rnorm(n2, m2, sd2)), grp)
-
-
-
-m1 <- mean(split(vals, grp)[[1]])
-m2 <- mean(split(vals, grp)[[2]])
-sd1 <- sd(split(vals, grp)[[1]])
-sd2 <- sd(split(vals, grp)[[2]])
-var1 <- var(split(vals, grp)[[1]])
-var2 <- var(split(vals, grp)[[2]])
-#winvar1 <- var(winsor((split(vals, grp))[[1]]))
-#winvar2 <- var(winsor((split(vals, grp))[[2]]))
-trim <- 0.2
-ntr1 <- n1 - (2 * floor(trim * n1))
-ntr2 <- n2 - (2 * floor(trim * n2))
-trm1 <- mean(split(vals, grp)[[1]], trim = trim)
-trm2 <- mean(split(vals, grp)[[2]], trim = trim)
-
-
 # Grand functions computing every effect size and test statistic for the app ----
 ## List of every effect size and test statistic ----
 all_eff_sizes <- list(cohen_d = "cohen_d", hedges_g = "hedges_g", glass_d = "glass_d", glass_d_corr = "glass_d_corr", 
