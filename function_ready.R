@@ -923,7 +923,7 @@ dominance_measure_based_es <- function(x, INDEX, y = NULL) {
   dataset2 <- dataset[[2]]
   }
   if (!is.null(y))return (ps_without_counting_ties(dataset1, dataset2) - ps_without_counting_ties(dataset2, dataset1))
-  return (ps_for_dependent_groups(x, y) - ps_for_dependent_groups(x, y))
+  return (ps_dependent_groups(x, y) - ps_dependent_groups(x, y))
 }
 
 ps_without_counting_ties <- function(dataset1, dataset2) {
@@ -953,7 +953,6 @@ common_language_es <- function(x, INDEX) {
 }
 
 common_language_es_ci <- function(x, INDEX, cohen_d) {
-  dataset <- split(x, INDEX)
   cohen_d <- smd_uni(effsize = "cohen_d", x = x, INDEX = INDEX)
   cis <- smd_ci(effsize = "cohen_d", val = cohen_d, x = x, INDEX = INDEX)[2:3]
   lower_bound <- pnorm(cis[[1]]/sqrt(2))
@@ -1038,18 +1037,18 @@ ovl_parametric_ci <- function(x = NULL, INDEX = NULL, m1, m2, var1, var2, n1, n2
 
 overlapping_coefficient_two <- function(x, INDEX, parametric = FALSE) {
   if (!parametric) ovl <- non_parametric_overlapping_coefficient(x, INDEX)
-  else ovl <- parametric_overlapping_coefficient(x, INDEX)
+  else ovl <- ovl_parametric(x, INDEX)
   return (ovl/(2-ovl))
 }
 
 
 cohens_coefficient_of_nonoverlap_u1 <- function(x, INDEX, parametric = FALSE) {
   if(!parametric) ovl <- non_parametric_overlapping_coefficient(x, INDEX)
-  else ovl <- parametric_overlapping_coefficient(x, INDEX)
+  else ovl <- ovl_parametric(x, INDEX)
   return (1-ovl/(2-ovl))
 }
 
-non_parametric_cohens_u3_ci <- function(x, INDEX) {
+non_parametric_cohens_u3 <- function(x, INDEX) {
   dataset <- split(x, INDEX)
   dataset1 <- dataset[[1]]
   dataset2 <- dataset[[2]]

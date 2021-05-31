@@ -1,5 +1,6 @@
 source("function_ready.R")
 
+# Todo: remove testdataset before deployment
 m1 <- 100
 m2 <- 110
 s1 <- 10
@@ -18,6 +19,10 @@ density <- NULL
 
 col_tail1 <- hcl(h = 10, c = 40, l = 70, alpha = 0.4)
 col_tail2 <- hcl(h = 210, c = 40, l = 70, alpha = 0.4)
+
+blank_line <- 0
+solid_line <- 1
+dashed_line <- 2
 
 
 # Parametric plots ----
@@ -302,3 +307,158 @@ plot_non_parametric_tr_zoom <- function(x, INDEX, ref = c("grp1", "grp2"), tail 
   
 }
 
+plot_non_parametric_overlap <- function(x,
+                                        INDEX,
+                                        bw = "nrd0",
+                                        kernel = c(
+                                                           "gaussian",
+                                                           "epanechnikov",
+                                                           "rectangular",
+                                                           "triangular",
+                                                           "biweight",
+                                                           "cosine",
+                                                           "optcosine")) {
+  intervals <- 1000
+  original_dataset <- split(x, INDEX)
+  d1 <- density(original_dataset[[1]], bw = bw, kernel = kernel)
+  d2 <- density(original_dataset[[2]], bw = bw, kernel = kernel)
+  f1 <- approxfun(d1$x, d1$y)
+  f2 <- approxfun(d2$x, d2$y)
+  min <- max(min(d1$x), min(d2$x))
+  max <- min(max(d1$x), max(d2$x))
+  interval <- seq(min, max, length.out = intervals)
+  y_values_min <- pmin(f1(interval), f2(interval))
+
+  x_min <- min(d1$x, d2$x)
+  x_max <- max(d1$x, d2$x)
+  y_min <- min(d1$y, d2$y)
+  y_max <- max(d1$y, d2$y)
+  y_max <- y_max + (y_max - y_min) / 5
+
+  plot(x = c(x_min, x_max), y = c(y_min, y_max), xlab = '', ylab = '', main = "", type = 'n',
+       axes = FALSE)
+
+  axis(side = 1, round(seq(x_min, x_max, length.out = 5), digits = 2))
+  axis(side = 2, round(seq(y_min, y_max, length.out = 5), digits = 3), las = 2)
+  polygon(c(interval[[1]], interval),
+          c(0, y_values_min), border = NA,
+          col = col_polygon,
+          density = NULL)
+  lines(d1, col = col1)
+  lines(d2, col = col2)
+  legend(x = x_min, xjust = 0, y = y_max, yjust = 1,
+         bty = "n",
+         legend = c("Group 1",
+                    "Group 2",
+                    paste0("d = ", round(smd_uni("cohen_d", x = x, INDEX = INDEX), 2)),
+                    paste("OVL = ", round(non_parametric_overlapping_coefficient(x = x, INDEX = INDEX, bw = bw, kernel = kernel)), 2)),
+         col = c(col1, col2, "white", col_polygon),
+         pch = 15)
+}
+
+plot_non_parametric_overlap_two <- function(x,
+                                            INDEX,
+                                            bw = "nrd0",
+                                            kernel = c(
+                           "gaussian",
+                           "epanechnikov",
+                           "rectangular",
+                           "triangular",
+                           "biweight",
+                           "cosine",
+                           "optcosine")) {
+  original_dataset <- split(x, INDEX)
+  d1 <- density(original_dataset[[1]], bw = bw, kernel = kernel)
+  d2 <- density(original_dataset[[2]], bw = bw, kernel = kernel)
+  x_min <- min(d1$x, d2$x)
+  x_max <- max(d1$x, d2$x)
+  y_min <- min(d1$y, d2$y)
+  y_max <- max(d1$y, d2$y)
+  y_max <- y_max + (y_max - y_min) / 5
+
+  plot(x = c(x_min, x_max), y = c(y_min, y_max), xlab = '', ylab = '', main = "", type = 'n',
+       axes = FALSE)
+
+  axis(side = 1, round(seq(x_min, x_max, length.out = 5), digits = 2))
+  axis(side = 2, round(seq(y_min, y_max, length.out = 5), digits = 3), las = 2)
+  polygon(c(d1$x, rev(d2$x)),
+          c(d1$y, rev(d2$y)), border = NA,
+          col = col_polygon,
+          density = NULL)
+  lines(d1, col = col1)
+  lines(d2, col = col2)
+  legend(x = x_min, xjust = 0, y = y_max, yjust = 1,
+         bty = "n",
+         legend = c("Group 1",
+                    "Group 2",
+                    paste0("d = ", round(smd_uni("cohen_d", x = x, INDEX = INDEX), 2)),
+                    paste("OVL2 = ", round(overlapping_coefficient_two(x, INDEX)), 2)),
+         col = c(col1, col2, "white", col_polygon),
+         pch = 15)
+}
+
+
+boxplot_of_pairwise_difference_scores <- function(x, INDEX) {
+  original_dataset <- split(x, INDEX)
+  dataset1 <- original_dataset[[1]]
+  dataset2 <- original_dataset[[2]]
+  difference_scores <- list()
+  for (i in dataset1)
+    for (j in dataset2) {
+      difference_scores <- c(difference_scores, i - j)
+    }
+  myseq <- seq(0, 2, 2 / (length(difference_scores) - 1))
+  plot(myseq, difference_scores, xaxt = 'n', type = 'n', xlab = '', ylab = 'Difference Scores')
+  for (i in difference_scores)
+    boxplot(i, add = TRUE, ylab = '', axes = FALSE)
+  title(main = 'Boxplot of all pairwise difference scores')
+  legend(x = 0, xjust = 0, y = max(unlist(difference_scores)), yjust = 1,
+         bty = "n",
+         legend = "Difference of a single pairwise comparison", col = "black", lty = 1)
+}
+
+plot_u3 <- function(x, INDEX) {
+  original_dataset <- split(x, INDEX)
+  dataset1 <- original_dataset[[1]]
+  dataset2 <- original_dataset[[2]]
+  if (mean(dataset1)<mean(dataset2)) {
+    tmp <- dataset1
+    dataset1 <- dataset2
+    dataset2 <- tmp
+  }
+
+  d1 <- density(dataset1)
+  d2 <- density(dataset2)
+  f1 <- approxfun(d1$x, d1$y)
+  f2 <- approxfun(d2$x, d2$y)
+
+  x_min <- min(d1$x, d2$x)
+  x_max <- max(d1$x, d2$x)
+  y_min <- min(d1$y, d2$y)
+  y_max <- max(d1$y, d2$y)
+  y_max <- y_max + (y_max - y_min)/5
+  median_region_x <- seq(median(dataset2), x_max, length.out = 1000)
+  polygon_x <- c(median(dataset2), median_region_x, x_max)
+  polygon_y <- c(0,f1(median_region_x),0)
+
+  plot(x = c(x_min, x_max), y = c(y_min, y_max), xlab = '', ylab = '', main = "", type = 'n',
+       axes = FALSE)
+  axis(side = 1, round(seq(x_min, x_max, length.out = 5), digits = 2))
+  axis(side = 2, round(seq(y_min, y_max, length.out = 5), digits = 3), las = 2)
+
+  polygon(polygon_x, polygon_y,  col = col1)
+
+  segments(x0 = c(mean(dataset1), mean(dataset2), median(dataset2)), y0 = c(0, 0, 0),
+           y1 = c(f1(mean(dataset1)), f2(mean(dataset2)), f2(median(dataset2))),lty = c(dashed_line, dashed_line, solid_line), col = c(seg_col1, seg_col2, seg_col2))
+
+  lines(d1, col = col1)
+  lines(d2, col = col2)
+  legend(x = x_min, xjust = 0, y = y_max, yjust = 1,
+         bty = "n",
+         legend = c("Group with higher mean",
+                    "Group with lower mean",
+                    paste("Cohen's U3 = ", round(non_parametric_cohens_u3(x, INDEX)), 2), "mean", "median"),
+         col = c(col1, col2, "white", "black", "black"), lty = c(blank_line, blank_line, blank_line, solid_line, dashed_line),
+         pch = c(15, 15, 15, NA, NA))
+
+}
