@@ -1052,14 +1052,14 @@ non_parametric_cohens_u3 <- function(x, INDEX) {
   dataset <- split(x, INDEX)
   dataset1 <- dataset[[1]]
   dataset2 <- dataset[[2]]
-  mean_1 <- mean(dataset1)
-  mean_2 <- mean(dataset2) 
-  if (mean_1 < mean_2) {
+  median_1 <- median(dataset1)
+  median_2 <- median(dataset2)
+  if (median_1 < median_2) {
     dataset1 <- dataset[[2]]
     dataset2 <- dataset[[1]]
   }
-  median <- median(dataset2) 
-  result <- 1/length(dataset1) * sum(unlist(lapply(dataset1, function(x){ if (x>median) 1 else 0})))
+  median <- median(dataset1)
+  result <- 1/length(dataset2) * sum(unlist(lapply(dataset2, function(x){ if (x<median) 1 else 0})))
   return(result)
 }
 
