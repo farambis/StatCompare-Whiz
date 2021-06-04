@@ -10,7 +10,7 @@ n2 <- 10
 vals <- c(rnorm(n1, m1, s1), rnorm(n2, m2, s2))
 grp <- factor(rep(1:2, times = c(n1, n2)))
 
-#Parameter
+# Parameter ----
 col1 <- hcl(h = 10, c = 40, l = 70)
 col2 <- hcl(h = 210, c = 40, l = 70)
 
@@ -29,7 +29,7 @@ dashed_line <- 2
 
 
 # Parametric plots ----
-## Parametric overlap plot ----
+## Plot for parametric overlapping coefficient ----
 
 
 plot_parametric_overlap <- function(x, INDEX,
@@ -81,7 +81,121 @@ plot_parametric_overlap <- function(x, INDEX,
 }
 
 
-## Parametric tail ratio plots (without and with zoom) ----
+
+## Plot for parametric Cohen's U1 effect measure ----
+
+plot_parametric_u1 <- function(x, INDEX, m1, m2, s1, s2, n1, n2){
+  if(!missing(x) && !missing(INDEX)){
+    
+    univar_stats <- smd_stats(x, INDEX, type = "univariate")
+    for(i in names(univar_stats)){
+      assign(i, univar_stats[[i]])
+    }
+    s1 <- sqrt(var1)
+    s2 <- sqrt(var2)
+  }
+  
+  x_from <- min(m1, m2) - (3.5 * max(s1, s2))
+  x_to <- max(m1, m2) + 3.5 * max(s1, s2)
+  x_length <- max(((x_to -  x_from) * 2), 201)
+  x <- seq(x_from, x_to, length.out = x_length)
+  
+  y_group1 <- dnorm(x, m1, s1)
+  y_group2 <- dnorm(x, m2, s2)
+  
+  
+  y_min <- min(y_group1, y_group2)
+  y_max <- max(y_group1, y_group2)
+  y_from <- y_min
+  y_to <- y_max + ((y_max - y_min)/5)
+  y <- c(y_from, y_to)
+  
+  polygon_x <- c(x[[1]], x, rev(x), x[[1]])
+  polygon_y <- c(0, y_group1, rev(y_group2), 0)
+  
+  plot(x = range(x), y, type = "n", axes = FALSE, xlab = "", ylab = "", main = "")
+  axis(side = 1, at = round(seq(x_from, x_to, length.out = 5), digits = 2))
+  axis(side = 2, at = round(seq(y_from, y_to, length.out = 5), digits = 3), las = 2)
+  polygon(polygon_x, polygon_y, col = col_polygon, border = NA)
+  bool <- y_group1 > y_group2
+  lines(x[bool], y_group1[bool], col = col1)
+  lines(x[!bool], y_group1[!bool], col = col1, lty = dashed_line)
+  lines(x[!bool], y_group2[!bool], col = col2)
+  lines(x[bool], y_group2[bool], col = col2, lty = dashed_line)
+  
+  legend(x = x_from, xjust = 0, y = y_to, yjust = 1,
+         col = c(col1, col2, col_polygon),
+         pch = c(NA, NA, 15),
+         lty = c(solid_line, solid_line, NA),
+         legend = c("Group 1",
+                    "Group 2",
+                    "U1 ="),
+         bty = "n")
+  
+}
+
+
+## Plot for parametric Cohen's U3 effect measure  ----
+
+plot_parametric_u3 <- function(x, INDEX, m1, m2, s1, s2){
+ 
+  if(!missing(x) && !missing(INDEX)){
+    
+    univar_stats <- smd_stats(x, INDEX, type = "univariate")
+    for(i in names(univar_stats)){
+      assign(i, univar_stats[[i]])
+    }
+    s1 <- sqrt(var1)
+    s2 <- sqrt(var2)
+  }
+  
+  temp <- s1
+  s1 <- ifelse(m1 == max(m1, m2), s1, s2)
+  s2 <- ifelse(m1 == max(m1, m2), s2, temp)
+  
+  temp <- max(m1, m2)
+  m2 <- min(m1, m2)
+  m1 <- temp
+  
+  x_from <- m2 - (3.5 * max(s1, s2))
+  x_to <- m1 + 3.5 * max(s1, s2)
+  x_length <- max(((x_to -  x_from) * 2), 201)
+  x <- seq(x_from, x_to, length.out = x_length)
+  
+  y_group1 <- dnorm(x, m1, s1)
+  y_group2 <- dnorm(x, m2, s2)
+  
+  
+  y_min <- min(y_group1, y_group2)
+  y_max <- max(y_group1, y_group2)
+  y_from <- y_min
+  y_to <- y_max + ((y_max - y_min)/5)
+  y <- c(y_from, y_to)
+  
+  
+  polygon_x <- c(x[[1]], x[x <= m1], m1, m1)
+  polygon_y <- c(0, y_group2[x <= m1], dnorm(m1, m2, s2), 0)
+  
+  plot(x = range(x), y, type = "n", axes = FALSE, xlab = "", ylab = "", main = "")
+  axis(side = 1, at = round(seq(x_from, x_to, length.out = 5), digits = 2))
+  axis(side = 2, at = round(seq(y_from, y_to, length.out = 5), digits = 3), las = 2)
+  polygon(polygon_x, polygon_y, col = col_polygon, border = NA)
+  
+  lines(x, y_group1, col = col1)
+  lines(x, y_group2, col = col2)
+
+  segments(x0 = m1, x1 = m1, y0 = 0, y1 = dnorm(m1, m1, s1))
+  legend(x = x_from, xjust = 0, y = y_to, yjust = 1,
+         col = c(col1, col2, col_polygon),
+         pch = c(NA, NA, 15),
+         lty = c(solid_line, solid_line, NA),
+         legend = c("Group 1",
+                    "Group 2",
+                    "Cohen's U3 ="),
+         bty = "n") 
+}
+
+## Plot for parametric tail ratio (without and with zoom) ----
 plot_parametric_tr <- function(x, INDEX , m1, m2, s1, s2, ref = c("grp1", "grp2"),
                                tail = c("lower", "upper"), cutoff){
 
@@ -203,7 +317,7 @@ plot_parametric_tr_zoom <- function(x, INDEX, m1, m2, s1, s2, n1, n2, ref = c("g
 
 
 # Non-parametric plots ----
-# non-parametric tail ratio plots (with and without plots) ----
+# Plots for the non-parametric tail ratio (with and without zoom) ----
 plot_non_parametric_tr <- function(x, INDEX, ref = c("grp1", "grp2"), tail = c("lower", "upper"), cutoff, bw = "nrd0", kernel = c(
   "gaussian",
   "epanechnikov",
@@ -259,7 +373,6 @@ plot_non_parametric_tr <- function(x, INDEX, ref = c("grp1", "grp2"), tail = c("
 
 }
 
-
 plot_non_parametric_tr_zoom <- function(x, INDEX, ref = c("grp1", "grp2"), tail = c("lower", "upper"), cutoff, bw = "nrd0", kernel = c(
   "gaussian",
   "epanechnikov",
@@ -310,6 +423,7 @@ plot_non_parametric_tr_zoom <- function(x, INDEX, ref = c("grp1", "grp2"), tail 
 
 }
 
+## Plot for non-parametric overlap coefficient ----
 plot_non_parametric_overlap <- function(x,
                                         INDEX,
                                         bw = "nrd0",
@@ -359,7 +473,8 @@ plot_non_parametric_overlap <- function(x,
          pch = 15)
 }
 
-plot_non_parametric_overlap_two <- function(x,
+## Plot for nonparametric Cohen's U1 effect measure ----
+plot_non_parametric_cohnes_u1 <- function(x,
                                             INDEX,
                                             bw = "nrd0",
                                             kernel = c(
@@ -400,7 +515,7 @@ plot_non_parametric_overlap_two <- function(x,
          pch = 15)
 }
 
-
+## Plot for Mann-Whitney-U based effect measures ----
 boxplot_of_pairwise_difference_scores <- function(x, INDEX) {
   original_dataset <- split(x, INDEX)
   dataset1 <- original_dataset[[1]]
@@ -420,7 +535,8 @@ boxplot_of_pairwise_difference_scores <- function(x, INDEX) {
          legend = "Difference of a single pairwise comparison", col = "black", lty = 1)
 }
 
-plot_u3 <- function(x, INDEX) {
+## Plot for non-parametric Cohen's U3 effect measure ----
+plot_non_parametric_cohens_u3 <- function(x, INDEX) {
   original_dataset <- split(x, INDEX)
   dataset1 <- original_dataset[[1]]
   dataset2 <- original_dataset[[2]]
@@ -465,6 +581,3 @@ plot_u3 <- function(x, INDEX) {
          pch = c(15, 15, 15, NA, NA))
 
 }
-
-plot_u3(vals, grp)
-non_parametric_cohens_u3(vals, grp)
