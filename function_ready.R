@@ -637,28 +637,42 @@ t_test <- function(x = NULL, INDEX = NULL, y = NULL, m1, m2, var1, var2, n1, n2,
 }
 
 # standardized median differences
-standardized_median_difference_mad <- function(x, INDEX) {
+standardized_median_difference_mad <- function(x, INDEX, y) {
+  if(missing(y)) {
   dataset <- split(x, INDEX)
-  dataset_x <- x
   dataset1 <- dataset[[1]]
   dataset2 <- dataset[[2]]
-  mad <- median(unlist(lapply(dataset_x, function(x) { abs(x - median(dataset_x)) })))
+  } else {
+    dataset1 <- x
+    dataset2 <- y
+  }
+  mad <- median(unlist(lapply(dataset1, function(x) { abs(x - median(dataset1)) })))
   return((median(dataset1) - median(dataset2)) / mad)
 }
 
-standardized_median_difference_riq <- function(x, INDEX) {
-  dataset <- split(x, INDEX)
-  dataset1 <- dataset[[1]]
-  dataset2 <- dataset[[2]]
-  riq <- quantile(x)[['75%']] - quantile(x)[['25%']]
+standardized_median_difference_riq <- function(x, INDEX, y) {
+  if(missing(y)) {
+    dataset <- split(x, INDEX)
+    dataset1 <- dataset[[1]]
+    dataset2 <- dataset[[2]]
+  } else {
+    dataset1 <- x
+    dataset2 <- y
+  }
+  riq <- quantile(dataset1)[['75%']] - quantile(dataset1)[['25%']]
   return((median(dataset1) - median(dataset2)) / (0.75 * riq))
 }
 
-standardized_median_difference_biweight <- function(x, INDEX) {
-  dataset <- split(x, INDEX)
-  dataset1 <- dataset[[1]]
-  dataset2 <- dataset[[2]]
-  return ((median(dataset1) - median(dataset2))/sbwab(x))
+standardized_median_difference_biweight <- function(x, INDEX, y) {
+  if(missing(y)) {
+    dataset <- split(x, INDEX)
+    dataset1 <- dataset[[1]]
+    dataset2 <- dataset[[2]]
+  } else {
+    dataset1 <- x
+    dataset2 <- y
+  }
+  return ((median(dataset1) - median(dataset2))/sbwab(dataset1))
 }
 
 sbwab <- function(x) {
@@ -669,8 +683,8 @@ sbwab <- function(x) {
   yis <- unlist(lapply(dataset_x, function(x) {
     (x - median_x) / (9*mad)
   }))
-  ais <- ifelse(abs(yis) < 1, 1, 0)
-  index <- c(1:length(x))
+  ais <- ifelse(abs(yis) < 1, 1,0)
+  index <- 1:length(x)
   sum <- sum(unlist(lapply(index, function(x) {
     ais[x] * (dataset_x[x] - median_x)^2 * (1 - yis[x])^4
   })))
