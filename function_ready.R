@@ -1106,6 +1106,7 @@ cohens_coefficient_of_nonoverlap_u1 <- function(x, INDEX, parametric = FALSE) {
   return(1 - ovl / (2 - ovl))
 }
 
+## Cohen's U3 coefficient (non-parametric) ----
 non_parametric_cohens_u3 <- function(x, INDEX) {
   dataset <- split(x, INDEX)
   dataset1 <- dataset[[1]]
@@ -1121,6 +1122,7 @@ non_parametric_cohens_u3 <- function(x, INDEX) {
   return(result)
 }
 
+## Cohen's U3 coefficient (parametric) ----
 parametric_cohens_u3_es <- function(x, INDEX, m1, m2, var1, var2, n1, n2, var_equal = TRUE) {
   if(var_equal){
     if (!missing(x) && !missing(INDEX)) cohens_d <- smd_uni(effsize = "cohen_d", x = x, INDEX = INDEX)
@@ -1136,7 +1138,7 @@ parametric_cohens_u3_es <- function(x, INDEX, m1, m2, var1, var2, n1, n2, var_eq
         dataset1 <- dataset2
         dataset2 <- tmp
       }
-      glass_d <- smd_uni("glass_d", x = c(dataset1, dataset2), INDEX = rep(c(1,2), times = c(length(dataset1), length(dataset2))))
+      glass_d <- (mean(dataset1) - mean(dataset2))/sd(dataset1)
     }else{
       temp <- var1
       var1 <- ifelse(m2 > m1, var1, var2)
@@ -1146,20 +1148,57 @@ parametric_cohens_u3_es <- function(x, INDEX, m1, m2, var1, var2, n1, n2, var_eq
       m2 <- max(m1, m2)
       m1 <- temp
       
-      glass_d <- smd_uni("glass_d", m1 = m1, m2 = m2, var1 = var1, var2 = var2, n1 = n1, n2 = n2)
+      glass_d <- smd_uni("glass_d", m1 = m1, m2 = m2, var1 = var1)
     }
     return(pnorm(abs(glass_d)))
   }
 }
 
-parametric_cohens_u3_ci <- function(x, INDEX) {
-  dataset1 <- split(x, INDEX)[[1]]
-  dataset2 <- split(x, INDEX)[[2]]
-  cohen_d <- abs(smd_uni(effsize = "cohen_d", x = x, INDEX = INDEX))
-  cohen_d_cis <- smd_ci(effsize = "cohen_d", val = cohen_d, n1 = length(dataset1), n2 = length(dataset2), var1 = var(dataset1), var2 = var(dataset2))[2:3]
-  lower_bound <- pnorm(cohen_d_cis[[1]])
-  upper_bound <- pnorm(cohen_d_cis[[2]])
+parametric_cohens_u3_ci <- function(x, INDEX, m1, m2, var1, var2, n1, n2, var_equal = TRUE) {
+  if(var_equal){
+    if(!missing(x) && !missing(INDEX)){
+      cohen_d <- abs(smd_uni(effsize = "cohen_d", x = x, INDEX = INDEX))
+      cohen_d_cis <- smd_ci(effsize = "cohen_d", x = x, INDEX = INDEX, val = cohen_d)[2:3]
+    } else{
+      cohen_d <- abs(smd_uni(effsize = "cohen_d", m1 = m1, m2 = m2, var1 = var1, var2 = var2, n1 = n1, n2 = n2))
+      cohen_d_cis <- smd_ci(effsize = "cohen_d", val = cohen_d, var1 = var1, var2 = var2, n1 = n1, n2 = n2)[2:3]
+    }
+    lower_bound <- pnorm(cohen_d_cis[[1]])
+    upper_bound <- pnorm(cohen_d_cis[[2]])
+    
+    } else if(!var_equal){
+      if(!missing(x) && !missing(INDEX)){
+        original_dataset <- split(x, INDEX)
+        dataset1 <- original_dataset[[1]]
+        dataset2 <- original_dataset[[2]]
+        if (mean(dataset1) > mean(dataset2)) {
+          tmp <- dataset1
+          dataset1 <- dataset2
+          dataset2 <- tmp
+        }
+        glass_d <- abs((mean(dataset1) - mean(dataset2))/sd(dataset1))
+        glass_d_cis <- smd_ci(effsize = "glass_d", x = x, INDEX =INDEX, val = glass_d)[2:3]
+        
+      } else{
+        temp <- var1
+        var1 <- ifelse(m2 > m1, var1, va2)
+        var2 <- ifelse(m2 > m1, var2, temp)
+        
+        temp <- n1
+        n1 <- ifelse(m2 > m1, n1, n2)
+        n2 <- ifelse(m2 > m1, n2, temp)
+        
+        temp <- min(m1, m2)
+        m2 <- max(m1, m2)
+        m1 <- temp
+        
+        glass_d <- abs(smd_uni("glass_d", m1 = m1, m2 = m2, var1 = var1))
+        glass_d_cis <- smd_ci(effsize = "glass_d", val = glass_d, var1 = var1, var2 = var2, n1 = n1, n2 = n2)[2:3]
+      }
+      lower_bound <- pnorm(glass_d_cis[[1]])
+      upper_bound <- pnorm(glass_d_cis[[2]])
+      
+    }
+
   return(list(lower_bound = lower_bound, upper_bound = upper_bound))
 }
-
-
