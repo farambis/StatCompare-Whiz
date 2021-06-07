@@ -31,14 +31,14 @@ dashed_line <- 2
 # Parametric plots ----
 ## Plot for parametric overlapping coefficient ----
 
-generate_raw_data_plot <- function(es_plot, x, INDEX, y, m1, m2, s1, s2, ref, tail, cutoff) {
+generate_data_plot <- function(es_plot, x, INDEX, y, m1, m2, s1, n1, n2, s2, ref, tail, cutoff) {
   if (!es_plot %in% all_plots) stop("this is not an offered plot!\n")
   res <- switch(es_plot,
-                "parametric_ovl" = plot_parametric_overlap(x, INDEX, m1 = m1, m2 = m2, s1 = s1, s2 = s2),
+                "parametric_ovl" = plot_parametric_overlap(x, INDEX, m1 = m1, m2 = m2, s1 = s1, s2 = s2, n1 = n1, n2 = n2),
                 "parametric_u1" = plot_parametric_u1(x, INDEX, m1 = m1, m2 = m2, s1 = s1, s2 = s2),
                 "parametric_u3" = plot_parametric_u3(x, INDEX, m1 = m1, m2 = m2, s1 = s1, s2 = s2),
                 "parametric_tr" = plot_parametric_tr(x, INDEX, m1 = m1, m2 = m2, s1 = s1, s2 = s2, ref = ref, tail = tail, cutoff = cutoff),
-                "parametric_tr_zoom" = plot_parametric_tr_zoom(x, INDEX, m1 = m1, m2 = m2, s1 = s1, s2 = s2, ref = ref, tail = tail, cutoff = cutoff),
+                "parametric_tr_zoom" = plot_parametric_tr_zoom(x, INDEX, m1 = m1, m2 = m2, s1 = s1, s2 = s2, n1 = n1, n2 = n2, ref = ref, tail = tail, cutoff = cutoff),
                 "non_parametric_tr" = plot_non_parametric_tr(x, INDEX, y),
                 "non_parametric_tr_zoom" = plot_non_parametric_tr_zoom(x, INDEX, y),
                 "non_parametric_ovl" = plot_non_parametric_overlap(x, INDEX, y),
@@ -47,7 +47,7 @@ generate_raw_data_plot <- function(es_plot, x, INDEX, y, m1, m2, s1, s2, ref, ta
                 "boxplot_pairwise_difference_scores" = boxplot_pairwise_difference_scores(x, INDEX, y)
   )
 }
-
+#generate_raw_data_plot("parametric_ovl", m1 = m1, m2 = m2, s1 = s1, s2 = s2, n1 = n1, n2 = n2)
 plot_parametric_overlap <- function(x, INDEX,
                                     m1, m2, s1, s2, n1, n2) {
 

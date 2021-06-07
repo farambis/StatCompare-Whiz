@@ -134,7 +134,6 @@ generate_non_parametric_ts_dataframe <- function(ts_list, INDEX, x, y) {
   ts_p_value <- vector(mode = "double", length = 0L)
   ts_z_value <- vector(mode = "double", length = 0L)
   for (i in ts_list) {
-    print(i)
     res <- switch(i,
                   "mann_whitney" = ts_for_mann_whitney_based_ps(x = x, INDEX = INDEX),
                   "mann_whitney_dependent" = ts_for_mann_whitney_based_ps(x = x, y = y)
