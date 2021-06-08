@@ -1,12 +1,12 @@
 source('esAndTsModule.R')
 
-esMainPanel <- function(id, esChoices, tsChoices) {
+esMainPanel <- function(id, esChoices, tsChoices, plotChoices) {
   ns <- NS(id)
   mainPanel(tabsetPanel(
     id = ns("mainPanel"),
     tabPanel(title = "Data", tableOutput(ns("dataTable"))),
     tabPanel(title = "Es & Teststatistic", esAndTsUi(ns("esAndTs"), esChoices, tsChoices)),
-    tabPanel(title = "Plot", "Hello Plot")
+    tabPanel(title = "Plot", plotChoices)
   ))
 }
 
