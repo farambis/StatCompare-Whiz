@@ -31,39 +31,45 @@ generate_es_raw_data_dataframe <- function(es_list, INDEX = NULL, x, y) {
   es_result <- vector(mode = "double", length = 0L)
   es_ci_lower <- vector(mode = "double", length = 0L)
   es_ci_upper <- vector(mode = "double", length = 0L)
+  es_boot_ci_lower <- vector(mode = "double", length = 0L)
+  es_boot_ci_upper <- vector(mode = "double", length = 0L)
 
   for (i in es_list) {
     if (!i %in% all_eff_sizes) stop("this is no offered effect size!\n")
     res <- switch(i,
-                  "cohen_d" = smd_ci(effsize = i, val = smd_uni(effsize = i, x = x, INDEX = INDEX), x = x, INDEX = INDEX),
-                  "hedges_g" = smd_ci(effsize = i, val = smd_uni(effsize = i, x = x, INDEX = INDEX), x = x, INDEX = INDEX),
-                  "glass_d" = smd_ci(effsize = i, val = smd_uni(effsize = i, x = x, INDEX = INDEX), x = x, INDEX = INDEX),
-                  "glass_d_corr" = smd_ci(effsize = i, val = smd_uni(effsize = i, x = x, INDEX = INDEX), x = x, INDEX = INDEX),
-                  "bonett_d" = smd_ci(effsize = i, val = smd_uni(effsize = i, x = x, INDEX = INDEX), x = x, INDEX = INDEX),
-                  "bonett_d_corr" = smd_ci(effsize = i, val = smd_uni(effsize = i, x = x, INDEX = INDEX), x = x, INDEX = INDEX),
-                  "AKP_eqvar" = smd_ci(effsize = i, val = smd_uni(effsize = i, x = x, INDEX = INDEX), x = x, INDEX = INDEX),
-                  "AKP_uneqvar" = smd_ci(effsize = i, val = smd_uni(effsize = i, x = x, INDEX = INDEX), x = x, INDEX = INDEX),
-                  "mann_whitney_based_ps" = c(mann_whitney_based_ps(x = x, INDEX = INDEX), mann_whitney_based_ps_ci(x = x, INDEX = INDEX)),
-                  "ovl_parametric" = c(ovl_parametric(x = x, INDEX = INDEX), ovl_parametric_ci(x = x, INDEX = INDEX)),
-                  "ovl_nonparametric" = c(non_parametric_overlapping_coefficient(x, INDEX), ovl_parametric_ci(x, INDEX)), # parametric ci
+                  "cohen_d" = c(smd_ci(effsize = i, val = smd_uni(effsize = i, x = x, INDEX = INDEX), x = x, INDEX = INDEX), smd_boot(x, INDEX, "cohen_d")),
+                  "hedges_g" = c(smd_ci(effsize = i, val = smd_uni(effsize = i, x = x, INDEX = INDEX), x = x, INDEX = INDEX), smd_boot(x, INDEX, "hedges_g")),
+                  "glass_d" = c(smd_ci(effsize = i, val = smd_uni(effsize = i, x = x, INDEX = INDEX), x = x, INDEX = INDEX), smd_boot(x, INDEX, "glass_d")),
+                  "glass_d_corr" = c(smd_ci(effsize = i, val = smd_uni(effsize = i, x = x, INDEX = INDEX), x = x, INDEX = INDEX), smd_boot(x, INDEX, "glass_d_corr")),
+                  "bonett_d" = c(smd_ci(effsize = i, val = smd_uni(effsize = i, x = x, INDEX = INDEX), x = x, INDEX = INDEX), smd_boot(x, INDEX, "bonnet_d")),
+                  "bonett_d_corr" = c(smd_ci(effsize = i, val = smd_uni(effsize = i, x = x, INDEX = INDEX), x = x, INDEX = INDEX), smd_boot(x, INDEX, "bonett_d_corr")),
+                  "AKP_eqvar" = c(smd_ci(effsize = i, val = smd_uni(effsize = i, x = x, INDEX = INDEX), x = x, INDEX = INDEX), smd_boot(x, INDEX, "AKP_eqvar")),
+                  "AKP_uneqvar" = c(smd_ci(effsize = i, val = smd_uni(effsize = i, x = x, INDEX = INDEX), x = x, INDEX = INDEX), smd_boot(x, INDEX, "AKP_uneqvar")),
+                  "mann_whitney_based_ps" = c(mann_whitney_based_ps(x = x, INDEX = INDEX), mann_whitney_based_ps_ci(x = x, INDEX = INDEX), boot_general(x, INDEX, mann_whitney_based_ps)),
+                  "ovl_parametric" = c(ovl_parametric(x = x, INDEX = INDEX), ovl_parametric_ci(x = x, INDEX = INDEX), boot_general(x, INDEX, ovl_parametric)),
+                  "ovl_nonparametric" = c(non_parametric_overlapping_coefficient(x, INDEX), ovl_parametric_ci(x, INDEX), boot_general(x, INDEX, non_parametric_overlapping_coefficient)), # parametric ci
                   "ps_dependent" = c(ps_dependent_groups(x, y), ps_dependent_groups_ci(x, y)),
-                  "generalized_odds_ratio" = c(generalized_odds_ratio(x = x, INDEX = INDEX), generalized_odds_ratio_ci(x = x, INDEX = INDEX)),
+                  "generalized_odds_ratio" = c(generalized_odds_ratio(x = x, INDEX = INDEX), generalized_odds_ratio_ci(x = x, INDEX = INDEX), boot_general(x, INDEX, generalized_odds_ratio)),
                   "generalized_odds_ratio_dependent" = c(generalized_odds_ratio(x = x, INDEX = INDEX, y = y), generalized_odds_ratio_ci(x = x, y = y)),
-                  "common_language" = c(common_language_es(x = x, INDEX = INDEX), common_language_es_ci(x = x, INDEX = INDEX)),
+                  "common_language" = c(common_language_es(x = x, INDEX = INDEX), common_language_es_ci(x = x, INDEX = INDEX), boot_general(x, INDEX, common_language_es)),
                   "parametric_u3" = c(parametric_cohens_u3_es(x = x, INDEX = INDEX), parametric_cohens_u3_ci(x = x, INDEX = INDEX)),
                   "parametric_u1" = c(parametric_cohens_u3_es(x = x, INDEX = INDEX), parametric_cohens_u3_ci(x = x, INDEX = INDEX))
     )
     es_result <- c(es_result, res[[1]])
     es_ci_lower <- c(es_ci_lower, res[[2]])
     es_ci_upper <- c(es_ci_upper, res[[3]])
+    es_boot_ci_lower <- c(es_boot_ci_lower, res[[4]])
+    es_boot_ci_upper <- c(es_boot_ci_upper, res[[5]])
   }
   es_dataframe <- data.frame(
     es_list,
     es_result,
     es_ci_lower,
-    es_ci_upper
+    es_ci_upper,
+    es_boot_ci_lower,
+    es_boot_ci_upper
   )
-  colnames(es_dataframe) <- c("Name", "Effect Size", "Ci lower limit", "Ci upper limit")
+  colnames(es_dataframe) <- c("Name", "Effect Size", "Ci lower limit", "Ci upper limit", "Bootstrap ci lower limit", "Bootstrap ci upper limit")
   return(es_dataframe)
 }
 
@@ -499,6 +505,29 @@ smd_ci <- function(effsize = c("cohen_d", "hedges_g", "glass_d", "glass_d_corr",
 
 
 # Percentile Bootstrap CI function ----
+
+boot_general <- function(x, INDEX, FUN, ...) {
+  alpha <- 0.05
+  nboot <- 200
+  original <- split(x = x, f = INDEX)
+  INDEX <- sort(as.factor(INDEX))
+  boot_dat <- rep(list(numeric(length = length(x))), times = nboot)
+  for (i in 1:nboot) {
+    boot_dat[[i]] <- c(sample(original[[1]], replace = TRUE),
+                       sample(original[[2]], replace = TRUE))
+  }
+  boot_val <- sort(
+    unlist(
+      lapply(boot_dat, FUN = FUN, INDEX, ...),
+      use.names = FALSE)
+  )
+  lower <- nboot * (alpha / 2)
+  upper <- nboot - lower
+  cl_lower <- boot_val[lower + 1]
+  cl_upper <- boot_val[upper]
+  return(list(cil = cl_lower, ciu = cl_upper))
+
+}
 
 smd_boot <- function(x, INDEX, effsize = c("cohen_d", "hedges_g", "glass_d", "glass_d_corr",
                                            "bonett_d", "bonett_d_corr", "AKP_eqvar", "AKP_uneqvar"),
