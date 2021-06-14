@@ -14,6 +14,8 @@ all_eff_sizes <- list(cohen_d = "cohen_d", hedges_g = "hedges_g", glass_d = "gla
                       parametric_u1 = "parametric_u1", parametric_u3 = "parametric_u3", non_parametric_u1 = "non_parametric_u1", non_parametric_u3 = "non_parametric_u3",
                       standardized_median_difference_biweight = "standardized_median_difference_biweight", standardized_median_difference_mad = "standardized_median_difference_mad",
                       standardized_median_difference_riq = "standardized_median_difference_riq", parametric_tr = "parametric_tr", non_parametric_tr = "non_parametric_tr")
+                      generalized_odds_ratio_dependent = "generalized_odds_ratio_dependent", common_language = "common_language", ovl2 = "ovl2", ovl2_non_parametric = "ovl2_non_parametric",
+                      cohens_u3 = "cohens_u3", cohens_u3_nonparametric = "cohens_u3_nonparametric", tail_ratio = "tail_ratio", non_parametric_tr = "non_parametric_tail_ratio")
 
 all_test_statistics <- list(student_t_test = "student_t_test", dependent_student_t_test = "dependent_student_t_test",
                             welch_t_test = "welch_t_test", yuen_t_test = "yuen_t_test", mann_whitney = "mann_whitney", mann_whitney_dependent = "mann_whitney_dependent")
@@ -51,6 +53,14 @@ generate_es_raw_data_dataframe <- function(es_list, INDEX = NULL, x, y) {
                   "ps_dependent" = c(ps_dependent_groups(x, y), ps_dependent_groups_ci(x, y)),
                   "generalized_odds_ratio" = c(generalized_odds_ratio(x = x, INDEX = INDEX), generalized_odds_ratio_ci(x = x, INDEX = INDEX), boot_general(x, INDEX, generalized_odds_ratio)),
                   "generalized_odds_ratio_dependent" = c(generalized_odds_ratio(x = x, INDEX = INDEX, y = y), generalized_odds_ratio_ci(x = x, y = y)),
+                  "common_language" = c(common_language_es(x = x, INDEX = INDEX), common_language_es_ci(x = x, INDEX = INDEX), boot_general(x, INDEX, common_language_es)),
+                  "ovl2" = c(ovl_2(x = x, INDEX = INDEX, parametric = TRUE), ovl_parametric_ci(x = x, INDEX = INDEX), boot_general(x, INDEX, ovl_2, TRUE)),
+                  "ovl2_non_parametric" = c(ovl_2(x = x, INDEX = INDEX, parametric = FALSE), '-', '-', boot_general(x, INDEX, ovl_2)),
+                  "cohens_u3_nonparametric" = c(non_parametric_cohens_u3(x = x, INDEX = INDEX), '-', '-', boot_general(x, INDEX, non_parametric_cohens_u3)),
+                  "cohens_u3" = c(parametric_cohens_u3_es(x = x, INDEX = INDEX), parametric_cohens_u3_ci(x, INDEX), boot_general(x, INDEX, parametric_cohens_u3_es)),
+                  "tail_ratio" = c(parametric_tr(x = x, INDEX = INDEX), '-', '-', boot_general(x, INDEX, parametric_tr)),
+                  "non_parametric_tail_ratio" = c(non_parametric_tr(x = x, INDEX = INDEX), '-', '-', boot_general(x, INDEX, non_parametric_tr))
+
                   "common_language" = c(common_language_es(x = x, INDEX = INDEX), common_language_es_ci(x = x, INDEX = INDEX), boot_general(x, INDEX, common_language_es)),
                   "parametric_u3" = c(parametric_cohens_u3_es(x = x, INDEX = INDEX), parametric_cohens_u3_ci(x = x, INDEX = INDEX)),
                   "parametric_u1" = c(parametric_cohens_u3_es(x = x, INDEX = INDEX), parametric_cohens_u3_ci(x = x, INDEX = INDEX))
@@ -906,7 +916,7 @@ calculate_z_for_u_statistic <- function(dataset1, dataset2) {
 
 mann_whitney_based_ps_ci <- function(x, INDEX, alpha = 0.05) {
   #second method from Newcombe (2005)
-  dataset <- split(vals, grp)
+  dataset <- split(x, INDEX)
   m <- length(dataset[[1]])
   n <- length(dataset[[2]])
   delta <- mann_whitney_based_ps(x, INDEX)
@@ -1133,13 +1143,13 @@ ovl_parametric_ci <- function(x = NULL, INDEX = NULL, m1, m2, var1, var2, n1, n2
   else cohen_d <- smd_uni(effsize = "cohen_d", m1 = m1, m2 = m2, var1 = var1, var2 = var2, n1 = n1, n2 = n2)
   if (!is.null(x))cohen_d_cis <- smd_ci(effsize = "cohen_d", val = cohen_d, n1 = length(dataset1), n2 = length(dataset2), var1 = var(dataset1), var2 = var(dataset2))[2:3]
   else cohen_d_cis <- smd_ci(effsize = "cohen_d", val = cohen_d, n1 = m1, n2 = m2, var1 = var1, var2 = var2)[2:3]
-  lower_bound <- 2 * pnorm(-abs(cohen_d_cis[[1]]) / 2)
-  upper_bound <- 2 * pnorm(-abs(cohen_d_cis[[2]]) / 2)
+  lower_bound <- 2 * pnorm(-abs(cohen_d_cis[[2]]) / 2)
+  upper_bound <- 2 * pnorm(-abs(cohen_d_cis[[1]]) / 2)
   list(lower_bound = lower_bound, upper_bound = upper_bound)
 }
 
 
-overlapping_coefficient_two <- function(x, INDEX, parametric = FALSE) {
+ovl_2 <- function(x, INDEX, parametric = FALSE) {
   if (!parametric) ovl <- non_parametric_overlapping_coefficient(x, INDEX)
   else ovl <- ovl_parametric(x, INDEX)
   return(ovl / (2 - ovl))
