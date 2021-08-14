@@ -11,18 +11,17 @@ all_eff_sizes <- list(cohen_d = "cohen_d", hedges_g = "hedges_g", glass_d = "gla
                       mann_whitney_based_ps = "mann_whitney_based_ps", ovl_parametric = "ovl_parametric", ps_dependent = "ps_dependent",
                       ovl_nonparametric = "ovl_nonparametric", generalized_odds_ratio = "generalized_odds_ratio",
                       generalized_odds_ratio_dependent = "generalized_odds_ratio_dependent", common_language = "common_language", ovl2 = "ovl2", ovl2_parametric = "ovl2_parametric",
-                      parametric_u1 = "parametric_u1", parametric_u3 = "parametric_u3", non_parametric_u1 = "non_parametric_u1", non_parametric_u3 = "non_parametric_u3",
-                      standardized_median_difference_biweight = "standardized_median_difference_biweight", standardized_median_difference_mad = "standardized_median_difference_mad",
-                      standardized_median_difference_riq = "standardized_median_difference_riq", parametric_tr = "parametric_tr", non_parametric_tr = "non_parametric_tr")
-                      generalized_odds_ratio_dependent = "generalized_odds_ratio_dependent", common_language = "common_language", ovl2 = "ovl2", ovl2_non_parametric = "ovl2_non_parametric",
+                      parametric_u1 = "parametric_u1", non_parametric_u1 = "non_parametric_u1", standardized_median_difference_biweight = "standardized_median_difference_biweight",
+                      standardized_median_difference_mad = "standardized_median_difference_mad",
+                      standardized_median_difference_riq = "standardized_median_difference_riq", parametric_tr = "parametric_tr", non_parametric_tr = "non_parametric_tr", ovl2 = "ovl2", ovl2_non_parametric = "ovl2_non_parametric",
                       cohens_u3 = "cohens_u3", cohens_u3_nonparametric = "cohens_u3_nonparametric", tail_ratio = "tail_ratio", non_parametric_tr = "non_parametric_tail_ratio")
 
 all_test_statistics <- list(student_t_test = "student_t_test", dependent_student_t_test = "dependent_student_t_test",
                             welch_t_test = "welch_t_test", yuen_t_test = "yuen_t_test", mann_whitney = "mann_whitney", mann_whitney_dependent = "mann_whitney_dependent")
 
-all_plots <- list(parametric_ovl = "parametric_ovl", parametric_u1 = "parametric_u1", parametric_u3 = "parametric_u3", parametric_tr = "parametric_tr", parametric_tr_zoom = "parametric_tr_zoom",
+all_plots <- list(parametric_ovl = "parametric_ovl", parametric_u1 = "parametric_u1", cohens_u3 = "parametric_u3", cohens_non_parametric_u3 = "non_parametric_u3", parametric_tr = "parametric_tr", parametric_tr_zoom = "parametric_tr_zoom",
                   non_parametric_tr = "non_parametric_tr", non_parametric_tr_zoom = "non_parametric_tr_zoom", non_parametric_ovl = "non_parametric_ovl", non_parametric_u1 = "non_parametric_u1",
-                  boxplot_pairwise_difference_scores = "boxplot_pairwise_difference_scores", non_parametric_u3 = "non_parametric_u3")
+                  boxplot_pairwise_difference_scores = "boxplot_pairwise_difference_scores")
 
 es_list <- c("cohen_d", "hedges_g", "glass_d", "glass_d_corr", "bonett_d", "bonett_d_corr")
 ts_list <- c("student_t_test", "welch_t_test", "yuen_t_test")
@@ -43,7 +42,7 @@ generate_es_raw_data_dataframe <- function(es_list, INDEX = NULL, x, y) {
                   "hedges_g" = c(smd_ci(effsize = i, val = smd_uni(effsize = i, x = x, INDEX = INDEX), x = x, INDEX = INDEX), smd_boot(x, INDEX, "hedges_g")),
                   "glass_d" = c(smd_ci(effsize = i, val = smd_uni(effsize = i, x = x, INDEX = INDEX), x = x, INDEX = INDEX), smd_boot(x, INDEX, "glass_d")),
                   "glass_d_corr" = c(smd_ci(effsize = i, val = smd_uni(effsize = i, x = x, INDEX = INDEX), x = x, INDEX = INDEX), smd_boot(x, INDEX, "glass_d_corr")),
-                  "bonett_d" = c(smd_ci(effsize = i, val = smd_uni(effsize = i, x = x, INDEX = INDEX), x = x, INDEX = INDEX), smd_boot(x, INDEX, "bonnet_d")),
+                  "bonett_d" = c(smd_ci(effsize = i, val = smd_uni(effsize = i, x = x, INDEX = INDEX), x = x, INDEX = INDEX), smd_boot(x, INDEX, "bonett_d")),
                   "bonett_d_corr" = c(smd_ci(effsize = i, val = smd_uni(effsize = i, x = x, INDEX = INDEX), x = x, INDEX = INDEX), smd_boot(x, INDEX, "bonett_d_corr")),
                   "AKP_eqvar" = c(smd_ci(effsize = i, val = smd_uni(effsize = i, x = x, INDEX = INDEX), x = x, INDEX = INDEX), smd_boot(x, INDEX, "AKP_eqvar")),
                   "AKP_uneqvar" = c(smd_ci(effsize = i, val = smd_uni(effsize = i, x = x, INDEX = INDEX), x = x, INDEX = INDEX), smd_boot(x, INDEX, "AKP_uneqvar")),
@@ -54,16 +53,13 @@ generate_es_raw_data_dataframe <- function(es_list, INDEX = NULL, x, y) {
                   "generalized_odds_ratio" = c(generalized_odds_ratio(x = x, INDEX = INDEX), generalized_odds_ratio_ci(x = x, INDEX = INDEX), boot_general(x, INDEX, generalized_odds_ratio)),
                   "generalized_odds_ratio_dependent" = c(generalized_odds_ratio(x = x, INDEX = INDEX, y = y), generalized_odds_ratio_ci(x = x, y = y)),
                   "common_language" = c(common_language_es(x = x, INDEX = INDEX), common_language_es_ci(x = x, INDEX = INDEX), boot_general(x, INDEX, common_language_es)),
-                  "ovl2" = c(ovl_2(x = x, INDEX = INDEX, parametric = TRUE), ovl_parametric_ci(x = x, INDEX = INDEX), boot_general(x, INDEX, ovl_2, TRUE)),
-                  "ovl2_non_parametric" = c(ovl_2(x = x, INDEX = INDEX, parametric = FALSE), '-', '-', boot_general(x, INDEX, ovl_2)),
+                  "ovl2" = c(overlapping_coefficient_two(x = x, INDEX = INDEX, parametric = TRUE), ovl_parametric_ci(x = x, INDEX = INDEX), boot_general(x, INDEX, overlapping_coefficient_two, TRUE)),
+                  "ovl2_non_parametric" = c(overlapping_coefficient_two(x = x, INDEX = INDEX, parametric = FALSE), '-', '-', boot_general(x, INDEX, overlapping_coefficient_two)),
                   "cohens_u3_nonparametric" = c(non_parametric_cohens_u3(x = x, INDEX = INDEX), '-', '-', boot_general(x, INDEX, non_parametric_cohens_u3)),
                   "cohens_u3" = c(parametric_cohens_u3_es(x = x, INDEX = INDEX), parametric_cohens_u3_ci(x, INDEX), boot_general(x, INDEX, parametric_cohens_u3_es)),
-                  "tail_ratio" = c(parametric_tr(x = x, INDEX = INDEX), '-', '-', boot_general(x, INDEX, parametric_tr)),
-                  "non_parametric_tail_ratio" = c(non_parametric_tr(x = x, INDEX = INDEX), '-', '-', boot_general(x, INDEX, non_parametric_tr))
-
-                  "common_language" = c(common_language_es(x = x, INDEX = INDEX), common_language_es_ci(x = x, INDEX = INDEX), boot_general(x, INDEX, common_language_es)),
-                  "parametric_u3" = c(parametric_cohens_u3_es(x = x, INDEX = INDEX), parametric_cohens_u3_ci(x = x, INDEX = INDEX)),
-                  "parametric_u1" = c(parametric_cohens_u3_es(x = x, INDEX = INDEX), parametric_cohens_u3_ci(x = x, INDEX = INDEX))
+                  "parametric_tr" = c(parametric_tr(x = x, INDEX = INDEX), '-', '-', boot_general(x, INDEX, parametric_tr)),
+                  "non_parametric_tr" = c(non_parametric_tr(x = x, INDEX = INDEX), '-', '-', boot_general(x, INDEX, non_parametric_tr)),
+                  "parametric_u1" = c(cohens_coefficient_of_nonoverlap_u1(x = x, INDEX = INDEX, parametric = TRUE), '-', '-', boot_general(x, INDEX, cohens_coefficient_of_nonoverlap_u1, TRUE))
     )
     es_result <- c(es_result, res[[1]])
     es_ci_lower <- c(es_ci_lower, res[[2]])
@@ -1143,13 +1139,13 @@ ovl_parametric_ci <- function(x = NULL, INDEX = NULL, m1, m2, var1, var2, n1, n2
   else cohen_d <- smd_uni(effsize = "cohen_d", m1 = m1, m2 = m2, var1 = var1, var2 = var2, n1 = n1, n2 = n2)
   if (!is.null(x))cohen_d_cis <- smd_ci(effsize = "cohen_d", val = cohen_d, n1 = length(dataset1), n2 = length(dataset2), var1 = var(dataset1), var2 = var(dataset2))[2:3]
   else cohen_d_cis <- smd_ci(effsize = "cohen_d", val = cohen_d, n1 = m1, n2 = m2, var1 = var1, var2 = var2)[2:3]
-  lower_bound <- 2 * pnorm(-abs(cohen_d_cis[[2]]) / 2)
-  upper_bound <- 2 * pnorm(-abs(cohen_d_cis[[1]]) / 2)
+  lower_bound <- 2 * pnorm(-abs(cohen_d_cis[[1]]) / 2)
+  upper_bound <- 2 * pnorm(-abs(cohen_d_cis[[2]]) / 2)
   list(lower_bound = lower_bound, upper_bound = upper_bound)
 }
 
 
-ovl_2 <- function(x, INDEX, parametric = FALSE) {
+overlapping_coefficient_two <- function(x, INDEX, parametric = FALSE) {
   if (!parametric) ovl <- non_parametric_overlapping_coefficient(x, INDEX)
   else ovl <- ovl_parametric(x, INDEX)
   return(ovl / (2 - ovl))
