@@ -14,12 +14,12 @@ all_eff_sizes <- list(cohen_d = "cohen_d", hedges_g = "hedges_g", glass_d = "gla
                       cohens_u1 = "cohens_u1", non_parametric_u1 = "non_parametric_u1", standardized_median_difference_biweight = "standardized_median_difference_biweight",
                       standardized_median_difference_mad = "standardized_median_difference_mad",
                       standardized_median_difference_riq = "standardized_median_difference_riq", parametric_tr = "parametric_tr", non_parametric_tr = "non_parametric_tr", ovl2 = "ovl2", non_parametric_ovl2 = "non_parametric_ovl2",
-                      cohens_u3 = "cohens_u3", non_parametric_cohens_u3 = "non_parametric_cohens_u3")
+                      cohens_u3 = "cohens_u3", non_parametric_u3 = "non_parametric_u3")
 
 all_test_statistics <- list(student_t_test = "student_t_test", dependent_student_t_test = "dependent_student_t_test",
                             welch_t_test = "welch_t_test", yuen_t_test = "yuen_t_test", mann_whitney = "mann_whitney", mann_whitney_dependent = "mann_whitney_dependent")
 
-all_plots <- list(parametric_ovl = "parametric_ovl", cohens_u1 = "cohens_u1", cohens_u3 = "cohens_u3", non_parametric_cohens_u3 = "non_parametric_cohens_u3", parametric_tr = "parametric_tr", parametric_tr_zoom = "parametric_tr_zoom",
+all_plots <- list(parametric_ovl = "parametric_ovl", cohens_u1 = "cohens_u1", cohens_u3 = "cohens_u3", non_parametric_u3 = "non_parametric_coheu3", parametric_tr = "parametric_tr", parametric_tr_zoom = "parametric_tr_zoom",
                   non_parametric_tr = "non_parametric_tr", non_parametric_tr_zoom = "non_parametric_tr_zoom", non_parametric_ovl = "non_parametric_ovl", non_parametric_u1 = "non_parametric_u1",
                   boxplot_pairwise_difference_scores = "boxplot_pairwise_difference_scores")
 
@@ -55,7 +55,7 @@ generate_es_raw_data_dataframe <- function(es_list, INDEX = NULL, x, y) {
                   "common_language" = c(common_language_es(x = x, INDEX = INDEX), common_language_es_ci(x = x, INDEX = INDEX), boot_general(x, INDEX, common_language_es)),
                   "ovl2" = c(ovl_two(x = x, INDEX = INDEX, parametric = TRUE), ovl_parametric_ci(x = x, INDEX = INDEX), boot_general(x, INDEX, ovl_two, TRUE)),
                   "non_parametric_ovl2" = c(ovl_two(x = x, INDEX = INDEX, parametric = FALSE), '-', '-', boot_general(x, INDEX, ovl_two)),
-                  "non_parametric_cohens_u3" = c(non_parametric_cohens_u3(x = x, INDEX = INDEX), '-', '-', boot_general(x, INDEX, non_parametric_cohens_u3)),
+                  "non_parametric_u3" = c(non_parametric_u3(x = x, INDEX = INDEX), '-', '-', boot_general(x, INDEX, non_parametric_u3)),
                   "cohens_u3" = c(parametric_cohens_u3_es(x = x, INDEX = INDEX), parametric_cohens_u3_ci(x, INDEX), boot_general(x, INDEX, parametric_cohens_u3_es)),
                   "parametric_tr" = c(parametric_tr(x = x, INDEX = INDEX), '-', '-', boot_general(x, INDEX, parametric_tr)),
                   "non_parametric_tr" = c(non_parametric_tr(x = x, INDEX = INDEX), '-', '-', boot_general(x, INDEX, non_parametric_tr)),
@@ -1159,7 +1159,7 @@ cohens_coefficient_of_nonoverlap_u1 <- function(x, INDEX, parametric = FALSE) {
 }
 
 ## Cohen's U3 coefficient (non-parametric) ----
-non_parametric_cohens_u3 <- function(x, INDEX) {
+non_parametric_u3 <- function(x, INDEX) {
   dataset <- split(x, INDEX)
   dataset1 <- dataset[[1]]
   dataset2 <- dataset[[2]]

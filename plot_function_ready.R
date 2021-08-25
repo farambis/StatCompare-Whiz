@@ -622,7 +622,7 @@ plot_non_parametric_u3 <- function(x, INDEX, y) {
          bty = "n",
          legend = c("Group with higher median",
                     "Group with lower median",
-                    paste("Cohen's U3 = ", non_parametric_cohens_u3(x, INDEX)), "median from group with higher median"),
+                    paste("Cohen's U3 = ", non_parametric_u3(x, INDEX)), "median from group with higher median"),
          col = c(col1, col2, "white", "black", "black"), lty = c(blank_line, blank_line, blank_line, solid_line),
          pch = c(15, 15, 15, NA, NA))
 

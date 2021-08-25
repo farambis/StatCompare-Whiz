@@ -51,9 +51,9 @@ independentGroupsNonparametric <-
             "indGrps", 
             "rawData",
             list(all_eff_sizes$mann_whitney_based_ps, all_eff_sizes$ovl_nonparametric, all_eff_sizes$generalized_odds_ratio, all_eff_sizes$non_parametric_ovl2,
-                 all_eff_sizes$non_parametric_tr, all_eff_sizes$non_parametric_cohens_u3),
+                 all_eff_sizes$non_parametric_tr, all_eff_sizes$non_parametric_u3),
             list(all_test_statistics$mann_whitney),
-            list(all_plots$non_parametric_ovl, all_plots$non_parametric_u1, all_plots$non_parametric_cohens_u3, all_plots$non_parametric_tr, all_plots$non_parametric_tr_zoom)
+            list(all_plots$non_parametric_ovl, all_plots$non_parametric_u1, all_plots$non_parametric_u3, all_plots$non_parametric_tr, all_plots$non_parametric_tr_zoom)
           ))
 
 
