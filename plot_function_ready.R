@@ -35,8 +35,8 @@ generate_data_plot <- function(es_plot, x, INDEX, y, m1, m2, s1, n1, n2, s2, ref
   if (!es_plot %in% all_plots) stop("this is not an offered plot!\n")
   res <- switch(es_plot,
                 "parametric_ovl" = plot_parametric_overlap(x, INDEX, m1 = m1, m2 = m2, s1 = s1, s2 = s2, n1 = n1, n2 = n2),
-                "parametric_u1" = plot_parametric_u1(x, INDEX, m1 = m1, m2 = m2, s1 = s1, s2 = s2),
-                "parametric_u3" = plot_parametric_u3(x, INDEX, m1 = m1, m2 = m2, s1 = s1, s2 = s2),
+                "cohens_u1" = plot_cohens_u1(x, INDEX, m1 = m1, m2 = m2, s1 = s1, s2 = s2),
+                "cohens_u3" = plot_cohens_u3(x, INDEX, m1 = m1, m2 = m2, s1 = s1, s2 = s2),
                 "parametric_tr" = plot_parametric_tr(x, INDEX, m1 = m1, m2 = m2, s1 = s1, s2 = s2, ref = ref, tail = tail, cutoff = cutoff),
                 "parametric_tr_zoom" = plot_parametric_tr_zoom(x, INDEX, m1 = m1, m2 = m2, s1 = s1, s2 = s2, n1 = n1, n2 = n2, ref = ref, tail = tail, cutoff = cutoff),
                 "non_parametric_tr" = plot_non_parametric_tr(x, INDEX, y),
@@ -99,7 +99,7 @@ plot_parametric_overlap <- function(x, INDEX,
 
 ## Plot for parametric Cohen's U1 effect measure ----
 
-plot_parametric_u1 <- function(x, INDEX, m1, m2, s1, s2) {
+plot_cohens_u1 <- function(x, INDEX, m1, m2, s1, s2) {
   if (!missing(x) && !missing(INDEX)) {
 
     univar_stats <- smd_stats(x, INDEX, type = "univariate")
@@ -152,7 +152,7 @@ plot_parametric_u1 <- function(x, INDEX, m1, m2, s1, s2) {
 
 ## Plot for parametric Cohen's U3 effect measure  ----
 
-plot_parametric_u3 <- function(x, INDEX, m1, m2, s1, s2) {
+plot_cohens_u3 <- function(x, INDEX, m1, m2, s1, s2) {
 
   if (!missing(x) && !missing(INDEX)) {
 
@@ -546,7 +546,7 @@ plot_non_parametric_u1 <- function(x,
          legend = c("Group 1",
                     "Group 2",
                     paste0("d = ", round(smd_uni("cohen_d", x = x, INDEX = INDEX), 2)),
-                    paste("OVL2 = ", round(overlapping_coefficient_two(x, INDEX)), 2)),
+                    paste("OVL2 = ", round(ovl_two(x, INDEX)), 2)),
          col = c(col1, col2, "white", col_polygon),
          pch = 15)
 }
@@ -622,7 +622,7 @@ plot_non_parametric_u3 <- function(x, INDEX, y) {
          bty = "n",
          legend = c("Group with higher median",
                     "Group with lower median",
-                    paste("Cohen's U3 = ", non_parametric_cohens_u3(x, INDEX)), "median from group with higher median"),
+                    paste("Cohen's U3 = ", non_parametric_u3(x, INDEX)), "median from group with higher median"),
          col = c(col1, col2, "white", "black", "black"), lty = c(blank_line, blank_line, blank_line, solid_line),
          pch = c(15, 15, 15, NA, NA))
 

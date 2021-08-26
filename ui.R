@@ -8,5 +8,4 @@ source('esServer.R')
 ui <- dashboardPage(dashboardHeader(),
                     sidebar = navigationSidebar,
                     body = body)
-
 shinyApp(ui, esServer)

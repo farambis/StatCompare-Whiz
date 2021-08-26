@@ -1,9 +1,9 @@
-checkboxGroupUi <- function(id, choises, label) {
+checkboxGroupUi <- function(id, choices, label) {
   ns <- NS(id)
   checkboxGroupInput(
     inputId = ns("checkboxes"),
     label = label,
-    choices = choises
+    choices = choices
   )
 }
 

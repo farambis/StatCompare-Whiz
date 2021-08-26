@@ -12,11 +12,11 @@ independentGroupsParametricUnivariateRawData <-
       "indGrps",
       "rawData",
       list(all_eff_sizes$cohen_d, all_eff_sizes$hedges_g, all_eff_sizes$glass_d,
-           all_eff_sizes$glass_d_corr, all_eff_sizes$bonett_d, all_eff_sizes$bonett_d_corr,
-           all_eff_sizes$AKP_eqvar, all_eff_sizes$AKP_uneqvar,all_eff_sizes$ovl_parametric, all_eff_sizes$common_language, all_eff_sizes$parametric_tr, all_eff_sizes$parametric_u1, all_eff_sizes$parametric_u3),
+           all_eff_sizes$glass_d_corr, all_eff_sizes$bonett_d, all_eff_sizes$bonett_d_corr, all_eff_sizes$ovl2,
+           all_eff_sizes$AKP_eqvar, all_eff_sizes$AKP_uneqvar,all_eff_sizes$ovl_parametric, all_eff_sizes$common_language, all_eff_sizes$parametric_tr, all_eff_sizes$cohens_u1, all_eff_sizes$cohens_u3),
       list(all_test_statistics$student_t_test, all_test_statistics$welch_t_test,
            all_test_statistics$yuen_t_test),
-      list(all_plots$parametric_u3, all_plots$parametric_tr, all_plots$parametric_u1, all_plots$parametric_tr_zoom, all_plots$parametric_ovl, all_plots$parametric_tr)
+      list(all_plots$cohens_u3, all_plots$parametric_tr, all_plots$cohens_u1, all_plots$parametric_tr_zoom, all_plots$parametric_ovl, all_plots$parametric_tr)
     )
   )
 
@@ -32,7 +32,7 @@ independentGroupsParametricUnivariateEducational <-
                  all_eff_sizes$glass_d_corr, all_eff_sizes$bonett_d, all_eff_sizes$bonett_d_corr, 
                  all_eff_sizes$ovl_parametric), 
             list(all_test_statistics$student_t_test, all_test_statistics$welch_t_test),
-            list(all_plots$parametric_u3, all_plots$parametric_tr, all_plots$parametric_u1, all_plots$parametric_tr_zoom, all_plots$parametric_ovl)
+            list(all_plots$cohens_u3, all_plots$parametric_tr, all_plots$cohens_u1, all_plots$parametric_tr_zoom, all_plots$parametric_ovl)
           ))
 
 independentGroupsParametricMultivariateRawData <-
@@ -49,8 +49,9 @@ independentGroupsNonparametric <-
             "independentGroupsNonparametric", 
             ".csv", 
             "indGrps", 
-            "rawData", 
-            list(all_eff_sizes$mann_whitney_based_ps, all_eff_sizes$ovl_nonparametric, all_eff_sizes$generalized_odds_ratio), 
+            "rawData",
+            list(all_eff_sizes$mann_whitney_based_ps, all_eff_sizes$ovl_nonparametric, all_eff_sizes$generalized_odds_ratio, all_eff_sizes$non_parametric_ovl2,
+                 all_eff_sizes$non_parametric_tr, all_eff_sizes$non_parametric_u3),
             list(all_test_statistics$mann_whitney),
             list(all_plots$non_parametric_ovl, all_plots$non_parametric_u1, all_plots$non_parametric_u3, all_plots$non_parametric_tr, all_plots$non_parametric_tr_zoom)
           ))
@@ -64,9 +65,9 @@ dependentGroupsParametricRawData <-
           generalUI(
             "dependentGroupsParametricRawData", 
             ".csv", 
-            "indGrps", 
+            "depGrps",
             "rawData", 
-            list(), 
+            list(all_eff_sizes$ps_dependent, all_eff_sizes$generalized_odds_ratio_dependent),
             list(),
             list()
           ))
@@ -91,7 +92,7 @@ dependentGroupsNonparametric <-
             "rawData",
             list(all_eff_sizes$ps_dependent, all_eff_sizes$generalized_odds_ratio_dependent), 
             list(all_test_statistics$mann_whitney_dependent),
-            list(all_plots$non_parametric_ovl, all_plots$non_parametric_u1, all_plots$non_parametric_u3, all_plots$non_parametric_tr, all_plots$non_parametric_tr_zoom)
+            list(all_plots$non_parametric_ovl, all_plots$non_parametric_u1, all_plots$cohens_u3, all_plots$non_parametric_tr, all_plots$non_parametric_tr_zoom)
           ))
 
 
