@@ -1,12 +1,12 @@
 source('sidebarPanelModule.R')
 source('mainPanel.R')
 
-generalUI <- function (id, acceptedFormat, design, mode, esChoices, tsChoices, plotChoices) {
+generalUI <- function (id, acceptedFormat, design, mode, esChoices, tsChoices, plotChoices, description) {
   ns <- NS(id)
   pageWithSidebar(
     headerPanel = "",
     sidebarPanel = sidebarPanelUI(ns("sidebarPanel"), acceptedFormat, design, mode),
-    mainPanel = esMainPanel(ns("esMainPanel"), esChoices, tsChoices, plotChoices)
+    mainPanel = esMainPanel(ns("esMainPanel"), esChoices, tsChoices, plotChoices, description)
   )
 }
 

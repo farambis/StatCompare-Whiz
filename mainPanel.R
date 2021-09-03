@@ -1,12 +1,13 @@
 source('esAndTsModule.R')
 
-esMainPanel <- function(id, esChoices, tsChoices, plotChoices) {
+esMainPanel <- function(id, esChoices, tsChoices, plotChoices, description) {
   ns <- NS(id)
   mainPanel(tabsetPanel(
     id = ns("mainPanel"),
     tabPanel(title = "Data", tableOutput(ns("dataTable"))),
     tabPanel(title = "Es & Teststatistic", esAndTsUi(ns("esAndTs"), esChoices, tsChoices)),
-    tabPanel(title = "Plot", plotChoices)
+    tabPanel(title = "Plot", plotChoices),
+    tabPanel(title = icon("info-circle"), includeMarkdown(description))
   ))
 }
 
