@@ -19,7 +19,7 @@ all_eff_sizes <- list(cohen_d = "cohen_d", hedges_g = "hedges_g", glass_d = "gla
 all_test_statistics <- list(student_t_test = "student_t_test", dependent_student_t_test = "dependent_student_t_test",
                             welch_t_test = "welch_t_test", yuen_t_test = "yuen_t_test", mann_whitney = "mann_whitney", mann_whitney_dependent = "mann_whitney_dependent")
 
-all_plots <- list(parametric_ovl = "parametric_ovl", cohens_u1 = "cohens_u1", cohens_u3 = "cohens_u3", non_parametric_u3 = "non_parametric_coheu3", parametric_tr = "parametric_tr", parametric_tr_zoom = "parametric_tr_zoom",
+all_plots <- list(parametric_ovl = "parametric_ovl", cohens_u1 = "cohens_u1", cohens_u3 = "cohens_u3", non_parametric_u3 = "non_parametric_u3", parametric_tr = "parametric_tr", parametric_tr_zoom = "parametric_tr_zoom",
                   non_parametric_tr = "non_parametric_tr", non_parametric_tr_zoom = "non_parametric_tr_zoom", non_parametric_ovl = "non_parametric_ovl", non_parametric_u1 = "non_parametric_u1",
                   boxplot_pairwise_difference_scores = "boxplot_pairwise_difference_scores")
 
@@ -252,7 +252,6 @@ degrees_freedom <- function(effsize, n1, n2, ntr1, ntr2, comparison_group = NULL
 
 smd_corr <- function(n1, n2, df, trim, type = c("hedges", "AKP", "bonett")) {
 
-
   res <- switch(type,
                 "hedges" = exp(lgamma(df / 2) -
                                  log(sqrt(df / 2)) -
@@ -264,12 +263,33 @@ smd_corr <- function(n1, n2, df, trim, type = c("hedges", "AKP", "bonett")) {
   return(res)
 }
 
+## Handling of missing values (NAs - not availables) and NA notification message ----
+missing_values_handler <- function(x, INDEX = NULL, y = NULL){
+  if(is.data.frame(x)){
+    i_NA <- complete.cases(x, INDEX)
+    x <- x[i_NA, ]
+    INDEX <- INDEX[i_NA]
+    return(list(x = x, INDEX = INDEX))
+  } else if(is.null(y)){
+    i_NA <- complete.cases(x, INDEX)
+    x <- x[i_NA]
+    INDEX <- INDEX[i_NA]
+    return(list(x = x, INDEX = INDEX))
+  } else if(is.null(INDEX)){
+    i_NA <- complete.cases(x, y)
+    x <- x[i_NA]
+    y <- y[i_NA]
+    return(list(x = x, y = y))
+  }
+}
+
 ## Summary statistics functions ----
-### Univariate summary statistics ----
-univar_stats <- function(x, trim = trim, winvar = winvar) {
+
+stats_per_group <- function(x, trim = trim, winvar = winvar) {
   m <- mean(x)
   n <- length(x)
   v <- var(x)
+  s <- sd(x)
   trm <- mean(x, trim = trim)
   ntr <- n_trim(n = n, trim = trim)
   if (winvar) {
@@ -277,30 +297,38 @@ univar_stats <- function(x, trim = trim, winvar = winvar) {
   } else {
     winvar <- NULL
   }
-  return(list(m = m, n = n, var = v, trm = trm, ntr = ntr, winvar = winvar))
+  return(list(m = m, n = n, var = v, s = s, trm = trm, ntr = ntr, winvar = winvar))
 }
 
-### Grand summary statistics function ----
-smd_stats <- function(x, INDEX, trim = 0.2, type = c("univariate", "multivariate"),
-                      winvar = FALSE, na.rm = TRUE) {
+dependent_groups_stats <- function(x, y, trim, winvar = winvar){
+  n <- length(x)
+  r <- cor(x, y)
+  vdiff <- var(x - y)
+  sdiff <- sqrt(vdiff)
+  return(list(n = n, r = r, vdiff = vdiff, sdiff = sdiff))
+}
 
-  error_detector(x, INDEX, trim, na.rm)
-  i_NA <- complete.cases(x, INDEX)
-  if (na.rm) {
-    x <- x[i_NA]
-    INDEX <- INDEX[i_NA]
-  }
 
-  if ("univariate" %in% type) {
-    univariate_stats <- tapply(X = x, INDEX = INDEX, FUN = univar_stats, trim = trim, winvar = winvar, simplify = FALSE)
-    stats_names <- names(univariate_stats[[1]])
+
+summary_stats <- function(x, INDEX = NULL, y = NULL, trim = 0, winvar = FALSE){
+  if(is.data.frame(x)){
+  } else if(is.null(y)){
+    stats <- tapply(X = x, INDEX = INDEX, FUN = stats_per_group, trim = trim, winvar = winvar, simplify = FALSE)
+    stats_names <- names(stats[[1]])
     stats_names <- paste0(stats_names, rep(1:2, each = length(stats_names)))
-    univariate_stats <- unlist(univariate_stats, recursive = FALSE)
-    names(univariate_stats) <- stats_names
-    return(univariate_stats)
+    stats <- unlist(stats, recursive = FALSE)
+    names(stats) <- stats_names
+  } else if(is.null(INDEX)){
+    stats_x <- stats_per_group(x = x, trim = trim, winvar = winvar)
+    names(stats_x) <- paste0(names(stats_x), "1")
+    stats_y <- stats_per_group(x = y, trim = trim, winvar = winvar)
+    names(stats_y) <- paste0(names(stats_y), "2")
+    stats_xy <- dependent_groups_stats(x = x, y = y)
+    stats <- c(stats_x, stats_y, stats_xy)
   }
-
+  return(stats)
 }
+
 
 ## Various standard deviations: ----
 sd_combined <- function(x = NULL, INDEX = NULL, var1, var2, n1, n2, winvar1,
@@ -309,34 +337,16 @@ sd_combined <- function(x = NULL, INDEX = NULL, var1, var2, n1, n2, winvar1,
 
 
   if (!is.null(x) && !is.null(INDEX)) {
-    error_detector(x, INDEX, trim, na.rm)
-    i_NA <- complete.cases(x, INDEX)
-    if (na.rm) {
-      x <- x[i_NA]
-      INDEX <- INDEX[i_NA]
+    stats <- summary_stats(x = x, INDEX = INDEX, trim = trim, winvar = winsor)
+    for (i in names(stats)) {
+      assign(i, stats[[i]])
+      }
     }
-
-    univar_stats <- smd_stats(x = x, INDEX = INDEX, trim = trim, type = "univariate", winvar = winsor)
-    n1 <- univar_stats[["n1"]]
-    n2 <- univar_stats[["n2"]]
-    if (!winsor) {
-      var1 <- univar_stats[["var1"]]
-      var2 <- univar_stats[["var2"]]
-    } else {
-      var1 <- univar_stats[["winvar1"]]
-      var2 <- univar_stats[["winvar2"]]
-      ntr1 <- univar_stats[["ntr1"]]
-      ntr2 <- univar_stats[["ntr2"]]
-    }
-
-
-  } else {
-    if (winsor) {
+  if (winsor) {
       var1 <- winvar1
       var2 <- winvar2
-    }
-  }
-
+      }
+  
   res <- switch(type,
                 "pooled" = sqrt((((n1 - 1) * var1) + ((n2 - 1) * var2)) / (n1 + n2 - 2)),
                 "mean" = sqrt((var1 + var2) / 2),
@@ -362,24 +372,15 @@ smd_uni <- function(effsize = c("cohen_d", "hedges_g", "glass_d", "glass_d_corr"
 
 
   if (!is.null(x) && !is.null(INDEX)) {
-    error_detector(x, INDEX, trim, na.rm)
-    i_NA <- complete.cases(x, INDEX)
-    if (na.rm) {
-      x <- x[i_NA]
-      INDEX <- INDEX[i_NA]
-    }
-
     if ("AKP_eqvar" %in% effsize || "AKP_uneqvar" %in% effsize) {
       winvar <- TRUE
     } else {
       winvar <- FALSE
     }
-    univar_stats <- smd_stats(x = x, INDEX = INDEX, trim = trim, winvar = winvar,
-                              type = "univariate")
-    for (i in 1:length(univar_stats)) {
-      assign(names(univar_stats)[[i]], univar_stats[[i]])
+    stats <- summary_stats(x = x, INDEX = INDEX, trim = trim, winvar = winvar)
+    for (i in names(stats)) {
+      assign(i, stats[[i]])
     }
-
   }
 
   res <- switch(effsize,
@@ -456,12 +457,10 @@ smd_ci <- function(effsize = c("cohen_d", "hedges_g", "glass_d", "glass_d_corr",
     } else {
       winvar <- FALSE
     }
-    univar_stats <- smd_stats(x = x, INDEX = INDEX, trim = trim, winvar = winvar,
-                              type = "univariate")
-    for (i in 1:length(univar_stats)) {
-      assign(names(univar_stats)[[i]], univar_stats[[i]])
+    stats <- summary_stats(x = x, INDEX = INDEX, trim = trim, winvar = winvar)
+    for (i in names(stats)) {
+      assign(i, stats[[i]])
     }
-
   }
 
   df <- degrees_freedom(effsize, n1, n2, ntr1, ntr2, comparison_group = "a")
@@ -605,9 +604,9 @@ student_t <- function(m1, m2, var1, var2, n1, n2) {
 }
 
 ## dependent groups student's t-test: ----
-dependent_student_t <- function(m1, m2, sd_diff, n_diff) {
-  t_val <- (m1 - m2) / (sd_diff / sqrt(n_diff))
-  df <- n_diff - 1
+student_t_dependent <- function(m1, m2, sdiff, n) {
+  t_val <- (m1 - m2) / (sdiff / sqrt(n))
+  df <- n - 1
   p_val <- 2 * (1 - pt(q = abs(t_val), df = df))
   return(list(t_val = t_val,
               df = df,
@@ -643,36 +642,28 @@ yuen_t <- function(trm1, trm2, winvar1, winvar2, n1, n2, ntr1, ntr2) {
 
 ## grand t-test function: ----
 t_test <- function(x = NULL, INDEX = NULL, y = NULL, m1, m2, var1, var2, n1, n2, trm1, trm2,
-                   winvar1, winvar2, ntr1, ntr2, dependent = FALSE, n_diff, sd_diff, alpha = 0.05,
+                   winvar1, winvar2, ntr1, ntr2, n, sdiff, alpha = 0.05,
                    na.rm = TRUE, type = c("student_t_test", "dependent_student_t_test", "welch_t_test", "yuen_t_test")) {
-  if (!dependent) {
-
-    if (!is.null(x) && !is.null(INDEX)) {
-      error_detector(x, INDEX, trim, na.rm)
-      i_NA <- complete.cases(x, INDEX)
-      if (na.rm) {
-        x <- x[i_NA]
-        INDEX <- INDEX[i_NA]
-      }
-
-      if ("yuen_t_test" %in% type) {
-        winvar <- TRUE
-      } else {
-        winvar <- FALSE
-      }
-      univar_stats <- smd_stats(x = x, INDEX = INDEX, trim = trim, winvar = winvar,
-                                type = "univariate")
-      for (i in 1:length(univar_stats)) {
-        assign(names(univar_stats)[[i]], univar_stats[[i]])
-      }
-
+  if (!is.null(x)) {
+    if ("yuen_t_test" %in% type) {
+      winvar <- TRUE
+    } else {
+      winvar <- FALSE
     }
-
+    if (!is.null(INDEX)) {
+      error_detector(x, INDEX, trim, na.rm)
+      stats <- summary_stats(x = x, INDEX = INDEX, trim = trim, winvar = winvar)
+    } else if(!is.null(y)){
+      stats <- summary_stats(x = x, y = y, trim = trim, winvar = winvar)
+    }
+    for (i in names(stats)) {
+      assign(i, stats[[i]])
+    }
   }
 
   res <- switch(type,
                 student_t_test = student_t(m1, m2, var1, var2, n1, n2),
-                #     dependent_student_t_test = dependent_student_t(m1, m2, sd_diff, n_diff),
+                dependent_student_t_test = student_t_dependent(m1, m2, sdiff, n),
                 welch_t_test = welch_t(m1, m2, var1, var2, n1, n2),
                 yuen_t_test = yuen_t(trm1, trm2, winvar1, winvar2, n1, n2, ntr1, ntr2))
 
@@ -747,13 +738,13 @@ sbwab <- function(x) {
 ## Variance ratio ----
 variance_ratio <- function(x = NULL, INDEX = NULL, s1, s2, ref = c("grp1", "grp2"), log = FALSE) {
   if (!is.null(x) & !is.null(INDEX)) {
-    sds <- tapply(x, INDEX, sd)
-    s1 <- sds[[1]]
-    s2 <- sds[[2]]
+    vars <- tapply(x, INDEX, var)
+    var1 <- vars[[1]]
+    var2 <- vars[[2]]
   }
 
-  denom <- ifelse(ref %in% "grp1", s1^2, s2^2)
-  num <- ifelse(ref %in% "grp1", s2^2, s1^2)
+  denom <- ifelse(ref %in% "grp1", var1, var2)
+  num <- ifelse(ref %in% "grp1", var2, var1)
   vr <- ifelse(log, log(denom / num), denom / num)
   return(vr)
 }
@@ -761,16 +752,21 @@ variance_ratio <- function(x = NULL, INDEX = NULL, s1, s2, ref = c("grp1", "grp2
 
 ## Tail ratios: ----
 ### Parametric tail ratios: ----
-parametric_tr <- function(x = NULL, INDEX = NULL, m1, m2, s1, s2, ref = c("grp1", "grp2"),
-                          tail = c("lower", "upper"), cutoff) {
+parametric_tr <- function(x = NULL, INDEX = NULL, y = NULL,
+                          m1, m2, s1, s2, 
+                          ref = c("grp1", "grp2"),
+                          tail = c("lower", "upper"), 
+                          cutoff) {
 
-  if (!is.null(x) && !is.null(INDEX)) {
-    univar_stats <- smd_stats(x, INDEX, type = "univariate")
-    for (i in names(univar_stats)) {
-      assign(i, univar_stats[[i]])
+  if(!is.null(x)){
+    if(!is.null(INDEX)){
+      stats <- summary_stats(x = x, INDEX = INDEX)
+    } else if(!is.null(y)){
+      stats <- summary_stats(x = x, y = y)
     }
-    s1 <- sqrt(var1)
-    s2 <- sqrt(var2)
+    for (i in names(stats)) {
+      assign(i, stats[[i]])
+    }
   }
 
   cdf_grp1 <- pnorm(cutoff, m1, s1)

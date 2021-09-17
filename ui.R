@@ -1,6 +1,7 @@
 rm(list = ls())
 library(shiny)
 library(shinydashboard)
+library(shinyvalidate)
 source('plot_function_ready.R')
 source('uiNavigationSidebar.R')
 source('uiBody.R')
