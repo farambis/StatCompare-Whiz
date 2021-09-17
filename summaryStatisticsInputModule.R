@@ -1,4 +1,107 @@
-library(shiny)
+numericInputGroup <-
+  function(ns,
+           statistic = c("mean",
+                         "standardDeviation",
+                         "sampleSize",
+                         "correlation",
+                         "standardDeviationDiff"),
+           design = c("indGrps", "depGrps", "mixed")) {
+    lab <- switch(
+      statistic,
+      mean = "Mean",
+      standardDeviation = "SD",
+      sampleSize = "n",
+      correlation = "r",
+      standardDeviationDiff = "SD of difference scores"
+    )
+    
+    value <- switch(
+      statistic,
+      mean = 100,
+      standardDeviation = 10,
+      sampleSize = 20,
+      correlation = 0.7,
+      standardDeviationDiff = 6
+    )
+    
+    min <- ifelse(statistic == "correlation",-1, NA)
+    max <- ifelse(statistic == "correlation", 1, NA)
+    
+    nloop <- switch(
+      statistic,
+      mean = ifelse(design == "mixed", 4, 2),
+      standardDeviation = ifelse(design == "mixed", 4, 2),
+      sampleSize = ifelse(design == "depGrps", 1, 2),
+      correlation = ifelse(design == "mixed", 2, 1),
+      standardDeviationDiff = ifelse(design == "mixed", 2, 1)
+    )
+    
+    IDs <- vapply(paste0(statistic, 1:nloop), ns, character(1))
+    
+    numericInputs <-
+      lapply(
+        IDs,
+        numericInput,
+        label = lab,
+        value = value,
+        min = min,
+        max = max
+      )
+    names(numericInputs) <- paste0(statistic, 1:nloop)
+    
+    return(numericInputs)
+  }
+
+header <- function(design = c("indGrps", "depGrps", "mixed"),
+                   measurement = c("pretest", "posttest"),
+                   group = c("a", "b"),
+                   info = c("acrossGrps", "perGrp")) {
+  ifelse(
+    info == "acrossGrps",
+    paste0(
+      "SD of difference scores, n, & r",
+      ifelse(design == "depGrps",
+             "",
+             paste0(" group ", group))
+    ),
+    ifelse(
+      design == "indGrps",
+      paste0("group ", group),
+      ifelse(
+        design == "depGrps",
+        measurement,
+        paste0(measurement,
+               " group ",
+               group)
+      )
+    )
+  )
+}
+
+uiColumn <-
+  function(design,
+           measurement = NULL,
+           group,
+           info,
+           firstInput,
+           secondInput,
+           thirdInput) {
+    column <- tagList()
+    column$header <- tagList(h2(
+      header(
+        design = design,
+        measurement = measurement,
+        group = group,
+        info = info
+      )
+    ))
+    column$firstInput <- firstInput
+    column$secondInput <- secondInput
+    if ((design == "indGrps") || is.null(measurement)) {
+      column$thirdInput <- thirdInput
+    }
+    return(column)
+  }
 
 summaryStatisticsInput <- function(id,
                                    design = c("indGrps", "depGrps", "mixed")) {
@@ -122,108 +225,3 @@ summaryStatisticsServer <- function(id) {
                  return(summaryStatisticInputs)
                })
 }
-
-numericInputGroup <-
-  function(ns,
-           statistic = c("mean",
-                         "standardDeviation",
-                         "sampleSize",
-                         "correlation",
-                         "standardDeviationDiff"),
-           design = c("indGrps", "depGrps", "mixed")) {
-    lab <- switch(
-      statistic,
-      mean = "Mean",
-      standardDeviation = "SD",
-      sampleSize = "n",
-      correlation = "r",
-      standardDeviationDiff = "SD of difference scores"
-    )
-    
-    value <- switch(
-      statistic,
-      mean = 100,
-      standardDeviation = 10,
-      sampleSize = 20,
-      correlation = 0.7,
-      standardDeviationDiff = 6
-    )
-    
-    min <- ifelse(statistic == "correlation",-1, NA)
-    max <- ifelse(statistic == "correlation", 1, NA)
-    
-    nloop <- switch(
-      statistic,
-      mean = ifelse(design == "mixed", 4, 2),
-      standardDeviation = ifelse(design == "mixed", 4, 2),
-      sampleSize = ifelse(design == "depGrps", 1, 2),
-      correlation = ifelse(design == "mixed", 2, 1),
-      standardDeviationDiff = ifelse(design == "mixed", 2, 1)
-    )
-    
-    IDs <- vapply(paste0(statistic, 1:nloop), ns, character(1))
-    
-    numericInputs <-
-      lapply(
-        IDs,
-        numericInput,
-        label = lab,
-        value = value,
-        min = min,
-        max = max
-      )
-    names(numericInputs) <- paste0(statistic, 1:nloop)
-    
-    return(numericInputs)
-  }
-
-header <- function(design = c("indGrps", "depGrps", "mixed"),
-                   measurement = c("pretest", "posttest"),
-                   group = c("a", "b"),
-                   info = c("acrossGrps", "perGrp")) {
-  ifelse(
-    info == "acrossGrps",
-    paste0(
-      "SD of difference scores, n, & r",
-      ifelse(design == "depGrps",
-             "",
-             paste0(" group ", group))
-    ),
-    ifelse(
-      design == "indGrps",
-      paste0("group ", group),
-      ifelse(
-        design == "depGrps",
-        measurement,
-        paste0(measurement,
-               " group ",
-               group)
-      )
-    )
-  )
-}
-
-uiColumn <-
-  function(design,
-           measurement = NULL,
-           group,
-           info,
-           firstInput,
-           secondInput,
-           thirdInput) {
-    column <- tagList()
-    column$header <- tagList(h2(
-      header(
-        design = design,
-        measurement = measurement,
-        group = group,
-        info = info
-      )
-    ))
-    column$firstInput <- firstInput
-    column$secondInput <- secondInput
-    if ((design == "indGrps") || is.null(measurement)) {
-      column$thirdInput <- thirdInput
-    }
-    return(column)
-  }
