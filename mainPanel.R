@@ -8,8 +8,7 @@ esMainPanel <- function(id, esChoices, tsChoices, plotChoices, description) {
     tabPanel(title = "Data", tableOutput(ns("dataTable"))),
     tabPanel(title = "Es & Teststatistic", esAndTsUi(ns("esAndTs"), esChoices, tsChoices)),
     tabPanel(title = "Plot", plotUi(ns("plotting"), plotChoices = plotChoices)),
-    tabPanel(title = icon("info-circle"), includeMarkdown(description))
- 
+    tabPanel(title = icon("info-circle"), withMathJax(includeMarkdown(description)))
   ))
 }
 

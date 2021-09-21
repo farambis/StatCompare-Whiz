@@ -384,14 +384,14 @@ smd_uni <- function(effsize = c("cohen_d", "hedges_g", "glass_d", "glass_d_corr"
   }
 
   res <- switch(effsize,
-                "cohen_d" = (m1 - m2) / sd_combined(var1 = var1, var2 = var2, n1 = n1, n2 = n2, type = "pooled"),
-                "hedges_g" = smd_corr(df = degrees_freedom(effsize, n1, n2), type = "hedges") * (m1 - m2) / sd_combined(var1 = var1, var2 = var2, n1 = n1, n2 = n2, type = "pooled"),
-                "glass_d" = (m1 - m2) / sd_combined(var1 = var1, type = "grp_1"),
-                "glass_d_corr" = smd_corr(df = degrees_freedom(effsize, n1, comparison_group = "a"), type = "hedges") * (m1 - m2) / sd_combined(var1 = var1, type = "grp_1"),
-                "bonett_d" = (m1 - m2) / sd_combined(var1 = var1, var2 = var2, type = "mean"),
-                "bonett_d_corr" = smd_corr(df = degrees_freedom(effsize, n1, n2), type = "hedges") * (m1 - m2) / sd_combined(var1 = var1, var2 = var2, type = "mean"),
-                "AKP_eqvar" = smd_corr(n1 = n1, n2 = n2, trim = trim, type = "AKP") * (trm1 - trm2) / sd_combined(winvar1 = winvar1, winvar2 = winvar2, n1 = n1, n2 = n2, type = "pooled", winsor = TRUE, trim = trim),
-                "AKP_uneqvar" = smd_corr(n1 = n1, n2 = n2, trim = trim, type = "AKP") * (trm1 - trm2) / sd_combined(winvar1 = winvar1, winvar2 = winvar2, type = "grp_1", winsor = TRUE, trim = trim))
+                "cohen_d" = (m2 - m1) / sd_combined(var1 = var1, var2 = var2, n1 = n1, n2 = n2, type = "pooled"),
+                "hedges_g" = smd_corr(df = degrees_freedom(effsize, n1, n2), type = "hedges") * (m2 - m1) / sd_combined(var1 = var1, var2 = var2, n1 = n1, n2 = n2, type = "pooled"),
+                "glass_d" = (m2 - m1) / sd_combined(var1 = var1, type = "grp_1"),
+                "glass_d_corr" = smd_corr(df = degrees_freedom(effsize, n1, comparison_group = "a"), type = "hedges") * (m2 - m1) / sd_combined(var1 = var1, type = "grp_1"),
+                "bonett_d" = (m2 - m1) / sd_combined(var1 = var1, var2 = var2, type = "mean"),
+                "bonett_d_corr" = smd_corr(df = degrees_freedom(effsize, n1, n2), type = "hedges") * (m2 - m1) / sd_combined(var1 = var1, var2 = var2, type = "mean"),
+                "AKP_eqvar" = smd_corr(n1 = n1, n2 = n2, trim = trim, type = "AKP") * (trm2 - trm1) / sd_combined(winvar1 = winvar1, winvar2 = winvar2, n1 = n1, n2 = n2, type = "pooled", winsor = TRUE, trim = trim),
+                "AKP_uneqvar" = smd_corr(n1 = n1, n2 = n2, trim = trim, type = "AKP") * (trm2 - trm1) / sd_combined(winvar1 = winvar1, winvar2 = winvar2, type = "grp_1", winsor = TRUE, trim = trim))
 
   names(res) <- effsize
   return(res)
@@ -480,22 +480,28 @@ smd_ci <- function(effsize = c("cohen_d", "hedges_g", "glass_d", "glass_d_corr",
 
     ncp <- switch(effsize,
                   "cohen_d" = val / sqrt((1 / n1) + (1 / n2)),
-                  "hedges_g" = val / (smd_corr(df = df, type = "hedges") * sqrt((1 / n1) + (1 / n2))),
+                  "hedges_g" = val /  sqrt((1 / n1) + (1 / n2)),
                   "glass_d" = val / sqrt((1 / n1) + (var2 / (n2 * var1))),
-                  "glass_d_corr" = val / (smd_corr(df = df, type = "hedges") * sqrt((1 / n1) + (var2 / (n2 * var1)))),
-                  "AKP_eqvar" = sqrt((ntr1 * ntr2) / (ntr1 + ntr2)) * ((trm1 - trm2) / sqrt(((n1 + n2 - 2) * (sd_combined(winvar1 = winvar1, winvar2 = winvar2, n1 = n1, n2 = n2, type = "pooled", winsor = TRUE, trim = trim)^2)) / (ntr1 + ntr2 - 2))),
+                  "glass_d_corr" = val / sqrt((1 / n1) + (var2 / (n2 * var1))),
+                  "AKP_eqvar" = sqrt((ntr1 * ntr2) / (ntr1 + ntr2)) * ((trm2 - trm1) / sqrt(((n1 + n2 - 2) * (sd_combined(winvar1 = winvar1, winvar2 = winvar2, n1 = n1, n2 = n2, type = "pooled", winsor = TRUE, trim = trim)^2)) / (ntr1 + ntr2 - 2))),
                   "AKP_uneqvar" = val / (smd_corr(n1 = n1, n2 = n2, trim = trim, type = "AKP") * sqrt(((n1 - 1) / (ntr1 * (ntr1 - 1))) + (((n2 - 1) * winvar2) / ((ntr2 * (ntr2 - 1)) * winvar1))))
     )
-
-    ncp_cis <- ncp_ci(ncp, df, alpha)
+    
+    if(effsize %in% "hedges_g"){
+      ncp_ci_lower <- qt(alpha/2, df = df, ncp = ncp)
+      ncp_ci_upper <- qt(1 - (alpha/2), df = df, ncp = ncp)
+      ncp_cis <- c(ncp_ci_lower, ncp_ci_upper)
+    } else {
+      ncp_cis <- ncp_ci(ncp, df, alpha)
+    }
 
   }
 
   smd_ci <- switch(effsize,
                    "cohen_d" = ncp_cis * sqrt((1 / n1) + (1 / n2)),
-                   "hedges_g" = ncp_cis * (smd_corr(df = df, type = "hedges") * sqrt((1 / n1) + (1 / n2))),
+                   "hedges_g" = ncp_cis * sqrt((1 / n1) + (1 / n2)),
                    "glass_d" = ncp_cis * sqrt((1 / n1) + (var2 / (n2 * var1))),
-                   "glass_d_corr" = ncp_cis * (smd_corr(df = df, type = "hedges") * sqrt((1 / n1) + (var2 / (n2 * var1)))),
+                   "glass_d_corr" = ncp_cis * sqrt((1 / n1) + (var2 / (n2 * var1))),
                    "bonett_d" = val + (c(qnorm(alpha / 2), qnorm(1 - (alpha / 2))) * sqrt(ls_var)),
                    "bonett_d_corr" = val + (c(qnorm(alpha / 2), qnorm(1 - (alpha / 2))) * sqrt(ls_var)),
                    "AKP_eqvar" = ncp_cis * (smd_corr(n1 = n1, n2 = n2, trim = trim, type = "AKP") * sqrt(((ntr1 + ntr2) * (n1 + n2 - 2)) / (ntr1 * ntr2 * (ntr1 + ntr2 - 2)))),
@@ -595,7 +601,7 @@ boot <- function(x, INDEX, alpha = 0.05, n_boot = 200, FUN) {
 # t-test functions(student, welch, yuen, ...) ----
 ## independent groups student's t-test: ----
 student_t <- function(m1, m2, var1, var2, n1, n2) {
-  t_val <- (m1 - m2) / sd_combined(var1 = var1, var2 = var2, n1 = n1, n2 = n2, type = "se_pooled")
+  t_val <- (m2 - m1) / sd_combined(var1 = var1, var2 = var2, n1 = n1, n2 = n2, type = "se_pooled")
   df <- n1 + n2 - 2
   p_val <- 2 * (1 - pt(q = abs(t_val), df = df))
   return(list(t_val = t_val,
@@ -605,7 +611,7 @@ student_t <- function(m1, m2, var1, var2, n1, n2) {
 
 ## dependent groups student's t-test: ----
 student_t_dependent <- function(m1, m2, sdiff, n) {
-  t_val <- (m1 - m2) / (sdiff / sqrt(n))
+  t_val <- (m2 - m1) / (sdiff / sqrt(n))
   df <- n - 1
   p_val <- 2 * (1 - pt(q = abs(t_val), df = df))
   return(list(t_val = t_val,
@@ -616,7 +622,7 @@ student_t_dependent <- function(m1, m2, sdiff, n) {
 ## independent groups welch's t-test: ----
 welch_t <- function(m1, m2, var1, var2, n1, n2) {
   se_welch <- sd_combined(var1 = var1, var2 = var2, n1 = n1, n2 = n2, type = "se_welch")
-  t_val <- (m1 - m2) / se_welch
+  t_val <- (m2 - m1) / se_welch
   df_num <- se_welch^4
   df_denom <- (var1^2 / (n1^2 * (n1 - 1))) + (var2^2 / (n2^2 * (n2 - 1)))
   df <- df_num / df_denom
@@ -630,7 +636,7 @@ welch_t <- function(m1, m2, var1, var2, n1, n2) {
 yuen_t <- function(trm1, trm2, winvar1, winvar2, n1, n2, ntr1, ntr2) {
   d1 <- (n1 - 1) * winvar1 / (ntr1 * (ntr1 - 1))
   d2 <- (n2 - 1) * winvar2 / (ntr2 * (ntr2 - 1))
-  t_val <- (trm1 - trm2) / sqrt(d1 + d2)
+  t_val <- (trm2 - trm1) / sqrt(d1 + d2)
   df_num <- (d1 + d2)^2
   df_denom <- d1^2 / (ntr1 - 1) + d2^2 / (ntr2 - 1)
   df <- df_num / df_denom
