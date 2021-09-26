@@ -31,9 +31,33 @@ bootstrapNotification <- function(selectedEs) observeEvent(
   showNotification(
     ui = "Bootstrap Konfidenzintervalle wurden neu berechnet!",
     duration = 3,
-    type = "warning"
+    type = "message"
   )
 })
+
+trApproxNotification <- function(selectedEs) observeEvent(
+  selectedEs(), {
+  #todo: replace TRUE with should_tr_be_approximated
+  if ("parametric_tr" %in% selectedEs() && TRUE) {
+    showNotification(
+      ui = "Tail ratio wurde approximiert berechnet",
+      duration = 5,
+      type = "warning"
+    )
+  }
+})
+
+inhomogenousVariancesNotification <- function(selectedEs, x, INDEX) observeEvent(
+  selectedEs(), {
+  if ("ovl_parametric" %in% selectedEs() && levenes_test(x, INDEX)) {
+    showNotification(
+      ui = "Achtung: Die hochgeladenen Daten weisen inhomogene Varianzen auf. Verwenden Sie bitte das nicht parametrische Verfahren zur Berechnung des Overlapping coefficients",
+      duration = 5,
+      type = "warning"
+    )
+  }
+}
+)
 
 esAndTsRawDataServer <- function(id, assumption, dat, index, x, y) {
   moduleServer(id,
@@ -63,6 +87,9 @@ esAndTsRawDataServer <- function(id, assumption, dat, index, x, y) {
                  output$downloadTs <- csvDownloadHandler("test_statistic.csv", getTsDataframe)
 
                  bootstrapNotification(selectedEs)
+                 trApproxNotification(selectedEs)
+                 inhomogenousVariancesNotification(selectedEs, x, INDEX)
+
 
                })
 }
@@ -98,6 +125,7 @@ esAndTsEducationalServer <- function(id, mean1, standardDeviation1, sampleSize1,
                  output$downloadEs <- csvDownloadHandler("effect_size.csv", getEsDataframe)
                  output$downloadTsWidget <- createDownloadWidget(session$ns, selectedTs, "downloadTs")
                  output$downloadTs <- csvDownloadHandler("test_statistic.csv", getTsDataframe)
+
 
                  bootstrapNotification(selectedEs)
 

@@ -26,6 +26,11 @@ all_plots <- list(parametric_ovl = "parametric_ovl", cohens_u1 = "cohens_u1", co
 es_list <- c("cohen_d", "hedges_g", "glass_d", "glass_d_corr", "bonett_d", "bonett_d_corr")
 ts_list <- c("student_t_test", "welch_t_test", "yuen_t_test")
 
+levenes_test <- function (x, INDEX) {
+  ## TODO implement levene's test
+  return (TRUE)
+}
+
 ## ES for raw data ----
 generate_es_raw_data_dataframe <- function(es_list, INDEX = NULL, x, y) {
 
@@ -790,6 +795,8 @@ parametric_tr <- function(x = NULL, INDEX = NULL, y = NULL,
 # give exact tail ratios (equivalent to risk ratios) when enough observations are
 # present below the cutoff in each group - otherwise call non_parametric_approx
 # to yield approximate tail ratios.
+should_tr_be_approximated <- function(n1_above, n1_below, n2_above, n2_below, tail) ifelse(tail %in% "lower", any(c(n1_below, n2_below) == 0), any(c(n1_above, n2_above) == 0))
+
 non_parametric_tr <- function(x, INDEX, ref = c("grp1", "grp2"), tail = c("lower", "upper"), cutoff,
                               bw = "nrd0", kernel = c("gaussian",
                                                       "epanechnikov",
@@ -808,7 +815,7 @@ non_parametric_tr <- function(x, INDEX, ref = c("grp1", "grp2"), tail = c("lower
   n2_below <- sum(dat[[2]] <= cutoff)
   n2_above <- sum(dat[[2]] >= cutoff)
 
-  bool <- ifelse(tail %in% "lower", any(c(n1_below, n2_below) == 0), any(c(n1_above, n2_above) == 0))
+  bool <- should_tr_be_approximated(n1_above, n1_below, n2_above, n2_below, tail)
   if (bool) {
     return(non_parametric_tr_approx(x, INDEX, ref, tail, cutoff, bw, kernel))
   } else {
