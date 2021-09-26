@@ -9,7 +9,7 @@ csvDownloadHandler <- function(filename, FUN) {
   )
 }
 
-createDownloadWidget <- function (namespace, FUN, name) {
+createDownloadWidget <- function(namespace, FUN, name) {
   renderUI({
     ns <- namespace
     req(FUN())
@@ -25,6 +25,15 @@ esAndTsUi <- function(id, esChoices, tsChoices) {
                  tableOutput(ns("tsTable")), fluidRow(column(width = 6, uiOutput(ns("downloadTsWidget")))))
   )
 }
+
+bootstrapNotification <- function(selectedEs) observeEvent(
+  selectedEs(), {
+  showNotification(
+    ui = "Bootstrap Konfidenzintervalle wurden neu berechnet!",
+    duration = 3,
+    type = "warning"
+  )
+})
 
 esAndTsRawDataServer <- function(id, assumption, dat, index, x, y) {
   moduleServer(id,
@@ -52,6 +61,9 @@ esAndTsRawDataServer <- function(id, assumption, dat, index, x, y) {
                  output$downloadEs <- csvDownloadHandler("effect_size.csv", getEsDataframe)
                  output$downloadTsWidget <- createDownloadWidget(session$ns, selectedTs, "downloadTs")
                  output$downloadTs <- csvDownloadHandler("test_statistic.csv", getTsDataframe)
+
+                 bootstrapNotification(selectedEs)
+
                })
 }
 
@@ -86,5 +98,8 @@ esAndTsEducationalServer <- function(id, mean1, standardDeviation1, sampleSize1,
                  output$downloadEs <- csvDownloadHandler("effect_size.csv", getEsDataframe)
                  output$downloadTsWidget <- createDownloadWidget(session$ns, selectedTs, "downloadTs")
                  output$downloadTs <- csvDownloadHandler("test_statistic.csv", getTsDataframe)
+
+                 bootstrapNotification(selectedEs)
+
                })
 }
