@@ -49,10 +49,10 @@ trApproxNotification <- function(selectedEs) observeEvent(
 
 inhomogenousVariancesNotification <- function(selectedEs, x, INDEX) observeEvent(
   selectedEs(), {
-  if ("ovl_parametric" %in% selectedEs() && levenes_test(x, INDEX)) {
+  if ("ovl_parametric" %in% selectedEs() && areVariancesHomogenous(x, INDEX)) {
     showNotification(
-      ui = "Achtung: Die hochgeladenen Daten weisen inhomogene Varianzen auf. Verwenden Sie bitte das nicht parametrische Verfahren zur Berechnung des Overlapping coefficients",
-      duration = 5,
+      ui = "Achtung: Die hochgeladenen Daten haben inhomogene Varianzen. Verwenden Sie bitte das nicht-parametrische Verfahren zur Berechnung des Overlapping coefficients",
+      duration = 8,
       type = "warning"
     )
   }
@@ -88,7 +88,7 @@ esAndTsRawDataServer <- function(id, assumption, dat, index, x, y) {
 
                  bootstrapNotification(selectedEs)
                  trApproxNotification(selectedEs)
-                 inhomogenousVariancesNotification(selectedEs, x, INDEX)
+                 inhomogenousVariancesNotification(selectedEs, x(), index())
 
 
                })

@@ -26,10 +26,6 @@ all_plots <- list(parametric_ovl = "parametric_ovl", cohens_u1 = "cohens_u1", co
 es_list <- c("cohen_d", "hedges_g", "glass_d", "glass_d_corr", "bonett_d", "bonett_d_corr")
 ts_list <- c("student_t_test", "welch_t_test", "yuen_t_test")
 
-levenes_test <- function (x, INDEX) {
-  ## TODO implement levene's test
-  return (TRUE)
-}
 
 ## ES for raw data ----
 generate_es_raw_data_dataframe <- function(es_list, INDEX = NULL, x, y) {
@@ -1262,4 +1258,42 @@ parametric_cohens_u3_ci <- function(x, INDEX, m1, m2, var1, var2, n1, n2, var_eq
   }
 
   return(list(lower_bound = lower_bound, upper_bound = upper_bound))
+}
+
+
+# homogenity measures of variances ----
+
+areVariancesHomogenous <- function (x, INDEX) {
+  p_value <- levenesTest(x, INDEX)
+  if (p_value < 0.05) return (FALSE)
+  return (TRUE)
+}
+
+levenesTest <- function(x, INDEX) {
+  original_dataset <- split(x, INDEX)
+  n <- length(x)
+  k <- length(original_dataset)
+  sum_z_dot_dot <- 0
+  list_list_zijs <- vector("list", length(original_dataset))
+  list_zi_dot <-  lapply((seq_along(original_dataset)), function(i) {
+    ni <- length(original_dataset[[i]])
+    yi <- mean(original_dataset[[i]])
+    sum_zij <- 0
+    list_zij <- lapply(original_dataset[[i]], function(j) {
+      zij <- abs(j - yi)
+      sum_zij <<- sum_zij + zij
+      sum_z_dot_dot <<- sum_z_dot_dot + zij
+      return (zij)
+    })
+    list_list_zijs[[i]] <<- list_zij
+    return (sum_zij/ni)
+  })
+  z_dot_dot <- sum_z_dot_dot/n
+  numerator <- sum(unlist((lapply(seq(length(list_zi_dot)), function(group_number){ length(original_dataset[[group_number]])*(list_zi_dot[[group_number]]-z_dot_dot)^2}))))
+  denumerator <- sum(unlist( lapply(seq(length(original_dataset)), function(i){
+    zi_dot <- list_zi_dot[[i]]
+    sum(unlist(lapply(list_list_zijs[[i]], function (j)(j - zi_dot)^2)))
+  })))
+  w <- ((n - k)/(k -1))*(numerator/denumerator)
+  pf(w, k-1, n-k, lower.tail = FALSE)
 }
