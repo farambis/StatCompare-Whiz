@@ -41,8 +41,8 @@ esAndTsRawDataServer <- function(id, assumption, dat, index, x, y) {
                    else generate_ts_dataframe(ts_list = selectedTs(), INDEX = index(), x = x())
                  })
 
-                 output$esTable <- renderTable({
-                   getEsDataframe()
+                 output$esTable <- render_gt({
+                   (getEsDataframe() %>% gt())
                  })
                  output$tsTable <- renderTable({
                    getTsDataframe()
