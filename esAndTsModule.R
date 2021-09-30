@@ -29,32 +29,38 @@ esAndTsUi <- function(id, esChoices, tsChoices) {
 bootstrapNotification <- function(selectedEs) observeEvent(
   selectedEs(), {
   showNotification(
-    ui = "Bootstrap Konfidenzintervalle wurden neu berechnet!",
+    ui = "Notice: New set of bootstrap samples drawn and bootstrap confidence intervals are recalculated",
     duration = 3,
     type = "message"
   )
 })
 
+firstTimeTrApproxNotification <- TRUE
+
 trApproxNotification <- function(selectedEs) observeEvent(
   selectedEs(), {
   #todo: replace TRUE with should_tr_be_approximated
-  if ("parametric_tr" %in% selectedEs() && TRUE) {
+  if ("parametric_tr" %in% selectedEs() && TRUE && firstTimeTrApproxNotification) {
     showNotification(
-      ui = "Tail ratio wurde approximiert berechnet",
+      ui = "Notice: approximate tail ratio (see information tab) computed due to lack of data in the region of interest",
       duration = 5,
       type = "warning"
     )
+    firstTimeTrApproxNotification <<- FALSE
   }
 })
 
+firstTimeinhomogenousVariancesNotification <- TRUE
+
 inhomogenousVariancesNotification <- function(selectedEs, x, INDEX) observeEvent(
   selectedEs(), {
-  if ("ovl_parametric" %in% selectedEs() && areVariancesHomogenous(x, INDEX)) {
+  if ("ovl_parametric" %in% selectedEs() && are_variances_homogenous(x, INDEX) && firstTimeinhomogenousVariancesNotification) {
     showNotification(
       ui = "Achtung: Die hochgeladenen Daten haben inhomogene Varianzen. Verwenden Sie bitte das nicht-parametrische Verfahren zur Berechnung des Overlapping coefficients",
       duration = 8,
       type = "warning"
     )
+    firstTimeinhomogenousVariancesNotification <<- FALSE
   }
 }
 )

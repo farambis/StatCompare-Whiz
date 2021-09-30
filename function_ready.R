@@ -265,18 +265,18 @@ smd_corr <- function(n1, n2, df, trim, type = c("hedges", "AKP", "bonett")) {
 }
 
 ## Handling of missing values (NAs - not availables) and NA notification message ----
-missing_values_handler <- function(x, INDEX = NULL, y = NULL){
-  if(is.data.frame(x)){
+missing_values_handler <- function(x, INDEX = NULL, y = NULL) {
+  if (is.data.frame(x)) {
     i_NA <- complete.cases(x, INDEX)
-    x <- x[i_NA, ]
+    x <- x[i_NA,]
     INDEX <- INDEX[i_NA]
     return(list(x = x, INDEX = INDEX))
-  } else if(is.null(y)){
+  } else if (is.null(y)) {
     i_NA <- complete.cases(x, INDEX)
     x <- x[i_NA]
     INDEX <- INDEX[i_NA]
     return(list(x = x, INDEX = INDEX))
-  } else if(is.null(INDEX)){
+  } else if (is.null(INDEX)) {
     i_NA <- complete.cases(x, y)
     x <- x[i_NA]
     y <- y[i_NA]
@@ -301,7 +301,7 @@ stats_per_group <- function(x, trim = trim, winvar = winvar) {
   return(list(m = m, n = n, var = v, s = s, trm = trm, ntr = ntr, winvar = winvar))
 }
 
-dependent_groups_stats <- function(x, y, trim, winvar = winvar){
+dependent_groups_stats <- function(x, y, trim, winvar = winvar) {
   n <- length(x)
   r <- cor(x, y)
   vdiff <- var(x - y)
@@ -310,16 +310,15 @@ dependent_groups_stats <- function(x, y, trim, winvar = winvar){
 }
 
 
-
-summary_stats <- function(x, INDEX = NULL, y = NULL, trim = 0, winvar = FALSE){
-  if(is.data.frame(x)){
-  } else if(is.null(y)){
+summary_stats <- function(x, INDEX = NULL, y = NULL, trim = 0, winvar = FALSE) {
+  if (is.data.frame(x)) {
+  } else if (is.null(y)) {
     stats <- tapply(X = x, INDEX = INDEX, FUN = stats_per_group, trim = trim, winvar = winvar, simplify = FALSE)
     stats_names <- names(stats[[1]])
     stats_names <- paste0(stats_names, rep(1:2, each = length(stats_names)))
     stats <- unlist(stats, recursive = FALSE)
     names(stats) <- stats_names
-  } else if(is.null(INDEX)){
+  } else if (is.null(INDEX)) {
     stats_x <- stats_per_group(x = x, trim = trim, winvar = winvar)
     names(stats_x) <- paste0(names(stats_x), "1")
     stats_y <- stats_per_group(x = y, trim = trim, winvar = winvar)
@@ -341,13 +340,13 @@ sd_combined <- function(x = NULL, INDEX = NULL, var1, var2, n1, n2, winvar1,
     stats <- summary_stats(x = x, INDEX = INDEX, trim = trim, winvar = winsor)
     for (i in names(stats)) {
       assign(i, stats[[i]])
-      }
     }
+  }
   if (winsor) {
-      var1 <- winvar1
-      var2 <- winvar2
-      }
-  
+    var1 <- winvar1
+    var2 <- winvar2
+  }
+
   res <- switch(type,
                 "pooled" = sqrt((((n1 - 1) * var1) + ((n2 - 1) * var2)) / (n1 + n2 - 2)),
                 "mean" = sqrt((var1 + var2) / 2),
@@ -481,16 +480,16 @@ smd_ci <- function(effsize = c("cohen_d", "hedges_g", "glass_d", "glass_d_corr",
 
     ncp <- switch(effsize,
                   "cohen_d" = val / sqrt((1 / n1) + (1 / n2)),
-                  "hedges_g" = val /  sqrt((1 / n1) + (1 / n2)),
+                  "hedges_g" = val / sqrt((1 / n1) + (1 / n2)),
                   "glass_d" = val / sqrt((1 / n1) + (var2 / (n2 * var1))),
                   "glass_d_corr" = val / sqrt((1 / n1) + (var2 / (n2 * var1))),
                   "AKP_eqvar" = sqrt((ntr1 * ntr2) / (ntr1 + ntr2)) * ((trm2 - trm1) / sqrt(((n1 + n2 - 2) * (sd_combined(winvar1 = winvar1, winvar2 = winvar2, n1 = n1, n2 = n2, type = "pooled", winsor = TRUE, trim = trim)^2)) / (ntr1 + ntr2 - 2))),
                   "AKP_uneqvar" = val / (smd_corr(n1 = n1, n2 = n2, trim = trim, type = "AKP") * sqrt(((n1 - 1) / (ntr1 * (ntr1 - 1))) + (((n2 - 1) * winvar2) / ((ntr2 * (ntr2 - 1)) * winvar1))))
     )
-    
-    if(effsize %in% "hedges_g"){
-      ncp_ci_lower <- qt(alpha/2, df = df, ncp = ncp)
-      ncp_ci_upper <- qt(1 - (alpha/2), df = df, ncp = ncp)
+
+    if (effsize %in% "hedges_g") {
+      ncp_ci_lower <- qt(alpha / 2, df = df, ncp = ncp)
+      ncp_ci_upper <- qt(1 - (alpha / 2), df = df, ncp = ncp)
       ncp_cis <- c(ncp_ci_lower, ncp_ci_upper)
     } else {
       ncp_cis <- ncp_ci(ncp, df, alpha)
@@ -660,7 +659,7 @@ t_test <- function(x = NULL, INDEX = NULL, y = NULL, m1, m2, var1, var2, n1, n2,
     if (!is.null(INDEX)) {
       error_detector(x, INDEX, trim, na.rm)
       stats <- summary_stats(x = x, INDEX = INDEX, trim = trim, winvar = winvar)
-    } else if(!is.null(y)){
+    } else if (!is.null(y)) {
       stats <- summary_stats(x = x, y = y, trim = trim, winvar = winvar)
     }
     for (i in names(stats)) {
@@ -760,15 +759,15 @@ variance_ratio <- function(x = NULL, INDEX = NULL, s1, s2, ref = c("grp1", "grp2
 ## Tail ratios: ----
 ### Parametric tail ratios: ----
 parametric_tr <- function(x = NULL, INDEX = NULL, y = NULL,
-                          m1, m2, s1, s2, 
+                          m1, m2, s1, s2,
                           ref = c("grp1", "grp2"),
-                          tail = c("lower", "upper"), 
+                          tail = c("lower", "upper"),
                           cutoff) {
 
-  if(!is.null(x)){
-    if(!is.null(INDEX)){
+  if (!is.null(x)) {
+    if (!is.null(INDEX)) {
       stats <- summary_stats(x = x, INDEX = INDEX)
-    } else if(!is.null(y)){
+    } else if (!is.null(y)) {
       stats <- summary_stats(x = x, y = y)
     }
     for (i in names(stats)) {
@@ -1263,37 +1262,43 @@ parametric_cohens_u3_ci <- function(x, INDEX, m1, m2, var1, var2, n1, n2, var_eq
 
 # homogenity measures of variances ----
 
-areVariancesHomogenous <- function (x, INDEX) {
-  p_value <- levenesTest(x, INDEX)
-  if (p_value < 0.05) return (FALSE)
-  return (TRUE)
+are_variances_homogenous <- function(x, INDEX) {
+  p_value <- levenes_test(x, INDEX)
+  if (p_value < 0.05) return(FALSE)
+  return(TRUE)
 }
 
-levenesTest <- function(x, INDEX) {
+# equivalent to leven test from 'car' package
+levenes_test <- function(x, INDEX) {
   original_dataset <- split(x, INDEX)
   n <- length(x)
   k <- length(original_dataset)
   sum_z_dot_dot <- 0
   list_list_zijs <- vector("list", length(original_dataset))
-  list_zi_dot <-  lapply((seq_along(original_dataset)), function(i) {
+  list_zi_dot <- lapply((seq_along(original_dataset)), function(i) {
     ni <- length(original_dataset[[i]])
-    yi <- mean(original_dataset[[i]])
+    yi <- median(original_dataset[[i]])
     sum_zij <- 0
     list_zij <- lapply(original_dataset[[i]], function(j) {
       zij <- abs(j - yi)
+      print(c("zij: ", zij))
       sum_zij <<- sum_zij + zij
       sum_z_dot_dot <<- sum_z_dot_dot + zij
-      return (zij)
+      return(zij)
     })
     list_list_zijs[[i]] <<- list_zij
-    return (sum_zij/ni)
+    return(sum_zij / ni)
   })
-  z_dot_dot <- sum_z_dot_dot/n
-  numerator <- sum(unlist((lapply(seq(length(list_zi_dot)), function(group_number){ length(original_dataset[[group_number]])*(list_zi_dot[[group_number]]-z_dot_dot)^2}))))
-  denumerator <- sum(unlist( lapply(seq(length(original_dataset)), function(i){
-    zi_dot <- list_zi_dot[[i]]
-    sum(unlist(lapply(list_list_zijs[[i]], function (j)(j - zi_dot)^2)))
+  z_dot_dot <- sum_z_dot_dot / n
+  numerator <- sum(unlist((lapply(seq(length(original_dataset)), function(group_number) {
+    length(original_dataset[[group_number]]) * ((list_zi_dot[[group_number]] - z_dot_dot)^2) }))))
+  denumerator <- sum(unlist(lapply(seq(length(original_dataset)), function(group_number) {
+    zi_dot <- list_zi_dot[[group_number]]
+    sum(unlist(lapply(list_list_zijs[[group_number]], function(j) {
+      ((j - zi_dot)^2)
+    }
+    )))
   })))
-  w <- ((n - k)/(k -1))*(numerator/denumerator)
-  pf(w, k-1, n-k, lower.tail = FALSE)
+  w <- ((n - k) / (k - 1)) * (numerator / denumerator)
+  pf(w, k - 1, n - k, lower.tail = FALSE)
 }
