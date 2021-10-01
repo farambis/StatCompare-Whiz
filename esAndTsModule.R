@@ -35,32 +35,26 @@ bootstrapNotification <- function(selectedEs) observeEvent(
   )
 })
 
-firstTimeTrApproxNotification <- TRUE
-
 trApproxNotification <- function(selectedEs) observeEvent(
   selectedEs(), {
   #todo: replace TRUE with should_tr_be_approximated
-  if ("parametric_tr" %in% selectedEs() && TRUE && firstTimeTrApproxNotification) {
+  if ("parametric_tr" %in% selectedEs() && TRUE) {
     showNotification(
       ui = "Notice: approximate tail ratio (see information tab) computed due to lack of data in the region of interest",
       duration = 5,
       type = "warning"
     )
-    firstTimeTrApproxNotification <<- FALSE
   }
 })
 
-firstTimeinhomogenousVariancesNotification <- TRUE
-
 inhomogenousVariancesNotification <- function(selectedEs, x, INDEX) observeEvent(
   selectedEs(), {
-  if ("ovl_parametric" %in% selectedEs() && are_variances_homogenous(x, INDEX) && firstTimeinhomogenousVariancesNotification) {
+  if ("ovl_parametric" %in% selectedEs() && are_variances_homogenous(x, INDEX)) {
     showNotification(
-      ui = "Achtung: Die hochgeladenen Daten haben inhomogene Varianzen. Verwenden Sie bitte das nicht-parametrische Verfahren zur Berechnung des Overlapping coefficients",
+      ui = "Warning: Assumption of homoscedasticity violated according to a Levene test. Consider computing a non-parametric measure of overlap",
       duration = 8,
       type = "warning"
     )
-    firstTimeinhomogenousVariancesNotification <<- FALSE
   }
 }
 )
