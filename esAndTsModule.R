@@ -45,7 +45,7 @@ esAndTsRawDataServer <- function(id, assumption, dat, index, x, y) {
                    (getEsDataframe() %>% gt() %>% fmt_number(c('Effect Size', 'Ci lower limit', 'Ci upper limit', 'Bootstrap ci lower limit', 'Bootstrap ci upper limit'), decimals = 2))
                  })
                  output$tsTable <- render_gt({
-                   (getTsDataframe() %>% gt() %>% fmt_number(c('p', 'z'), decimals = 2))
+                   (getTsDataframe() %>% gt() %>% fmt_numer(-1, decimals = 2))
                  })
 
                  output$downloadEsWidget <- createDownloadWidget(session$ns, selectedEs, "downloadEs")

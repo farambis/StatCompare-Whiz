@@ -20,7 +20,7 @@ esMainPanelRawDataServer <- function(id, assumption, dat, index, x, y) {
                    req(dat()) },
                    options = list(
                      columnDefs = list(list(className = 'dt-center'),
-                                       list(visible = TRUE, targets = 0:(ifelse(length(dat)>5, 4, ncol(dat())-1))),
+                                       list(visible = TRUE, targets = 0:(ifelse(length(dat())>5, 4, ncol(dat())-1))),
                                        list(visible = FALSE, targets = '_all')
                      ),
                      searching = FALSE,
