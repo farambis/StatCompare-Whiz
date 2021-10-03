@@ -20,9 +20,9 @@ createDownloadWidget <- function(namespace, FUN, name) {
 esAndTsUi <- function(id, esChoices, tsChoices) {
   ns <- NS(id)
   tagList(column(width = 6, checkboxGroupUi(ns("esCheckboxGroup"), esChoices, "Effect Sizes"),
-                 tableOutput(ns("esTable")), fluidRow(column(width = 6, uiOutput(ns("downloadEsWidget"))))),
+                 gt_output(ns("esTable")), fluidRow(column(width = 6, uiOutput(ns("downloadEsWidget"))))),
           column(width = 6, checkboxGroupUi(ns("tsCheckboxGroup"), tsChoices, "Test Statistic"),
-                 tableOutput(ns("tsTable")), fluidRow(column(width = 6, uiOutput(ns("downloadTsWidget")))))
+                 fluidRow(gt_output(ns("tsTable")), fluidRow(column(width = 6, uiOutput(ns("downloadTsWidget"))))))
   )
 }
 
@@ -74,11 +74,11 @@ esAndTsRawDataServer <- function(id, assumption, dat, index, x, y) {
                    else generate_ts_dataframe(ts_list = selectedTs(), INDEX = index(), x = x())
                  })
 
-                 output$esTable <- renderTable({
-                   getEsDataframe()
+                 output$esTable <- render_gt({
+                   (getEsDataframe() %>% gt() %>% fmt_number(c('Effect Size', 'Ci lower limit', 'Ci upper limit', 'Bootstrap ci lower limit', 'Bootstrap ci upper limit'), decimals = 2))
                  })
-                 output$tsTable <- renderTable({
-                   getTsDataframe()
+                 output$tsTable <- render_gt({
+                   (getTsDataframe() %>% gt() %>% fmt_numer(-1, decimals = 2))
                  })
 
                  output$downloadEsWidget <- createDownloadWidget(session$ns, selectedEs, "downloadEs")

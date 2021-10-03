@@ -55,12 +55,12 @@ generate_es_raw_data_dataframe <- function(es_list, INDEX = NULL, x, y) {
                   "generalized_odds_ratio_dependent" = c(generalized_odds_ratio(x = x, INDEX = INDEX, y = y), generalized_odds_ratio_ci(x = x, y = y)),
                   "common_language" = c(common_language_es(x = x, INDEX = INDEX), common_language_es_ci(x = x, INDEX = INDEX), boot_general(x, INDEX, common_language_es)),
                   "ovl2" = c(ovl_two(x = x, INDEX = INDEX, parametric = TRUE), ovl_parametric_ci(x = x, INDEX = INDEX), boot_general(x, INDEX, ovl_two, TRUE)),
-                  "non_parametric_ovl2" = c(ovl_two(x = x, INDEX = INDEX, parametric = FALSE), '-', '-', boot_general(x, INDEX, ovl_two)),
-                  "non_parametric_u3" = c(non_parametric_u3(x = x, INDEX = INDEX), '-', '-', boot_general(x, INDEX, non_parametric_u3)),
+                  "non_parametric_ovl2" = c(ovl_two(x = x, INDEX = INDEX, parametric = FALSE), NA, NA, boot_general(x, INDEX, ovl_two)),
+                  "non_parametric_u3" = c(non_parametric_u3(x = x, INDEX = INDEX), NA, NA, boot_general(x, INDEX, non_parametric_u3)),
                   "cohens_u3" = c(parametric_cohens_u3_es(x = x, INDEX = INDEX), parametric_cohens_u3_ci(x, INDEX), boot_general(x, INDEX, parametric_cohens_u3_es)),
-                  "parametric_tr" = c(parametric_tr(x = x, INDEX = INDEX), '-', '-', boot_general(x, INDEX, parametric_tr)),
-                  "non_parametric_tr" = c(non_parametric_tr(x = x, INDEX = INDEX), '-', '-', boot_general(x, INDEX, non_parametric_tr)),
-                  "cohens_u1" = c(cohens_coefficient_of_nonoverlap_u1(x = x, INDEX = INDEX, parametric = TRUE), '-', '-', boot_general(x, INDEX, cohens_coefficient_of_nonoverlap_u1, TRUE))
+                  "parametric_tr" = c(parametric_tr(x = x, INDEX = INDEX), NA, NA, boot_general(x, INDEX, parametric_tr)),
+                  "non_parametric_tr" = c(non_parametric_tr(x = x, INDEX = INDEX), NA, NA, boot_general(x, INDEX, non_parametric_tr)),
+                  "cohens_u1" = c(cohens_coefficient_of_nonoverlap_u1(x = x, INDEX = INDEX, parametric = TRUE), NA, NA, boot_general(x, INDEX, cohens_coefficient_of_nonoverlap_u1, TRUE))
     )
     es_result <- c(es_result, res[[1]])
     es_ci_lower <- c(es_ci_lower, res[[2]])
