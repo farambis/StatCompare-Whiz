@@ -71,14 +71,14 @@ esAndTsRawDataServer <- function(id, assumption, dat, index, x, y) {
 
                  getTsDataframe <- reactive({
                    if (assumption == "nonparametric") generate_non_parametric_ts_dataframe(ts_list = selectedTs(), INDEX = index(), x = x(), y())
-                   else generate_ts_dataframe(ts_list = selectedTs(), INDEX = index(), x = x())
+                   else generate_ts_dataframe(ts_list = selectedTs(), INDEX = index(), x = x(), y = y())
                  })
 
                  output$esTable <- render_gt({
                    (getEsDataframe() %>% gt() %>% fmt_number(c('Effect Size', 'Ci lower limit', 'Ci upper limit', 'Bootstrap ci lower limit', 'Bootstrap ci upper limit'), decimals = 2))
                  })
                  output$tsTable <- render_gt({
-                   (getTsDataframe() %>% gt() %>% fmt_numer(-1, decimals = 2))
+                   (getTsDataframe() %>% gt() %>% fmt_number(-1, decimals = 2))
                  })
 
                  output$downloadEsWidget <- createDownloadWidget(session$ns, selectedEs, "downloadEs")
@@ -93,19 +93,19 @@ esAndTsRawDataServer <- function(id, assumption, dat, index, x, y) {
 
                })
 }
-
+                                         
 esAndTsEducationalServer <- function(id, mean1, standardDeviation1, sampleSize1, correlation1, standardDeviationDiff1, mean2, standardDeviation2, sampleSize2, mean3, standardDeviation3, mean4, standardDeviation4, correlation2, standardDeviationDiff2) {
   moduleServer(id,
                function(input, output, session) {
                  selectedEs <- checkboxGroupServer("esCheckboxGroup")
                  selectedTs <- checkboxGroupServer("tsCheckboxGroup")
 
-                 getEsDataframe <- reactive({
+                 getEsDataframe <- reactive({ 
                    generate_es_educational_dataframe(selectedEs(), mean1(), standardDeviation1(), sampleSize1(), correlation1(), standardDeviationDiff1(), mean2(), standardDeviation2(), sampleSize2(), mean3(), standardDeviation3(), mean4(), standardDeviation4(), correlation2(), standardDeviationDiff2())
                  })
 
                  getTsDataframe <- reactive({
-                   generate_ts_dataframe(ts_list = selectedTs(), m1 = mean1(), m2 = mean2(), standardDeviation1 = standardDeviation1(), standardDeviation2 = standardDeviation2(), n1 = sampleSize1(), n2 = sampleSize2())
+                   generate_ts_dataframe(ts_list = selectedTs(), m1 = mean1(), m2 = mean2(), standardDeviation1 = standardDeviation1(), standardDeviation2 = standardDeviation2(), n1 = sampleSize1(), n2 = sampleSize2(), sdiff = standardDeviationDiff1())
                  })
 
                  output$esTable <- renderTable({

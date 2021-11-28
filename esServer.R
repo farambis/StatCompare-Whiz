@@ -16,7 +16,7 @@ esServer <- function(input, output) {
   generalServer("dependentGroupsParametricRawData", 
                 "depGrps", 
                 "rawData")
-  generalServer("dependentGroupsdependentGroupsParametricEducational", 
+  generalServer("dependentGroupsParametricEducational", 
                 "depGrps", 
                 "educational")
   generalServer("dependentGroupsNonparametric", 
@@ -28,3 +28,4 @@ esServer <- function(input, output) {
   #mixed Desing
   
 }
+dependentGroupsParametricEducational
