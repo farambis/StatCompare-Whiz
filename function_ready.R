@@ -126,7 +126,7 @@ generate_es_raw_data_dataframe <- function(es_list, INDEX = NULL, x, y, tail, re
                   "generalized_odds_ratio" = c(generalized_odds_ratio(x = x, INDEX = INDEX), generalized_odds_ratio_ci(x = x, INDEX = INDEX), boot_general(x, INDEX, generalized_odds_ratio)),
                   "generalized_odds_ratio_dependent" = c(generalized_odds_ratio(x = x, INDEX = INDEX, y = y), generalized_odds_ratio_ci(x = x, y = y), NA_real_, NA_real_),
                   "common_language" = c(common_language_es(x = x, INDEX = INDEX), common_language_es_ci(x = x, INDEX = INDEX), boot_general(x, INDEX, common_language_es)),
-                  "ovl2" = c(parametric_ovl_two(x = x, INDEX = INDEX), ovl_parametric_ci(x = x, INDEX = INDEX), boot_general(x, INDEX, parametric_ovl_two)),
+                  "ovl2" = c(parametric_ovl_two(x = x, INDEX = INDEX), parametric_ovl_two_ci(x = x, INDEX = INDEX), boot_general(x, INDEX, parametric_ovl_two)),
                   "non_parametric_ovl2" = c(non_parametric_ovl_two(x = x, INDEX = INDEX), NA_real_, NA_real_, boot_general(x, INDEX, non_parametric_ovl_two)),
                   "non_parametric_u3" = c(non_parametric_u3(x = x, INDEX = INDEX), NA_real_, NA_real_, boot_general(x, INDEX, non_parametric_u3)),
                   "cohens_u3" = c(parametric_cohens_u3(x = x, INDEX = INDEX), parametric_cohens_u3_ci(x, INDEX), boot_general(x, INDEX, parametric_cohens_u3)),
@@ -1393,6 +1393,15 @@ parametric_ovl_two <- function(x, INDEX) {
   return(ovl / (2 - ovl))
 }
 
+parametric_ovl_two_ci <- function(x = NULL, INDEX = NULL, m1 = NULL, m2 = NULL, var1 = NULL, var2 = NULL, n1 = NULL, n2 = NULL) {
+  ovl_cis <- ovl_parametric_ci(x, INDEX, m1, m2, var1, var2, n1, n2)
+  print(ovl_cis)
+  print(ovl_cis[[1]])
+  lower_bound <- ovl_cis[[1]] / (2 - ovl_cis[[1]])
+  upper_bound <- ovl_cis[[2]] / (2 - ovl_cis[[2]])
+  return (list(lower_bound = lower_bound, upper_bound = upper_bound))
+}
+
 
 non_parametric_cohens_u1 <- function(x, INDEX) {
   ovl <- non_parametric_overlapping_coefficient(x, INDEX)
@@ -1402,6 +1411,13 @@ non_parametric_cohens_u1 <- function(x, INDEX) {
 parametric_cohens_u1 <- function(x, INDEX) {
   ovl <- ovl_parametric(x, INDEX)
   return(1 - ovl / (2 - ovl))
+}
+
+parametric_cohens_u1_ci <- function(x = NULL, INDEX = NULL, m1, m2, var1, var2, n1, n2) {
+  ovl_cis <- ovl_parametric_ci(x, INDEX, m1 = NULL, m2 = NULL, var1 = NULL, var2 = NULL, n1 = NULL, n2 = NULL)
+  lower_bound <- 1 - ovl_cis[[2]] / (2 - ovl_cis[[2]])
+  upper_bound <- ovl_cis[[1]] / (2 - ovl_cis[[1]])
+  return (list(lower_bound = lower_bound, upper_bound = upper_bound))
 }
 
 ## Cohen's U3 coefficient (non-parametric) ----
