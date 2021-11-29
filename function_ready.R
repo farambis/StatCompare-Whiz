@@ -91,7 +91,7 @@ nonparametricOptions <- c(all_eff_sizes$non_parametric_ovl2,
                           all_plots$non_parametric_ovl,
                           all_plots$non_parametric_tail_ratio_zoom)
 
-tailRatioOptions <- c(all_eff_sizes$parametric_tail_ratio, 
+tailRatioOptions <- c(all_eff_sizes$parametric_tail_ratio,
                all_eff_sizes$non_parametric_tail_ratio,
                all_eff_sizes$parametric_tail_ratio_dependent,
                all_eff_sizes$non_parametric_tail_ratio_dependent,
@@ -126,14 +126,14 @@ generate_es_raw_data_dataframe <- function(es_list, INDEX = NULL, x, y, tail, re
                   "generalized_odds_ratio" = c(generalized_odds_ratio(x = x, INDEX = INDEX), generalized_odds_ratio_ci(x = x, INDEX = INDEX), boot_general(x, INDEX, generalized_odds_ratio)),
                   "generalized_odds_ratio_dependent" = c(generalized_odds_ratio(x = x, INDEX = INDEX, y = y), generalized_odds_ratio_ci(x = x, y = y), NA_real_, NA_real_),
                   "common_language" = c(common_language_es(x = x, INDEX = INDEX), common_language_es_ci(x = x, INDEX = INDEX), boot_general(x, INDEX, common_language_es)),
-                  "ovl2" = c(ovl_two(x = x, INDEX = INDEX, parametric = TRUE), ovl_parametric_ci(x = x, INDEX = INDEX), boot_general(x, INDEX, ovl_two, TRUE)),
-                  "non_parametric_ovl2" = c(ovl_two(x = x, INDEX = INDEX, parametric = FALSE), NA_real_, NA_real_, boot_general(x, INDEX, ovl_two)),
+                  "ovl2" = c(parametric_ovl_two(x = x, INDEX = INDEX), ovl_parametric_ci(x = x, INDEX = INDEX), boot_general(x, INDEX, parametric_ovl_two)),
+                  "non_parametric_ovl2" = c(non_parametric_ovl_two(x = x, INDEX = INDEX), NA_real_, NA_real_, boot_general(x, INDEX, non_parametric_ovl_two)),
                   "non_parametric_u3" = c(non_parametric_u3(x = x, INDEX = INDEX), NA_real_, NA_real_, boot_general(x, INDEX, non_parametric_u3)),
-                  "cohens_u3" = c(parametric_cohens_u3_es(x = x, INDEX = INDEX), parametric_cohens_u3_ci(x, INDEX), boot_general(x, INDEX, parametric_cohens_u3_es)),
+                  "cohens_u3" = c(parametric_cohens_u3(x = x, INDEX = INDEX), parametric_cohens_u3_ci(x, INDEX), boot_general(x, INDEX, parametric_cohens_u3)),
                   "variance_ratio" = c(variance_ratio(x = x, INDEX = INDEX), NA_real_, NA_real_, boot_general(x, INDEX, variance_ratio)),
                   "parametric_tail_ratio" = c(parametric_tail_ratio(x = x, INDEX = INDEX, reference_group = ref, tail = tail, cutoff = cutoff), NA, NA, boot_general(x, INDEX, parametric_tail_ratio, reference_group = ref, tail = tail, cutoff = cutoff)),
                   "non_parametric_tail_ratio" = c(non_parametric_tail_ratio(x = x, INDEX = INDEX, reference_group = ref, tail = tail, cutoff = cutoff), NA, NA, boot_general(x, INDEX, non_parametric_tail_ratio, reference_group = ref, tail = tail, cutoff = cutoff)),
-                  "cohens_u1" = c(cohens_coefficient_of_nonoverlap_u1(x = x, INDEX = INDEX, parametric = TRUE), NA, NA, boot_general(x, INDEX, cohens_coefficient_of_nonoverlap_u1, TRUE)),
+                  "cohens_u1" = c(parametric_cohens_u1(x = x, INDEX = INDEX), NA_real_, NA_real_, boot_general(x, INDEX, parametric_cohens_u1)),
                   #Effect sizes for dependent gorups:
                   "cohens_d_dependent" = c(cohens_d_dependent(x = x, y = y), cohens_d_dependent_ci(x = x, y = y), NA_real_, NA_real_),
                   "hedges_g_dependent" = c(hedges_g_dependent(x = x, y = y), hedges_g_dependent_ci(x = x, y = y), NA_real_, NA_real_),
@@ -1383,16 +1383,24 @@ ovl_parametric_ci <- function(x = NULL, INDEX = NULL, m1, m2, var1, var2, n1, n2
 }
 
 
-ovl_two <- function(x, INDEX, parametric = FALSE) {
-  if (!parametric) ovl <- non_parametric_overlapping_coefficient(x, INDEX)
-  else ovl <- ovl_parametric(x, INDEX)
+non_parametric_ovl_two <- function(x, INDEX) {
+  ovl <- non_parametric_overlapping_coefficient(x, INDEX)
+  return(ovl / (2 - ovl))
+}
+
+parametric_ovl_two <- function(x, INDEX) {
+  ovl <- ovl_parametric(x, INDEX)
   return(ovl / (2 - ovl))
 }
 
 
-cohens_coefficient_of_nonoverlap_u1 <- function(x, INDEX, parametric = FALSE) {
-  if (!parametric) ovl <- non_parametric_overlapping_coefficient(x, INDEX)
-  else ovl <- ovl_parametric(x, INDEX)
+non_parametric_cohens_u1 <- function(x, INDEX) {
+  ovl <- non_parametric_overlapping_coefficient(x, INDEX)
+  return(1 - ovl / (2 - ovl))
+}
+
+parametric_cohens_u1 <- function(x, INDEX) {
+  ovl <- ovl_parametric(x, INDEX)
   return(1 - ovl / (2 - ovl))
 }
 
@@ -1413,7 +1421,7 @@ non_parametric_u3 <- function(x, INDEX) {
 }
 
 ## Cohen's U3 coefficient (parametric) ----
-parametric_cohens_u3_es <- function(x, INDEX, m1, m2, var1, var2, n1, n2, var_equal = TRUE) {
+parametric_cohens_u3 <- function(x, INDEX, m1, m2, var1, var2, n1, n2, var_equal = TRUE) {
   if (var_equal) {
     if (!missing(x) && !missing(INDEX)) cohens_d <- smd_uni(effsize = "cohen_d", x = x, INDEX = INDEX)
     else cohens_d <- smd_uni(effsize = "cohen_d", m1 = m1, m2 = m2, var1 = var1, var2 = var2, n1 = n1, n2 = n2)

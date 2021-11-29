@@ -587,7 +587,7 @@ plot_non_parametric_u1 <- function(x = NULL, INDEX = NULL,  y = NULL,
          legend = c("Group 1",
                     "Group 2",
                     paste0("d = ", round(smd_uni("cohen_d", x = x, INDEX = INDEX), 2)),
-                    paste("OVL2 = ", round(ovl_two(x, INDEX)), 2)),
+                    paste("OVL2 = ", round(non_parametric_ovl_two(x, INDEX)), 2)),
          col = c(col1, col2, "white", col_polygon),
          pch = 15)
 }
