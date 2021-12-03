@@ -30,6 +30,9 @@ all_eff_sizes <- list(
   standardized_median_difference_biweight = "standardized_median_difference_biweight",
   standardized_median_difference_mad = "standardized_median_difference_mad",
   standardized_median_difference_riq = "standardized_median_difference_riq",
+  cohens_u1 = "cohens_u1",
+  non_parametric_u1 = "non_parametric_u1",
+  standardized_median_difference_riq = "standardized_median_difference_riq",
   variance_ratio = "variance_ratio",
   parametric_tail_ratio = "parametric_tail_ratio",
   non_parametric_tail_ratio = "non_parametric_tail_ratio",
@@ -58,8 +61,11 @@ all_eff_sizes <- list(
   robust_cohens_dz = "robust_cohens_dz",
   robust_cohens_d_dependent = "robust_cohens_d_dependent",
   robust_glass_d_dependent = "robust_glass_d_dependent",
-  non_parametric_tail_ratio_dependent = "non_parametric_tail_ratio_dependent"
-  )
+  non_parametric_tail_ratio_dependent = "non_parametric_tail_ratio_dependent",
+  standardized_median_difference_biweight_dependent = "standardized_median_difference_biweight_dependent",
+  standardized_median_difference_mad_dependent = "standardized_median_difference_mad_dependent",
+  standardized_median_difference_riq_dependent = "standardized_median_difference_riq_dependent"
+)
 
 all_test_statistics <- list(student_t_test = "student_t_test",
                             dependent_student_t_test = "dependent_student_t_test",
@@ -119,6 +125,9 @@ generate_es_raw_data_dataframe <- function(es_list, INDEX = NULL, x, y, tail, re
                   "bonett_d_corr" = c(smd_ci(effsize = i, val = smd_uni(effsize = i, x = x, INDEX = INDEX), x = x, INDEX = INDEX), smd_boot(x, INDEX, "bonett_d_corr")),
                   "AKP_eqvar" = c(smd_ci(effsize = i, val = smd_uni(effsize = i, x = x, INDEX = INDEX), x = x, INDEX = INDEX), smd_boot(x, INDEX, "AKP_eqvar")),
                   "AKP_uneqvar" = c(smd_ci(effsize = i, val = smd_uni(effsize = i, x = x, INDEX = INDEX), x = x, INDEX = INDEX), smd_boot(x, INDEX, "AKP_uneqvar")),
+                  "standardized_median_difference_mad" = c(standardized_median_difference_mad(x = x, INDEX = INDEX), NA_real_, NA_real_, boot_general(x, INDEX, standardized_median_difference_mad)),
+                  "standardized_median_difference_riq" = c(standardized_median_difference_riq(x = x, INDEX = INDEX), NA_real_, NA_real_, boot_general(x, INDEX, standardized_median_difference_riq)),
+                  "standardized_median_difference_biweight" = c(standardized_median_difference_biweight(x = x, INDEX = INDEX), NA_real_, NA_real_, boot_general(x, INDEX, standardized_median_difference_biweight)),
                   "mann_whitney_based_ps" = c(mann_whitney_based_ps(x = x, INDEX = INDEX), mann_whitney_based_ps_ci(x = x, INDEX = INDEX), boot_general(x, INDEX, mann_whitney_based_ps)),
                   "ovl_parametric" = c(ovl_parametric(x = x, INDEX = INDEX), ovl_parametric_ci(x = x, INDEX = INDEX), boot_general(x, INDEX, ovl_parametric)),
                   "ovl_nonparametric" = c(non_parametric_overlapping_coefficient(x, INDEX), ovl_parametric_ci(x, INDEX), boot_general(x, INDEX, non_parametric_overlapping_coefficient)), # parametric ci
@@ -144,6 +153,9 @@ generate_es_raw_data_dataframe <- function(es_list, INDEX = NULL, x, y, tail, re
                   "hedges_gz" = c(hedges_gz(x = x, y = y), hedges_gz_ci(x = x, y = y), NA_real_, NA_real_),
                   "glass_d_dependent" = c(glass_d(x = x, y = y), glass_d_dependent_ci(x = x, y = y), NA_real_, NA_real_),
                   "glass_d_corr_dependent" = c(glass_d_corr(x = x, y = y), glass_d_corr_dependent_ci(x = x, y = y), NA_real_, NA_real_),
+                  "standardized_median_difference_mad_dependent" = c(standardized_median_difference_mad(x = x, y = y), NA_real_, NA_real_, NA_real_, NA_real_),
+                  "standardized_median_difference_riq_dependent" = c(standardized_median_difference_riq(x = x, y = y), NA_real_, NA_real_, NA_real_, NA_real_),
+                  "standardized_median_difference_biweight_dependent" = c(standardized_median_difference_biweight(x = x, y = y), NA_real_, NA_real_, NA_real_, NA_real_),
                   "common_language_es_dependent" = c(common_language_es_dependent(x = x, y = y), common_language_es_dependent_ci(x = x, y = y), NA_real_, NA_real_),
                   "ovl_parametric_dependent" = c(ovl_parametric_dependent(x = x, y = y), ovl_parametric_dependent_ci(x = x, y = y), NA_real_, NA_real_),
                   "ovl_two_parametric_dependent" = c(ovl_two_parametric_dependent(x = x, y = y), ovl_two_parametric_dependent_ci(x = x, y =y), NA_real_, NA_real_),
