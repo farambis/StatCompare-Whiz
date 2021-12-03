@@ -1333,6 +1333,8 @@ common_language_es_ci <- function(x = NULL, INDEX = NULL, m1, m2, var1, var2, n1
 probability_of_correct_classification_es <- function(x, INDEX) {
   # probability of correct classification----
   # when assumptions of normality and equality of variances/coveriances are not satisfied this gives inadequate results
+  dataset <- split(x, INDEX)
+  if (length(dataset[[1]]) != length(dataset[[2]])) return (NA_real_)
   d <- smd_uni(effsize = "cohen_d", x = x, INDEX = INDEX)[[1]]
   return(pnorm(abs(d) / 2))
 }
@@ -1340,6 +1342,7 @@ probability_of_correct_classification_es <- function(x, INDEX) {
 probability_of_correct_classification_ci <- function(x, INDEX) {
   dataset1 <- split(x, INDEX)[[1]]
   dataset2 <- split(x, INDEX)[[2]]
+  if (length(dataset1) != length(dataset2)) return (list(lower_bound = NA_real_, upper_bound = NA_real_))
   cohen_d <- abs(smd_uni(effsize = "cohen_d", x = x, INDEX = INDEX)[[1]])
   cis <- smd_ci(effsize = "cohen_d", val = cohen_d, n1 = length(dataset1), n2 = length(dataset2), var1 = var(dataset1), var2 = var(dataset2))[2:3]
   lower_bound <- pnorm(cis[[1]] / 2)
