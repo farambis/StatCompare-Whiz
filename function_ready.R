@@ -30,6 +30,8 @@ all_eff_sizes <- list(
   standardized_median_difference_biweight = "standardized_median_difference_biweight",
   standardized_median_difference_mad = "standardized_median_difference_mad",
   standardized_median_difference_riq = "standardized_median_difference_riq",
+  standardized_median_difference_biweight = "standardized_median_difference_biweight",
+  cohens_u1 = "cohens_u1",
   cohens_u1 = "cohens_u1",
   non_parametric_u1 = "non_parametric_u1",
   standardized_median_difference_riq = "standardized_median_difference_riq",
@@ -1309,8 +1311,11 @@ dominance_measure_ci <- function(x, INDEX, dependent = FALSE) {
 common_language_es <- function(x = NULL, INDEX = NULL, m1, m2, var1, var2, n1, n2) {
   # common language effect size based on del guidice-----
   if(!is.null(x)) {
+    dataset <- split(x, INDEX)
+    if (length(dataset[[1]]) != length(dataset[[2]])) return (NA_real_)
     d <- smd_uni(effsize = "cohen_d", x = x, INDEX = INDEX)[[1]]
   } else {
+    if (n1 != n2) return(NA_real_)
     d <- smd_uni(effsize = "cohen_d", m1 = m1, m2 = m2, var1 = var1, var2 = var2, n1 = n1, n2 = n2)
   }
   return(pnorm(abs(d) / sqrt(2)))
@@ -1318,9 +1323,12 @@ common_language_es <- function(x = NULL, INDEX = NULL, m1, m2, var1, var2, n1, n
 
 common_language_es_ci <- function(x = NULL, INDEX = NULL, m1, m2, var1, var2, n1, n2) {
   if(!is.null(x)) {
+    dataset <- split(x, INDEX)
+    if (length(dataset[[1]]) != length(dataset[[2]])) return (list(lower_bound = NA_real_, upper_bound = NA_real_))
     cohen_d <- smd_uni(effsize = "cohen_d", x = x, INDEX = INDEX)
     cis <- smd_ci(effsize = "cohen_d", val = cohen_d, x = x, INDEX = INDEX)[2:3]
   } else {
+    if (n1 != n2) return(list(lower_bound = NA_real_, upper_bound = NA_real_))
     cohen_d <- smd_uni(effsize = "cohen_d", m1 = m1, m2 = m2, var1 = var1, var2 = var2, n1 = n1, n2 = n2)
     cis <-  smd_ci(effsize = "cohen_d", val = cohen_d, n1 = n1, n2 = n2, var1 = var1, var2 = var2)[2:3]
   }
@@ -1420,8 +1428,6 @@ parametric_ovl_two <- function(x, INDEX) {
 
 parametric_ovl_two_ci <- function(x = NULL, INDEX = NULL, m1 = NULL, m2 = NULL, var1 = NULL, var2 = NULL, n1 = NULL, n2 = NULL) {
   ovl_cis <- ovl_parametric_ci(x, INDEX, m1, m2, var1, var2, n1, n2)
-  print(ovl_cis)
-  print(ovl_cis[[1]])
   lower_bound <- ovl_cis[[1]] / (2 - ovl_cis[[1]])
   upper_bound <- ovl_cis[[2]] / (2 - ovl_cis[[2]])
   return (list(lower_bound = lower_bound, upper_bound = upper_bound))
@@ -1839,6 +1845,7 @@ glass_d_corr_dependent_ci <- function(x = NULL, y = NULL, m1, m2, s1, s2, sdiff 
 
 common_language_es_dependent <- function(x = NULL, y = NULL, m1, m2, s1, s2, sdiff = NULL, r) {
   if(!is.null(x) && !is.null(y)){
+    if (length(x) != length(y)) return (NA_real_)
     stats <- summary_stats(x = x, y = y)
     for (i in names(stats)) {
       assign(i, stats[[i]])
@@ -1852,6 +1859,7 @@ common_language_es_dependent <- function(x = NULL, y = NULL, m1, m2, s1, s2, sdi
 
 common_language_es_dependent_ci <- function(x = NULL, y = NULL, m1, m2, s1, s2, sdiff = NULL, n, r, alpha = 0.05) {
   if(!is.null(x) && !is.null(y)){
+    if (length(x) != length(y)) return(NA_real_)
     stats <- summary_stats(x = x, y = y)
     for (i in names(stats)) {
       assign(i, stats[[i]])
@@ -2028,7 +2036,7 @@ bonett_price_hybrid_wilson_score <- function(n1., n.1, n11, n12, n21, alpha = 0.
               upper_bound = upper_bound))
 }
 
-parametric_tail_ratio_dependent_ci <- function(x = NULL, y = NULL, m1, m2, s1, s2, r, n,
+parametric_tr_dependent_ci <- function(x = NULL, y = NULL, m1, m2, s1, s2, r, n,
                                        reference_group = c("group1", "group2"),
                                        cutoff, tail = c("lower", "upper"), alpha = 0.05){
   if(!is.null(x) && !is.null(y)){
