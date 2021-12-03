@@ -190,6 +190,7 @@ generate_es_educational_dataframe <- function(es_list, mean1, standardDeviation1
                   "glass_d_corr" = c(smd_ci(effsize = i, val = smd_uni(effsize = i, m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2), n1 = sampleSize1, n2 = sampleSize2, var1 = standardDeviation1^2, var2 = standardDeviation2^2)),
                   "bonett_d" = c(smd_ci(effsize = i, val = smd_uni(effsize = i, m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2), n1 = sampleSize1, n2 = sampleSize2, var1 = standardDeviation1^2, var2 = standardDeviation2^2)),
                   "bonett_d_corr" = c(smd_ci(effsize = i, val = smd_uni(effsize = i, m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2), n1 = sampleSize1, n2 = sampleSize2, var1 = standardDeviation1^2, var2 = standardDeviation2^2)),
+                  "common_language" = c(common_language_es(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2), common_language_es_ci(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2)),
                   "ovl_parametric" = c(ovl_parametric(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2), ovl_parametric_ci(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2)),
                   "variance_ratio" = c(variance_ratio(s1 = standardDeviation1, s2 = standardDeviation2), NA_real_, NA_real_),
                   "parametric_tail_ratio" = c(parametric_tail_ratio(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2,tail = tail, reference_group = ref, cutoff = cutoff), NA_real_, NA_real_),
@@ -1293,21 +1294,30 @@ dominance_measure_ci <- function(x, INDEX, dependent = FALSE) {
   return(list(lower_bound = lower_bound, upper_bound = upper_bound))
 }
 
-
-common_language_es <- function(x, INDEX) {
+common_language_es <- function(x = NULL, INDEX = NULL, m1, m2, var1, var2, n1, n2) {
   # common language effect size based on del guidice-----
-  d <- smd_uni(effsize = "cohen_d", x = x, INDEX = INDEX)[[1]]
+  if(!is.null(x)) {
+    d <- smd_uni(effsize = "cohen_d", x = x, INDEX = INDEX)[[1]]
+  } else {
+    d <- smd_uni(effsize = "cohen_d", m1 = m1, m2 = m2, var1 = var1, var2 = var2, n1 = n1, n2 = n2)
+  }
   return(pnorm(abs(d) / sqrt(2)))
 }
 
-common_language_es_ci <- function(x, INDEX, cohen_d) {
-  cohen_d <- smd_uni(effsize = "cohen_d", x = x, INDEX = INDEX)
-  cis <- smd_ci(effsize = "cohen_d", val = cohen_d, x = x, INDEX = INDEX)[2:3]
+common_language_es_ci <- function(x = NULL, INDEX = NULL, m1, m2, var1, var2, n1, n2) {
+  if(!is.null(x)) {
+    cohen_d <- smd_uni(effsize = "cohen_d", x = x, INDEX = INDEX)
+    cis <- smd_ci(effsize = "cohen_d", val = cohen_d, x = x, INDEX = INDEX)[2:3]
+  } else {
+    cohen_d <- smd_uni(effsize = "cohen_d", m1 = m1, m2 = m2, var1 = var1, var2 = var2, n1 = n1, n2 = n2)
+    cis <-  smd_ci(effsize = "cohen_d", val = cohen_d, n1 = n1, n2 = n2, var1 = var1, var2 = var2)[2:3]
+  }
   lower_bound <- pnorm(cis[[1]] / sqrt(2))
   upper_bound <- pnorm(cis[[2]] / sqrt(2))
   return(list(lower_bound = lower_bound, upper_bound = upper_bound))
 }
 
+#todo
 probability_of_correct_classification_es <- function(x, INDEX) {
   # probability of correct classification----
   # when assumptions of normality and equality of variances/coveriances are not satisfied this gives inadequate results
