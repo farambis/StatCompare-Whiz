@@ -22,9 +22,9 @@ dashed_line <- 2
 generate_data_plot <- function(es_plot, x = NULL, INDEX = NULL, y = NULL, m1, m2, s1, n1, n2, s2, n = NULL, kernel, reference_group, tail, cutoff) {
   if (!es_plot %in% all_plots) stop("this is not an offered plot!\n")
   res <- switch(es_plot,
-                "parametric_ovl" = plot_parametric_overlap(x, INDEX, y = y, m1 = m1, m2 = m2, s1 = s1, s2 = s2, n1 = n1, n2 = n2, n = n),
-                "cohens_u1" = plot_cohens_u1(x, INDEX, y = y, m1 = m1, m2 = m2, s1 = s1, s2 = s2),
-                "cohens_u3" = plot_cohens_u3(x, INDEX, y = y, m1 = m1, m2 = m2, s1 = s1, s2 = s2),
+                "parametric_ovl" = plot_parametric_overlap(x, INDEX, y = y, m1 = m1, m2 = m2, s1 = s1, s2 = s2, n1 = n1, n2 = n2),
+                "parametric_cohens_u1" = plot_cohens_u1(x, INDEX, y = y, m1 = m1, m2 = m2, s1 = s1, s2 = s2),
+                "parametric_cohens_u3" = plot_cohens_u3(x, INDEX, y = y, m1 = m1, m2 = m2, s1 = s1, s2 = s2),
                 "parametric_tail_ratio" = plot_parametric_tail_ratio(x, INDEX, y = y, m1 = m1, m2 = m2, s1 = s1, s2 = s2, n1 = n1, n2 = n2, n = n, reference_group = reference_group, tail = tail, cutoff = cutoff),
                 "parametric_tail_ratio_zoom" = plot_parametric_tail_ratio_zoom(x, INDEX, y = y, m1 = m1, m2 = m2, s1 = s1, s2 = s2, n1 = n1, n2 = n2, n = n, reference_group = reference_group, tail = tail, cutoff = cutoff),
                 "non_parametric_tail_ratio" = plot_non_parametric_tail_ratio(x, INDEX, y = y, reference_group = reference_group, tail = tail, cutoff = cutoff, kernel = kernel),
@@ -82,7 +82,7 @@ plot_parametric_overlap <- function(x = NULL, INDEX = NULL, y = NULL,
                     "Group 2",
                     paste0("d = ", round(
                       ifelse(
-                        is.null(n),                   
+                        is.null(n),
                         smd_uni(effsize = "cohen_d", m1 = m1, m2 = m2, var1 = s1^2, var2 = s2^2, n1 = n1, n2 = n2),
                         cohens_d_dependent(m1 = m1, m2 = m2, s1 = s1, s2 = s2, n = n)),
                       2)),
@@ -349,8 +349,8 @@ plot_parametric_tail_ratio_zoom <- function(x = NULL, INDEX = NULL, y = NULL,
 
 # Non-parametric plots ----
 # Plots for the non-parametric tail ratio (with and without zoom) ----
-plot_non_parametric_tail_ratio <- function(x = NULL, INDEX = NULL, y = NULL, 
-                                   reference_group = c("grp1", "grp2"), 
+plot_non_parametric_tail_ratio <- function(x = NULL, INDEX = NULL, y = NULL,
+                                   reference_group = c("grp1", "grp2"),
                                    tail = c("lower", "upper"), 
                                    cutoff, bw = "nrd0", 
                                    kernel = c("gaussian",
@@ -413,7 +413,7 @@ plot_non_parametric_tail_ratio <- function(x = NULL, INDEX = NULL, y = NULL,
                     paste0("VR = ", round(variance_ratio(x = x, INDEX = INDEX, y = y, group_1_reference = ifelse(reference_group == "group1", TRUE, FALSE)), 2)),
                     paste0("TR = ", round(
                       ifelse(
-                        is.null(y), 
+                        is.null(y),
                         non_parametric_tail_ratio(x, INDEX, reference_group, tail, cutoff),
                         non_parametric_tail_ratio_dependent(x, y, reference_group, tail, cutoff)), 2))),
          bty = "n")
@@ -422,7 +422,7 @@ plot_non_parametric_tail_ratio <- function(x = NULL, INDEX = NULL, y = NULL,
 }
 
 plot_non_parametric_tail_ratio_zoom <- function(x = NULL, INDEX = NULL, y = NULL,
-                                        reference_group = c("grp1", "grp2"), 
+                                        reference_group = c("grp1", "grp2"),
                                         tail = c("lower", "upper"), 
                                         cutoff, 
                                         bw = "nrd0", 
@@ -481,7 +481,7 @@ plot_non_parametric_tail_ratio_zoom <- function(x = NULL, INDEX = NULL, y = NULL
                     paste0("VR = ", round(variance_ratio(x = x, INDEX = INDEX, y = y, group_1_reference = ifelse(reference_group == "group1", TRUE, FALSE)), 2)),
                     paste0("TR = ", round(
                       ifelse(
-                        is.null(y), 
+                        is.null(y),
                         non_parametric_tail_ratio(x, INDEX, reference_group, tail, cutoff),
                         non_parametric_tail_ratio_dependent(x, y, reference_group, tail, cutoff)), 2))),
          bty = "n")
@@ -539,7 +539,7 @@ plot_non_parametric_overlap <- function(x = NULL, INDEX = NULL, y = NULL,
          legend = c("Group 1",
                     "Group 2",
                     paste0("d = ", round(smd_uni("cohen_d", x = x, INDEX = INDEX), 2)),
-                    paste("OVL = ", round(non_parametric_overlapping_coefficient(x = x, INDEX = INDEX, bw = bw, kernel = kernel)), 2)),
+                    paste("OVL = ", round(non_parametric_ovl(x = x, INDEX = INDEX, bw = bw, kernel = kernel)), 2)),
          col = c(col1, col2, "white", col_polygon),
          pch = 15)
 }

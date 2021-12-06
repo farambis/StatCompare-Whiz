@@ -150,7 +150,7 @@ bootstrapNotification <- function(selectedEs) observeEvent(
 
 inhomogenousVariancesNotification <- function(selectedEs, x, INDEX) observeEvent(
   selectedEs(), {
-  if ("ovl_parametric" %in% selectedEs() && are_variances_homogenous(x, INDEX)) {
+  if ("parametric_ovl" %in% selectedEs() && are_variances_homogenous(x, INDEX)) {
     showNotification(
       ui = "Warning: Assumption of homoscedasticity violated according to a Levene test. Consider computing a non-parametric measure of overlap",
       duration = 8,

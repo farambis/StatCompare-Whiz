@@ -17,31 +17,28 @@ all_eff_sizes <- list(
   AKP_eqvar = "AKP_eqvar",
   AKP_uneqvar = "AKP_uneqvar",
   mann_whitney_based_ps = "mann_whitney_based_ps",
-  ovl_parametric = "ovl_parametric",
+  parametric_ovl = "parametric_ovl",
   ps_dependent = "ps_dependent",
-  ovl_nonparametric = "ovl_nonparametric",
+  non_parametric_ovl = "non_parametric_ovl",
   generalized_odds_ratio = "generalized_odds_ratio",
   generalized_odds_ratio_dependent = "generalized_odds_ratio_dependent",
   common_language = "common_language",
-  ovl2 = "ovl2",
-  ovl2_parametric = "ovl2_parametric",
-  cohens_u1 = "cohens_u1",
-  non_parametric_u1 = "non_parametric_u1",
-  standardized_median_difference_biweight = "standardized_median_difference_biweight",
+  non_parametric_ovl_two = "non_parametric_ovl_two",
+  parametric_ovl_two = "parametric_ovl_two",
   standardized_median_difference_mad = "standardized_median_difference_mad",
   standardized_median_difference_riq = "standardized_median_difference_riq",
   standardized_median_difference_biweight = "standardized_median_difference_biweight",
+  parametric_cohens_u1 = "parametric_cohens_u1",
+  parametric_cohens_u2 = "parametric_cohens_u2",
   cohens_u1 = "cohens_u1",
   cohens_u1 = "cohens_u1",
   cohens_u2 = "cohens_u2",
   non_parametric_u1 = "non_parametric_u1",
-  standardized_median_difference_riq = "standardized_median_difference_riq",
   variance_ratio = "variance_ratio",
   parametric_tail_ratio = "parametric_tail_ratio",
   non_parametric_tail_ratio = "non_parametric_tail_ratio",
-  ovl2 = "ovl2",
-  non_parametric_ovl2 = "non_parametric_ovl2",
-  cohens_u3 = "cohens_u3",
+  non_parametric_ovl_two = "non_parametric_ovl_two",
+  parametric_cohens_u3 = "parametric_cohens_u3",
   non_parametric_u3 = "non_parametric_u3",
   #Effect sizes for dependent groups:
   cohens_d_dependent = "cohens_d_dependent",
@@ -54,11 +51,11 @@ all_eff_sizes <- list(
   glass_d_dependent = "glass_d_dependent",
   glass_d_corr_dependent = "glass_d_corr_dependent",
   common_language_es_dependent = "common_language_es_dependent",
-  ovl_parametric_dependent = "ovl_parametric_dependent",
-  ovl_two_parametric_dependent = "ovl_two_parametric_dependent",
-  cohens_coefficient_of_nonoverlap_u1_parametric_dependent = "cohens_coefficient_of_nonoverlap_u1_parametric_dependent",
-  cohens_coefficient_of_nonoverlap_u2_parametric_dependent = "cohens_coefficient_of_nonoverlap_u2_parametric_dependent",
-  cohens_coefficient_of_nonoverlap_u3_parametric_dependent = "cohens_coefficient_of_nonoverlap_u3_parametric_dependent",
+  parametric_ovl_dependent = "parametric_ovl_dependent",
+  parametric_ovl_two_dependent = "parametric_ovl_two_dependent",
+  parametric_cohens_u1_dependent = "parametric_cohens_u1_dependent",
+  parametric_cohens_u2_dependent = "parametric_cohens_u2_dependent",
+  parametric_cohens_u3_dependent = "parametric_cohens_u3_dependent",
   variance_ratio_dependent = "variance_ratio_dependent",
   parametric_tail_ratio_dependent = "parametric_tail_ratio_dependent",
   robust_cohens_dz = "robust_cohens_dz",
@@ -81,8 +78,8 @@ all_test_statistics <- list(student_t_test = "student_t_test",
                             wilcoxon_signed_rank_test = "wilcoxon_signed_rank_test")
 
 all_plots <- list(parametric_ovl = "parametric_ovl",
-                  cohens_u1 = "cohens_u1",
-                  cohens_u3 = "cohens_u3",
+                  parametric_cohens_u1 = "parametric_cohens_u1",
+                  parametric_cohens_u3 = "parametric_cohens_u3",
                   non_parametric_u3 = "non_parametric_u3",
                   parametric_tail_ratio = "parametric_tail_ratio",
                   parametric_tail_ratio_zoom = "parametric_tail_ratio_zoom",
@@ -132,18 +129,18 @@ generate_es_raw_data_dataframe <- function(es_list, INDEX = NULL, x, y, tail, re
                   "standardized_median_difference_riq" = c(standardized_median_difference_riq(x = x, INDEX = INDEX), NA_real_, NA_real_, boot_general(x, INDEX, standardized_median_difference_riq)),
                   "standardized_median_difference_biweight" = c(standardized_median_difference_biweight(x = x, INDEX = INDEX), NA_real_, NA_real_, boot_general(x, INDEX, standardized_median_difference_biweight)),
                   "mann_whitney_based_ps" = c(mann_whitney_based_ps(x = x, INDEX = INDEX), mann_whitney_based_ps_ci(x = x, INDEX = INDEX), boot_general(x, INDEX, mann_whitney_based_ps)),
-                  "ovl_parametric" = c(ovl_parametric(x = x, INDEX = INDEX), ovl_parametric_ci(x = x, INDEX = INDEX), boot_general(x, INDEX, ovl_parametric)),
-                  "ovl_nonparametric" = c(non_parametric_overlapping_coefficient(x, INDEX), ovl_parametric_ci(x, INDEX), boot_general(x, INDEX, non_parametric_overlapping_coefficient)), # parametric ci
+                  "parametric_ovl" = c(parametric_ovl(x = x, INDEX = INDEX), parametric_ovl_ci(x = x, INDEX = INDEX), boot_general(x, INDEX, parametric_ovl)),
+                  "non_parametric_ovl" = c(non_parametric_ovl(x, INDEX), parametric_ovl_ci(x, INDEX), boot_general(x, INDEX, non_parametric_ovl)), # parametric ci
                   "ps_dependent" = c(ps_dependent_groups(x, y), ps_dependent_groups_ci(x, y), NA_real_, NA_real_),
                   "generalized_odds_ratio" = c(generalized_odds_ratio(x = x, INDEX = INDEX), generalized_odds_ratio_ci(x = x, INDEX = INDEX), boot_general(x, INDEX, generalized_odds_ratio)),
                   "generalized_odds_ratio_dependent" = c(generalized_odds_ratio(x = x, INDEX = INDEX, y = y), generalized_odds_ratio_ci(x = x, y = y), NA_real_, NA_real_),
                   "common_language" = c(common_language_es(x = x, INDEX = INDEX), common_language_es_ci(x = x, INDEX = INDEX), boot_general(x, INDEX, common_language_es)),
-                  "ovl2" = c(parametric_ovl_two(x = x, INDEX = INDEX), parametric_ovl_two_ci(x = x, INDEX = INDEX), boot_general(x, INDEX, parametric_ovl_two)),
-                  "non_parametric_ovl2" = c(non_parametric_ovl_two(x = x, INDEX = INDEX), NA_real_, NA_real_, boot_general(x, INDEX, non_parametric_ovl_two)),
-                  "cohens_u1" = c(parametric_cohens_u1(x = x, INDEX = INDEX), parametric_cohens_u1_ci(x = x, INDEX = INDEX), boot_general(x, INDEX, parametric_cohens_u1)),
-                  "cohens_u2" = c(parametric_cohens_u2(x = x, INDEX = INDEX), parametric_cohens_u2_ci(x = x, INDEX = INDEX), boot_general(x, INDEX, parametric_cohens_u2_ci)),
+                  "parametric_ovl_two" = c(parametric_ovl_two(x = x, INDEX = INDEX), parametric_ovl_two_ci(x = x, INDEX = INDEX), boot_general(x, INDEX, parametric_ovl_two)),
+                  "non_parametric_ovl_two" = c(non_parametric_ovl_two(x = x, INDEX = INDEX), NA_real_, NA_real_, boot_general(x, INDEX, non_parametric_ovl_two)),
+                  "parametric_cohens_u1" = c(parametric_cohens_u1(x = x, INDEX = INDEX), parametric_cohens_u1_ci(x = x, INDEX = INDEX), boot_general(x, INDEX, parametric_cohens_u1)),
+                  "parametric_cohens_u2" = c(parametric_cohens_u2(x = x, INDEX = INDEX), parametric_cohens_u2_ci(x = x, INDEX = INDEX), boot_general(x, INDEX, parametric_cohens_u2_ci)),
                   "non_parametric_u3" = c(non_parametric_u3(x = x, INDEX = INDEX), NA_real_, NA_real_, boot_general(x, INDEX, non_parametric_u3)),
-                  "cohens_u3" = c(parametric_cohens_u3(x = x, INDEX = INDEX), parametric_cohens_u3_ci(x, INDEX), boot_general(x, INDEX, parametric_cohens_u3)),
+                  "parametric_cohens_u3" = c(parametric_cohens_u3(x = x, INDEX = INDEX), parametric_cohens_u3_ci(x, INDEX), boot_general(x, INDEX, parametric_cohens_u3)),
                   "variance_ratio" = c(variance_ratio(x = x, INDEX = INDEX), NA_real_, NA_real_, boot_general(x, INDEX, variance_ratio)),
                   "parametric_tail_ratio" = c(parametric_tail_ratio(x = x, INDEX = INDEX, reference_group = ref, tail = tail, cutoff = cutoff), NA, NA, boot_general(x, INDEX, parametric_tail_ratio, reference_group = ref, tail = tail, cutoff = cutoff)),
                   "non_parametric_tail_ratio" = c(non_parametric_tail_ratio(x = x, INDEX = INDEX, reference_group = ref, tail = tail, cutoff = cutoff), NA, NA, boot_general(x, INDEX, non_parametric_tail_ratio, reference_group = ref, tail = tail, cutoff = cutoff)),
@@ -162,11 +159,11 @@ generate_es_raw_data_dataframe <- function(es_list, INDEX = NULL, x, y, tail, re
                   "standardized_median_difference_riq_dependent" = c(standardized_median_difference_riq(x = x, y = y), NA_real_, NA_real_, NA_real_, NA_real_),
                   "standardized_median_difference_biweight_dependent" = c(standardized_median_difference_biweight(x = x, y = y), NA_real_, NA_real_, NA_real_, NA_real_),
                   "common_language_es_dependent" = c(common_language_es_dependent(x = x, y = y), common_language_es_dependent_ci(x = x, y = y), NA_real_, NA_real_),
-                  "ovl_parametric_dependent" = c(ovl_parametric_dependent(x = x, y = y), ovl_parametric_dependent_ci(x = x, y = y), NA_real_, NA_real_),
-                  "ovl_two_parametric_dependent" = c(ovl_two_parametric_dependent(x = x, y = y), ovl_two_parametric_dependent_ci(x = x, y = y), NA_real_, NA_real_),
-                  "cohens_coefficient_of_nonoverlap_u1_parametric_dependent" = c(cohens_coefficient_of_nonoverlap_u1_parametric_dependent(x = x, y = y), cohens_coefficient_of_nonoverlap_u1_parametric_dependent_ci(x = x, y = y), NA_real_, NA_real_),
-                  "cohens_coefficient_of_nonoverlap_u2_parametric_dependent" = c(cohens_coefficient_of_nonoverlap_u2_parametric_dependent(x = x, y = y), cohens_coefficient_of_nonoverlap_u2_parametric_dependent_ci(x = x, y = y), NA_real_, NA_real_),
-                  "cohens_coefficient_of_nonoverlap_u3_parametric_dependent" = c(cohens_coefficient_of_nonoverlap_u3_parametric_dependent(x = x, y = y), cohens_coefficient_of_nonoverlap_u3_parametric_dependent_ci(x = x, y = y), NA_real_, NA_real_),
+                  "parametric_ovl_dependent" = c(parametric_ovl_dependent(x = x, y = y), parametric_ovl_dependent_ci(x = x, y = y), NA_real_, NA_real_),
+                  "parametric_ovl_two_dependent" = c(parametric_ovl_two_dependent(x = x, y = y), parametric_ovl_two_dependent_ci(x = x, y = y), NA_real_, NA_real_),
+                  "parametric_cohens_u1_dependent" = c(parametric_cohens_u1_dependent(x = x, y = y), parametric_cohens_u1_dependent_ci(x = x, y = y), NA_real_, NA_real_),
+                  "parametric_cohens_u2_dependent" = c(parametric_cohens_u2_dependent(x = x, y = y), parametric_cohens_u2_dependent_ci(x = x, y = y), NA_real_, NA_real_),
+                  "parametric_cohens_u3_dependent" = c(parametric_cohens_u3_dependent(x = x, y = y), parametric_cohens_u3_dependent_ci(x = x, y = y), NA_real_, NA_real_),
                   "variance_ratio_dependent" = c(variance_ratio(x = x, y = y), variance_ratio_dependent_ci(x = x, y = y), NA_real_, NA_real_),
                   "parametric_tail_ratio_dependent" = c(parametric_tail_ratio(x = x, y = y, tail = tail, reference_group = ref, cutoff = cutoff), parametric_tail_ratio_dependent_ci(x = x, y = y, tail = tail, reference_group = ref, cutoff = cutoff), NA_real_, NA_real_),
                   "robust_cohens_dz" = c(robust_cohens_dz(x = x, y = y), NA_real_, NA_real_, NA_real_, NA_real_),
@@ -208,10 +205,10 @@ generate_es_educational_dataframe <- function(es_list, mean1, standardDeviation1
                   "bonett_d" = c(smd_ci(effsize = i, val = smd_uni(effsize = i, m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2), n1 = sampleSize1, n2 = sampleSize2, var1 = standardDeviation1^2, var2 = standardDeviation2^2)),
                   "bonett_d_corr" = c(smd_ci(effsize = i, val = smd_uni(effsize = i, m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2), n1 = sampleSize1, n2 = sampleSize2, var1 = standardDeviation1^2, var2 = standardDeviation2^2)),
                   "common_language" = c(common_language_es(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2), common_language_es_ci(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2)),
-                  "ovl_parametric" = c(ovl_parametric(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2), ovl_parametric_ci(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2)),
-                  "cohens_u1" = c(parametric_cohens_u1(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2), parametric_cohens_u1_ci(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2)),
-                  "cohens_u2" = c(parametric_cohens_u2(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2), parametric_cohens_u2_ci(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2)),
-                  "cohens_u3" = c(parametric_cohens_u3(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2), parametric_cohens_u3_ci(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2)),
+                  "parametric_ovl" = c(parametric_ovl(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2), parametric_ovl_ci(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2)),
+                  "parametric_cohens_u1" = c(parametric_cohens_u1(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2), parametric_cohens_u1_ci(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2)),
+                  "parametric_cohens_u2" = c(parametric_cohens_u2(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2), parametric_cohens_u2_ci(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2)),
+                  "parametric_cohens_u3" = c(parametric_cohens_u3(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2), parametric_cohens_u3_ci(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2)),
                   "variance_ratio" = c(variance_ratio(s1 = standardDeviation1, s2 = standardDeviation2), NA_real_, NA_real_),
                   "parametric_tail_ratio" = c(parametric_tail_ratio(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2,tail = tail, reference_group = ref, cutoff = cutoff), NA_real_, NA_real_),
                   #Effect sizes for dependent groups:
@@ -225,11 +222,11 @@ generate_es_educational_dataframe <- function(es_list, mean1, standardDeviation1
                   "glass_d_dependent" = c(glass_d(m1 = mean1, m2 = mean2, s1 = standardDeviation1), glass_d_dependent_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, sdiff = standardDeviationDiff1, n = sampleSize1, r = correlation1)),
                   "glass_d_corr_dependent" = c(glass_d_corr(m1 = mean1, m2 = mean2, s1 = standardDeviation1, df = sampleSize1 - 1), glass_d_corr_dependent_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, sdiff = standardDeviationDiff1, n = sampleSize1, r = correlation1)),
                   "common_language_es_dependent" = c(common_language_es_dependent(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, sdiff = standardDeviationDiff1, r = correlation1), common_language_es_dependent_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, sdiff = standardDeviationDiff1, n = sampleSize1, r = correlation1)),
-                  "ovl_parametric_dependent" = c(ovl_parametric_dependent(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1), ovl_parametric_dependent_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1, r = correlation1)),
-                  "ovl_two_parametric_dependent" = c(ovl_two_parametric_dependent(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1), ovl_two_parametric_dependent_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1, r = correlation1)),
-                  "cohens_coefficient_of_nonoverlap_u1_parametric_dependent" = c(cohens_coefficient_of_nonoverlap_u1_parametric_dependent(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1), cohens_coefficient_of_nonoverlap_u1_parametric_dependent_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1, r = correlation1)),
-                  "cohens_coefficient_of_nonoverlap_u2_parametric_dependent" = c(cohens_coefficient_of_nonoverlap_u2_parametric_dependent(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1), cohens_coefficient_of_nonoverlap_u2_parametric_dependent_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1, r = correlation1)),
-                  "cohens_coefficient_of_nonoverlap_u3_parametric_dependent" = c(cohens_coefficient_of_nonoverlap_u3_parametric_dependent(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1), cohens_coefficient_of_nonoverlap_u3_parametric_dependent_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, sdiff = standardDeviationDiff1, n = sampleSize1, r = correlation1, var_equal = TRUE)),
+                  "parametric_ovl_dependent" = c(parametric_ovl_dependent(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1), parametric_ovl_dependent_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1, r = correlation1)),
+                  "parametric_ovl_two_dependent" = c(parametric_ovl_two_dependent(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1), parametric_ovl_two_dependent_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1, r = correlation1)),
+                  "parametric_cohens_u1_dependent" = c(parametric_cohens_u1_dependent(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1), parametric_cohens_u1_dependent_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1, r = correlation1)),
+                  "parametric_cohens_u2_dependent" = c(parametric_cohens_u2_dependent(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1), parametric_cohens_u2_dependent_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1, r = correlation1)),
+                  "parametric_cohens_u3_dependent" = c(parametric_cohens_u3_dependent(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1), parametric_cohens_u3_dependent_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, sdiff = standardDeviationDiff1, n = sampleSize1, r = correlation1, var_equal = TRUE)),
                   "variance_ratio_dependent" = c(variance_ratio(s1 = standardDeviation1, s2 = standardDeviation2), variance_ratio_dependent_ci(s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1, r = correlation1)),
                   "parametric_tail_ratio_dependent" = c(parametric_tail_ratio(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2,tail = tail, reference_group = ref, cutoff = cutoff), parametric_tail_ratio_dependent_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, r = correlation1, n = sampleSize1, tail = tail, reference_group = ref, cutoff = cutoff))
     )
@@ -1366,7 +1363,7 @@ probability_of_correct_classification_ci <- function(x, INDEX) {
 
 
 # overlap measures ----
-non_parametric_overlapping_coefficient <-
+non_parametric_ovl <-
   function(x,
            INDEX,
            bw = "nrd0",
@@ -1401,13 +1398,13 @@ non_parametric_overlapping_coefficient <-
     return((max - min) / num_intervals * sum)
   }
 
-ovl_parametric <- function(x = NULL, INDEX = NULL, m1, m2, var1, var2, n1, n2) {
+parametric_ovl <- function(x = NULL, INDEX = NULL, m1, m2, var1, var2, n1, n2) {
   if (!is.null(x)) cohens_d <- smd_uni(effsize = "cohen_d", x = x, INDEX = INDEX)[[1]]
   else cohens_d <- smd_uni(effsize = "cohen_d", m1 = m1, m2 = m2, var1 = var1, var2 = var2, n1 = n1, n2 = n2)
   2 * pnorm(-abs(cohens_d) / 2)
 }
 
-ovl_parametric_ci <- function(x = NULL, INDEX = NULL, m1, m2, var1, var2, n1, n2) {
+parametric_ovl_ci <- function(x = NULL, INDEX = NULL, m1, m2, var1, var2, n1, n2) {
   if (!is.null(x)) {
     dataset1 <- split(x, INDEX)[[1]]
     dataset2 <- split(x, INDEX)[[2]]
@@ -1423,17 +1420,17 @@ ovl_parametric_ci <- function(x = NULL, INDEX = NULL, m1, m2, var1, var2, n1, n2
 
 
 non_parametric_ovl_two <- function(x, INDEX) {
-  ovl <- non_parametric_overlapping_coefficient(x, INDEX)
+  ovl <- non_parametric_ovl(x, INDEX)
   return(ovl / (2 - ovl))
 }
 
 parametric_ovl_two <- function(x, INDEX) {
-  ovl <- ovl_parametric(x, INDEX)
+  ovl <- parametric_ovl(x, INDEX)
   return(ovl / (2 - ovl))
 }
 
 parametric_ovl_two_ci <- function(x = NULL, INDEX = NULL, m1 = NULL, m2 = NULL, var1 = NULL, var2 = NULL, n1 = NULL, n2 = NULL) {
-  ovl_cis <- ovl_parametric_ci(x, INDEX, m1, m2, var1, var2, n1, n2)
+  ovl_cis <- parametric_ovl_ci(x, INDEX, m1, m2, var1, var2, n1, n2)
   lower_bound <- ovl_cis[[1]] / (2 - ovl_cis[[1]])
   upper_bound <- ovl_cis[[2]] / (2 - ovl_cis[[2]])
   return(list(lower_bound = lower_bound, upper_bound = upper_bound))
@@ -1441,17 +1438,17 @@ parametric_ovl_two_ci <- function(x = NULL, INDEX = NULL, m1 = NULL, m2 = NULL, 
 
 
 non_parametric_cohens_u1 <- function(x, INDEX) {
-  ovl <- non_parametric_overlapping_coefficient(x, INDEX)
+  ovl <- non_parametric_ovl(x, INDEX)
   return(1 - ovl / (2 - ovl))
 }
 
 parametric_cohens_u1 <- function(x = NULL, INDEX = NULL, m1, m2, var1, var2, n1, n2) {
-  ovl <- ovl_parametric(x, INDEX, m1, m2, var1, var2, n1, n2)
+  ovl <- parametric_ovl(x, INDEX, m1, m2, var1, var2, n1, n2)
   return(1 - ovl / (2 - ovl))
 }
 
 parametric_cohens_u1_ci <- function(x = NULL, INDEX = NULL, m1, m2, var1, var2, n1, n2) {
-  ovl_cis <- ovl_parametric_ci(x, INDEX, m1 = NULL, m2 = NULL, var1 = NULL, var2 = NULL, n1 = NULL, n2 = NULL)
+  ovl_cis <- parametric_ovl_ci(x, INDEX, m1 = NULL, m2 = NULL, var1 = NULL, var2 = NULL, n1 = NULL, n2 = NULL)
   lower_bound <- 1 - ovl_cis[[2]] / (2 - ovl_cis[[2]])
   upper_bound <- ovl_cis[[1]] / (2 - ovl_cis[[1]])
   return(list(lower_bound = lower_bound, upper_bound = upper_bound))
@@ -1906,13 +1903,13 @@ common_language_es_dependent_ci <- function(x = NULL, y = NULL, m1, m2, s1, s2, 
               upper_bound = upper_bound))
 }
 
-ovl_parametric_dependent <- function(x = NULL, y = NULL, m1, m2, s1, s2, n) {
+parametric_ovl_dependent <- function(x = NULL, y = NULL, m1, m2, s1, s2, n) {
   cohens_d_dependent <- cohens_d_dependent(x = x, y = y, m1 = m1, m2 = m2, s1 = s1, s2 = s2, n = n)
   ovl_parametric_dependent <- 2 * pnorm(-abs(cohens_d_dependent) / 2)
   return(ovl_parametric_dependent)
 }
 
-ovl_parametric_dependent_ci <- function(x = NULL, y = NULL, m1, m2, s1, s2, n, r, alpha = 0.05) {
+parametric_ovl_dependent_ci <- function(x = NULL, y = NULL, m1, m2, s1, s2, n, r, alpha = 0.05) {
   cohens_d_dependent_ci <- cohens_d_dependent_ci(x = x, y = y, m1 = m1, m2 = m2, s1 = s1, s2 = s2, n = n, r = r, alpha = alpha)
   lower_bound <- 2 * pnorm(-abs(cohens_d_dependent_ci$lower_bound) / 2)
   upper_bound <- 2 * pnorm(-abs(cohens_d_dependent_ci$upper_bound) / 2)
@@ -1921,14 +1918,14 @@ ovl_parametric_dependent_ci <- function(x = NULL, y = NULL, m1, m2, s1, s2, n, r
 }
 
 
-ovl_two_parametric_dependent <- function(x = NULL, y = NULL, m1, m2, s1, s2, n) {
-  ovl <- ovl_parametric_dependent(x = x, y = y, m1 = m1, m2 = m2, s1 = s1, s2 = s2, n = n)
+parametric_ovl_two_dependent <- function(x = NULL, y = NULL, m1, m2, s1, s2, n) {
+  ovl <- parametric_ovl_dependent(x = x, y = y, m1 = m1, m2 = m2, s1 = s1, s2 = s2, n = n)
   ovl_two_parametric_dependent <- ovl / (2 - ovl)
   return(ovl_two_parametric_dependent)
 }
 
-ovl_two_parametric_dependent_ci <- function(x = NULL, y = NULL, m1, m2, s1, s2, n, r, alpha = 0.05) {
-  ovl_parametric_dependent_ci <- ovl_parametric_dependent_ci(x = x, y = y, m1 = m1, m2 = m2, s1 = s1, s2 = s2, n = n, r = r, alpha = alpha)
+parametric_ovl_two_dependent_ci <- function(x = NULL, y = NULL, m1, m2, s1, s2, n, r, alpha = 0.05) {
+  ovl_parametric_dependent_ci <- parametric_ovl_dependent_ci(x = x, y = y, m1 = m1, m2 = m2, s1 = s1, s2 = s2, n = n, r = r, alpha = alpha)
   lower_bound <- ovl_parametric_dependent_ci$lower_bound / (2 - ovl_parametric_dependent_ci$lower_bound)
   upper_bound <- ovl_parametric_dependent_ci$upper_bound / (2 - ovl_parametric_dependent_ci$upper_bound)
   return(list(lower_bound = lower_bound,
@@ -1936,27 +1933,27 @@ ovl_two_parametric_dependent_ci <- function(x = NULL, y = NULL, m1, m2, s1, s2, 
 }
 
 
-cohens_coefficient_of_nonoverlap_u1_parametric_dependent <- function(x = NULL, y = NULL, m1, m2, s1, s2, n) {
-  ovl <- ovl_parametric_dependent(x = x, y = y, m1 = m1, m2 = m2, s1 = s1, s2 = s2, n = n)
+parametric_cohens_u1_dependent <- function(x = NULL, y = NULL, m1, m2, s1, s2, n) {
+  ovl <- parametric_ovl_dependent(x = x, y = y, m1 = m1, m2 = m2, s1 = s1, s2 = s2, n = n)
   cohens_coefficient_of_nonoverlap_u1_parametric_dependent <- 1 - (ovl / (2 - ovl))
   return(cohens_coefficient_of_nonoverlap_u1_parametric_dependent)
 }
 
-cohens_coefficient_of_nonoverlap_u1_parametric_dependent_ci <- function(x = NULL, y = NULL, m1, m2, s1, s2, n, r, alpha = 0.05) {
-  ovl_parametric_dependent_ci <- ovl_parametric_dependent_ci(x = x, y = y, m1 = m1, m2 = m2, s1 = s1, s2 = s2, n = n, r = r, alpha = alpha)
+parametric_cohens_u1_dependent_ci <- function(x = NULL, y = NULL, m1, m2, s1, s2, n, r, alpha = 0.05) {
+  ovl_parametric_dependent_ci <- parametric_ovl_dependent_ci(x = x, y = y, m1 = m1, m2 = m2, s1 = s1, s2 = s2, n = n, r = r, alpha = alpha)
   lower_bound <- 1 - (ovl_parametric_dependent_ci$lower_bound / (2 - ovl_parametric_dependent_ci$lower_bound))
   upper_bound <- 1 - (ovl_parametric_dependent_ci$upper_bound / (2 - ovl_parametric_dependent_ci$upper_bound))
   return(list(lower_bound = lower_bound,
               upper_bound = upper_bound))
 }
 
-cohens_coefficient_of_nonoverlap_u2_parametric_dependent <- function(x = NULL, y = NULL, m1, m2, s1, s2, n) {
+parametric_cohens_u2_dependent <- function(x = NULL, y = NULL, m1, m2, s1, s2, n) {
   cohens_d_dependent <- cohens_d_dependent(x = x, y = y, m1 = m1, m2 = m2, s1 = s1, s2 = s2, n = n)
   cohens_coefficient_of_nonoverlap_u2_parametric_dependent <- pnorm(abs(cohens_d_dependent) / 2)
   return(cohens_coefficient_of_nonoverlap_u2_parametric_dependent)
 }
 
-cohens_coefficient_of_nonoverlap_u2_parametric_dependent_ci <- function(x = NULL, y = NULL, m1, m2, s1, s2, n, r, alpha = 0.05) {
+parametric_cohens_u2_dependent_ci <- function(x = NULL, y = NULL, m1, m2, s1, s2, n, r, alpha = 0.05) {
   cohens_d_dependent_ci <- cohens_d_dependent_ci(x = x, y = y, m1 = m1, m2 = m2, s1 = s1, s2 = s2, n = n, r = r, alpha = alpha)
   lower_bound <- pnorm(abs(cohens_d_dependent_ci$lower_bound) / 2)
   upper_bound <- pnorm(abs(cohens_d_dependent_ci$upper_bound) / 2)
@@ -1964,7 +1961,7 @@ cohens_coefficient_of_nonoverlap_u2_parametric_dependent_ci <- function(x = NULL
               upper_bound = upper_bound))
 }
 
-cohens_coefficient_of_nonoverlap_u3_parametric_dependent <- function(x = NULL, y = NULL, m1, m2, s1, s2, n, var_equal = TRUE) {
+parametric_cohens_u3_dependent <- function(x = NULL, y = NULL, m1, m2, s1, s2, n, var_equal = TRUE) {
   if (var_equal) {
     cohens_d_dependent <- cohens_d_dependent(x = x, y = y, m1 = m1, m2 = m2, s1 = s1, s2 = s2, n = n)
     cohens_coefficient_of_nonoverlap_u3_parametric_dependent <- pnorm(abs(cohens_d_dependent))
@@ -1982,7 +1979,7 @@ cohens_coefficient_of_nonoverlap_u3_parametric_dependent <- function(x = NULL, y
   return(cohens_coefficient_of_nonoverlap_u3_parametric_dependent)
 }
 
-cohens_coefficient_of_nonoverlap_u3_parametric_dependent_ci <- function(x = NULL, y = NULL, m1, m2, s1, s2, sdiff = NULL, n, r, var_equal = TRUE, alpha = 0.05) {
+parametric_cohens_u3_dependent_ci <- function(x = NULL, y = NULL, m1, m2, s1, s2, sdiff = NULL, n, r, var_equal = TRUE, alpha = 0.05) {
   if (var_equal) {
     cohens_d_dependent_ci <- cohens_d_dependent_ci(x = x, y = y, m1 = m1, m2 = m2, s1 = s1, s2 = s2, n = n, r = r, alpha = alpha)
     lower_bound <- pnorm(abs(cohens_d_dependent_ci$lower_bound))
