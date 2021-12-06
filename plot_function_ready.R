@@ -90,8 +90,8 @@ plot_parametric_overlap <- function(x = NULL, INDEX = NULL, y = NULL,
                     paste0("OVL = ", round(
                       ifelse(
                         is.null(n),
-                        ovl_parametric(m1 = m1, m2 = m2, var1 = s1^2, var2 = s2^2, n1 = n1, n2 = n2),
-                        ovl_parametric_dependent(m1 = m1, m2 = m2, s1 = s1, s2 = s2, n = n)),
+                        parametric_ovl(m1 = m1, m2 = m2, var1 = s1^2, var2 = s2^2, n1 = n1, n2 = n2),
+                        parametric_ovl_dependent(m1 = m1, m2 = m2, s1 = s1, s2 = s2, n = n)),
                       2))),
          bty = "n")
 }
