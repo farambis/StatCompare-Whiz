@@ -9,20 +9,132 @@ csvDownloadHandler <- function(filename, FUN) {
   )
 }
 
-createDownloadWidget <- function(namespace, FUN, name) {
+nonparametricOptionsObserver <- function (selectedEs, session) observeEvent(selectedEs(), {
+    if (contains(selectedEs(), nonparametricOptions[!grepl("tail_ratio", nonparametricOptions)])) {
+      updateTabsetPanel(session,
+                        inputId = "parametricBool",
+                        selected = "parametricFALSE")
+    } else {
+      updateTabsetPanel(session,
+                        inputId = "parametricBool",
+                        selected = "parametricTRUE")
+    }
+  })
+
+tailRatioOptionsObserver <- function(selectedEs, session) observeEvent(selectedEs(), {
+  if (contains(selectedEs(), tailRatioOptions)) {
+    updateTabsetPanel(session,
+                      inputId = "tailRatioBool",
+                      selected = "tailRatioTRUE")
+  } else {
+    updateTabsetPanel(session,
+                      inputId = "tailRatioBool",
+                      selected = "tailRatioFALSE")
+  }
+})
+
+initializeInputValidators <- function(selectedEs, nonParametricTailRatioCutoffAllowedRange) {
+  esTsModuleIv <- InputValidator$new()
+  esTsModuleIv$enable()
+  nonparametric_iv <- InputValidator$new()
+  nonparametric_iv$add_rule("kernel", sv_required())
+  nonparametric_iv$condition(~contains(selectedEs(), nonparametricOptions[!grepl("tail_ratio", nonparametricOptions)]))
+
+  tail_ratio_iv <- InputValidator$new()
+  tail_ratio_iv$add_rule("tail", sv_required())
+  tail_ratio_iv$add_rule("referenceGroup", sv_required())
+  tail_ratio_iv$add_rule("cutoff", sv_required())
+  if (!missing(nonParametricTailRatioCutoffAllowedRange)) {
+    non_parametric_tail_ratio_iv <- InputValidator$new()
+    non_parametric_tail_ratio_iv$add_rule("cutoff", function(value) {
+      non_parametric_tail_ratio_cutoff_error(value,
+                                             min = nonParametricTailRatioCutoffAllowedRange()[["cutoffMin"]],
+                                             max = nonParametricTailRatioCutoffAllowedRange()[["cutoffMax"]])
+    })
+    non_parametric_tail_ratio_iv$condition(~(contains(selectedEs(), tailRatioOptions) && contains(selectedEs(), nonparametricOptions)))
+    tail_ratio_iv$add_validator(non_parametric_tail_ratio_iv)
+  }
+  tail_ratio_iv$condition(~contains(selectedEs(), tailRatioOptions))
+
+  # Add all child validators to plotModule_iv
+  esTsModuleIv$add_validator(nonparametric_iv)
+  esTsModuleIv$add_validator(tail_ratio_iv)
+  return (esTsModuleIv)
+}
+
+non_parametric_tail_ratio_cutoff_range <- function(x = NULL, INDEX = NULL, y = NULL){
+  if (!is.null(INDEX)) {
+    dataset <- split(x, INDEX)
+    dataset1 <- dataset[[1]]
+    dataset2 <- dataset[[2]]
+  } else {
+    dataset1 <- x
+    dataset2 <- y
+  }
+  min_group1 <- min(dataset1)
+  min_group2 <- min(dataset2)
+  max_group1 <- max(dataset1)
+  max_group2 <- max(dataset2)
+  cutoffMin <- max(min_group1, min_group2)
+  cutoffMax <- min(max_group1, max_group2)
+  return(list(
+    cutoffMin = round(cutoffMin, 2),
+    cutoffMax = round(cutoffMax, 2)
+  ))
+}
+
+
+non_parametric_tail_ratio_cutoff_error <- function(value, min, max) {
+
+  test <- min > value || value > max
+  if(isTRUE(test)){
+    paste0("The cutoff is out of bounds! One group lacks observations in the selected range. Please select a value between ",
+           ceiling(min),
+           " and ", 
+           floor(max))
+  }
+}
+
+
+createDownloadWidget <- function(namespace, selectedEs, inputValidator, name) {
   renderUI({
     ns <- namespace
-    req(FUN())
+    req(selectedEs(), inputValidator$is_valid())
     downloadButton(ns(name), class = "btn-primary")
   })
 }
 
 esAndTsUi <- function(id, esChoices, tsChoices) {
   ns <- NS(id)
-  tagList(column(width = 6, checkboxGroupUi(ns("esCheckboxGroup"), esChoices, "Effect Sizes"),
-                 gt_output(ns("esTable")), fluidRow(column(width = 6, uiOutput(ns("downloadEsWidget"))))),
-          column(width = 6, checkboxGroupUi(ns("tsCheckboxGroup"), tsChoices, "Test Statistic"),
-                 fluidRow(gt_output(ns("tsTable")), fluidRow(column(width = 6, uiOutput(ns("downloadTsWidget"))))))
+  tagList(
+    column(width = 6,
+           fluidRow(
+           column(
+             width = 6,
+             checkboxGroupUi(ns("esCheckboxGroup"), esChoices, "Effect Sizes"),
+           ),
+           column(
+             width = 6,
+             tabsetPanel(
+               id = ns("tailRatioBool"),
+               type = "hidden",
+               tabPanelBody("tailRatioFALSE"),
+               tabPanelBody("tailRatioTRUE",
+                            tailRatioControls(ns = ns))
+             ),
+             tabsetPanel(
+               id = ns("parametricBool"),
+               type = "hidden",
+               tabPanelBody("parametricTRUE"),
+               tabPanelBody("parametricFALSE",
+                            nonparametricControls(ns = ns))
+             )
+           )),
+    fluidRow(gt_output(ns("esTable")),
+             column(width = 6, uiOutput(ns("downloadEsWidget"))),)
+           ),
+    column(width = 6, checkboxGroupUi(ns("tsCheckboxGroup"), tsChoices, "Test Statistic"),
+           fluidRow(gt_output(ns("tsTable")), fluidRow(column(width = 6, uiOutput(ns("downloadTsWidget"))))))
   )
 }
 
@@ -35,17 +147,6 @@ bootstrapNotification <- function(selectedEs) observeEvent(
   )
 })
 
-trApproxNotification <- function(selectedEs) observeEvent(
-  selectedEs(), {
-  #todo: replace TRUE with should_tr_be_approximated
-  if ("parametric_tr" %in% selectedEs() && TRUE) {
-    showNotification(
-      ui = "Notice: approximate tail ratio (see information tab) computed due to lack of data in the region of interest",
-      duration = 5,
-      type = "warning"
-    )
-  }
-})
 
 inhomogenousVariancesNotification <- function(selectedEs, x, INDEX) observeEvent(
   selectedEs(), {
@@ -59,61 +160,91 @@ inhomogenousVariancesNotification <- function(selectedEs, x, INDEX) observeEvent
 }
 )
 
-esAndTsRawDataServer <- function(id, assumption, dat, index, x, y) {
+contains <- function(list1, list2) {
+  for (val in list1) {
+    if (val %in% list2)
+      return(TRUE)
+  }
+  return(FALSE)
+}
+
+esAndTsRawDataServer <- function(id, assumption, dat, INDEX, x, y) {
   moduleServer(id,
                function(input, output, session) {
                  selectedEs <- checkboxGroupServer("esCheckboxGroup")
                  selectedTs <- checkboxGroupServer("tsCheckboxGroup")
 
+                 nonParametricTailRatioCutoffAllowedRange <- reactive({
+                   non_parametric_tail_ratio_cutoff_range(x = x(), INDEX = INDEX(), y = y())
+                 })
+
+                 esTsModuleIv <- initializeInputValidators(selectedEs, nonParametricTailRatioCutoffAllowedRange)
+
+                 nonparametricOptionsObserver(selectedEs, session)
+                 tailRatioOptionsObserver(selectedEs, session)
+
                  getEsDataframe <- reactive({
-                   generate_es_raw_data_dataframe(es_list = selectedEs(), INDEX = index(), x = x(), y = y())
+                   generate_es_raw_data_dataframe(es_list = selectedEs(), INDEX = INDEX(), x = x(), y = y(), tail = input$tail, ref = input$referenceGroup, cutoff = input$cutoff)
                  })
 
                  getTsDataframe <- reactive({
-                   if (assumption == "nonparametric") generate_non_parametric_ts_dataframe(ts_list = selectedTs(), INDEX = index(), x = x(), y())
-                   else generate_ts_dataframe(ts_list = selectedTs(), INDEX = index(), x = x(), y = y())
+                   if (assumption == "nonparametric") generate_non_parametric_ts_dataframe(ts_list = selectedTs(), INDEX = INDEX(), x = x(), y())
+                   else generate_ts_dataframe(ts_list = selectedTs(), INDEX = INDEX(), x = x(), y = y())
                  })
 
                  output$esTable <- render_gt({
-                   (getEsDataframe() %>% gt() %>% fmt_number(c('Effect Size', 'Ci lower limit', 'Ci upper limit', 'Bootstrap ci lower limit', 'Bootstrap ci upper limit'), decimals = 2))
+                   req(esTsModuleIv$is_valid())
+                   (getEsDataframe() %>%
+                     gt() %>%
+                     fmt_number(c('Effect Size', 'Ci lower limit', 'Ci upper limit', 'Bootstrap ci lower limit', 'Bootstrap ci upper limit'), decimals = 2))
                  })
                  output$tsTable <- render_gt({
-                   (getTsDataframe() %>% gt() %>% fmt_number(-1, decimals = 2))
+                   (getTsDataframe() %>%
+                     gt() %>%
+                     fmt_number(-1, decimals = 2))
                  })
 
-                 output$downloadEsWidget <- createDownloadWidget(session$ns, selectedEs, "downloadEs")
+                 output$downloadEsWidget <- createDownloadWidget(session$ns, selectedEs, esTsModuleIv, "downloadEs")
                  output$downloadEs <- csvDownloadHandler("effect_size.csv", getEsDataframe)
-                 output$downloadTsWidget <- createDownloadWidget(session$ns, selectedTs, "downloadTs")
+                 output$downloadTsWidget <- createDownloadWidget(session$ns, selectedTs, esTsModuleIv, "downloadTs")
                  output$downloadTs <- csvDownloadHandler("test_statistic.csv", getTsDataframe)
 
                  bootstrapNotification(selectedEs)
-                 trApproxNotification(selectedEs)
-                 inhomogenousVariancesNotification(selectedEs, x(), index())
+                 inhomogenousVariancesNotification(selectedEs, x(), INDEX())
 
 
                })
 }
-                                         
+
 esAndTsEducationalServer <- function(id, mean1, standardDeviation1, sampleSize1, correlation1, standardDeviationDiff1, mean2, standardDeviation2, sampleSize2, mean3, standardDeviation3, mean4, standardDeviation4, correlation2, standardDeviationDiff2) {
   moduleServer(id,
                function(input, output, session) {
                  selectedEs <- checkboxGroupServer("esCheckboxGroup")
                  selectedTs <- checkboxGroupServer("tsCheckboxGroup")
 
-                 getEsDataframe <- reactive({ 
-                   generate_es_educational_dataframe(selectedEs(), mean1(), standardDeviation1(), sampleSize1(), correlation1(), standardDeviationDiff1(), mean2(), standardDeviation2(), sampleSize2(), mean3(), standardDeviation3(), mean4(), standardDeviation4(), correlation2(), standardDeviationDiff2())
+                 esTsModuleIv <- initializeInputValidators(selectedEs)
+
+                 nonparametricOptionsObserver(selectedEs, session)
+                 tailRatioOptionsObserver(selectedEs, session)
+
+                 getEsDataframe <- reactive({
+                   generate_es_educational_dataframe(selectedEs(), mean1(), standardDeviation1(), sampleSize1(), correlation1(), standardDeviationDiff1(), mean2(), standardDeviation2(), sampleSize2(), mean3(), standardDeviation3(), mean4(), standardDeviation4(), correlation2(), standardDeviationDiff2(),input$tail, input$referenceGroup, input$cutoff)
                  })
 
                  getTsDataframe <- reactive({
                    generate_ts_dataframe(ts_list = selectedTs(), m1 = mean1(), m2 = mean2(), standardDeviation1 = standardDeviation1(), standardDeviation2 = standardDeviation2(), n1 = sampleSize1(), n2 = sampleSize2(), sdiff = standardDeviationDiff1())
                  })
 
-                 output$esTable <- renderTable({
-                   getEsDataframe()
+                 output$esTable <- render_gt({
+                   req(esTsModuleIv$is_valid())
+                   (getEsDataframe() %>%
+                     gt() %>%
+                     fmt_number(c('Effect Size', 'Ci lower limit', 'Ci upper limit'), decimals = 2))
                  })
-
-                 output$tsTable <- renderTable({
-                   getTsDataframe()
+                 output$tsTable <- render_gt({
+                   (getTsDataframe() %>%
+                     gt() %>%
+                     fmt_number(-1, decimals = 2))
                  })
 
                  output$downloadEsWidget <- renderUI({
@@ -122,12 +253,10 @@ esAndTsEducationalServer <- function(id, mean1, standardDeviation1, sampleSize1,
                    downloadButton(ns("downloadEs"), class = "btn-primary")
                  })
 
+                 output$downloadEsWidget <- createDownloadWidget(session$ns, selectedEs, esTsModuleIv, "downloadEs")
                  output$downloadEs <- csvDownloadHandler("effect_size.csv", getEsDataframe)
-                 output$downloadTsWidget <- createDownloadWidget(session$ns, selectedTs, "downloadTs")
+                 output$downloadTsWidget <- createDownloadWidget(session$ns, selectedTs, esTsModuleIv, "downloadTs")
                  output$downloadTs <- csvDownloadHandler("test_statistic.csv", getTsDataframe)
-
-
-                 bootstrapNotification(selectedEs)
 
                })
 }

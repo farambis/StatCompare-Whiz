@@ -1,10 +1,10 @@
-trCutoffRange <- function(x = NULL, INDEX = NULL, y = NULL, 
+tail_ratio_cutoff_range_plot <- function(x = NULL, INDEX = NULL, y = NULL, 
                           m1, m2, s1, s2) {
   
   if(!is.null(x)){
     if(!is.null(INDEX)){
       stats <- summary_stats(x = x, INDEX = INDEX)
-    } else if(!is.null(y)){
+    } else {
       stats <- summary_stats(x = x, y = y)
     }
     for (i in names(stats)) {
@@ -14,14 +14,13 @@ trCutoffRange <- function(x = NULL, INDEX = NULL, y = NULL,
 
   cutoffMin <- min(m1, m2) - (3.5 * max(s1, s2))
   cutoffMax <- max(m1, m2) + 3.5 * max(s1, s2)
-  
   return(list(
     cutoffMin = round(cutoffMin, 2),
     cutoffMax = round(cutoffMax, 2)
   ))
 }
 
-trCutoffError <- function(value, min, max){
+tail_ratio_cutoff_error_plot <- function(value, min, max){
   
   test <- min > value || value > max
   if(isTRUE(test)){
@@ -32,30 +31,26 @@ trCutoffError <- function(value, min, max){
   }
 }
 
-trPlotOptions <- c("parametric_tr", "parametric_tr_zoom", "non_parametric_tr", "non_parametric_tr_zoom")
-
-trControls <- function(ns) {
+tailRatioControls <- function(ns) {
 
   tagList(
     numericInput(do.call(ns, list("cutoff")),
-                 label = "Specify a cutoff value:",
+                 label = "Specify cutoff value:",
                  value = NULL),
     selectizeInput(
       do.call(ns, list("referenceGroup")),
-      label = "Select a reference group:",
-      choices = list("", "group 1" = "grp1", "group 2" = "grp2")
+      label = "Select reference group:",
+      choices = list("", "group 1" = "group1", "group 2" = "group2")
     ),
     selectizeInput(
       do.call(ns, list("tail")),
-      label = "Select the tail of interest:",
+      label = "Select tail of interest:",
       choices = list("", "lower" = "lower", "upper" = "upper")
     )
   )
   
 }
 
-nonparametricPlotOptions <- c("non_parametric_ovl", "non_parametric_u1", "non_parametric_u3",
-                              "non_parametric_tr", "non_parametric_tr_zoom")
 
 nonparametricControls <- function(ns){
 
@@ -96,11 +91,11 @@ plotUi <- function(id, plotChoices) {
       column(
         width = 4,
         tabsetPanel(
-          id = ns("trBool"),
+          id = ns("tailRatioBool"),
           type = "hidden",
-          tabPanelBody("trFALSE"),
-          tabPanelBody("trTRUE",
-                       trControls(ns = ns))
+          tabPanelBody("tailRatioFALSE"),
+          tabPanelBody("tailRatioTRUE",
+                       tailRatioControls(ns = ns))
         )
       )
     ),
@@ -115,7 +110,7 @@ plotUi <- function(id, plotChoices) {
 }
 
 
-plotServer <- function(id, x, INDEX, y, m1, m2, s1, s2, n1, n2, mode = c("rawData", "educational")) {
+plotServer <- function(id, x, INDEX, y, m1, m2, s1, s2, n1, n2, n, mode = c("rawData", "educational")) {
   moduleServer(id,
                function(input, output, session) {
                  
@@ -127,7 +122,7 @@ plotServer <- function(id, x, INDEX, y, m1, m2, s1, s2, n1, n2, mode = c("rawDat
 
                  observeEvent(input$plotChoice,
                               {
-                                if (input$plotChoice %in% nonparametricPlotOptions) {
+                                if (input$plotChoice %in% nonparametricOptions) {
                                   updateTabsetPanel(session,
                                                     inputId = "parametricBool",
                                                     selected = "parametricFALSE")
@@ -137,21 +132,21 @@ plotServer <- function(id, x, INDEX, y, m1, m2, s1, s2, n1, n2, mode = c("rawDat
                                                     selected = "parametricTRUE")
                                 }
                                 
-                                if (input$plotChoice %in% trPlotOptions) {
+                                if (input$plotChoice %in% tailRatioOptions) {
                                   updateTabsetPanel(session,
-                                                    inputId = "trBool",
-                                                    selected = "trTRUE")
-                                } else{
+                                                    inputId = "tailRatioBool",
+                                                    selected = "tailRatioTRUE")
+                                } else {
                                   updateTabsetPanel(session,
-                                                    inputId = "trBool",
-                                                    selected = "trFALSE")
+                                                    inputId = "tailRatioBool",
+                                                    selected = "tailRatioFALSE")
                                 }
                               })
                  
-                 trCutoffAllowedRange <- reactive({
+                 tailRatioCutoffAllowedRange <- reactive({
                    switch(mode,
-                          rawData = trCutoffRange(x = x(), INDEX = INDEX(), y = y()),
-                          educational = trCutoffRange(m1 = m1(), m2 = m2(), s1 = s1(), s2 = s2()))
+                          rawData = tail_ratio_cutoff_range_plot(x = x(), INDEX = INDEX(), y = y()),
+                          educational = tail_ratio_cutoff_range_plot(m1 = m1(), m2 = m2(), s1 = s1(), s2 = s2()))
                  })
                  
                  
@@ -159,30 +154,30 @@ plotServer <- function(id, x, INDEX, y, m1, m2, s1, s2, n1, n2, mode = c("rawDat
                  # validate non parametric input controls
                  nonparametric_iv <- InputValidator$new()
                  nonparametric_iv$add_rule("kernel", sv_required())
-                 nonparametric_iv$condition(~ input$plotChoice %in% nonparametricPlotOptions)
+                 nonparametric_iv$condition(~ input$plotChoice %in% nonparametricOptions)
 
                  # validate tail ratio input controls
-                 tr_iv <- InputValidator$new()
-                 tr_iv$add_rule("tail", sv_required())
-                 tr_iv$add_rule("referenceGroup", sv_required())
-                 tr_iv$add_rule("cutoff", sv_required())
-                 tr_iv$add_rule("cutoff", function(value){
-                   trCutoffError(value, 
-                                 min = trCutoffAllowedRange()[["cutoffMin"]], 
-                                 max = trCutoffAllowedRange()[["cutoffMax"]])})
-                 tr_iv$condition(~ input$plotChoice %in% trPlotOptions)
+                 tail_ratio_iv <- InputValidator$new()
+                 tail_ratio_iv$add_rule("tail", sv_required())
+                 tail_ratio_iv$add_rule("referenceGroup", sv_required())
+                 tail_ratio_iv$add_rule("cutoff", sv_required())
+                 tail_ratio_iv$add_rule("cutoff", function(value){
+                   tail_ratio_cutoff_error_plot(value, 
+                                 min = tailRatioCutoffAllowedRange()[["cutoffMin"]], 
+                                 max = tailRatioCutoffAllowedRange()[["cutoffMax"]])})
+                 tail_ratio_iv$condition(~ input$plotChoice %in% tailRatioOptions)
                  
                  # Add all child validators to plotModule_iv
                  plotModule_iv$add_validator(nonparametric_iv)
-                 plotModule_iv$add_validator(tr_iv)
+                 plotModule_iv$add_validator(tail_ratio_iv)
                  
                  output$plot <- renderPlot({
                     req(input$plotChoice,
                        plotModule_iv$is_valid()
                        )
                    switch(mode,
-                          rawData = generate_data_plot(es = input$plotChoice, x = x(), INDEX = INDEX(), y = y(), kernel = input$kernel,ref = input$referenceGroup, tail = input$tail, cutoff = input$cutoff),
-                          educational = generate_data_plot(es = input$plotChoice, m1 = m1(), m2 = m2(), s1 = s1(), s2 = s2(), n1 = n1(), n2 = n2(), kernel = input$kernel,ref = input$referenceGroup, tail = input$tail, cutoff = input$cutoff)
+                          rawData = generate_data_plot(es = input$plotChoice, x = x(), INDEX = INDEX(), y = y(), kernel = input$kernel,reference_group = input$referenceGroup, tail = input$tail, cutoff = input$cutoff),
+                          educational = generate_data_plot(es = input$plotChoice, m1 = m1(), m2 = m2(), s1 = s1(), s2 = s2(), n1 = n1(), n2 = n2(), n = n(), kernel = input$kernel,reference_group = input$referenceGroup, tail = input$tail, cutoff = input$cutoff)
                           )
                  })
                  
@@ -199,8 +194,8 @@ plotServer <- function(id, x, INDEX, y, m1, m2, s1, s2, n1, n2, mode = c("rawDat
                    content = function(file) {
                      pdf(file = file)
                      switch(mode,
-                            rawData = generate_data_plot(es = input$plotChoice, x = x(), INDEX = INDEX(), y = y(), kernel = input$kernel,ref = input$referenceGroup, tail = input$tail, cutoff = input$cutoff),
-                            educational = generate_data_plot(es = input$plotChoice, m1 = m1(), m2 = m2(), s1 = s1(), s2 = s2(), n1 = n1(), n2 = n2(), kernel = input$kernel,ref = input$referenceGroup, tail = input$tail, cutoff = input$cutoff)
+                            rawData = generate_data_plot(es = input$plotChoice, x = x(), INDEX = INDEX(), y = y(), kernel = input$kernel,reference_group = input$referenceGroup, tail = input$tail, cutoff = input$cutoff),
+                            educational = generate_data_plot(es = input$plotChoice, m1 = m1(), m2 = m2(), s1 = s1(), s2 = s2(), n1 = n1(), n2 = n2(), kernel = input$kernel, reference_group = input$referenceGroup, tail = input$tail, cutoff = input$cutoff)
                      )
                      dev.off()
                    }

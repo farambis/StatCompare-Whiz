@@ -39,7 +39,7 @@ esMainPanelEducationalServer <- function(id, mean1, standardDeviation1, sampleSi
                    # Ticket 46 - TODO add summaryStatisticList element which shows simulated dataset
                  })
                  esAndTsEducationalServer("esAndTs", mean1, standardDeviation1, sampleSize1, correlation1, standardDeviationDiff1, mean2, standardDeviation2, sampleSize2, mean3, standardDeviation3, mean4, standardDeviation4, correlation2, standardDeviationDiff2)
-                 plotServer("plotting", mode = "educational", m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n1 = sampleSize1, n2 = sampleSize2)
+                 plotServer("plotting", mode = "educational", m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n1 = sampleSize1, n2 = sampleSize2, n = sampleSize1)
                })
 }
 
