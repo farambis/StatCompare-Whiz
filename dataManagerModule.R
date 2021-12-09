@@ -118,6 +118,8 @@ dataManagerServer <-
             req(input$inputDataIndex)
             data()[[input$inputDataIndex]]
           })
+        } else {
+          inputDataVariables[["inputDataIndex"]] <- reactiveVal(NULL)
         }
         
         inputDataVariables[["inputDataX"]] <- reactive({
@@ -132,6 +134,8 @@ dataManagerServer <-
             req(input$inputDataY)
             data()[[input$inputDataY]]
           })
+        } else {
+          inputDataVariables[["inputDataY"]] <- reactiveVal(NULL)
         }
         
         return(inputDataVariables)
