@@ -180,7 +180,32 @@ Additionally, an $1 - \alpha$ percentile bootstrap CI is computed.
 
 ## Variance ratio (VR)  
 
+## Measures of Nonoverlap
+If the populations being compared are normal and with equal variability it is possible to define measures of nonoverlap which are related with cohen's d and with themselves through the cumulative normal distribution. (Cohen, 1988).
+### Cohen's U1
+U1 can be interpreted as percentage of nonoverlap and is characterized by the following formula (Cohen, 1988):
+$$U_1 = \frac{2\Phi_{d_p/2}-1}{\Phi_{d_p/2}} = \frac{2U_2-1}{U_2}$$
+with $d_p$ being a deviate in the unit normal curve and  $\Phi$ being the percentage of the population of cases falling below a given normal deviate.
+The confidence interval is calculated by transforming the lower and upper confidence limits of Cohens'd ($d_p$) with the cumulative normal distribution:
+$$LL = \frac{2\Phi_{d_{p_{upper}}/2}-1}{\Phi_{d_{p_{upper/2}}}}$$
+$$UL = \frac{2\Phi_{d_{p_{lower}}/2}-1}{\Phi_{d_{p_{lower/2}}}}$$
+### Cohen's U2
+When examing two populations, Cohen's measure of nonoverlap U2 is the percentage of one population that exceeds the same percentage in the other population. It is described by the following formular (Cohen, 1988): 
+$$U2 = \Phi_{d_p/2}$$
+with $d_p$ being a deviate in the unit normal curve and  $\Phi$ being the percentage of the population of cases falling below a given normal deviate.
+The confidence interval is calculated by transforming the lower and upper confidence limits of Cohens'd ($d_p$)  with the cumulative normal distribution:
+$$LL =  \Phi_{d_{p_{lower}/2}}$$
+$$UL =  \Phi_{d_{p_{upper}/2}}$$
 
+
+### Cohen's U3
+When examing two populations, Cohen's measure of nonoverlap U3 is the percentage of one population which the upper half of the cases of the other population exceeds (Cohen, 1988). However, the interpretation of U3 changes slightly when one is dealing with a multivariate distribution (Del Giudice, 2019). Cohen's U3 is decribed by the following formular:
+$$U3 = \Phi_{d_p}$$
+with $d_p$ being a deviate in the unit normal curve and  $\Phi$ being the percentage of the population of cases falling below a given normal deviate.
+
+The confidence interval is calculated by transforming the lower and upper confidence limits of Cohens'd ($d_p$)  with the cumulative normal distribution:
+$$LL = \Phi_{d_{p_{lower}}}$$
+$$UL = \Phi_{d_{p_{upper}}}$$
 
 
 
@@ -202,6 +227,8 @@ Bonett, D. G. (2008). Confidence intervals for standardized linear contrasts of 
 Cohen, J. (1988). *Statistical Power Analysis for the Behavioral Sciences* (2nd ed.). Routledge. https://doi.org/10.4324/9780203771587  
 
 Cousineau, D., & Goulet-Pelletier, J. (2020, July 24). A review of five techniques to derive confidence intervals with a special attention to the Cohen's dp in the between-group design. <https://doi.org/10.31234/osf.io/s2597>  
+
+Del Giudice, M. (2019). Measuring sex differences and similarities. *Gender and sexuality development: Contemporary theory and research.* 
 
 Fitts, D. A. (2021). Expected and empirical coverages of different methods for generating noncentral t confidence intervals for a standardized mean difference.*Behavior Research Methods*, <https://doi.org/10.3758/s13428-021-01550-4>  
 
