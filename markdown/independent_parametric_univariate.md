@@ -201,7 +201,7 @@ $$UL =  \Phi_{d_{p_{upper}/2}}$$
 ### Cohen's U3
 When examing two populations, Cohen's measure of nonoverlap U3 is the percentage of one population which the upper half of the cases of the other population exceeds (Cohen, 1988). However, the interpretation of U3 changes slightly when one is dealing with a multivariate distribution (Del Giudice, 2019). Cohen's U3 is decribed by the following formular:
 $$U3 = \Phi_{d_p}$$
-with d being a deviate in the unit normal curve and  $\Phi$ being the percentage of the population of cases falling below a given normal deviate.
+with $d_p$ being a deviate in the unit normal curve and  $\Phi$ being the percentage of the population of cases falling below a given normal deviate.
 
 The confidence interval is calculated by transforming the lower and upper confidence limits of Cohens'd ($d_p$)  with the cumulative normal distribution:
 $$LL = \Phi_{d_{p_{lower}}}$$
