@@ -30,14 +30,15 @@ all_eff_sizes <- list(
   standardized_median_difference_biweight = "standardized_median_difference_biweight",
   parametric_cohens_u1 = "parametric_cohens_u1",
   parametric_cohens_u2 = "parametric_cohens_u2",
-  parametric_cohens_u1 = "parametric_cohens_u1",
-  non_parametric_u1 = "non_parametric_u1",
+  parametric_cohens_u3 = "parametric_cohens_u3",
+  non_parametric_cohens_u1 = "non_parametric_cohens_u1",
   variance_ratio = "variance_ratio",
-  parametric_tail_ratio = "parametric_tail_ratio",
+  non_parametric_variance_ratio = "non_parametric_variance_ratio",
+  tail_ratio = "tail_ratio",
   non_parametric_tail_ratio = "non_parametric_tail_ratio",
   non_parametric_ovl_two = "non_parametric_ovl_two",
-  parametric_cohens_u3 = "parametric_cohens_u3",
-  non_parametric_u3 = "non_parametric_u3",
+  non_parametric_cohens_u1 = "non_parametric_cohens_u1",
+  non_parametric_cohens_u3 = "non_parametric_cohens_u3",
   #Effect sizes for dependent groups:
   cohens_d_dependent = "cohens_d_dependent",
   hedges_g_dependent = "hedges_g_dependent",
@@ -55,7 +56,8 @@ all_eff_sizes <- list(
   parametric_cohens_u2_dependent = "parametric_cohens_u2_dependent",
   parametric_cohens_u3_dependent = "parametric_cohens_u3_dependent",
   variance_ratio_dependent = "variance_ratio_dependent",
-  parametric_tail_ratio_dependent = "parametric_tail_ratio_dependent",
+  non_parametric_variance_ratio_dependent = "non_parametric_variance_ratio_dependent",
+  tail_ratio_dependent = "tail_ratio_dependent",
   robust_cohens_dz = "robust_cohens_dz",
   robust_cohens_d_dependent = "robust_cohens_d_dependent",
   robust_glass_d_dependent = "robust_glass_d_dependent",
@@ -78,28 +80,29 @@ all_test_statistics <- list(student_t_test = "student_t_test",
 all_plots <- list(parametric_ovl = "parametric_ovl",
                   parametric_cohens_u1 = "parametric_cohens_u1",
                   parametric_cohens_u3 = "parametric_cohens_u3",
-                  non_parametric_u3 = "non_parametric_u3",
-                  parametric_tail_ratio = "parametric_tail_ratio",
-                  parametric_tail_ratio_zoom = "parametric_tail_ratio_zoom",
+                  non_parametric_cohens_u3 = "non_parametric_cohens_u3",
+                  tail_ratio = "tail_ratio",
+                  tail_ratio_zoom = "tail_ratio_zoom",
                   non_parametric_tail_ratio = "non_parametric_tail_ratio",
                   non_parametric_tail_ratio_zoom = "non_parametric_tail_ratio_zoom",
                   non_parametric_ovl = "non_parametric_ovl",
-                  non_parametric_u1 = "non_parametric_u1",
+                  non_parametric_cohens_u1 = "non_parametric_cohens_u1",
                   boxplot_pairwise_difference_scores = "boxplot_pairwise_difference_scores")
 
 nonparametricOptions <- c(all_eff_sizes$non_parametric_ovl2,
-                          all_eff_sizes$non_parametric_u1,
-                          all_eff_sizes$non_parametric_u3,
+                          all_eff_sizes$non_parametric_cohens_u1,
+                          all_eff_sizes$non_parametric_cohens_u3,
                           all_eff_sizes$non_parametric_tail_ratio,
                           all_eff_sizes$non_parametric_tail_ratio_dependent,
                           all_plots$non_parametric_ovl,
                           all_plots$non_parametric_tail_ratio_zoom)
 
-tailRatioOptions <- c(all_eff_sizes$parametric_tail_ratio,
+
+tailRatioOptions <- c(all_eff_sizes$tail_ratio, 
                all_eff_sizes$non_parametric_tail_ratio,
-               all_eff_sizes$parametric_tail_ratio_dependent,
+               all_eff_sizes$tail_ratio_dependent,
                all_eff_sizes$non_parametric_tail_ratio_dependent,
-               all_plots$parametric_tail_ratio_zoom,
+               all_plots$tail_ratio_zoom,
                all_plots$non_parametric_tail_ratio_zoom
                )
 
@@ -137,11 +140,13 @@ generate_es_raw_data_dataframe <- function(es_list, INDEX = NULL, x, y, tail, re
                   "non_parametric_ovl_two" = c(non_parametric_ovl_two(x = x, INDEX = INDEX), NA_real_, NA_real_, boot_general(x, INDEX, non_parametric_ovl_two)),
                   "parametric_cohens_u1" = c(parametric_cohens_u1(x = x, INDEX = INDEX), parametric_cohens_u1_ci(x = x, INDEX = INDEX), boot_general(x, INDEX, parametric_cohens_u1)),
                   "parametric_cohens_u2" = c(parametric_cohens_u2(x = x, INDEX = INDEX), parametric_cohens_u2_ci(x = x, INDEX = INDEX), boot_general(x, INDEX, parametric_cohens_u2_ci)),
-                  "non_parametric_u3" = c(non_parametric_u3(x = x, INDEX = INDEX), NA_real_, NA_real_, boot_general(x, INDEX, non_parametric_u3)),
+                  "non_parametric_cohens_u1" = c(non_parametric_cohens_u1(x = x, INDEX = INDEX), NA_real_, NA_real_, boot_general(x, INDEX, non_parametric_cohens_u1)),
+                  "non_parametric_cohens_u3" = c(non_parametric_cohens_u3(x = x, INDEX = INDEX), NA_real_, NA_real_, boot_general(x, INDEX, non_parametric_cohens_u3)),
+                  "variance_ratio" = c(variance_ratio(x = x, INDEX = INDEX), variance_ratio_independent_ci(x = x, INDEX = INDEX), boot_general(x, INDEX, variance_ratio)),
+                  "non_parametric_variance_ratio" = c(variance_ratio(x = x, INDEX = INDEX), non_parametric_variance_ratio_independent_ci(x = x, INDEX = INDEX), boot_general(x, INDEX, variance_ratio)),
+                  "tail_ratio" = c(tail_ratio(x = x, INDEX = INDEX, reference_group = ref, tail = tail, cutoff = cutoff), tail_ratio_independent_ci(x = x, INDEX = INDEX, reference_group = ref, tail = tail, cutoff = cutoff), boot_general(x, INDEX, tail_ratio, reference_group = ref, tail = tail, cutoff = cutoff)),
+                  "non_parametric_tail_ratio" = c(non_parametric_tail_ratio(x = x, INDEX = INDEX, reference_group = ref, tail = tail, cutoff = cutoff), non_parametric_tail_ratio_independent_ci(x =x, INDEX = INDEX, reference_group = ref, tail = tail, cutoff = cutoff), boot_general(x, INDEX, non_parametric_tail_ratio, reference_group = ref, tail = tail, cutoff = cutoff)),
                   "parametric_cohens_u3" = c(parametric_cohens_u3(x = x, INDEX = INDEX), parametric_cohens_u3_ci(x, INDEX), boot_general(x, INDEX, parametric_cohens_u3)),
-                  "variance_ratio" = c(variance_ratio(x = x, INDEX = INDEX), NA_real_, NA_real_, boot_general(x, INDEX, variance_ratio)),
-                  "parametric_tail_ratio" = c(parametric_tail_ratio(x = x, INDEX = INDEX, reference_group = ref, tail = tail, cutoff = cutoff), NA, NA, boot_general(x, INDEX, parametric_tail_ratio, reference_group = ref, tail = tail, cutoff = cutoff)),
-                  "non_parametric_tail_ratio" = c(non_parametric_tail_ratio(x = x, INDEX = INDEX, reference_group = ref, tail = tail, cutoff = cutoff), NA, NA, boot_general(x, INDEX, non_parametric_tail_ratio, reference_group = ref, tail = tail, cutoff = cutoff)),
                   "parameteric_cohens_u1" = c(parametric_cohens_u1(x = x, INDEX = INDEX), NA_real_, NA_real_, boot_general(x, INDEX, parametric_cohens_u1)),
                   #Effect sizes for dependent gorups:
                   "cohens_d_dependent" = c(cohens_d_dependent(x = x, y = y), cohens_d_dependent_ci(x = x, y = y), NA_real_, NA_real_),
@@ -163,7 +168,8 @@ generate_es_raw_data_dataframe <- function(es_list, INDEX = NULL, x, y, tail, re
                   "parametric_cohens_u2_dependent" = c(parametric_cohens_u2_dependent(x = x, y = y), parametric_cohens_u2_dependent_ci(x = x, y = y), NA_real_, NA_real_),
                   "parametric_cohens_u3_dependent" = c(parametric_cohens_u3_dependent(x = x, y = y), parametric_cohens_u3_dependent_ci(x = x, y = y), NA_real_, NA_real_),
                   "variance_ratio_dependent" = c(variance_ratio(x = x, y = y), variance_ratio_dependent_ci(x = x, y = y), NA_real_, NA_real_),
-                  "parametric_tail_ratio_dependent" = c(parametric_tail_ratio(x = x, y = y, tail = tail, reference_group = ref, cutoff = cutoff), parametric_tail_ratio_dependent_ci(x = x, y = y, tail = tail, reference_group = ref, cutoff = cutoff), NA_real_, NA_real_),
+                  "non_parametric_variance_ratio_dependent" = c(variance_ratio(x = x, y = y), non_parametric_variance_ratio_dependent_ci(x = x, y = y), NA_real_, NA_real_),
+                  "tail_ratio_dependent" = c(tail_ratio(x = x, y = y, tail = tail, reference_group = ref, cutoff = cutoff), tail_ratio_dependent_ci(x = x, y = y, tail = tail, reference_group = ref, cutoff = cutoff), NA_real_, NA_real_),
                   "robust_cohens_dz" = c(robust_cohens_dz(x = x, y = y), NA_real_, NA_real_, NA_real_, NA_real_),
                   "robust_cohens_d_dependent" = c(robust_cohens_d(x = x, y = y), robust_cohens_d_dependent_ci(x = x, y = y), NA_real_, NA_real_),
                   "robust_glass_d_dependent" = c(robust_glass_d(x = x, y = y), robust_glass_d_dependent_ci(x = x, y = y), NA_real_, NA_real_),
@@ -207,8 +213,8 @@ generate_es_educational_dataframe <- function(es_list, mean1, standardDeviation1
                   "parametric_cohens_u1" = c(parametric_cohens_u1(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2), parametric_cohens_u1_ci(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2)),
                   "parametric_cohens_u2" = c(parametric_cohens_u2(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2), parametric_cohens_u2_ci(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2)),
                   "parametric_cohens_u3" = c(parametric_cohens_u3(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2), parametric_cohens_u3_ci(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2)),
-                  "variance_ratio" = c(variance_ratio(s1 = standardDeviation1, s2 = standardDeviation2), NA_real_, NA_real_),
-                  "parametric_tail_ratio" = c(parametric_tail_ratio(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2,tail = tail, reference_group = ref, cutoff = cutoff), NA_real_, NA_real_),
+                  "variance_ratio" = c(variance_ratio(s1 = standardDeviation1, s2 = standardDeviation2), variance_ratio_independent_ci(s1 = standardDeviation1, s2 = standardDeviation2, n1 = sampleSize1, n2 = sampleSize2)),
+                  "tail_ratio" = c(tail_ratio(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, reference_group = ref, tail = tail, cutoff = cutoff), tail_ratio_independent_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n1 = sampleSize1, n2 = sampleSize2, reference_group = ref, tail = tail, cutoff = cutoff)),
                   #Effect sizes for dependent groups:
                   "cohens_d_dependent" = c(cohens_d_dependent(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1), cohens_d_dependent_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1, r = correlation1)),
                   "hedges_g_dependent" = c(hedges_g_dependent(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1), hedges_g_dependent_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1, r = correlation1)),
@@ -226,7 +232,7 @@ generate_es_educational_dataframe <- function(es_list, mean1, standardDeviation1
                   "parametric_cohens_u2_dependent" = c(parametric_cohens_u2_dependent(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1), parametric_cohens_u2_dependent_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1, r = correlation1)),
                   "parametric_cohens_u3_dependent" = c(parametric_cohens_u3_dependent(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1), parametric_cohens_u3_dependent_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, sdiff = standardDeviationDiff1, n = sampleSize1, r = correlation1, var_equal = TRUE)),
                   "variance_ratio_dependent" = c(variance_ratio(s1 = standardDeviation1, s2 = standardDeviation2), variance_ratio_dependent_ci(s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1, r = correlation1)),
-                  "parametric_tail_ratio_dependent" = c(parametric_tail_ratio(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2,tail = tail, reference_group = ref, cutoff = cutoff), parametric_tail_ratio_dependent_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, r = correlation1, n = sampleSize1, tail = tail, reference_group = ref, cutoff = cutoff))
+                  "tail_ratio_dependent" = c(tail_ratio(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2,tail = tail, reference_group = ref, cutoff = cutoff), tail_ratio_dependent_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, r = correlation1, n = sampleSize1, tail = tail, reference_group = ref, cutoff = cutoff))
     )
     es_result <- c(es_result, res[[1]])
     es_ci_lower <- c(es_ci_lower, res[[2]])
@@ -1004,13 +1010,134 @@ variance_ratio <- function(x = NULL, INDEX = NULL, y = NULL, s1, s2, group_1_ref
 
   num <- ifelse(group_1_reference, s2^2, s1^2)
   denom <- ifelse(group_1_reference, s1^2, s2^2)
-  variance_ratio <- ifelse(log, log(num / denom), num / denom)
-  return(variance_ratio)
+  vr <- ifelse(log, log(num / denom), num / denom)
+  return(vr)
+}
+
+variance_ratio_independent_ci <- function(x = NULL, INDEX = NULL, s1, s2, n1, n2, group_1_reference = TRUE, alpha = 0.05){
+if(!is.null(x) && !is.null(INDEX)){
+  sample_sizes <- tapply(x, INDEX, length)
+  n1 <- sample_sizes[[1]]
+  n2 <- sample_sizes[[2]]
+  vr <- variance_ratio(x = x, INDEX = INDEX, group_1_reference = group_1_reference)
+} else{
+    vr <- variance_ratio(s1 = s1, s2 = s2, group_1_reference = group_1_reference, log = FALSE)
+}
+    lower_bound <- vr * ifelse(group_1_reference, qf(alpha/2, n1 - 1, n2 - 1), qf(alpha/2, n2 - 1, n1 - 1))
+    upper_bound <- vr * ifelse(group_1_reference, qf(1 - alpha/2, n1 - 1, n2 - 1), qf(1 - alpha/2, n2 - 1, n1 - 1))
+
+  return(list(lower_bound = lower_bound,
+              upper_bound = upper_bound))
+}
+
+non_parametric_variance_ratio_independent_ci <- function(x = NULL, INDEX = NULL, group_1_reference = TRUE, alpha = 0.05){
+  dataset <- split(x, INDEX)
+  dataset1 <- dataset[[ifelse(group_1_reference, 2, 1)]]
+  dataset2 <- dataset[[ifelse(group_1_reference, 1, 2)]]
+  var1 <- var(dataset1)
+  var2 <- var(dataset2)
+  n1 <- length(dataset1)
+  n2 <- length(dataset2)
+  if((n1 < 4) || (n2 <4)){
+    return(list(lower_bound = NA_real_,
+                upper_bound = NA_real_))
+  }
+  trim1 <- 1 / (2 * sqrt(n1 - 4))
+  trim2 <- 1 / (2 * sqrt(n2 - 4))
+  trimmed_mean1 <- mean(dataset1, trim = trim1)
+  trimmed_mean2 <- mean(dataset2, trim = trim2)
+  g1 <- (n1 - 3) / n1
+  g2 <- (n2 - 3) / n2
+  A <- ((n1 + n2) * (n1 + n2 - 2)) / ((n1 - 1) * (n2 - 1))
+  B <- (g1 / (n1 - 1)) + (g2 / (n2 - 1))
+  K <- (n1 - 1) / (n2 - 1)
+  gamma1 <- n1 * sum((dataset1 - trimmed_mean1)^4) / (sum((dataset1 - mean(dataset1))^2)^2)
+  gamma2 <- n2 * sum((dataset2 - trimmed_mean2)^4) / (sum((dataset2 - mean(dataset2))^2)^2)
+  z_crit <- qnorm(alpha/2)
+  c <- (n1 / (n1 - z_crit)) * ((n2 - z_crit) / n2)
+  vr <- var1/var2
+  xl_xu <- try(find_banga_fox_bonett_xl_xu(z_crit, c, A, B, K, gamma1, gamma2, n1, n2), silent = TRUE)
+  if("try-error" %in% class(xl_xu)){
+    bonett2006_variance_ratio_ci <- bonett2006_variance_ratio_ci(dataset1, dataset2, n1, n2, trimmed_mean1, trimmed_mean2, alpha, vr)
+    lower_bound <- bonett2006_variance_ratio_ci[[1]]
+    upper_bound <- bonett2006_variance_ratio_ci[[2]]
+  } else {
+    lower_bound <- c * vr * xl_xu[["xl"]]
+    upper_bound <- c * vr * xl_xu[["xu"]]
+  }
+  return(list(lower_bound = lower_bound,
+              upper_bound = upper_bound))
+}
+
+
+banga_fox_bonett_ci_error <- function(x, INDEX, group_1_reference = TRUE, alpha = 0.05){
+  dataset <- split(x, INDEX)
+  dataset1 <- dataset[[ifelse(group_1_reference, 2, 1)]]
+  dataset2 <- dataset[[ifelse(group_1_reference, 1, 2)]]
+  n1 <- length(dataset1)
+  n2 <- length(dataset2)
+  if((n1 < 4) || (n2 <4)){
+    return(FALSE)
+  }
+  trim1 <- 1 / (2 * sqrt(n1 - 4))
+  trim2 <- 1 / (2 * sqrt(n2 - 4))
+  trimmed_mean1 <- mean(dataset1, trim = trim1)
+  trimmed_mean2 <- mean(dataset2, trim = trim2)
+  g1 <- (n1 - 3) / n1
+  g2 <- (n2 - 3) / n2
+  A <- ((n1 + n2) * (n1 + n2 - 2)) / ((n1 - 1) * (n2 - 1))
+  B <- (g1 / (n1 - 1)) + (g2 / (n2 - 1))
+  K <- (n1 - 1) / (n2 - 1)
+  gamma1 <- n1 * sum((dataset1 - trimmed_mean1)^4) / (sum((dataset1 - mean(dataset1))^2)^2)
+  gamma2 <- n2 * sum((dataset2 - trimmed_mean2)^4) / (sum((dataset2 - mean(dataset2))^2)^2)
+  z_crit <- qnorm(alpha/2)
+  c <- (n1 / (n1 - z_crit)) * ((n2 - z_crit) / n2)
+  xl_xu <- try(find_banga_fox_bonett_xl_xu(z_crit, c, A, B, K, gamma1, gamma2, n1, n2), silent = TRUE)
+  return("try-error" %in% class(xl_xu))
+}
+
+banga_fox_bonett_se <- function(x, A, B, gamma1, gamma2, K, n1, n2){
+  A * ((gamma1 * (K^2 / n1) + gamma2 * (x^2 / n2)) / ((K + x)^2)) - B
+}
+
+banga_fox_bonett_H <- function(x, z_crit, c, A, B, gamma1, gamma2, K, n1, n2){
+  log(x)^2 - z_crit^2*banga_fox_bonett_se(x = c*x, A = A, B = B, K = K, gamma1 = gamma1, gamma2 = gamma2, n1 = n1, n2 = n2)
+}
+
+find_banga_fox_bonett_xl_xu <- function(z_crit, c, A, B, K, gamma1, gamma2, n1, n2){
+  xl <- suppressWarnings(
+    uniroot(f = banga_fox_bonett_H,
+            interval = c(0,1),
+            z_crit = z_crit, c = c, A = A, B = B, gamma1 = gamma1, gamma2 = gamma2, K = K, n1 = n1, n2 = n2
+            )$root
+    )
+  xu <- 1/suppressWarnings(
+    uniroot(f = banga_fox_bonett_H,
+            interval = c(0,1),
+            z_crit = z_crit, c = 1/c, A = A, B = B, gamma1 = gamma2, gamma2 = gamma1, K = 1/K, n1 = n2, n2 = n1
+    )$root
+  )
+  return(list(xl = xl,
+              xu = xu))
+}
+
+
+bonett2006_variance_ratio_ci <- function(dataset1, dataset2, n1, n2, trimmed_mean1, trimmed_mean2, alpha, vr){
+  gamma_pooled <- (n1 + n2) * (sum((dataset1 - trimmed_mean1)^4, (dataset2 - trimmed_mean2)^4)) / (sum((dataset1 - mean(dataset1))^2, (dataset2 - mean(dataset2))^2)^2)
+  k1 <- (n1 - 3)/n1
+  k2 <- (n2 - 3)/n2
+  z_crit <- qnorm(alpha/2)
+  c <- (n1/(n1 - z_crit))/(n2/(n2 - z_crit))
+  se <- sqrt((gamma_pooled - k1)/(n1 - 1) + (gamma_pooled - k2)/(n2 - 1))
+  lower_bound <- exp(log(c * vr) + z_crit * se)
+  upper_bound <- exp(log(c * vr) + abs(z_crit) * se)
+  return(list(lower_bound = lower_bound,
+              upper_bound = upper_bound))
 }
 
 ## Tail ratios ----
 ### parametric tail ratio ----
-parametric_tail_ratio <- function(x = NULL, INDEX = NULL, y = NULL,
+tail_ratio <- function(x = NULL, INDEX = NULL, y = NULL,
                           m1, m2, s1, s2,
                           reference_group = c("group1", "group2"),
                           tail = c("lower", "upper"),
@@ -1038,42 +1165,213 @@ parametric_tail_ratio <- function(x = NULL, INDEX = NULL, y = NULL,
   return(tail_ratio)
 }
 
-### Non-parametric tail ratios: ----
-
-# give exact tail ratios (equivalent to risk ratios) when enough observations are
-# present below the cutoff in each group - otherwise call non_parametric_approx
-# to yield approximate tail ratios.
-non_parametric_tail_ratio <- function(x, INDEX, reference_group = c("group1", "group2"), tail = c("lower", "upper"), cutoff) {
-  dataset <- split(x, INDEX)
-  dataset1 <- dataset[[1]]
-  dataset2 <- dataset[[2]]
-  n1 <- length(dataset1)
-  n2 <- length(dataset2)
-
-  n1_below <- sum(dataset1 <= cutoff)
-  n1_above <- sum(dataset1 >= cutoff)
-
-  n2_below <- sum(dataset2 <= cutoff)
-  n2_above <- sum(dataset2 >= cutoff)
-
-  any_counts_zero <- ifelse(tail %in% "lower", any(c(n1_below, n2_below) == 0), any(c(n1_above, n2_above) == 0))
-  if (any_counts_zero) {
-    return(NA_real_)
-  } else {
-    group1_below <- n1_below / n1
-    group1_above <- n1_above / n1
-    group2_below <- n2_below / n2
-    group2_above <- n2_above / n2
-
-    tail_ratio <- switch(reference_group,
-                 "group1" = ifelse(tail %in% "lower", group1_below / group2_below, group1_above / group2_above),
-                 "group2" = ifelse(tail %in% "lower", group2_below / group1_below, group2_above / group1_above)
-    )
-
-    return(tail_ratio)
+tail_ratio_independent_ci <- function(x = NULL, INDEX = NULL,
+                                                 m1, m2, s1, s2, n1, n2,
+                                                 reference_group = c("group1", "group2"),
+                                                 tail = c("lower", "upper"),
+                                                 cutoff){
+  if(!is.null(x)){
+    stats <- summary_stats(x = x, INDEX = INDEX)
+    for (i in names(stats)) {
+      assign(i, stats[[i]])
+    }
   }
-
+  if(reference_group == "group1"){
+    m1_temp <- m1
+    s1_temp <- s1
+    n1_temp <- n1
+    m1 <- m2
+    s1 <- s2
+    n1 <- n2
+    m2 <- m1_temp
+    s2 <- s1_temp
+    n2 <- n1_temp
+  }
+  n1. <- n1
+  n2. <- n2
+  n11 <- round(ifelse(tail == "lower", pnorm(cutoff, m1, s1), pnorm(cutoff, m1, s1, lower.tail = FALSE)) * n1)
+  n21 <- round(ifelse(tail == "lower", pnorm(cutoff, m2, s2), pnorm(cutoff, m2, s2, lower.tail = FALSE)) * n2)
+  confidence_bounds <- koopman_nam_risk_ratio_ci(n11, n21, n1., n2., alpha)
+  return(list(lower_bound = confidence_bounds[["lower_bound"]],
+              upper_bound = confidence_bounds[["upper_bound"]]))
+} 
+  
+### Non-parametric tail ratios: ----
+# tail ratio is calcuated as a risk ratio
+non_parametric_tail_ratio <- function(x, INDEX, reference_group = c("group1", "group2"), tail = c("lower", "upper"), cutoff) {
+  
+  dataset <- split(x, INDEX)
+  dataset1 <- dataset[[ifelse(reference_group == "group1", 2, 1)]]
+  dataset2 <- dataset[[ifelse(reference_group == "group1", 1, 2)]]
+  n1. <- length(dataset1)
+  n2. <- length(dataset2)
+  n11 <- ifelse(tail == "lower", sum(dataset1 <= cutoff), sum(dataset1 >= cutoff))
+  n21 <- ifelse(tail == "lower", sum(dataset2 <= cutoff), sum(dataset2 >= cutoff))
+  p1 <- n11/n1.
+  p2 <- n21/n2.
+  if(p1 == 0) return(0)
+  if(p2 == 0) return(Inf)
+  tr <- p1/p2
+  return(tr)
 }
+
+non_parametric_tail_ratio_independent_ci <- function(x, INDEX, reference_group = c("group1", "group2"), tail = c("lower", "upper"), cutoff, alpha = 0.05){
+  
+  dataset <- split(x, INDEX)
+  dataset1 <- dataset[[ifelse(reference_group == "group1", 2, 1)]]
+  dataset2 <- dataset[[ifelse(reference_group == "group1", 1, 2)]]
+  n1. <- length(dataset1)
+  n2. <- length(dataset2)
+  n11 <- ifelse(tail == "lower", sum(dataset1 <= cutoff), sum(dataset1 >= cutoff))
+  n21 <- ifelse(tail == "lower", sum(dataset2 <= cutoff), sum(dataset2 >= cutoff))
+  confidence_bounds <- koopman_nam_risk_ratio_ci(n11, n21, n1., n2., alpha)
+  return(list(lower_bound = confidence_bounds[["lower_bound"]],
+              upper_bound = confidence_bounds[["upper_bound"]]))
+}
+
+koopman_nam_risk_ratio_ci <- function(n11, n21, n1., n2., alpha){
+  
+  z_crit <- qnorm(alpha/2)
+  if ((n11 == 0) && (n21 == 0)) {
+    lower_bound <- 0
+    upper_bound <- Inf
+  } else{
+    a1 <- n2.*(n2.*(n1. + n2.)*n11 + n1.*(n2. + n11) * (z_crit^2))
+    a2 <- -n2.*(n2.*n1.*(n11 + n21) + 2*(n1. + n2.)*n21*n11 + n1.*(n2. + n21 + 2*n11)*(z_crit^2))
+    a3 <- 2*n2.*n1.*n21*(n11 + n21) + (n1. + n2.)*(n21^2)*n11 + n2.*n1.*(n11 + n21)*(z_crit^2)
+    a4 <- -n1.*(n21^2)*(n11 + n21)
+    b1 <- a2/a1
+    b2 <- a3/a1
+    b3 <- a4/a1
+    c1 <- b2 - b1^2/3
+    c2 <- b3 - b1*b2/3 + 2*b1^3/27
+    theta <- acos(sqrt(27)*c2/(2*c1*sqrt(-c1)))
+    t1 <- -2*sqrt(-c1/3)*cos(pi/3 - theta/3)
+    t2 <- -2*sqrt(-c1/3)*cos(pi/3 + theta/3)
+    t3 <- 2*sqrt(-c1/3)*cos(theta/3)
+    p2_MLE1 <- t1 - b1/3
+    p2_MLE2 <- t2 - b1/3
+    p2_MLE3 <- t3 - b1/3
+    p2_MLE_bounds_candidates <- sort(c(p2_MLE1, p2_MLE2, p2_MLE3))
+    p2_MLE_lower_bound <- p2_MLE_bounds_candidates[[2]]
+    p2_MLE_upper_bound <- p2_MLE_bounds_candidates[[1]]
+    if ((n21 == 0) && (n11 != 0)) {
+      lower_bound <- nam_p2_MLE_to_phi(n11, n21, n1., n2., p2_MLE_lower_bound)
+      upper_bound <- Inf
+    }
+    else if ((n21 != n2.) && (n11 == 0)) {
+      lower_bound <- 0
+      upper_bound <- nam_p2_MLE_to_phi(n11, n21, n1., n2., p2_MLE_upper_bound)
+    }
+    else if ((n21 == n2.) && (n11 == n1.)) {
+      lower_bound <- n1./(n1. + z_crit^2) 
+      upper_bound <- (n2. + z_crit^2)/n2.
+    } 
+    else if ((n11 == n1.) || (n21 == n2.)) {
+      if ((n21 == n2.) && (n11 == 0)) {
+        lower_bound <- 0
+      }
+      if ((n21 == n2.) && (n11 != 0)) {
+        phat1 <- n21/n2.
+        phat2 <- n11/n1.
+        phihat <- phat2/phat1
+        phi_lower <- 0.95 * phihat
+        chi2 <- 0
+        while (chi2 <= z_crit) {
+          a <- (n2. + n1.) * phi_lower
+          b <- -((n21 + n1.) * phi_lower + n11 + n2.)
+          c <- n11 + n21
+          p1hat <- (-b - sqrt(b^2 - 4*a*c))/(2*a)
+          p2hat <- p1hat * phi_lower
+          q2hat <- 1 - p2hat
+          var <- (n2. * n1. * p2hat)/(n1. * (phi_lower - p2hat) + n2. * q2hat)
+          chi2 <- ((x1 - n1 * p2hat)/q2hat)/sqrt(var)
+          lower_bound <- phi_lower
+          phi_lower <- lower_bound/1.0001
+        }
+      }
+      i <- n21
+      j <- n11
+      ni <- n2.
+      nj <- n1.
+      if (n11 == n1.) {
+        i <- n11
+        j <- n21
+        ni <- n1.
+        nj <- n2.
+      }
+      phat1 <- i/ni
+      phat2 <- j/nj
+      phihat <- phat2/phat1
+      phi_upper <- 1.1 * phihat
+      if ((n21 == n2.) && (n11 == 0)) {
+        if (n2 < 100) {
+          phi_upper <- 0.01
+        }
+        else {
+          phi_upper <- 0.001
+        }
+      }
+      chi1 <- 0
+      while (chi1 >= -z) {
+        a <- (ni + nj) * phi_upper
+        b <- -((i + nj) * phi_upper + j + ni)
+        c <- i + j
+        p1hat <- (-b - sqrt(b^2 - 4 * a * c))/(2 * a)
+        p2hat <- p1hat * phi_upper
+        q2hat <- 1 - p2hat
+        var <- (ni * nj * p2hat)/(nj * (phi_upper - p2hat) + ni * q2hat)
+        chi1 <- ((j - nj * p2hat)/q2hat)/sqrt(var)
+        phiu1 <- phi_upper
+        phiu <- 1.0001 * phiu1
+      }
+      if (n11 == n1.) {
+        lower_bound <- 1/phiu1
+        upper_bound <- nam_p2_MLE_to_phi(n11, n21, n1., n2., p2_MLE_upper_bound)
+      }
+      else {
+        upper_bound <- phiu1
+      }
+    } else {
+      lower_bound <- nam_p2_MLE_to_phi(n11, n21, n1., n2., p2_MLE_lower_bound)
+      upper_bound <- nam_p2_MLE_to_phi(n11, n21, n1., n2., p2_MLE_upper_bound)
+    }
+    return(list(lower_bound = lower_bound,
+                upper_bound = upper_bound))
+  }
+}
+
+nam_p2_MLE_to_phi <- function(n11, n21, n1., n2., p2_MLE_bound){
+  res <- (1 - (n1. - n11) * (1 - p2_MLE_bound)/(n21 + n1. - (n2. + n1.) * p2_MLE_bound))/p2_MLE_bound
+}
+
+
+newcombe_price_bonett_risk_ratio_ci <- function(n11, n21, n1., n2., alpha){
+  z_crit <- qnorm(alpha/2)
+
+  n11 <- ifelse(n11 == 0, z_crit^2, n11)
+  n21 <- ifelse(n21 == 0, z_crit^2, n21)
+  p1 <- n11/n1.
+  p2 <- n21/n2.
+  ci <- exp(log(p1/p2)+c(-1,1)*2*asinh((z_crit/2)*sqrt(1/n11 + 1/n21 - 1/n1. - 1/n2.)))
+  lower_bound <- ci[[1]]
+  upper_bound <- ci[[2]]
+  return(list(lower_bound = lower_bound,
+              upper_bound = upper_bound))
+}
+
+adjusted_katz_log_risk_ratio_ci <- function(n11, n21, n1., n2., alpha){
+  z_crit <- qnorm(alpha/2)
+  p1_adjusted <- (n11 + 0.5)/(n1. + 0.5)
+  p2_adjusted <- (n21 + 0.5)/(n2. + 0.5)
+  ci <- exp(log(p1_adjusted/p2_adjusted)+c(1,-1)*z_crit*sqrt(1/(n11 + 0.5) + 1/(n21 + 0.5) - 1/(n1. + 0.5) - 1/(n2. + 0.5)))
+  lower_bound <- ci[[1]]
+  upper_bound <- ci[[2]]
+  return(list(lower_bound = lower_bound,
+              upper_bound = upper_bound))
+}
+
+
 
 # Apprxomiate tail ratios based on a kernel density estimator of choice:
 non_parametric_tail_ratio_approx <- function(x, INDEX, ref = c("group1", "group2"), tail = c("lower", "upper"),
@@ -1477,7 +1775,7 @@ parametric_cohens_u2_ci <- function(x = NULL, INDEX = NULL, m1, m2, var1, var2, 
 }
 
 ## Cohen's U3 coefficient (non-parametric) ----
-non_parametric_u3 <- function(x, INDEX) {
+non_parametric_cohens_u3 <- function(x, INDEX) {
   dataset <- split(x, INDEX)
   dataset1 <- dataset[[1]]
   dataset2 <- dataset[[2]]
@@ -1998,48 +2296,151 @@ parametric_cohens_u3_dependent_ci <- function(x = NULL, y = NULL, m1, m2, s1, s2
               upper_bound = upper_bound))
 }
 
+
 variance_ratio_dependent_ci <- function(x = NULL, y = NULL, s1, s2, n, r, group_1_reference = TRUE, alpha = 0.05) {
-  if (!is.null(x) && !is.null(y)) {
-    stats <- summary_stats(x = x, y = y,)
-    for (i in names(stats)) {
-      assign(i, stats[[i]])
-    }
-    trim <- 1 / (2 * sqrt((n - 4)))
-    trimmed_mean1 <- mean(x, trim = trim)
-    trimmed_mean2 <- mean(y, trim = trim)
-    gamma1 <- (n * sum((x - trimmed_mean1)^4)) / (sum((x - m1)^2)^2)
-    gamma2 <- (n * sum((y - trimmed_mean2)^4)) / (sum((y - m2)^2)^2)
-    nu1 <- (gamma1 - (n - 3) / n) / (n - 4)
-    nu2 <- (gamma2 - (n - 3) / n) / (n - 4)
-    d1 <- (x - m1)^2
-    d2 <- (y - m2)^2
-    r_d <- cor(d1, d2)
-    a <- r_d * sqrt(nu1 * nu2)
-    z_crit <- qnorm(alpha / 2)
-    variance_ratio <- variance_ratio(s1 = s1, s2 = s2, group_1_reference = group_1_reference, log = TRUE)
-    variance_ratio_dependent_ci <- exp(variance_ratio + c(z_crit, abs(z_crit)) * sqrt(nu1 + nu2 - 2 * a))
-    lower_bound <- variance_ratio_dependent_ci[[1]]
-    upper_bound <- variance_ratio_dependent_ci[[2]]
-  } else {
-    variance_ratio <- variance_ratio(s1 = s1, s2 = s2, group_1_reference = group_1_reference, log = FALSE)
-    t_crit <- qt(alpha / 2, df = n - 2)
-    k <- 1 + (2 * (1 - r^2) * t_crit^2) / (n - 2)
-    lower_bound <- variance_ratio * (k - sqrt(k^2 - 1))
-    upper_bound <- variance_ratio * (k + sqrt(k^2 - 1))
-  }
+  if(!is.null(x) && !is.null(y)){
+    n <- length(x)
+    s1 <- sd(x)
+    s2 <- sd(y)
+    r <- cor(x,y)
+  } 
+  vr <- variance_ratio(s1 = s1, s2 = s2, group_1_reference = group_1_reference, log = FALSE)
+  t_crit <- qt(alpha/2, df = n - 2)
+  k <- 1 + (2 * (1 - r^2) * t_crit^2)/(n - 2)
+  lower_bound <- vr * (k - sqrt(k^2 - 1))
+  upper_bound <- vr * (k + sqrt(k^2 - 1))
   return(list(lower_bound = lower_bound,
               upper_bound = upper_bound))
 }
 
+non_parametric_variance_ratio_dependent_ci <- function(x = NULL, y = NULL, group_1_reference = TRUE, alpha = 0.05){
+  if(group_1_reference){
+    temp <- x
+    x <- y
+    y <- temp
+  } 
+  m1 <- mean(x)
+  m2 <- mean(y)
+  n <- length(x)
+  trim <- 1 / (2*sqrt((n - 4)))
+  trimmed_mean1 <- mean(x, trim = trim)
+  trimmed_mean2 <- mean(y, trim = trim)
+  gamma1 <- (n * sum((x - trimmed_mean1)^4))/(sum((x - m1)^2)^2)
+  gamma2 <- (n * sum((y - trimmed_mean2)^4))/(sum((y - m2)^2)^2)
+  nu1 <- (gamma1 - (n - 3)/n) / (n - 4)
+  nu2 <- (gamma2 - (n - 3)/n) / (n -4)
+  d1 <- (x - m1)^2
+  d2 <- (y - m2)^2
+  r_d <- cor(d1, d2)
+  a <- r_d * sqrt(nu1 * nu2)
+  z_crit <- qnorm(alpha/2)
+  vr <- log(var(x)/var(y))
+  variance_ratio_dependent_ci <- exp(vr + c(z_crit, abs(z_crit)) * sqrt(nu1 + nu2 - 2*a))
+  lower_bound <- variance_ratio_dependent_ci[[1]]
+  upper_bound <- variance_ratio_dependent_ci[[2]]
+  return(list(lower_bound = lower_bound,
+              upper_bound = upper_bound))
+}
+
+nam_blackwelder_parametric_tr_ci_error <- function(x = NULL, y = NULL, m1, m2, s1, s2, r, n,
+                                                   reference_group, cutoff, tail, alpha = 0.05){
+  if(!is.null(x) && !is.null(y)){
+    stats <- summary_stats(x = x, y = y, )
+    for(i in names(stats)){
+      assign(i, stats[[i]])
+    }
+  }
+  means <- c(m1, m2)
+  sigmas <- matrix(c(s1^2, s1 * s2 * r, s1 * s2 * r, s2^2), byrow = TRUE, ncol = 2)
+  pretest_success <- ifelse(tail == "lower", pnorm(cutoff, m1, s1), 1  - pnorm(cutoff, m1, s1))
+  posttest_success <- ifelse(tail == "lower", pnorm(cutoff, m2, s2), 1 - pnorm(cutoff, m2, s2))
+  n1. <- ifelse(reference_group == "group1", posttest_success, pretest_success) * n
+  n.1 <- ifelse(reference_group == "group1", pretest_success, posttest_success) * n
+  any_marginal_counts_zero <- any(c(n1., n.1) == 0)
+  if (any_marginal_counts_zero) {
+    return(FALSE)
+  } else {
+    pretest_success_posttest_failure <- mvtnorm::pmvnorm(lower = c(ifelse(tail == "lower", -Inf, cutoff),
+                                                                   ifelse(tail == "lower", cutoff, -Inf)),
+                                                         upper = c(ifelse(tail == "lower", cutoff, Inf),
+                                                                   ifelse(tail == "lower", Inf, cutoff)),
+                                                         mean = means,
+                                                         sigma = sigmas)
+    pretest_failure_posttest_success <- mvtnorm::pmvnorm(lower = c(ifelse(tail == "lower", cutoff, -Inf),
+                                                                   ifelse(tail == "lower", -Inf, cutoff)),
+                                                         upper = c(ifelse(tail == "lower", Inf, cutoff),
+                                                                   ifelse(tail == "lower", cutoff, Inf)),
+                                                         mean = means,
+                                                         sigma = sigmas)
+    pretest_success_posttest_success <- mvtnorm::pmvnorm(lower = c(ifelse(tail == "lower", -Inf, cutoff),
+                                                                   ifelse(tail == "lower", -Inf, cutoff)),
+                                                         upper = c(ifelse(tail == "lower", cutoff, Inf),
+                                                                   ifelse(tail == "lower", cutoff, Inf)),
+                                                         mean = means,
+                                                         sigma = sigmas)
+    pretest_failure_posttest_failure <- mvtnorm::pmvnorm(lower = c(ifelse(tail == "lower", cutoff, -Inf),
+                                                                   ifelse(tail == "lower", cutoff, -Inf)),
+                                                         upper = c(ifelse(tail == "lower", Inf, cutoff),
+                                                                   ifelse(tail == "lower", Inf, cutoff)),
+                                                         mean = means,
+                                                         sigma = sigmas)
+    n11 <- pretest_success_posttest_success * n
+    n22 <- pretest_failure_posttest_failure * n
+    n12 <- ifelse(reference_group == "group1", pretest_failure_posttest_success, pretest_success_posttest_failure) * n
+    n21 <- ifelse(reference_group == "group1", pretest_success_posttest_failure, pretest_failure_posttest_success) * n
+    tr <- n1./n.1
+    wald_se <- sqrt((n12 + n21)/(n1. * n.1))
+    interval <- exp(log(tr) + c(-3, 3) * wald_se)
+    parametric_tr_dependent_ci <- try(nam_blackwelder_asymptotic_cml(n1., n.1, n11, n12, n21,n22, interval, alpha = alpha), silent = TRUE)
+    return("try-error" %in% class(parametric_tr_dependent_ci))
+  }
+}
+
+nam_blackwelder_non_parametric_tr_ci_error <- function(x, y, reference_group, tail, cutoff, alpha){
+  n <- length(x)
+  pretest_success <- ifelse(tail == "lower", sum(x <= cutoff), sum(x >= cutoff))
+  posttest_success <- ifelse(tail == "lower", sum(y <= cutoff), sum(y >= cutoff))
+  n1. <- ifelse(reference_group == "group1", posttest_success, pretest_success)
+  n.1 <- ifelse(reference_group == "group1", pretest_success, posttest_success)
+  any_marginal_counts_zero <- any(c(pretest_success, posttest_success) == 0)
+  if (any_marginal_counts_zero) {
+    return(FALSE)
+  } else {
+    pretest_success_posttest_failure <- ifelse(tail == "lower", sum(x <= cutoff & y > cutoff), sum(x >= cutoff & y < cutoff))
+    pretest_failure_posttest_success <- ifelse(tail == "lower", sum(x > cutoff & y <= cutoff), sum(x < cutoff & y >= cutoff))
+    pretest_failure_posttest_failure <- ifelse(tail == "lower", sum(x > cutoff & y > cutoff), sum(x < cutoff & y < cutoff))
+    pretest_success_posttest_success <- ifelse(tail == "lower", sum(x <= cutoff & y <= cutoff), sum(x >= cutoff & y >= cutoff))
+    
+    n11 <- pretest_success_posttest_success
+    n22 <- pretest_failure_posttest_failure
+    n12 <- ifelse(reference_group == "group1", pretest_failure_posttest_success, pretest_success_posttest_failure)
+    n21 <- ifelse(reference_group == "group1", pretest_success_posttest_failure, pretest_failure_posttest_success)
+    tr <- n1./n.1
+    wald_se <- sqrt((n12 + n21)/(n1. * n.1))
+    interval <- exp(log(tr) + c(-3, 3) * wald_se)
+    non_parametric_tr_dependent_ci <- try(nam_blackwelder_asymptotic_cml(n1., n.1, n11, n12, n21,n22, interval, alpha = alpha), silent = TRUE)
+    return("try-error" %in% class(non_parametric_tr_dependent_ci))
+  }
+}
+  
+nam_blackwelder_ci_error <- function(x, y, m1, m2, s1, s2, r, n, mode, assumption, reference_group, tail, cutoff, alpha = 0.05){
+  if(mode == "educational"){
+    return(nam_blackwelder_parametric_tr_ci_error(m1 = m1, m2 = m2, s1 = s1, s2 = s2, r = r, n = n, reference_group = reference_group, tail = tail, cutoff = cutoff, alpha = alpha))
+  } else {
+    if(assumption == "nonparametric"){
+      return(nam_blackwelder_non_parametric_tr_ci_error(x = x, y = y, reference_group = reference_group, tail = tail, cutoff = cutoff, alpha = alpha))
+    } else{
+      return(nam_blackwelder_parametric_tr_ci_error(x = x, y = y, reference_group = reference_group, tail = tail, cutoff = cutoff, alpha = alpha))
+    }
+  }
+}
 
 find_nam_blackwelder_asymptotic_cml <- function(n1., n.1, n11, n12, n21, n22, interval, z_val) {
-  res <- suppressWarnings(
-    uniroot(f = function(x) {
-      p12 <- (-n1. +
-        (x^2 * (n.1 + 2 * n12)) +
-        sqrt((n1. - ((x^2) * 2.1))^2 + 4 * x^2 * n12 * n21)) / (2 * n * x * (x + 1))
-      p21 <- (x * p12) - ((x - 1) * (1 - (n22 / n)))
-      ((sqrt(n) * (n1. - x * n.1)) / (n * sqrt(x * (p12 + p21)))) - z_val
+  res <-   suppressWarnings(
+    uniroot(f = function(x){
+      p12 <- (-n1. + (x^2*(n.1 + 2*n12)) + sqrt((n1. - ((x^2)*2.1))^2 + 4 * x^2 * n12 * n21))/(2*n*x*(x + 1))
+      p21 <- (x * p12) - ((x - 1) * (1 - (n22/n)))
+      ((sqrt(n) * (n1. - x * n.1))/(n * sqrt(x * (p12 + p21)))) - z_val
     },
             interval = interval)
   )$root
@@ -2070,7 +2471,8 @@ bonett_price_hybrid_wilson_score <- function(n1., n.1, n11, n12, n21, alpha = 0.
               upper_bound = upper_bound))
 }
 
-parametric_tr_dependent_ci <- function(x = NULL, y = NULL, m1, m2, s1, s2, r, n,
+
+tail_ratio_dependent_ci <- function(x = NULL, y = NULL, m1, m2, s1, s2, r, n,
                                        reference_group = c("group1", "group2"),
                                        cutoff, tail = c("lower", "upper"), alpha = 0.05) {
   if (!is.null(x) && !is.null(y)) {
@@ -2113,20 +2515,21 @@ parametric_tr_dependent_ci <- function(x = NULL, y = NULL, m1, m2, s1, s2, r, n,
   n22 <- pretest_failure_posttest_failure * n
   n12 <- ifelse(reference_group == "group1", pretest_failure_posttest_success, pretest_success_posttest_failure) * n
   n21 <- ifelse(reference_group == "group1", pretest_success_posttest_failure, pretest_failure_posttest_success) * n
-  parametric_tail_ratio_dependent <- n1. / n.1
-  wald_se <- sqrt((n12 + n21) / (n1. * n.1))
-  interval <- exp(log(parametric_tail_ratio_dependent) + c(-3, 3) * wald_se)
+  tail_ratio_dependent <- n1./n.1
+  wald_se <- sqrt((n12 + n21)/(n1. * n.1))
+  interval <- exp(log(tail_ratio_dependent) + c(-3, 3) * wald_se)
   any_marginal_counts_zero <- any(c(n1., n.1) == 0)
   if (any_marginal_counts_zero) {
     lower_bound <- NA_real_
     upper_bound <- NA_real_
   } else {
-    parametric_tail_ratio_dependent_ci <- try(nam_blackwelder_asymptotic_cml(n1., n.1, n11, n12, n21, n22, interval, alpha = alpha), silent = TRUE)
-    if ("try-error" %in% class(parametric_tail_ratio_dependent_ci)) {
-      parametric_tail_ratio_dependent_ci <- bonett_price_hybrid_wilson_score(n1., n.1, n11, n12, n21, alpha = alpha)
+    tail_ratio_dependent_ci <- try(nam_blackwelder_asymptotic_cml(n1., n.1, n11, n12, n21,n22, interval, alpha = alpha), silent = TRUE)
+    if("try-error" %in% class(tail_ratio_dependent_ci)) {
+      tail_ratio_dependent_ci <- bonett_price_hybrid_wilson_score(n1., n.1, n11, n12, n21, alpha = alpha)
+
     }
-    lower_bound <- parametric_tail_ratio_dependent_ci[[1]]
-    upper_bound <- parametric_tail_ratio_dependent_ci[[2]]
+    lower_bound <- tail_ratio_dependent_ci[[1]]
+    upper_bound <- tail_ratio_dependent_ci[[2]]
   }
   return(list(lower_bound = lower_bound,
               upper_bound = upper_bound))

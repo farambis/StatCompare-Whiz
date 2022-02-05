@@ -83,9 +83,9 @@ The mean difference of two dependent populations of interest $\mu_a - \mu_b$ is 
 
 Treatments can increase the variance in an outcome of interest due to differential responsiveness of treatment subjects to the treatment (Grisson & Kim, 2012, pp. 17-20). Thus, the variance of post-treatment scores might be higher that the variance of pre-treatment scores. It might also be the case that the variance of a group treated with a novel treatment method might be larger than the variance of a group treated with a gold standard treatment (or vice versa). Under such instances of heteroscedasticity, it is recommended to use the standard deviation of some sort of baseline (e.g., pre-treatment group, gold standard treatment group) as the standardiser. Since under heteroscedasticity of populations a and b both the population effect sizes as well as the sample estimates will differ depending on the population chose to standardise by, it can be recommended to estimate and report both versions of $\Delta_j$ (e.g., Algina et al., 2005).
 
-$\Delta_b$ tells us how many population b standard deviation units ($\sigma_b$) $\mu_a$ (e.g. $\mu_{post}$) lies below or above $\mu_b$ (e.g. $\mu_{pre}$) and $\Delta_a$ tells us how many population a standard deviation units ($\sigma_a$) $\mu_a$ (e.g. $\mu_{post}$) lies below or above $\mu_b$ (e.g. $\mu_{pre}$).More interestingly perhaps $\Delta_j$ is rather similar to a *Z* score. Consequently, if the mean difference is standardised by the standard deviation of the lower mean population and if further that population follows a normal distribution, $\Delta_j$ can be used to determine what proportion of the lower mean population the average member of the higher mean population outscores. Like with a *Z* score, this information can be derived from the cumulative distribution function of the standard normal distribution. If scores are not normally distributed such convenient interpretations are no longer applicable.
+$\Delta_b$ tells us how many population b standard deviation units ($\sigma_b$) $\mu_a$ (e.g., $\mu_{post}$) lies below or above $\mu_b$ (e.g., $\mu_{pre}$) and $\Delta_a$ tells us how many population a standard deviation units ($\sigma_a$) $\mu_a$ (e.g., $\mu_{post}$) lies below or above $\mu_b$ (e.g., $\mu_{pre}$).More interestingly perhaps, $\Delta_j$ is rather similar to a *Z* score. Consequently, if the mean difference is standardised by the standard deviation of the lower mean population and if further that population follows a normal distribution, $\Delta_j$ can be used to determine what proportion of the lower mean population the average member of the higher mean population outscores. Like with a *Z* score, this information can be derived from the cumulative distribution function of the standard normal distribution. If scores are not normally distributed such convenient interpretations are no longer applicable.
 
-The sample estimate of this population effect is given by the formula (e.g. Becker (1988)):
+The sample estimate of this population effect is given by the formula (e.g., Becker (1988)):
 
 $$d_{Gj} = \frac{\bar{X_a} - \bar{X_b}}{s_j} \quad \quad Eq.(DG)$$
 
@@ -145,13 +145,13 @@ $$\delta = \frac{\mu_a - \mu_b}{\sigma} \quad \quad Eq.(DG 3)$$
 
 The mean difference of two dependent populations of interest $\mu_a - \mu_b$ is standardised by their common population standard deviation $\sigma$. This population effect size is applicable for a pretest-posttest design (e.g., $\mu_{post} - \mu_{pre}$); a within-subjects design where some score is measured under two treatment conditions (e.g., $\mu_{novel treatment} \mu_{gold standard treatment}$); a longitudinal design where some score is measured at two points in time without any intermediate intervention (e.g., $\mu_{timepoint 2} - \mu_{timepoint 1}$); or for a matched-pair design where subjects are paired based on covariates and randomly assigned to two conditions (e.g., $\mu_{experimental} - \mu_{control}$)(Bonett, 2015).
 
-$\delta$ tells us how many standard deviation units $\mu_b$ (e.g. $\mu_{post}$) lies below or above $\mu_a$ (e.g. $\mu_{pre}$). Once again, $\delta$ can also be thought of as a *Z* score and can be used to determine what proportion of population a the average member of population b outscores and vice versa.- See:
+$\delta$ tells us how many standard deviation units $\mu_b$ (e.g., $\mu_{post}$) lies below or above $\mu_a$ (e.g., $\mu_{pre}$). Once again, $\delta$ can also be thought of as a *Z* score and can be used to determine what proportion of population a the average member of population b outscores and vice versa.- See:
 
 With this population effect homoscedasticity is assumed, i.e., that $\sigma^2_a = \sigma^2_b = \sigma^2$. Under this assumption $Eq.(DG)$ and $Eq.(DG3)$ are identical. However, heteroscedasticity is likely throughout various fields of research and it appears plausible that treatments increases variance in the outcome of interest due to differential responsiveness of treatment subjects to the treatment (Grisson & Kim, 2012, pp. 17-20). Unfortunately, traditional tests of homoscedasticity often fail to produce accurate *p* values, which makes it difficult to detect heteroscedasticity of population variances (Grissom & Kim, 2012, p. 20). If heteroscedasticity is plausible $Eq.(DG)$ should be estimated - as long as population b follows a normal distribution.
 
 The population effect size of interest can be estimated by $d_G$ given in $Eq.(DG)$ if homoscedasticity can be assumed. However, in case of homoscedasticity using the pooled standard deviation $s_p = \sqrt{\frac{(n_a - 1) * s_a^2 + (n_b - 1) * s_b^2}{n_a + n_b - 2}} = \sqrt{\frac{s_a^2 + s^2_b}{2}}$ ($n_a = n_b$ ) is a better estimate of $\sigma$, since it is based on more data, is less biased and less variable than $s_b$.
 
-Thus, a more useful sample estimate for $Eq.(DG3)$ is given by the formula (e.g. Hedges (1981)):
+Thus, a more useful sample estimate for $Eq.(DG3)$ is given by the formula (e.g., Hedges (1981)):
 
 $$d_p = \frac{\bar{X_a} - \bar{X_b}}{s_p} \quad \quad Eq(DG 3.1)$$
 
@@ -191,7 +191,7 @@ Additionally, an $1 - \alpha$ percentile bootstrap CI is computed.
 
 ## Cohen's $d_{RM}$
 
-The population effect size being estimated is given by the formula (e.g. Bonett, 2015):
+The population effect size being estimated is given by the formula (e.g., Bonett, 2015):
 
 $$\delta_{RM} = \frac{\mu_{a} - \mu_{b}}{\frac{\sigma_d}{\sqrt{2(1-\rho)}}}$$
 
@@ -201,7 +201,7 @@ $$\frac{\mu_{a} - \mu_{b}}{\sigma_d}\sqrt{2(1-\rho)} = \frac{\mu_{a} - \mu_{b}}{
 
 However, with heteroscedastic populations $\delta_{RM}$ becomes a somewhat curious population effect size (Bonett, 2015).
 
-The population effect size is estimated with the formula given by (e.g. Morris & DeShon, 2002):
+The population effect size is estimated with the formula given by (e.g., Morris & DeShon, 2002):
 
 $$d_{RM} = \frac{\bar{X}_{a} - \bar{X}_{b}}{s_d}\sqrt{2(1-r)}$$
 
@@ -209,7 +209,7 @@ $d_{RM}$ will only equal $d_p$ when the sample standard deviation are equal $s_a
 
 This estimator has a bias. It systematically overestimates the size of the true population standardized mean difference. This bias can be corrected - see Hedges' $g_{RM}$.
 
-The aforementioned relationship between $\delta_{RM}$ and $\delta_p$ is the reason why this population effect size and its estimate $d_{RM}$ have been recommended for repeated measures designs. This effect size is supposed to transform $d_z$ into the metric of $d_p$ for independent groups. Meaning, that $d_{RM}$ is supposed to transform an effect size of changes in an individual's performance into an effect size quantifying group difference in performance (Morris & DeShon, 2002). This transformation could be motivated by meta-analysis, where effect sizes coming from studies with differing designs (e.g., independent groups and repeated measures) should have a common metric, i.e. that they estimate the same population parameter (e.g., $\delta_p$) (Morris & DeShon, 2002). Transforming $d_z$ into $d_{RM}$ has been favoured over computing $d_p$ as described above mainly for two reasons: Firstly, because the likely unit of deviation used and reported in a dependent groups design is the standard deviation of difference scores, making the computation of $d_p$ from summary statistics impossible (since $s_a$ and $s_b$ might not be reported) (Borenstein et al., 2009, p. 29). Secondly, an exact estimate of the distribution of $d_p$ for dependent groups could not be obtained previously, since the degrees of freedom of a pooled standard deviation of dependent groups was not known (Morris & DeShon, 2002). As reported above Cosineau (2020) identified an approach to compute the degrees of freedom associated with $d_p$. While the approach is not perfect, since the degrees of freedom depend on the unknown population value of $\rho$, but the degrees of freedom can be estimated as described by Cousineau and Goulet-Pelletier (2021) to construct CI for $d_p$. To conclude, if the aim is to estimate $\delta_p$ for dependent groups, $d_p$ might be the better choice as of writing this description.
+The aforementioned relationship between $\delta_{RM}$ and $\delta_p$ is the reason why this population effect size and its estimate $d_{RM}$ have been recommended for repeated measures designs. This effect size is supposed to transform $d_z$ into the metric of $d_p$ for independent groups. Meaning, that $d_{RM}$ is supposed to transform an effect size of changes in an individual's performance into an effect size quantifying group difference in performance (Morris & DeShon, 2002). This transformation could be motivated by meta-analysis, where effect sizes coming from studies with differing designs (e.g., independent groups and repeated measures) should have a common metric, i.e.,that they estimate the same population parameter (e.g., $\delta_p$) (Morris & DeShon, 2002). Transforming $d_z$ into $d_{RM}$ has been favoured over computing $d_p$ as described above mainly for two reasons: Firstly, because the likely unit of deviation used and reported in a dependent groups design is the standard deviation of difference scores, making the computation of $d_p$ from summary statistics impossible (since $s_a$ and $s_b$ might not be reported) (Borenstein et al., 2009, p. 29). Secondly, an exact estimate of the distribution of $d_p$ for dependent groups could not be obtained previously, since the degrees of freedom of a pooled standard deviation of dependent groups was not known (Morris & DeShon, 2002). As reported above Cosineau (2020) identified an approach to compute the degrees of freedom associated with $d_p$. While the approach is not perfect, since the degrees of freedom depend on the unknown population value of $\rho$, but the degrees of freedom can be estimated as described by Cousineau and Goulet-Pelletier (2021) to construct CI for $d_p$. To conclude, if the aim is to estimate $\delta_p$ for dependent groups, $d_p$ might be the better choice as of writing this description.
 
 An approximate $1 - \alpha$ large-sample CI is implemented according to Bonett (2015):
 
@@ -241,7 +241,7 @@ Additionally, an $1 - \alpha$ percentile bootstrap CI is computed.
 
 ## Cohen's $d'$
 
-The population effect size of interest is given by the formula (e.g. Cohen, 1988):
+The population effect size of interest is given by the formula (e.g., Cohen, 1988):
 
 $$\delta' = \frac{\mu_a - \mu_b}{\sigma'} \quad \quad Eq.()$$
 
@@ -253,7 +253,7 @@ The mean difference of two dependent populations of interest $\mu_a - \mu_b$ is 
 
 Cohen (1988) also recommends this standardiser when population variances differ (as long as sample sizes are identical). However, Cohen points out, that this population effect can no longer be converted into many of the highly intuitive and practical effect sizes discussed above, such the OVL or any of Cohen's U statistics.
 
-Since $n_a = n_b$ in a dependent samples design, the estimator of $\delta'$ is always identical to the value of $d_p$ for dependent samples (e.g. Bonett, 2008):
+Since $n_a = n_b$ in a dependent samples design, the estimator of $\delta'$ is always identical to the value of $d_p$ for dependent samples (e.g., Bonett, 2008):
 
 $$d'= \frac{\bar{X_a} - \bar{X_b}}{s'} \quad \quad Eq.(DG)$$
 
@@ -331,14 +331,169 @@ $$\bar{\gamma}_{2j} = \frac{n\sum_{i = 1}^n{(X_{ia} - \bar{X}_{ta})^4}}{\{\sum_{
 where $\bar{X}_{ta}$ is the trimmed mean with a trim-proportion of $\frac{1}{\{2(n - 4)^2\}}$.\
 The expression $\sqrt{\nu_1 + \nu_2 - 2a}$ in $Eq.(DG)$ is the estimate of the standard deviation of $\frac{s_{a|b}^2}{s_{a|b}^2}$.
 
-Bonett (2006) reports that the above procedure has probability coverage close to the nominal $1 - \alpha$ level under bivariate normality, tending to be slightly more liberal particularly when the sample size is low (*n = 10*). This approximate method is also not immune to violations of bivariate normality and it can have poor coverage probability when the population correlation is high (*r \> 0.5*) and the sample size is low (*n = 10*). In particular Bonett (2006) remarks that the approximate procedure tends to be conservative with platykurtic (light-tailed) distributions and conservative with leptokrutic (heavy-tailed) distributions. However, the author notes that the exact method shows the same pattern of behaviour while being more conservative with light-tailed as well as more liberal with heavy-tailed distributions.
+Bonett (2006) reports that the above procedure has probability coverage close to the nominal $1 - \alpha$ level under bivariate normality, tending to be slightly more liberal particularly when the sample size is low (*n = 10*). This approximate method is also not immune to violations of bivariate normality and it can have poor coverage probability when the population correlation is high (*r \> 0.5*) and the sample size is low (*n = 10*). In particular Bonett (2006) remarks that the approximate procedure tends to be conservative with platykurtic (light-tailed) distributions and conservative with leptokrutic (heavy-tailed) distributions. However, the author notes that the exact method shows the same pattern of behaviour while being more conservative with light-tailed as well as more liberal with heavy-tailed distributions.  
 
 
 
 
 ## Tail ratio (TR)
 
-TODO   
+Standardised mean differences such as Cohen's $d_p$ narrow their assessment on the centers of distributions, i.e., on typical observations. For many psychological, biological, and medical models which predict that the probability of some outcome or manifestation only starts increasing after some threshold the tails of distributions are more relevant (Voracek et al., 2013), e.g.,:  
+
+- diathesis-stress  
+- vulnerability  
+- susceptibility  
+- exposure  
+- excellence models  
+
+If group differences in the tails of distribution is of interest then the ratio of the proportion of scores found in the lower or upper tail of the distribution of the analysed groups can be assessed. The ratio of proportions of scores in the distributional extremes can be much higher than one might expect based on the inspection of Cohen's $d_p$ and the variance ratio in the following cases (Voracek et al., 2013):  
+
+- when the difference between means is small and the variance ratio equals 1;  
+- when a difference between means is absent but the variance ratio differs from 1;   
+- when both means and variances differ;  
+- when a difference between means as well as between variances is absent, but the distributions of the groups differ in higher order distributional moments (skewness and kurtosis).  
+
+Consequently, an assessment of tail ratios can be of importance for any two-group research design regardless of the absence of differences between means and/or variances.  
+
+The user of this application can compute tail ratios for a chosen cutoff value, a chosen tail region (i.e., the lower/left or the upper/right tail), and a chosen reference group (i.e. the proportion used as the denominator - either the proportion of group a or group b).  
+
+For a discussion of the history of the tail ratio, a proposal for a consensus regarding a naming and reporting convention, as well as for proposed benchmarks meant to aid the interpretation of tail ratios the reader is advised to turn to the article by Voracek et al. (2013).  
+
+The tail ratio effect size measure is implemented as follows:
+The tail ratio can be though of as a risk ratio by considering scores below/above a cutoff value as "successes"/"hits" and scores above/below a cutoff as "failures"/"misses". This way we can characterise the data as *n* pairs of Bernoulli events, where the possible outcomes are referred to as "hit" (denoted by 1) and "miss" (denoted by 2). Thus, the data can fall in one of four combinations:  
+
+- two "hits" (11)  
+- first observation a "hit", second observation a "miss" (12)  
+- first observation a "miss", second observation a "hit" (21)  
+- two "misses" (22)  
+
+The paired binomial proportions of interest are the marginal proportion of scores from group a that are categorised as "hits" $p_a$ and the marginal proportion of scores from group b that are categorised as "hits" $p_b$. The population tail ratio for a given cutoff value and region of interest is thus the ratio:
+
+$$\theta = \frac{p_{a|b}}{p_{b|a}}$$
+
+The observed data can be thought of as 2 x 2 table of the following form:
+
+<table border = "1">
+	<col>
+	<colgroup span = "2"></colgroup>
+	<colgroup span = "2"></colgroup>
+	<tr>
+		<td rowspan = "2" colspan="2" scope="colgroup"></td>
+		<th colspan = "2" scope = "colgroup">Group a</th>
+		<td></td>
+	</tr>
+	<tr>
+		<th>hits&nbsp;&nbsp;</th>
+		<th>missess&nbsp;&nbsp;</th>
+		<th>sum&nbsp;&nbsp;</th>
+	</tr>
+	<tbody>
+		<tr>
+			<th rowspan="2" scope="rowgroup">Group b&nbsp;&nbsp;</th>
+			<th scope="row">hits&nbsp;&nbsp;</th>
+			<td>n<sub>11</sub></td>
+			<td>n<sub>12</sub></td>
+			<td>n<sub>1.</sub></td>
+		</tr>
+		<tr>
+			<th scope = "row">misses &nbsp;&nbsp;</th>
+			<td>n<sub>21</sub></td>
+			<td>n<sub>22</sub></td>
+			<td>n<sub>2.</sub></td>
+		</tr>
+		<tr>
+			<td></td>
+			<th scope="row">sum&nbsp;&nbsp;</th>
+			<td>n<sub>.1</sub></td>
+			<td>n<sub>.2</sub></td>
+			<td>n</td>
+		</tr>
+	</tbody>
+</table>
+
+
+The point estimate of the population tail ratio can be written as:
+
+$$\hat{\theta} = \frac{\hat{p}_{a|b}}{\hat{p}_{b|a}} = \frac{n_{1.|.1}}{n_{.1|1.}}$$
+
+with $\hat{p}_a = \frac{n_{1.}}{n}$ and $\hat{p}_b = \frac{n_{.1}}{n}$.
+
+For the "parametric mode" of the application the cell frequencies are determined based on the assumption that the pairs of observation $(X_a, X_b)$ are sampled from a bivariate normal distribution: $$ \left(\begin{array}{t} X_a \\ X_b \end{array} \right) \sim N(\mu, \Sigma)$$
+
+with $\mu = \left(\begin{array}{t}\bar{X}_a \\ \bar{X}_b \end{array}\right), \Sigma = \left(\begin{array}{cc} s_a^2 & Corr(X_a,X_b)s_as_b \\ Corr(X_a, X_b)s_as_b & s_b^2\end{array}\right)$
+
+The number of pairs of scores which both fall below/above a cutoff *t* (i.e., the number of "hits") is determined by multiplying the number of observation with the proportion of pairs of scores falling below/above *t* in a bivariate normal distribution with the parameters given above\
+When "hits" are defined as scores below *t*:  
+
+- $n_{11}$ is computed as: $n_{11} = n * F_{X_a,X_b}(t,t)$  
+- $n_{12}$ is computed as: $n_{12} = n * P(X_a \leq t, X_b > t) = n * (F_{X_a}(t) - F_{X_a, X_b}(t,t))$  
+- $n_{21}$ is computed as: $n_{21} = n * P(X_a > t, X_b \leq t) = n * (F_{X_b}(t) -F_{X_a, X_b}(t,t))$    
+- $n_{22}$ is computed as:$n_{22} = n * P(X_a > t, X_b > t) = n * (1 - F_{X_a}(t) - F_{X_b}(t) + F_{X_a,X_b}(t,t))$  
+- $n_{1.}$ is simply computed as: $n_{1.} = n * F_{X_a}(t) = n * \Phi(\frac{c - \bar{X}_a}{s^2_a})$  
+- $n_{.1}$ is simply computed as: $n_{.1} = n * F_{X_b}(t) = n * \Phi(\frac{c - \bar{X}_b}{s^2_b})$  
+  
+with $F_{X_a, X_b} = P(X_a \leq t, X_b \leq t)$ being the cumulative distribution function of a bivariate normal distribution with the parameters given above;  
+with $F_{X_a}$ being the cumulative distribution function of $X_a: F_{X_a}(t) = F_{X_a, X_b}(t, \infty) = \Phi(\frac{t - \bar{X}_a}{s^2_a})$;  
+and with $F_{X_b}$ being the cumulative distribution function of $X_b: F_{X_b}(t) = F_{X_a, X_b}(\infty, t) = \Phi(\frac{t - \bar{X}_b}{s_b^2})$  
+
+When "hits" are defined as scores above *t*:  
+
+- $n_{11}$ is computed as:$n_{11} = n * (1 - F_{X_a}(t) - F_{X_b}(t) + F_{X_a,X_b}(t,t))$  
+- $n_{12}$ is computed as: $n_{12} = n * P(X_a \geq c, X_b < c) = n * [(1 - F_{X_a}(t)) - (1 - F_{X_a}(t) - F_{X_b}(t) + F_{X_a,X_b}(t,t))]$  
+- $n_{21}$ is computed as:$n_{21} = n * P(X_a < c, X_b \geq c) = n * [(1 - F_{X_b}(t)) - (1 - F_{X_a}(t) - F_{X_b}(t) + F_{X_a,X_b}(t,t))]$  
+- $n_{22}$ is computed as:$n_{22} = n * F_{X_a, X_b}(t,t)$  
+- $n_{1.}$ is computed as:$n_{1.} = n * (1 - F_{X_a}(t)) = n * (1 - \Phi(\frac{t - \bar{X}_a}{s^2_a})$    
+- $n_{.1}$ is computed as:$n_{.1} = n * (1 - F_{X_b}(t)) = n * (1 - \Phi(\frac{t - \bar{X}_b}{s^2_b}))$  
+
+For the "non-parametric mode" of the application the cell frequencies are determined more straightforwardly as the number of observed scores below/above a cutoff *t*. No assumption is made regarding the underlying distribution of the pairs of observed scores.\
+When "hits" are defined as scores below *t*:  
+
+- $n_{11}$ is computed as: $n_{11} = \sum_{i=1}^{n_{1.}}I_{\{x \leq t\}}(x_{a_i})*I_{\{x \leq t\}}(x_{b_i})$  
+- $n_{12}$ is computed as: $n_{12} = \sum_{i=1}^{n_{1.}}I_{\{x \leq t\}}(x_{a_i})*I_{\{x \geq t\}}(x_{b_i})$  
+- $n_{21}$ is computed as: $n_{21} = \sum_{i=1}^{n_{1.}}I_{\{x \geq t\}}(x_{a_i})*I_{\{x \leq t\}}(x_{b_i})$  
+- $n_{22}$ is computed as: $n_{22} = \sum_{i=1}^{n_{1.}}I_{\{x \geq t\}}(x_{a_i})*I_{\{x \geq t\}}(x_{b_i})$  
+- $n_{1.}$ is computed as:$n_{1.} = \sum_{i=1}^{n_{1.}} I_{\{x \leq t\}}(x_{a_i})$  
+- $n_{.1}$ is computed as:$n_{.1} = \sum_{i=1}^{n_{.1}}I_{\{x \leq t\}}(x_{b_i})$  
+
+with
+
+$$ I_{\{x \leq t\})}(x) = \begin{cases}
+1 & \text{if} \qquad x \leq t \\
+0 & \text{if} \qquad x \gt t 
+\end{cases}
+$$
+
+and 
+
+$$ I_{\{x \geq t\}}(x) = \begin{cases}
+1 & \text{if} \qquad x \geq t \\
+0 & \text{if} \qquad x \lt t 
+\end{cases}
+$$
+
+and when "hits" are defined as scores above *t*:  
+
+- $n_{11}$ is computed as: $n_{11} = \sum_{i=1}^{n_{1.}}I_{\{x \geq t\}}(x_{a_i})*I_{\{x \geq t\}}(x_{b_i})$  
+- $n_{12}$ is computed as: $n_{12} = \sum_{i=1}^{n_{1.}}I_{\{x \geq t\}}(x_{a_i})*I_{\{x \leq t\}}(x_{b_i})$  
+- $n_{21}$ is computed as: $n_{21} = \sum_{i=1}^{n_{1.}}I_{\{x \leq t\}}(x_{a_i})*I_{\{x \geq t\}}(x_{b_i})$  
+- $n_{22}$ is computed as: $n_{22} = \sum_{i=1}^{n_{1.}}I_{\{x \leq t\}}(x_{a_i})*I_{\{x \leq t\}}(x_{b_i})$  
+- $n_{1.}$ is computed as:$n_{1.} = \sum_{i=1}^{n_{1.}}I_{\{x \geq t\}}(x_{a_i})$  
+- $n_{.1}$ is computed as:$n_{.1} = \sum_{i=1}^{n_{.1}}I_{\{x \geq t\}}(x_{b_i})$  
+
+
+With $n_{1.}$ and $n_{.1}$ defined and computed the ratio of the binomial proportions $\hat{p}_a$ and $\hat{p}_b$ and consequently the point estimate of the tail ratio can be determined. The rest of the cell frequencies are relevant for the computation of the implemented confidence interval.
+
+Two approximate confidence intervals are implemented for both the parametric and the non-parametric analyses. Fagerland et al. (2014) analysed multiple confidence intervals for the ratio of paired binomial proportions. While none of the assessed procedures yielded appropriate coverage rates across the various conditions the authors examined, the Nam-Blackwelder and the Bonett-Price hybrid Wilson score confidence intervals performed the most adequately across many of the studied scenarios with the Nam-Blackwelder interval outperforming the Bonett-Price interval when marginal probabilities (i.e., $p_{a|b}$) are less than 0.2. Both methods have been recommended by the authors for general use.  
+The Nam-Blackwelder confidence interval relies on iterative search and thus might result in an error under some conditions. Consequently, the following approach has been employed for the implementation of the confidence interval:  
+
+- the Nam-Blackwelder confidence interval is reported if the iterative search of the confidence limits does not result in an error. The interval is computed as described by Nam and Blackwelder (2002).  
+- in case the iterative search does result in an error the user of the app receives a corresponding notification in the user interface an the Bonett-Price confidence interval is reported. The Bonett-Price confidence interval is computed as described by Bonett and Price (2006b).  
+
+Neither the computation of the Nam-Blackwelder nor of the Bonett-Price confidence interval is described in detail here as they both are rather elaborate - the reader is advised to study the cited literature for further details.  
+
+However, Fagerland et al. (2014) emphasize that while the implemented intervals are in general the best performing, they can be somewhat liberal (average coverage probabilities between 0.91 and 0.95 for an $1 - \alpha$ level of 0.95) for combinations of a small sample size ($n = 20$), small marginal proportions ($p_{a|b} \leq 0.2$) and a large/small ratio of proportions ($\theta = 4.5$ or $\theta = 0.22$). The Bonett-Price confidence interval is more liberal than the Nam-Blackwelder confidence interval for the given combinations of sample size, marginal proportions and ratio of proportions.  
+
+Additionally, an $1 - \alpha$ percentile bootstrap CI is computed.
 
 
 
@@ -381,7 +536,7 @@ $$\Delta_{Rb} = \frac{\mu_{ta} - \mu_{tb}}{\sigma_{wb}} \quad \quad Eq.(DG)$$
 
 The difference of population trimmed means of populations a and b $\mu_{ta} - \mu_{tb}$ is standardised by the winsorised standard deviation of population a or b $\sigma_{w(a|b)}$ scaled by $c$.
 
-$\Delta_{Rj}$ tells us how many (population j) winsorised standard deviation units $\mu_{ta}$ (e.g. $\mu_{tpost}$) lies below or above $\mu_{tb}$ (e.g. $\mu_{tpre}$). This measure of effect is applicable in all contexts in which $\Delta$ is applicable (see above for some examples). As described above, it is recommended to use the standard deviation of some sort of baseline (e.g., pre-treatment group, gold standard treatment group) as the standardiser. Since under heteroscedasticity of populations a and b both the population effects and the sample estimates will differ depending on the group chosen to standardise by, it can be recommended to estimate and report both versions of $\Delta_{Rj}$ (e.g. Algina et al. 2005).
+$\Delta_{Rj}$ tells us how many (population j) winsorised standard deviation units $\mu_{ta}$ (e.g., $\mu_{tpost}$) lies below or above $\mu_{tb}$ (e.g., $\mu_{tpre}$). This measure of effect is applicable in all contexts in which $\Delta$ is applicable (see above for some examples). As described above, it is recommended to use the standard deviation of some sort of baseline (e.g., pre-treatment group, gold standard treatment group) as the standardiser. Since under heteroscedasticity of populations a and b both the population effects and the sample estimates will differ depending on the group chosen to standardise by, it can be recommended to estimate and report both versions of $\Delta_{Rj}$ (e.g., Algina et al. 2005).
 
 The sample estimate of the population effect is given by (Algina et al., 2005):
 
@@ -427,7 +582,7 @@ $$\delta_{Rp} = c\frac{\mu_{ta} - \mu_{tb}}{\sigma_w} \quad \quad Eq.(DG)$$
 
 The difference of population trimmed means of populations a and b $\mu_{ta} - \mu_{tb}$ is standardised by the (common) winsorised population standard deviation $\sigma_w$ scaled by $c$.
 
-$\delta_{Rp}$ tells us how many winsorised standard deviation units $\mu_{ta}$ (e.g. $\mu_{tpost}$) lies below or above $\mu_tb$ (e.g. $\mu_{tpre}$). This measure of effect is applicable in all contexts in which $\delta_p$ is applicable (see above for some examples).
+$\delta_{Rp}$ tells us how many winsorised standard deviation units $\mu_{ta}$ (e.g., $\mu_{tpost}$) lies below or above $\mu_tb$ (e.g., $\mu_{tpre}$). This measure of effect is applicable in all contexts in which $\delta_p$ is applicable (see above for some examples).
 
 Since the population trimmed means difference is standardised by the common winsorised population standard deviation an equality of population winsorised variances is assumed, i.e., that $\sigma^2_{wa} = \sigma^2_{wb} = \sigma^2_{w}$. This assumption is like the homoscedasticity assumption of $d_p$, however instead of population variances/standard deviations it applies to population winsorised variances/standard deviations.
 
@@ -469,7 +624,7 @@ An $1 - \alpha$ percentile bootstrap CI is computed. The simulations conducted b
 
 ## The dependent Student's t-test
 
-The dependent Student's t-test (e.g. Wilcox, 2017b, p. 354) as implemented here tests the following null hypothesis:
+The dependent Student's t-test (e.g., Wilcox, 2017b, p. 354) as implemented here tests the following null hypothesis:
 
 $$H_0: \mu_a = \mu_b \quad \quad Eq.(DGH 1.1) $$
 
@@ -503,7 +658,7 @@ The Tukey-McLaughlin test (1963) in general tests the following null hypothesis:
 
 $$H_0: \mu_t = \mu_0 \quad \quad Eq.(DGH 2.1)$$
 
-i.e., that the population trimmed mean $\mu_t$ equal the null hypothesis value of the population trimmed mean (e.g. 0).
+i.e., that the population trimmed mean $\mu_t$ equal the null hypothesis value of the population trimmed mean (e.g., 0).
 
 This procedure is implemented based on the recommendation of Wilcox (2017a, pp. 115, 212) to test the null hypothesis:
 
@@ -513,7 +668,7 @@ i.e., that the population trimmed mean of difference scores is equal to 0. Thus,
 
 A key difference between means and trimmed means is that while $\mu_D = \mu_b - \mu_a$, (if $D = X_b - X_a$), $\mu_{tD} \neq \mu_{tb} - mu_{ta}$ under general conditions (Wilcox, 2017a, p. 212). Thus, the dependent Student's t-test is suited both for assessing whether the population mean of difference scores is equal to 0, as well as for assessing whether the population means of two dependent groups are identical (Wilcox, 2017b, p. 354). Conversely, the Tukey-McLaughlin test implemented is only suited for assessing whether the population trimmed mean of difference scores is equal to 0 and not suited to assess whether the population trimmed means of two dependent groups are qual (Wilcox, 2017b, p. 358). The latter null hypothesis is given by $Eq.(DGH 3)$ and can be tested with the dependent samples Yuen's t-test as given below.
 
-$Eq.(DgH 2.2)$ can be of interest, for example, if a study intends to assess the changes within participants, e.g. the changes in a depression score after a novel treatment (Wilcox, 2017b, p. 358). Testing $Eq.(DGH 2.2)$ is appropriate, since it allows to appraise whether the average change within individuals is significantly different from 0.
+$Eq.(DgH 2.2)$ can be of interest, for example, if a study intends to assess the changes within participants, e.g., the changes in a depression score after a novel treatment (Wilcox, 2017b, p. 358). Testing $Eq.(DGH 2.2)$ is appropriate, since it allows to appraise whether the average change within individuals is significantly different from 0.
 
 The test statistic of the Tukey-McLauglin test is implemented as:
 
@@ -575,7 +730,9 @@ Algina, J., Keselman, H. J., & Penfield, R. D. (2005). Effect sizes and their in
 
 Becker, B. J. (1988). Synthesizing standardised mean-change measures. *British Journal of Mathematical and Statistical Psychology*, *41*(2), 257--278. <https://doi.org/10.1111/j.2044-8317.1988.tb00901.x>  
 
-Bonett, D. G. (2006). Confidence interval for a ratio of variances in bivariate nonnormal distributions. *Journal of Statistical Computation and Simulation*, *76*(7), 637---644. <https:://doi.org/10.1080/10629360500107733>  
+Bonett, D. G. (2006a). Confidence interval for a ratio of variances in bivariate nonnormal distributions. *Journal of Statistical Computation and Simulation*, *76*(7), 637---644. <https:://doi.org/10.1080/10629360500107733>  
+
+Bonett, D. G., & Price, R. M. (2006b). Confidence intervals for a ratio of binomial proportions based on paired data. *Statistics in Medicine*, *25*(17), 3039--3047. <https://doi.org/10.1002/sim.2440>
 
 Bonett, D. G. (2008). Confidence intervals for standardized linear contrasts of means. *Psychological Methods*, *13*(2), 99--109.   <https://doi.org/10.1037/1082-989X.13.2.99>
 
@@ -587,11 +744,18 @@ Cohen, J. (1988). *Statistical Power Analysis for the Behavioral Sciences* (2nd 
 
 Cousineau, D., & Goulett-Pelletier, J.-C. (2021). A study of confidence intervals for Cohen's $d_p$ in within-subject designs with new proposals. *The Quantitative Methods for Psychology*, *17*(1), 51--75. <https://doi.org/10.20982/tqmp.17.1.p051>  
 
+Fagerland, M. W., Lydersen, S., & Laake, P. (2014). Recommended tests and confidence intervals for paired binomial proportions. *Statistics in Medicine*, *33*(16), 2850--2875. <https://doi.org/10.1002/sim.6148>  
+
 Field, A., Miles, J., & Zoe, F. (2012). *Discovering statistics using R*. Sage. Gibbons, R. D., Hedeker, D. R., & Davis, J. M. (1993). Estimation of effect size from a series of experiments involving paired comparisons. *Journal of Educational Statistics*, *18*(3), 271--279.   <https://doi.org/10.3102%2F10769986018003271>
 
 Grissom, R. J., & Kim, J. J. (2012). *Effect sizes for research: Univariate and multivariate applications* (2nd ed.). Taylor and Francis Group.  
 
+Nam, J., & Blackwelder, W. C. (2002). Analysis of the ratio of marginal probabilities in a matched-pair setting. *Statistics in Medicine*, *21*(5), 689--699. <https://doi.org/10.1002/sim.1017>  
+
+
 Tukey, J. W., & McLaughlin, D. H. (1963). Less vulnerable confidence and significance procedures for location based on a single sample: Trimming/winsorization 1. *Sankhyā: The Indian Journal of Statistics, Series A (1961-2002)*, *25*(3), 331--352. <http://www.jstor.org/stable/25049278>  
+
+Voracek, M., Mohr, E., & Hagmann, M. (2013). On the importance of tail ratios for psychological science. *Psychological Reports*, *112*(3), 872--886. <https://doi.org/10.2466/03.PR0.112.3.872-886>  
 
 Wilcox, R. R. (2017a). *Introduction to robust estimation and hypothesis testing* (4th ed.). Academic Press.  
 

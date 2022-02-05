@@ -95,7 +95,6 @@ non_parametric_tail_ratio_cutoff_error <- function(value, min, max) {
   }
 }
 
-
 createDownloadWidget <- function(namespace, selectedEs, inputValidator, name) {
   renderUI({
     ns <- namespace
@@ -160,6 +159,72 @@ inhomogenousVariancesNotification <- function(selectedEs, x, INDEX) observeEvent
 }
 )
 
+
+nonParametricVarianceRatioCiErrorNotification <- function(x, INDEX, selectedEs){
+  
+  bangaFoxBonettCiError <- reactive({
+    req(x(), INDEX(), selectedEs())
+    if("non_parametric_variance_ratio" %in% selectedEs()){
+      banga_fox_bonett_ci_error(x(), INDEX(), alpha = 0.05)
+    } else {
+      FALSE
+    }
+    })
+  
+  observeEvent(
+    req(bangaFoxBonettCiError()),
+    {
+      if(bangaFoxBonettCiError()){
+        showNotification("Note: Banga-Fox-Bonett confidence interval implementation for the variance ratio failed - Bonett confidence interval computed",
+                                   duration = 8, closeButton = TRUE, type = "message")
+      }
+    }
+  )
+}
+
+dependentTailRatioCiRawDataErrorNotification <- function(selectedEs, assumption, x, y, reference_group, tail, cutoff, alpha = 0.05){
+  
+  namBlackwelderCiError <- reactive({
+    req(x(), y(), selectedEs(), reference_group(), cutoff(), tail())
+    if(any(c(all_eff_sizes$tail_ratio_dependent, all_eff_sizes$non_parametric_tail_ratio_dependent) %in% selectedEs())){
+      nam_blackwelder_ci_error(x = x(), y = y(), mode = "rawData", assumption = assumption, reference_group = reference_group(), cutoff = cutoff(), tail = tail(), alpha = alpha)
+    } else {
+      FALSE
+    }
+  })
+  
+  observeEvent(
+    req(namBlackwelderCiError()),
+    {
+      if(namBlackwelderCiError()){
+        showNotification("Note: Nam-Blackwelder confidence interval implementation for the tail ratio failed - Bonett-Price confidence interval computed!",
+                         duration = 8, closeButton = TRUE, type = "message")
+      }
+    }
+  )
+}
+
+dependentTailRatioCiEducationalModeErrorNotification <- function(selectedEs, m1, m2, s1, s2, n, r, reference_group, tail, cutoff, alpha = 0.05){
+  
+  namBlackwelderCiError <- reactive({
+    req(m1(), m2(), s1(), s2(), n(), r(), selectedEs(), reference_group(), cutoff(), tail())
+    if(all_eff_sizes$tail_ratio_dependent %in% selectedEs()){
+      nam_blackwelder_ci_error(m1 = m1(), m2 = m2(), s1 = s1(), s2 = s2(), r = r(), n = n(), mode = "educational", assumption = NULL, reference_group = reference_group(), tail = tail(), cutoff = cutoff(), alpha = alpha)
+    } else {
+      FALSE
+    } 
+  })
+  observeEvent(
+    req(namBlackwelderCiError()),
+    {
+      if(namBlackwelderCiError()){
+        showNotification("Note: Nam-Blackwelder confidence interval implementation for the tail ratio failed - Bonett-Price confidence interval computed!",
+                         duration = 8, closeButton = TRUE, type = "message")
+      }
+    }
+  )
+}
+
 contains <- function(list1, list2) {
   for (val in list1) {
     if (val %in% list2)
@@ -211,8 +276,11 @@ esAndTsRawDataServer <- function(id, assumption, dat, INDEX, x, y) {
 
                  bootstrapNotification(selectedEs)
                  inhomogenousVariancesNotification(selectedEs, x(), INDEX())
-
-
+                 nonParametricVarianceRatioCiErrorNotification(x, INDEX, selectedEs)
+                 referenceGroup <- reactive(input$referenceGroup)
+                 tail <- reactive(input$tail)
+                 cutoff <- reactive(input$cutoff)
+                 dependentTailRatioCiRawDataErrorNotification(selectedEs, assumption, x, y, referenceGroup, tail, cutoff)
                })
 }
 
@@ -257,6 +325,9 @@ esAndTsEducationalServer <- function(id, mean1, standardDeviation1, sampleSize1,
                  output$downloadEs <- csvDownloadHandler("effect_size.csv", getEsDataframe)
                  output$downloadTsWidget <- createDownloadWidget(session$ns, selectedTs, esTsModuleIv, "downloadTs")
                  output$downloadTs <- csvDownloadHandler("test_statistic.csv", getTsDataframe)
-
+                 referenceGroup <- reactive(input$referenceGroup)
+                 tail <- reactive(input$tail)
+                 cutoff <- reactive(input$cutoff)
+                 dependentTailRatioCiEducationalModeErrorNotification(selectedEs, mean1, mean2, standardDeviation1, standardDeviation2, sampleSize1, correlation1, referenceGroup, tail, cutoff)
                })
 }

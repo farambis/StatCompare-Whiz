@@ -25,16 +25,17 @@ generate_data_plot <- function(es_plot, x = NULL, INDEX = NULL, y = NULL, m1, m2
                 "parametric_ovl" = plot_parametric_overlap(x, INDEX, y = y, m1 = m1, m2 = m2, s1 = s1, s2 = s2, n1 = n1, n2 = n2),
                 "parametric_cohens_u1" = plot_cohens_u1(x, INDEX, y = y, m1 = m1, m2 = m2, s1 = s1, s2 = s2),
                 "parametric_cohens_u3" = plot_cohens_u3(x, INDEX, y = y, m1 = m1, m2 = m2, s1 = s1, s2 = s2),
-                "parametric_tail_ratio" = plot_parametric_tail_ratio(x, INDEX, y = y, m1 = m1, m2 = m2, s1 = s1, s2 = s2, n1 = n1, n2 = n2, n = n, reference_group = reference_group, tail = tail, cutoff = cutoff),
-                "parametric_tail_ratio_zoom" = plot_parametric_tail_ratio_zoom(x, INDEX, y = y, m1 = m1, m2 = m2, s1 = s1, s2 = s2, n1 = n1, n2 = n2, n = n, reference_group = reference_group, tail = tail, cutoff = cutoff),
+                "tail_ratio" = plot_tail_ratio(x, INDEX, y = y, m1 = m1, m2 = m2, s1 = s1, s2 = s2, n1 = n1, n2 = n2, n = n, reference_group = reference_group, tail = tail, cutoff = cutoff),
+                "tail_ratio_zoom" = plot_tail_ratio_zoom(x, INDEX, y = y, m1 = m1, m2 = m2, s1 = s1, s2 = s2, n1 = n1, n2 = n2, n = n, reference_group = reference_group, tail = tail, cutoff = cutoff),
                 "non_parametric_tail_ratio" = plot_non_parametric_tail_ratio(x, INDEX, y = y, reference_group = reference_group, tail = tail, cutoff = cutoff, kernel = kernel),
                 "non_parametric_tail_ratio_zoom" = plot_non_parametric_tail_ratio_zoom(x, INDEX, y = y, reference_group = reference_group, tail = tail, cutoff = cutoff, kernel = kernel),
                 "non_parametric_ovl" = plot_non_parametric_overlap(x, INDEX, y = y, kernel = kernel),
-                "non_parametric_u1" = plot_non_parametric_u1(x, INDEX, y = y, kernel = kernel),
-                "non_parametric_u3" = plot_non_parametric_u3(x, INDEX, y = y, kernel = kernel),
+                "non_parametric_cohens_u1" = plot_non_parametric_u1(x, INDEX, y = y, kernel = kernel),
+                "non_parametric_cohens_u3" = plot_non_parametric_u3(x, INDEX, y = y, kernel = kernel),
                 "boxplot_pairwise_difference_scores" = boxplot_pairwise_difference_scores(x, INDEX, y = y)
   )
 }
+
 #generate_raw_data_plot("parametric_ovl", m1 = m1, m2 = m2, s1 = s1, s2 = s2, n1 = n1, n2 = n2)
 plot_parametric_overlap <- function(x = NULL, INDEX = NULL, y = NULL,
                                     m1, m2, s1, s2, n1, n2, n = NULL) {
@@ -146,8 +147,16 @@ plot_cohens_u1 <- function(x = NULL, INDEX = NULL, y = NULL,
          lty = c(solid_line, solid_line, NA),
          legend = c("Group 1",
                     "Group 2",
-                    "U1 ="),
-         bty = "n")
+                    paste0("U3 =", 
+                           round(
+                             ifelse(
+                               is.null(n),
+                               parametric_cohens_u1(m1 = m1, m2 = m2, var1 = s1^2, var2 = s2^2, n1 = n1, n2 = n2),
+                               parametric_cohens_u1_dependent(m1 = m1, m2 = m2, s1 = s1, s2 = s2, n = n)
+                             ),
+                             2)
+                    ),
+         bty = "n"))
   
 }
 
@@ -210,12 +219,21 @@ plot_cohens_u3 <- function(x = NULL, INDEX = NULL, y = NULL,
          lty = c(solid_line, solid_line, NA),
          legend = c("Group 1",
                     "Group 2",
-                    "Cohen's U3 ="),
+                    paste0("U3 =", 
+                           round(
+                             ifelse(
+                               is.null(n),
+                               parametric_cohens_u3(m1 = m1, m2 = m2, var1 = s1^2, var2 = s2^2, n1 = n1, n2 = n2),
+                               parametric_cohens_u3_dependent(m1 = m1, m2 = m2, s1 = s1, s2 = s2, n = n)
+                               ),
+                             2)
+                           )
+                    ),
          bty = "n")
 }
 
 ## Plot for parametric tail ratio (without and with zoom) ----
-plot_parametric_tail_ratio <- function(x = NULL, INDEX = NULL, y = NULL,
+plot_tail_ratio <- function(x = NULL, INDEX = NULL, y = NULL,
                                m1, m2, s1, s2, n1, n2, n = NULL,
                                reference_group = c("group1", "group2"),
                                tail = c("lower", "upper"), 
@@ -269,7 +287,7 @@ plot_parametric_tail_ratio <- function(x = NULL, INDEX = NULL, y = NULL,
   legend(x = x_from, xjust = 0, y = y_to, yjust = 1,
          col = "white",
          pch = 15,
-         legend = c(paste0("Cutoff = ", cutoff),
+         legend = c(paste0("Cutoff = ", round(cutoff,2)),
                     paste0("d = ", round(
                       ifelse(
                         is.null(n),
@@ -277,14 +295,14 @@ plot_parametric_tail_ratio <- function(x = NULL, INDEX = NULL, y = NULL,
                         cohens_d_dependent(m1 = m1, m2 = m2, s1 = s1, s2 = s2, n = n)),
                       2)),
                     paste0("VR = ", round(variance_ratio(s1 = s1, s2 = s2, group_1_reference = ifelse(reference_group == "group1", TRUE, FALSE)), 2)),
-                    paste0("TR = ", round(parametric_tail_ratio(m1 = m1, m2 = m2, s1 = s1, s2 = s2, reference_group = reference_group, tail = tail, cutoff = cutoff), 2))),
+                    paste0("TR = ", round(tail_ratio(m1 = m1, m2 = m2, s1 = s1, s2 = s2, reference_group = reference_group, tail = tail, cutoff = cutoff), 2))),
          bty = "n")
   
   
 }
 
 
-plot_parametric_tail_ratio_zoom <- function(x = NULL, INDEX = NULL, y = NULL,
+plot_tail_ratio_zoom <- function(x = NULL, INDEX = NULL, y = NULL,
                                     m1, m2, s1, s2, n1, n2, n = NULL,
                                     reference_group = c("grp1", "grp2"),
                                     tail = c("lower", "upper"), 
@@ -332,7 +350,7 @@ plot_parametric_tail_ratio_zoom <- function(x = NULL, INDEX = NULL, y = NULL,
          yjust = 1,
          col = "white",
          pch = 15,
-         legend = c(paste0("Cutoff = ", cutoff),
+         legend = c(paste0("Cutoff = ", round(cutoff,2)),
                     paste0("d = ", round(
                       ifelse(
                         is.null(n),
@@ -340,7 +358,7 @@ plot_parametric_tail_ratio_zoom <- function(x = NULL, INDEX = NULL, y = NULL,
                         cohens_d_dependent(m1 = m1, m2 = m2, s1 = s1, s2 = s2, n = n)),
                       2)),
                     paste0("VR = ", round(variance_ratio(s1 = s1, s2 = s2, group_1_reference = ifelse(reference_group == "group1", TRUE, FALSE)), 2)),
-                    paste0("TR = ", round(parametric_tail_ratio(m1 = m1, m2 = m2, s1 = s1, s2 = s2, reference_group = reference_group, tail = tail, cutoff = cutoff), 2))),
+                    paste0("TR = ", round(tail_ratio(m1 = m1, m2 = m2, s1 = s1, s2 = s2, reference_group = reference_group, tail = tail, cutoff = cutoff), 2))),
          bty = "n")
   
   
@@ -366,9 +384,11 @@ plot_non_parametric_tail_ratio <- function(x = NULL, INDEX = NULL, y = NULL,
     original_dataset <- split(x, INDEX)
     dataset1 <- original_dataset[[1]]
     dataset2 <- original_dataset[[2]]
+    tail_ratio_non_parametric <- non_parametric_tail_ratio(x, INDEX, reference_group, tail, cutoff)
   } else if (!is.null(y)){
     dataset1 <- x
     dataset2 <- y
+    tail_ratio_non_parametric <- non_parametric_tail_ratio_dependent(x, y, reference_group, tail, cutoff)
   }
   d1 <- density(dataset1, bw = bw, kernel = kernel)
   d2 <- density(dataset2, bw = bw, kernel = kernel)
@@ -403,19 +423,10 @@ plot_non_parametric_tail_ratio <- function(x = NULL, INDEX = NULL, y = NULL,
   legend(x = x_min, xjust = 0, y = y_max, yjust = 1,
          col = "white",
          pch = 15,
-         legend = c(paste0("Cutoff = ", cutoff),
-                    paste0("d = ", round(
-                      ifelse(
-                        is.null(y),
-                        smd_uni(effsize = "cohen_d", x = x, INDEX = INDEX),
-                        cohens_d_dependent(x, y)),
-                      2)),
+         legend = c(paste0("Cutoff = ", round(cutoff,2)),
                     paste0("VR = ", round(variance_ratio(x = x, INDEX = INDEX, y = y, group_1_reference = ifelse(reference_group == "group1", TRUE, FALSE)), 2)),
-                    paste0("TR = ", round(
-                      ifelse(
-                        is.null(y),
-                        non_parametric_tail_ratio(x, INDEX, reference_group, tail, cutoff),
-                        non_parametric_tail_ratio_dependent(x, y, reference_group, tail, cutoff)), 2))),
+                    paste0("TR = ", round(tail_ratio_non_parametric, 2))),
+
          bty = "n")
   
   
@@ -437,9 +448,11 @@ plot_non_parametric_tail_ratio_zoom <- function(x = NULL, INDEX = NULL, y = NULL
     original_dataset <- split(x, INDEX)
     dataset1 <- original_dataset[[1]]
     dataset2 <- original_dataset[[2]]
+    tail_ratio_non_parametric <- non_parametric_tail_ratio(x, INDEX, reference_group, tail, cutoff)
   } else if (!is.null(y)){
     dataset1 <- x
     dataset2 <- y
+    tail_ratio_non_parametric <- non_parametric_tail_ratio_dependent(x, y, reference_group, tail, cutoff)
   }
   
   d1 <- density(dataset1, bw = bw, kernel = kernel)
@@ -471,19 +484,9 @@ plot_non_parametric_tail_ratio_zoom <- function(x = NULL, INDEX = NULL, y = NULL
          xjust = ifelse(tail %in% "lower", 0, 1),
          y = y_max,
          yjust = 1,
-         legend = c(paste0("Cutoff = ", cutoff),
-                    paste0("d = ", round(
-                      ifelse(
-                        is.null(y),
-                        smd_uni(effsize = "cohen_d", x = x, INDEX = INDEX),
-                        cohens_d_dependent(x, y)),
-                      2)),
+         legend = c(paste0("Cutoff = ", round(cutoff,2)),
                     paste0("VR = ", round(variance_ratio(x = x, INDEX = INDEX, y = y, group_1_reference = ifelse(reference_group == "group1", TRUE, FALSE)), 2)),
-                    paste0("TR = ", round(
-                      ifelse(
-                        is.null(y),
-                        non_parametric_tail_ratio(x, INDEX, reference_group, tail, cutoff),
-                        non_parametric_tail_ratio_dependent(x, y, reference_group, tail, cutoff)), 2))),
+                    paste0("TR = ", round(tail_ratio_non_parametric, 2))),
          bty = "n")
   
 }
@@ -504,9 +507,15 @@ plot_non_parametric_overlap <- function(x = NULL, INDEX = NULL, y = NULL,
     original_dataset <- split(x, INDEX)
     dataset1 <- original_dataset[[1]]
     dataset2 <- original_dataset[[2]]
+    cohens_d <- smd_uni("cohen_d", x = x, INDEX = INDEX)
+    non_parametric_ovl <- non_parametric_ovl(x = x, INDEX = INDEX, bw = bw, kernel = kernel)
+    non_parametric_ovl2 <- non_parametric_ovl_two(x, INDEX)
   } else if (!is.null(y)){
     dataset1 <- x
     dataset2 <- y
+    cohens_d_dependent(x = x, y = y)
+    non_parametric_ovl <- NA_real_ #TODO: ergaenze hier sobald implementiert
+    non_parametric_ovl2 <- NA_real_ #TODO: ergaenze hier sobald implementiert
   }
   d1 <- density(dataset1, bw = bw, kernel = kernel)
   d2 <- density(dataset2, bw = bw, kernel = kernel)
@@ -538,9 +547,9 @@ plot_non_parametric_overlap <- function(x = NULL, INDEX = NULL, y = NULL,
          bty = "n",
          legend = c("Group 1",
                     "Group 2",
-                    paste0("d = ", round(smd_uni("cohen_d", x = x, INDEX = INDEX), 2)),
-                    paste("OVL = ", round(non_parametric_ovl(x = x, INDEX = INDEX, bw = bw, kernel = kernel)), 2)),
-         col = c(col1, col2, "white", col_polygon),
+                    paste0("OVL = ", round(non_parametric_ovl, 2)),
+                    paste("OVL2 = ", round(non_parametric_ovl2, 2))),
+         col = c(col1, col2, col_polygon, col_polygon),
          pch = 15)
 }
 
@@ -559,9 +568,11 @@ plot_non_parametric_u1 <- function(x = NULL, INDEX = NULL,  y = NULL,
     original_dataset <- split(x, INDEX)
     dataset1 <- original_dataset[[1]]
     dataset2 <- original_dataset[[2]]
+    cohens_u1_non_parametric <- non_parametric_cohens_u1(x, INDEX)
   } else if (!is.null(y)){
     dataset1 <- x
     dataset2 <- y
+    cohens_u1_non_parametric <- NA_real_ #TODO: ergaenze hier sobald implementiert
   }
   d1 <- density(dataset1, bw = bw, kernel = kernel)
   d2 <- density(dataset2, bw = bw, kernel = kernel)
@@ -586,9 +597,8 @@ plot_non_parametric_u1 <- function(x = NULL, INDEX = NULL,  y = NULL,
          bty = "n",
          legend = c("Group 1",
                     "Group 2",
-                    paste0("d = ", round(smd_uni("cohen_d", x = x, INDEX = INDEX), 2)),
-                    paste("OVL2 = ", round(non_parametric_ovl_two(x, INDEX)), 2)),
-         col = c(col1, col2, "white", col_polygon),
+                    paste("U1 = ", round(cohens_u1_non_parametric, 2))),
+         col = c(col1, col2, col_polygon),
          pch = 15)
 }
 
@@ -632,9 +642,11 @@ plot_non_parametric_u3 <- function(x = NULL, INDEX = NULL, y = NULL,
     original_dataset <- split(x, INDEX)
     dataset1 <- original_dataset[[1]]
     dataset2 <- original_dataset[[2]]
+    cohens_u3_non_parametric <- non_parametric_cohens_u3(x, INDEX)
   } else if (!is.null(y)){
     dataset1 <- x
     dataset2 <- y
+    cohens_u3_non_parametric <- NA_real_ # TODO: ergaenzen wenn implementiert
   }
   if (median(dataset1) < median(dataset2)) {
     tmp <- dataset1
@@ -672,8 +684,10 @@ plot_non_parametric_u3 <- function(x = NULL, INDEX = NULL, y = NULL,
          bty = "n",
          legend = c("Group with higher median",
                     "Group with lower median",
-                    paste("Cohen's U3 = ", non_parametric_u3(x, INDEX)), "median from group with higher median"),
-         col = c(col1, col2, "white", "black", "black"), lty = c(blank_line, blank_line, blank_line, solid_line),
+                    paste("U3 = ", round(cohens_u3_non_parametric,2)), 
+                    "median from group with higher median"),
+         col = c(col1, col2, "white", "black", "black"), 
+         lty = c(blank_line, blank_line, blank_line, solid_line),
          pch = c(15, 15, 15, NA, NA))
   
 }
