@@ -39,6 +39,7 @@ all_eff_sizes <- list(
   non_parametric_ovl_two = "non_parametric_ovl_two",
   non_parametric_cohens_u1 = "non_parametric_cohens_u1",
   non_parametric_cohens_u3 = "non_parametric_cohens_u3",
+  non_parametric_glass_d = "non_parametric_glass_d",
   #Effect sizes for dependent groups:
   cohens_d_dependent = "cohens_d_dependent",
   hedges_g_dependent = "hedges_g_dependent",
@@ -64,7 +65,8 @@ all_eff_sizes <- list(
   non_parametric_tail_ratio_dependent = "non_parametric_tail_ratio_dependent",
   standardized_median_difference_biweight_dependent = "standardized_median_difference_biweight_dependent",
   standardized_median_difference_mad_dependent = "standardized_median_difference_mad_dependent",
-  standardized_median_difference_riq_dependent = "standardized_median_difference_riq_dependent"
+  standardized_median_difference_riq_dependent = "standardized_median_difference_riq_dependent",
+  non_parametric_glass_d_dependent = "non_parametric_glass_d_dependent"
 )
 
 all_test_statistics <- list(student_t_test = "student_t_test",
@@ -98,7 +100,7 @@ nonparametricOptions <- c(all_eff_sizes$non_parametric_ovl2,
                           all_plots$non_parametric_tail_ratio_zoom)
 
 
-tailRatioOptions <- c(all_eff_sizes$tail_ratio, 
+tailRatioOptions <- c(all_eff_sizes$tail_ratio,
                all_eff_sizes$non_parametric_tail_ratio,
                all_eff_sizes$tail_ratio_dependent,
                all_eff_sizes$non_parametric_tail_ratio_dependent,
@@ -148,6 +150,7 @@ generate_es_raw_data_dataframe <- function(es_list, INDEX = NULL, x, y, tail, re
                   "non_parametric_tail_ratio" = c(non_parametric_tail_ratio(x = x, INDEX = INDEX, reference_group = ref, tail = tail, cutoff = cutoff), non_parametric_tail_ratio_independent_ci(x =x, INDEX = INDEX, reference_group = ref, tail = tail, cutoff = cutoff), boot_general(x, INDEX, non_parametric_tail_ratio, reference_group = ref, tail = tail, cutoff = cutoff)),
                   "parametric_cohens_u3" = c(parametric_cohens_u3(x = x, INDEX = INDEX), parametric_cohens_u3_ci(x, INDEX), boot_general(x, INDEX, parametric_cohens_u3)),
                   "parameteric_cohens_u1" = c(parametric_cohens_u1(x = x, INDEX = INDEX), NA_real_, NA_real_, boot_general(x, INDEX, parametric_cohens_u1)),
+                  "non_parametric_glass_d" = c(non_parametric_glass_d(x = x, INDEX = INDEX), NA_real_, NA_real_, boot_general(x, INDEX, non_parametric_glass_d)),
                   #Effect sizes for dependent gorups:
                   "cohens_d_dependent" = c(cohens_d_dependent(x = x, y = y), cohens_d_dependent_ci(x = x, y = y), NA_real_, NA_real_),
                   "hedges_g_dependent" = c(hedges_g_dependent(x = x, y = y), hedges_g_dependent_ci(x = x, y = y), NA_real_, NA_real_),
@@ -173,7 +176,8 @@ generate_es_raw_data_dataframe <- function(es_list, INDEX = NULL, x, y, tail, re
                   "robust_cohens_dz" = c(robust_cohens_dz(x = x, y = y), NA_real_, NA_real_, NA_real_, NA_real_),
                   "robust_cohens_d_dependent" = c(robust_cohens_d(x = x, y = y), robust_cohens_d_dependent_ci(x = x, y = y), NA_real_, NA_real_),
                   "robust_glass_d_dependent" = c(robust_glass_d(x = x, y = y), robust_glass_d_dependent_ci(x = x, y = y), NA_real_, NA_real_),
-                  "non_parametric_tail_ratio_dependent" = c(non_parametric_tail_ratio_dependent(x = x, y = y, tail = tail, reference_group = ref, cutoff = cutoff), non_parametric_tail_ratio_dependent_ci(x = x, y = y, tail = tail, reference_group = ref, cutoff = cutoff), NA_real_, NA_real_)
+                  "non_parametric_tail_ratio_dependent" = c(non_parametric_tail_ratio_dependent(x = x, y = y, tail = tail, reference_group = ref, cutoff = cutoff), non_parametric_tail_ratio_dependent_ci(x = x, y = y, tail = tail, reference_group = ref, cutoff = cutoff), NA_real_, NA_real_),
+                  "non_parametric_glass_d_dependent" = c(non_parametric_glass_d(x = x, y = y), NA_real_, NA_real_, NA_real_, NA_real_)
     )
     es_result <- c(es_result, res[[1]])
     es_ci_lower <- c(es_ci_lower, res[[2]])
@@ -1194,12 +1198,12 @@ tail_ratio_independent_ci <- function(x = NULL, INDEX = NULL,
   confidence_bounds <- koopman_nam_risk_ratio_ci(n11, n21, n1., n2., alpha)
   return(list(lower_bound = confidence_bounds[["lower_bound"]],
               upper_bound = confidence_bounds[["upper_bound"]]))
-} 
-  
+}
+
 ### Non-parametric tail ratios: ----
 # tail ratio is calcuated as a risk ratio
 non_parametric_tail_ratio <- function(x, INDEX, reference_group = c("group1", "group2"), tail = c("lower", "upper"), cutoff) {
-  
+
   dataset <- split(x, INDEX)
   dataset1 <- dataset[[ifelse(reference_group == "group1", 2, 1)]]
   dataset2 <- dataset[[ifelse(reference_group == "group1", 1, 2)]]
@@ -1216,7 +1220,7 @@ non_parametric_tail_ratio <- function(x, INDEX, reference_group = c("group1", "g
 }
 
 non_parametric_tail_ratio_independent_ci <- function(x, INDEX, reference_group = c("group1", "group2"), tail = c("lower", "upper"), cutoff, alpha = 0.05){
-  
+
   dataset <- split(x, INDEX)
   dataset1 <- dataset[[ifelse(reference_group == "group1", 2, 1)]]
   dataset2 <- dataset[[ifelse(reference_group == "group1", 1, 2)]]
@@ -1230,7 +1234,7 @@ non_parametric_tail_ratio_independent_ci <- function(x, INDEX, reference_group =
 }
 
 koopman_nam_risk_ratio_ci <- function(n11, n21, n1., n2., alpha){
-  
+
   z_crit <- qnorm(alpha/2)
   if ((n11 == 0) && (n21 == 0)) {
     lower_bound <- 0
@@ -1264,9 +1268,9 @@ koopman_nam_risk_ratio_ci <- function(n11, n21, n1., n2., alpha){
       upper_bound <- nam_p2_MLE_to_phi(n11, n21, n1., n2., p2_MLE_upper_bound)
     }
     else if ((n21 == n2.) && (n11 == n1.)) {
-      lower_bound <- n1./(n1. + z_crit^2) 
+      lower_bound <- n1./(n1. + z_crit^2)
       upper_bound <- (n2. + z_crit^2)/n2.
-    } 
+    }
     else if ((n11 == n1.) || (n21 == n2.)) {
       if ((n21 == n2.) && (n11 == 0)) {
         lower_bound <- 0
@@ -1375,13 +1379,13 @@ adjusted_katz_log_risk_ratio_ci <- function(n11, n21, n1., n2., alpha){
 
 # Apprxomiate tail ratios based on a kernel density estimator of choice:
 non_parametric_tail_ratio_approx <- function(x, INDEX, ref = c("group1", "group2"), tail = c("lower", "upper"),
-                                     cutoff, bw = "nrd0", kernel = c("gaussian",
-                                                                     "epanechnikov",
-                                                                     "rectangular",
-                                                                     "triangular",
-                                                                     "biweight",
-                                                                     "cosine",
-                                                                     "optcosine")) {
+                                             cutoff, bw = "nrd0", kernel = c("gaussian",
+                                                                             "epanechnikov",
+                                                                             "rectangular",
+                                                                             "triangular",
+                                                                             "biweight",
+                                                                             "cosine",
+                                                                             "optcosine")) {
   dataset <- split(x, INDEX)
   num_intervals <- abs(diff(range(unlist(dat)))) * 10
   d1 <- density(dataset1, bw = bw, kernel = kernel)
@@ -1636,7 +1640,6 @@ common_language_es_ci <- function(x = NULL, INDEX = NULL, m1, m2, var1, var2, n1
   return(list(lower_bound = lower_bound, upper_bound = upper_bound))
 }
 
-#todo
 probability_of_correct_classification_es <- function(x, INDEX) {
   # probability of correct classification----
   # when assumptions of normality and equality of variances/coveriances are not satisfied this gives inadequate results
@@ -1657,6 +1660,25 @@ probability_of_correct_classification_ci <- function(x, INDEX) {
   return(list(lower_bound = lower_bound, upper_bound = upper_bound))
 }
 
+# middle defined as the median
+non_parametric_glass_d <- function(x = NULL, INDEX = NULL, y = NULL) {
+  if (!is.null(x) && !is.null(INDEX)) {
+    dataset1 <- split(x, INDEX)[[1]]
+    dataset2 <- split(x, INDEX)[[2]]
+  } else {
+    dataset1 <- x
+    dataset2 <- y
+  }
+  median_grp2 <- median(dataset2)
+  n1 <- length(dataset1)
+  p_a <- mean(dataset1 < median_grp2)
+  if (p_a == 0) {
+    p_a <- 1/n1
+  } else if (p_a == 1){
+    p_a <- n1/(n1+1)
+  }
+  return(qnorm(p_a))
+}
 
 # overlap measures ----
 non_parametric_ovl <-
@@ -2065,7 +2087,9 @@ cohens_drm_ci <- function(x = NULL, y = NULL, m1, m2, s1, s2, sdiff = NULL, n, r
   }
   if (is.null(sdiff)) sdiff <- sd_diff(s1, s2, r)
   cohens_drm <- cohens_drm(m1 = m1, m2 = m2, sdiff = sdiff, r = r)
-  v <- 2 * (1 - r) * ((cohens_drm^2 / (2 * n)) + (1 / n))
+  v <- 2 *
+    (1 - r) *
+    ((cohens_drm^2 / (2 * n)) + (1 / n))
   cohens_drm_ci <- cohens_drm + c(qnorm(alpha / 2), qnorm(1 - alpha / 2)) * sqrt(v)
   return(list(lower_bound = cohens_drm_ci[[1]],
               upper_bound = cohens_drm_ci[[2]]))
@@ -2303,7 +2327,7 @@ variance_ratio_dependent_ci <- function(x = NULL, y = NULL, s1, s2, n, r, group_
     s1 <- sd(x)
     s2 <- sd(y)
     r <- cor(x,y)
-  } 
+  }
   vr <- variance_ratio(s1 = s1, s2 = s2, group_1_reference = group_1_reference, log = FALSE)
   t_crit <- qt(alpha/2, df = n - 2)
   k <- 1 + (2 * (1 - r^2) * t_crit^2)/(n - 2)
@@ -2318,7 +2342,7 @@ non_parametric_variance_ratio_dependent_ci <- function(x = NULL, y = NULL, group
     temp <- x
     x <- y
     y <- temp
-  } 
+  }
   m1 <- mean(x)
   m2 <- mean(y)
   n <- length(x)
@@ -2410,7 +2434,7 @@ nam_blackwelder_non_parametric_tr_ci_error <- function(x, y, reference_group, ta
     pretest_failure_posttest_success <- ifelse(tail == "lower", sum(x > cutoff & y <= cutoff), sum(x < cutoff & y >= cutoff))
     pretest_failure_posttest_failure <- ifelse(tail == "lower", sum(x > cutoff & y > cutoff), sum(x < cutoff & y < cutoff))
     pretest_success_posttest_success <- ifelse(tail == "lower", sum(x <= cutoff & y <= cutoff), sum(x >= cutoff & y >= cutoff))
-    
+
     n11 <- pretest_success_posttest_success
     n22 <- pretest_failure_posttest_failure
     n12 <- ifelse(reference_group == "group1", pretest_failure_posttest_success, pretest_success_posttest_failure)
@@ -2422,7 +2446,7 @@ nam_blackwelder_non_parametric_tr_ci_error <- function(x, y, reference_group, ta
     return("try-error" %in% class(non_parametric_tr_dependent_ci))
   }
 }
-  
+
 nam_blackwelder_ci_error <- function(x, y, m1, m2, s1, s2, r, n, mode, assumption, reference_group, tail, cutoff, alpha = 0.05){
   if(mode == "educational"){
     return(nam_blackwelder_parametric_tr_ci_error(m1 = m1, m2 = m2, s1 = s1, s2 = s2, r = r, n = n, reference_group = reference_group, tail = tail, cutoff = cutoff, alpha = alpha))
@@ -2633,16 +2657,16 @@ non_parametric_tail_ratio_dependent <- function(x = NULL, y = NULL, reference_gr
   pretest_success <- ifelse(tail == "lower", sum(x <= cutoff), sum(x >= cutoff))
   posttest_success <- ifelse(tail == "lower", sum(y <= cutoff), sum(y >= cutoff))
   any_marginal_counts_zero <- any(c(pretest_success, posttest_success) == 0)
-  if(any_marginal_counts_zero){
+  if (any_marginal_counts_zero) {
     non_parametric_tail_ratio_dependent <- NA_real_
   } else {
-    non_parametric_tail_ratio_dependent <- ifelse(reference_group == "group1", posttest_success/pretest_success, pretest_success/posttest_success)
+    non_parametric_tail_ratio_dependent <- ifelse(reference_group == "group1", posttest_success / pretest_success, pretest_success / posttest_success)
   }
   return(non_parametric_tail_ratio_dependent)
 }
 
 
-non_parametric_tail_ratio_dependent_ci <- function(x, y, reference_group = c("group1", "group2"), cutoff, tail = c("lower", "upper"), alpha = 0.05){
+non_parametric_tail_ratio_dependent_ci <- function(x, y, reference_group = c("group1", "group2"), cutoff, tail = c("lower", "upper"), alpha = 0.05) {
 
   n <- length(x)
   pretest_success <- ifelse(tail == "lower", sum(x <= cutoff), sum(x >= cutoff))
