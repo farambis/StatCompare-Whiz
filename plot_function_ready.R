@@ -509,13 +509,13 @@ plot_non_parametric_overlap <- function(x = NULL, INDEX = NULL, y = NULL,
     dataset2 <- original_dataset[[2]]
     cohens_d <- smd_uni("cohen_d", x = x, INDEX = INDEX)
     non_parametric_ovl <- non_parametric_ovl(x = x, INDEX = INDEX, bw = bw, kernel = kernel)
-    non_parametric_ovl2 <- non_parametric_ovl_two(x, INDEX)
+    non_parametric_ovl_two <- non_parametric_ovl_two(x, INDEX)
   } else if (!is.null(y)){
     dataset1 <- x
     dataset2 <- y
     cohens_d_dependent(x = x, y = y)
     non_parametric_ovl <- NA_real_ #TODO: ergaenze hier sobald implementiert
-    non_parametric_ovl2 <- NA_real_ #TODO: ergaenze hier sobald implementiert
+    non_parametric_ovl_two <- NA_real_ #TODO: ergaenze hier sobald implementiert
   }
   d1 <- density(dataset1, bw = bw, kernel = kernel)
   d2 <- density(dataset2, bw = bw, kernel = kernel)
@@ -548,7 +548,7 @@ plot_non_parametric_overlap <- function(x = NULL, INDEX = NULL, y = NULL,
          legend = c("Group 1",
                     "Group 2",
                     paste0("OVL = ", round(non_parametric_ovl, 2)),
-                    paste("OVL2 = ", round(non_parametric_ovl2, 2))),
+                    paste("OVL2 = ", round(non_parametric_ovl_two, 2))),
          col = c(col1, col2, col_polygon, col_polygon),
          pch = 15)
 }
