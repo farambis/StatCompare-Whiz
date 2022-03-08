@@ -58,7 +58,6 @@ nonparametricControls <- function(ns){
     do.call(ns, list("kernel")),
     label = "Select a smoothing kernel",
     choices = list(
-      "",
       "gaussian",
       "epanechnikov",
       "rectangular",

@@ -19,6 +19,7 @@ all_eff_sizes <- list(
   mann_whitney_based_ps = "mann_whitney_based_ps",
   parametric_ovl = "parametric_ovl",
   ps_dependent = "ps_dependent",
+  ps_dependent_ignore_ties = "ps_dependent_ignore_ties",
   non_parametric_ovl = "non_parametric_ovl",
   generalized_odds_ratio = "generalized_odds_ratio",
   generalized_odds_ratio_dependent = "generalized_odds_ratio_dependent",
@@ -40,6 +41,7 @@ all_eff_sizes <- list(
   non_parametric_cohens_u1 = "non_parametric_cohens_u1",
   non_parametric_cohens_u3 = "non_parametric_cohens_u3",
   non_parametric_glass_d = "non_parametric_glass_d",
+  dominance_measure = "dominance_measure",
   #Effect sizes for dependent groups:
   cohens_d_dependent = "cohens_d_dependent",
   hedges_g_dependent = "hedges_g_dependent",
@@ -66,7 +68,14 @@ all_eff_sizes <- list(
   standardized_median_difference_biweight_dependent = "standardized_median_difference_biweight_dependent",
   standardized_median_difference_mad_dependent = "standardized_median_difference_mad_dependent",
   standardized_median_difference_riq_dependent = "standardized_median_difference_riq_dependent",
-  non_parametric_glass_d_dependent = "non_parametric_glass_d_dependent"
+  non_parametric_ovl_dependent = "non_parametric_ovl_dependent",
+  non_parametric_cohens_u1_dependent = "non_parametric_cohens_u1_dependent",
+  non_parametric_cohens_u3_dependent = "non_parametric_cohens_u3_dependent",
+  non_parametric_ovl_two = "non_parametric_ovl_two",
+  non_parametric_glass_d_dependent = "non_parametric_glass_d_dependent",
+  dominance_measure_dependent = "dominance_measure_dependent",
+  non_parametric_cohens_dz_dependent = "non_parametric_cohens_dz_dependent",
+  non_parametric_ovl_two_dependent = "non_parametric_ovl_two_dependent"
 )
 
 all_test_statistics <- list(student_t_test = "student_t_test",
@@ -91,13 +100,17 @@ all_plots <- list(parametric_ovl = "parametric_ovl",
                   non_parametric_cohens_u1 = "non_parametric_cohens_u1",
                   boxplot_pairwise_difference_scores = "boxplot_pairwise_difference_scores")
 
-nonparametricOptions <- c(all_eff_sizes$non_parametric_ovl2,
+nonparametricOptions <- c(all_eff_sizes$non_parametric_ovl_two,
                           all_eff_sizes$non_parametric_cohens_u1,
                           all_eff_sizes$non_parametric_cohens_u3,
                           all_eff_sizes$non_parametric_tail_ratio,
                           all_eff_sizes$non_parametric_tail_ratio_dependent,
+                          all_eff_sizes$non_parametric_ovl_dependent,
+                          all_eff_sizes$non_parametric_ovl_two_dependent,
+                          all_eff_sizes$non_parametric_cohens_u3,
                           all_plots$non_parametric_ovl,
-                          all_plots$non_parametric_tail_ratio_zoom)
+                          all_plots$non_parametric_tail_ratio_zoom
+                          )
 
 
 tailRatioOptions <- c(all_eff_sizes$tail_ratio,
@@ -133,10 +146,10 @@ generate_es_raw_data_dataframe <- function(es_list, INDEX = NULL, x, y, tail, re
                   "standardized_median_difference_biweight" = c(standardized_median_difference_biweight(x = x, INDEX = INDEX), NA_real_, NA_real_, boot_general(x, INDEX, standardized_median_difference_biweight)),
                   "mann_whitney_based_ps" = c(mann_whitney_based_ps(x = x, INDEX = INDEX), mann_whitney_based_ps_ci(x = x, INDEX = INDEX), boot_general(x, INDEX, mann_whitney_based_ps)),
                   "parametric_ovl" = c(parametric_ovl(x = x, INDEX = INDEX), parametric_ovl_ci(x = x, INDEX = INDEX), boot_general(x, INDEX, parametric_ovl)),
-                  "non_parametric_ovl" = c(non_parametric_ovl(x, INDEX), parametric_ovl_ci(x, INDEX), boot_general(x, INDEX, non_parametric_ovl)), # parametric ci
-                  "ps_dependent" = c(ps_dependent_groups(x, y), ps_dependent_groups_ci(x, y), NA_real_, NA_real_),
+                  "non_parametric_ovl" = c(non_parametric_ovl(x, INDEX), parametric_ovl_ci(x, INDEX), boot_general(x, INDEX, non_parametric_ovl)), #parametric ci
+                  "ps_dependent" = c(ps_dependent_groups(x, y, FALSE), ps_dependent_groups_ci(x, y), NA_real_, NA_real_),
+                  "ps_dependent_ignore_ties" = c(ps_dependent_groups(x, y), ps_dependent_groups_ci(x, y), NA_real_, NA_real_),
                   "generalized_odds_ratio" = c(generalized_odds_ratio(x = x, INDEX = INDEX), generalized_odds_ratio_ci(x = x, INDEX = INDEX), boot_general(x, INDEX, generalized_odds_ratio)),
-                  "generalized_odds_ratio_dependent" = c(generalized_odds_ratio(x = x, INDEX = INDEX, y = y), generalized_odds_ratio_ci(x = x, y = y), NA_real_, NA_real_),
                   "common_language" = c(common_language_es(x = x, INDEX = INDEX), common_language_es_ci(x = x, INDEX = INDEX), boot_general(x, INDEX, common_language_es)),
                   "parametric_ovl_two" = c(parametric_ovl_two(x = x, INDEX = INDEX), parametric_ovl_two_ci(x = x, INDEX = INDEX), boot_general(x, INDEX, parametric_ovl_two)),
                   "non_parametric_ovl_two" = c(non_parametric_ovl_two(x = x, INDEX = INDEX), NA_real_, NA_real_, boot_general(x, INDEX, non_parametric_ovl_two)),
@@ -151,6 +164,7 @@ generate_es_raw_data_dataframe <- function(es_list, INDEX = NULL, x, y, tail, re
                   "parametric_cohens_u3" = c(parametric_cohens_u3(x = x, INDEX = INDEX), parametric_cohens_u3_ci(x, INDEX), boot_general(x, INDEX, parametric_cohens_u3)),
                   "parameteric_cohens_u1" = c(parametric_cohens_u1(x = x, INDEX = INDEX), NA_real_, NA_real_, boot_general(x, INDEX, parametric_cohens_u1)),
                   "non_parametric_glass_d" = c(non_parametric_glass_d(x = x, INDEX = INDEX), NA_real_, NA_real_, boot_general(x, INDEX, non_parametric_glass_d)),
+                  "dominance_measure" = c(dominance_measure_based_es(x = x, INDEX = INDEX), dominance_measure_ci(x, INDEX), boot_general(x, INDEX, dominance_measure_based_es)),
                   #Effect sizes for dependent gorups:
                   "cohens_d_dependent" = c(cohens_d_dependent(x = x, y = y), cohens_d_dependent_ci(x = x, y = y), NA_real_, NA_real_),
                   "hedges_g_dependent" = c(hedges_g_dependent(x = x, y = y), hedges_g_dependent_ci(x = x, y = y), NA_real_, NA_real_),
@@ -176,8 +190,14 @@ generate_es_raw_data_dataframe <- function(es_list, INDEX = NULL, x, y, tail, re
                   "robust_cohens_dz" = c(robust_cohens_dz(x = x, y = y), NA_real_, NA_real_, NA_real_, NA_real_),
                   "robust_cohens_d_dependent" = c(robust_cohens_d(x = x, y = y), robust_cohens_d_dependent_ci(x = x, y = y), NA_real_, NA_real_),
                   "robust_glass_d_dependent" = c(robust_glass_d(x = x, y = y), robust_glass_d_dependent_ci(x = x, y = y), NA_real_, NA_real_),
+                  "non_parametric_ovl_dependent" = c(non_parametric_ovl(x = x, y = y), NA_real_, NA_real_, NA_real_, NA_real_),
+                  "non_parametric_cohens_u1_dependent" = c(non_parametric_cohens_u1(x = x, y = y), NA_real_, NA_real_, NA_real_, NA_real_),
+                  "non_parametric_cohens_u3_dependent" = c(non_parametric_cohens_u3(x = x, y = y), NA_real_, NA_real_, NA_real_, NA_real_),
                   "non_parametric_tail_ratio_dependent" = c(non_parametric_tail_ratio_dependent(x = x, y = y, tail = tail, reference_group = ref, cutoff = cutoff), non_parametric_tail_ratio_dependent_ci(x = x, y = y, tail = tail, reference_group = ref, cutoff = cutoff), NA_real_, NA_real_),
-                  "non_parametric_glass_d_dependent" = c(non_parametric_glass_d(x = x, y = y), NA_real_, NA_real_, NA_real_, NA_real_)
+                  "non_parametric_glass_d_dependent" = c(non_parametric_glass_d(x = x, y = y), NA_real_, NA_real_, NA_real_, NA_real_),
+                  "dominance_measure_dependent" = c(dominance_measure_dependent(x = x, y = y), dominance_measure_dependent_ci(x, y), NA_real_, NA_real_),
+                  "non_parametric_cohens_dz_dependent" = c(non_parametric_cohens_dz_dependent(x = x, y = y), NA_real_, NA_real_, NA_real_, NA_real_),
+                  "non_parametric_ovl_two_dependent" = c(non_parametric_ovl_two(x = x, y = y), NA_real_, NA_real_, NA_real_, NA_real_)
     )
     es_result <- c(es_result, res[[1]])
     es_ci_lower <- c(es_ci_lower, res[[2]])
@@ -705,7 +725,7 @@ glass_d_ci <- function(x = NULL, INDEX = NULL, m1, m2, s1, s2, n1, n2, standardi
 
 # Percentile Bootstrap CI function ----
 
-boot_general <- function(x, INDEX, FUN, ...) {
+ boot_general <- function(x, INDEX, FUN, ...) {
   alpha <- 0.05
   nboot <- 200
   original <- split(x = x, f = INDEX)
@@ -1492,7 +1512,7 @@ mann_whitney_based_ps_ci <- function(x, INDEX, alpha = 0.05) {
 
 
 ps_dependent_groups <-
-  function(x, y, ignore_ties = FALSE) {
+  function(x, y, ignore_ties = TRUE) {
     # probability of superiority for dependent groups ----
     dataset1 <- x
     dataset2 <- y
@@ -1581,15 +1601,165 @@ generalized_odds_ratio_ci <- function(INDEX, x, y = NULL, reverse = FALSE) {
   return(list(lower_bound = lower_bound, upper_bound = upper_bound))
 }
 
-dominance_measure_based_es <- function(x, INDEX, y = NULL) {
+dominance_measure_based_es <- function(x = NULL, INDEX = NULL, y = NULL) {
   # dominance measure ----
-  if (!is.null(y)) {
+  if (!is.null(x) && !is.null(INDEX)) {
     dataset <- split(x, INDEX)
     dataset1 <- dataset[[1]]
     dataset2 <- dataset[[2]]
+  } else {
+    dataset1 <- x
+    dataset2 <- y
   }
-  if (!is.null(y))return(ps_without_counting_ties(dataset1, dataset2) - ps_without_counting_ties(dataset2, dataset1))
-  return(ps_dependent_groups(x, y) - ps_dependent_groups(x, y))
+  if (!is.null(x))return(ps_without_counting_ties(dataset1, dataset2) - ps_without_counting_ties(dataset2, dataset1))
+  return(ps_dependent_groups(x, y) - ps_dependent_groups(y, x))
+}
+
+get_db <- function(x, y) {
+  n <- length(x)
+  counter <- 0
+  for (xi in seq_along(x))
+    for (yi in seq_along(y))
+      if (xi != yi) {
+        if (x[xi] > y[yi]) {
+          counter <- counter + 1
+        } else if (x[xi] < y[yi]) {
+          counter <- counter - 1
+        }
+      }
+  d_b <- counter / (n * (n - 1))
+  return(d_b)
+}
+
+dominance_measure_dependent <- function(x, y) {
+  if (length(x) != length(y)) {
+    return()
+  }
+  d_w <- ps_dependent_groups(x, y) - ps_dependent_groups(y, x)
+  d_b <- get_db(x, y)
+  return(d_w + d_b)
+}
+
+get_di. <- function (x, yi) {
+  counter <- 0
+  for (xi in x) {
+    if (xi > yi) {
+      counter <- counter + 1
+    }
+  }
+  return (counter / length(x) )
+}
+
+get_sum_di_squared <- function(d_b, x, y) {
+  sum_di_squared <- 0
+  for (i in y) {
+    di. <- get_di.(x, i)
+    di._star <- di. - d_b
+    sum_di_squared <- sum_di_squared + di._star^2
+  }
+  return(sum_di_squared)
+}
+
+get_sum_di._star <- function(d_b, x, y) {
+  sum_di <- 0
+  for (i in y) {
+    di. <- get_di.(x, i)
+    sum_di <- sum_di + di. - d_b
+  }
+  return (sum_di)
+}
+
+get_sum_sum_dij_star_square <- function(d_b, x, y) {
+  counter <- 0
+  for (xi in seq_along(x))
+    counter_xi <- 0
+    for(yi in seq_along(y)) {
+      if (x[xi] != y[yi]) {
+        dij <- ifelse(x[xi] > y[yi], 1, -1 )
+        dij_star <- dij -d_b
+        counter_xi <- counter_xi + dij_star
+      }
+      counter <- counter + counter_xi^2
+    }
+  counter
+}
+
+get_sum_sum_dij_star_squared_inside <- function(d_b, x, y) {
+  counter <- 0
+  for (xi in seq_along(x))
+  for(yi in seq_along(y)) {
+    if (x[xi] != y[yi]) {
+      dij <- ifelse(x[xi] > y[yi], 1, -1 )
+      dij_star <- dij -d_b
+      counter <- counter + dij_star^2
+    }
+  }
+  counter
+}
+
+get_dw_numerator <- function(dw, x, y) {
+  counter <- 0
+  for (xi in seq(x)) {
+    dii <- 0
+    if (x[xi] > y[xi]) {
+      dii <- 1
+    } else if (x[xi] > y[xi]) {
+      dii <- -1
+    }
+    counter <- counter + (dii - dw)^2
+  }
+  return(counter)
+}
+
+get_cov_db_dw <- function(db, dw, x, y) {
+  for (xi in seq_along(x)) {
+    counter <- 0
+    dij <- 0
+    dji <- 0
+    for (yi in seq_along(y)) {
+      if (x[xi]>y[yi]) {
+        dij <- dij + 1
+      } else if (x[xi]>y[yi]) {
+        dji <- dji + 1
+      }
+    }
+    dii <- 0
+    if (x[xi] > y[xi]) {
+      dii <- 1
+    } else if (x[xi] > y[xi]) {
+      dii <- -1
+    }
+    counter <- counter + (dij + dji)*dii
+  }
+  n <- length(x)
+  return((counter - 2*n * (n-1)*db * dw)/(n * (n - 1)*(n-2)))
+}
+
+dominance_measure_dependent_ci <- function(x, y) {
+  if (length(x) != length(y)) {
+    return()
+  }
+  n <- length(x)
+  d <- dominance_measure_dependent(x, y)
+  d_b <- get_db(x, y)
+  d_w <- ps_dependent_groups(x, y) - ps_dependent_groups(y, x)
+  sum_di. <- get_sum_di._star(d_b, x, y)
+  sum_d.i <- get_sum_di._star(d_b, y, x)
+  sum_di_squared_di. <- get_sum_di_squared(d_b, x, y)
+  sum_sum_dij_start_square <- get_sum_sum_dij_star_square(d_b, x, y)
+  sum_sum_dij_start_squared_inside <- get_sum_sum_dij_star_squared_inside(d_b, x, y)
+  var_db <- ((n-1)^2 * (sum_di.^2 + sum_d.i + 2*sum_di_squared_di.) - sum_sum_dij_start_square - sum_sum_dij_start_squared_inside)/(n*(n-1)*(n-2)*(n-3))
+  var_dw <- (get_dw_numerator(d_w, x, y))/(n-1)
+  cov_db_dw <- get_cov_db_dw(d_b, d_w, x, y)
+  print(var_db)
+  print(var_dw)
+  print(cov_db_dw)
+  var_db_dw <- var_db + var_dw + 2 * cov_db_dw
+
+  z <- qnorm(1 - 0.05 / 2)
+  upper_bound <- d + z*(var_db_dw/sqrt(n))
+  lower_bound <- d - z*(var_db_dw/sqrt(n))
+  return(list(lower_bound = lower_bound, upper_bound = upper_bound))
 }
 
 ps_without_counting_ties <- function(dataset1, dataset2) {
@@ -1660,7 +1830,15 @@ probability_of_correct_classification_ci <- function(x, INDEX) {
   return(list(lower_bound = lower_bound, upper_bound = upper_bound))
 }
 
-# middle defined as the median
+correct_for_extreme_eff_sizes <- function(n1, p_a) {
+  if (p_a == 0) {
+    p_a <- 1 / n1
+  } else if (p_a == 1) {
+    p_a <- n1 / (n1 + 1)
+  }
+  return(p_a)
+}
+
 non_parametric_glass_d <- function(x = NULL, INDEX = NULL, y = NULL) {
   if (!is.null(x) && !is.null(INDEX)) {
     dataset1 <- split(x, INDEX)[[1]]
@@ -1672,18 +1850,21 @@ non_parametric_glass_d <- function(x = NULL, INDEX = NULL, y = NULL) {
   median_grp2 <- median(dataset2)
   n1 <- length(dataset1)
   p_a <- mean(dataset1 < median_grp2)
-  if (p_a == 0) {
-    p_a <- 1/n1
-  } else if (p_a == 1){
-    p_a <- n1/(n1+1)
-  }
+  p_a <- correct_for_extreme_eff_sizes(n1, p_a)
   return(qnorm(p_a))
+}
+
+non_parametric_cohens_dz_dependent <- function(x, y) {
+  p_gain <- ps_dependent_groups(x, y)
+  p_gain <- correct_for_extreme_eff_sizes(length(x), p_gain)
+  return (qnorm(p_gain))
 }
 
 # overlap measures ----
 non_parametric_ovl <-
-  function(x,
-           INDEX,
+  function(x = NULL,
+           INDEX = NULL,
+           y = NULL,
            bw = "nrd0",
            kernel = c(
              "gaussian",
@@ -1694,10 +1875,16 @@ non_parametric_ovl <-
              "cosine",
              "optcosine"
            )) {
-    original_dataset <- split(x, INDEX)
+    if (!is.null(x) && !is.null(INDEX)) {
+      dataset1 <- split(x, INDEX)[[1]]
+      dataset2 <- split(x, INDEX)[[2]]
+    } else {
+      dataset1 <- x
+      dataset2 <- y
+    }
     num_intervals <- 10
-    d1 <- density(original_dataset[[1]], bw = bw, kernel = kernel)
-    d2 <- density(original_dataset[[2]], bw = bw, kernel = kernel)
+    d1 <- density(dataset1, bw = bw, kernel = kernel)
+    d2 <- density(dataset2, bw = bw, kernel = kernel)
     f1 <- approxfun(d1$x, d1$y)
     f2 <- approxfun(d2$x, d2$y)
     min <-
@@ -1715,6 +1902,66 @@ non_parametric_ovl <-
     }
     return((max - min) / num_intervals * sum)
   }
+
+non_parametric_ovl_two <- function(x = NULL,
+                                   INDEX = NULL,
+                                   y = NULL,
+                                   kernel = c(
+  "gaussian",
+  "epanechnikov",
+  "rectangular",
+  "triangular",
+  "biweight",
+  "cosine",
+  "optcosine"
+)) {
+  if (!is.null(x) && !is.null(INDEX)) {
+    dataset1 <- split(x, INDEX)[[1]]
+    dataset2 <- split(x, INDEX)[[2]]
+  } else {
+    dataset1 <- x
+    dataset2 <- y
+  }
+  ovl <- non_parametric_ovl(x = x, INDEX = INDEX, y=y, kernel = kernel)
+  d1 <- density(dataset1, bw = "nrd0", kernel = "gaussian")
+  d2 <- density(dataset2, bw = "nrd0", kernel = "gaussian")
+  f1 <- approxfun(d1$x, d1$y)
+  f2 <- approxfun(d2$x, d2$y)
+  min <-
+    min(min(d1$x), min(d2$x))
+  max <-
+    max(max(d1$x), max(d2$x))
+  num_intervals <- 10
+  stepsize <- (max - min) / num_intervals
+  interval <- seq(min, max, by = stepsize)
+  sum <- 0
+  #approximation based on Trapezoid rule
+  for (x in seq(length(interval) - 1)) {
+    f1_interval_x <- f1(interval[x])
+    if (is.na(f1_interval_x)) {
+      f1_interval_x <- 0
+    }
+    f2_interval_x <- f2(interval[x])
+    if (is.na(f2_interval_x)) {
+      f2_interval_x <- 0
+    }
+    f1_interval_x_1 <- f1(interval[x+1])
+    if (is.na(f1_interval_x_1)) {
+      f1_interval_x_1 <- 0
+    }
+    f2_interval_x_1 <- f2(interval[x+1])
+    if (is.na(f2_interval_x_1)) {
+      f2_interval_x_1 <- 0
+    }
+
+    sum <-
+      sum + 1 / 2 * (max(f1_interval_x, f2_interval_x) + max(f1_interval_x_1, f2_interval_x_1))
+  }
+
+  area <- (max - min) / num_intervals * sum
+
+  return (ovl/area)
+}
 
 parametric_ovl <- function(x = NULL, INDEX = NULL, m1, m2, var1, var2, n1, n2) {
   if (!is.null(x)) cohens_d <- smd_uni(effsize = "cohen_d", x = x, INDEX = INDEX)[[1]]
@@ -1736,12 +1983,6 @@ parametric_ovl_ci <- function(x = NULL, INDEX = NULL, m1, m2, var1, var2, n1, n2
   list(lower_bound = lower_bound, upper_bound = upper_bound)
 }
 
-
-non_parametric_ovl_two <- function(x, INDEX) {
-  ovl <- non_parametric_ovl(x, INDEX)
-  return(ovl / (2 - ovl))
-}
-
 parametric_ovl_two <- function(x, INDEX) {
   ovl <- parametric_ovl(x, INDEX)
   return(ovl / (2 - ovl))
@@ -1755,9 +1996,17 @@ parametric_ovl_two_ci <- function(x = NULL, INDEX = NULL, m1 = NULL, m2 = NULL, 
 }
 
 
-non_parametric_cohens_u1 <- function(x, INDEX) {
-  ovl <- non_parametric_ovl(x, INDEX)
-  return(1 - ovl / (2 - ovl))
+non_parametric_cohens_u1 <- function(x = NULL, INDEX = NULL, y = NULL, kernel = c(
+  "gaussian",
+  "epanechnikov",
+  "rectangular",
+  "triangular",
+  "biweight",
+  "cosine",
+  "optcosine"
+)) {
+  ovl_two <- non_parametric_ovl_two(x=x, INDEX=INDEX, y=y, kernel = kernel)
+  return(1 -ovl_two)
 }
 
 parametric_cohens_u1 <- function(x = NULL, INDEX = NULL, m1, m2, var1, var2, n1, n2) {
@@ -1797,10 +2046,14 @@ parametric_cohens_u2_ci <- function(x = NULL, INDEX = NULL, m1, m2, var1, var2, 
 }
 
 ## Cohen's U3 coefficient (non-parametric) ----
-non_parametric_cohens_u3 <- function(x, INDEX) {
-  dataset <- split(x, INDEX)
-  dataset1 <- dataset[[1]]
-  dataset2 <- dataset[[2]]
+non_parametric_cohens_u3 <- function(x = NULL, INDEX = NULL, y = NULL) {
+  if (!is.null(x) && !is.null(INDEX)) {
+    dataset1 <- split(x, INDEX)[[1]]
+    dataset2 <- split(x, INDEX)[[2]]
+  } else {
+    dataset1 <- x
+    dataset2 <- y
+  }
   median_1 <- median(dataset1)
   median_2 <- median(dataset2)
   if (median_1 < median_2) {

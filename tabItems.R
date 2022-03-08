@@ -101,7 +101,9 @@ independentGroupsNonparametric <-
                  all_eff_sizes$standardized_median_difference_mad,
                  all_eff_sizes$standardized_median_difference_riq,
                  all_eff_sizes$standardized_median_difference_biweight,
-                 all_eff_sizes$non_parametric_glass_d
+                 all_eff_sizes$non_parametric_glass_d,
+                 all_eff_sizes$dominance_measure
+
             ),
             list(all_test_statistics$mann_whitney),
             list(all_plots$non_parametric_ovl, 
@@ -146,8 +148,9 @@ dependentGroupsParametricRawData <-
                  all_eff_sizes$robust_cohens_dz,
                  all_eff_sizes$robust_cohens_d_dependent,
                  all_eff_sizes$robust_glass_d_dependent,
-                 all_eff_sizes$ps_dependent, 
-                 all_eff_sizes$generalized_odds_ratio_dependent),
+                 all_eff_sizes$ps_dependent,
+                 all_eff_sizes$ps_dependent_ignore_ties
+                 ),
             list(all_test_statistics$dependent_student_t_test,
                  all_test_statistics$tukey_mclaughlin_t_test,
                  all_test_statistics$dependent_yuen_t_test),
@@ -199,13 +202,19 @@ dependentGroupsNonparametric <-
             "depGrps", 
             "rawData",
             list(all_eff_sizes$ps_dependent,
-                 all_eff_sizes$generalized_odds_ratio_dependent,
+                 all_eff_sizes$ps_dependent_ignore_ties,
                  all_eff_sizes$standardized_median_difference_mad_dependent,
                  all_eff_sizes$standardized_median_difference_riq_dependent,
                  all_eff_sizes$standardized_median_difference_biweight_dependent,
+                 all_eff_sizes$non_parametric_ovl_dependent,
+                 all_eff_sizes$non_parametric_cohens_u1_dependent,
+                 all_eff_sizes$non_parametric_cohens_u3_dependent,
                  all_eff_sizes$non_parametric_variance_ratio_dependent,
                  all_eff_sizes$non_parametric_tail_ratio_dependent,
-                 all_eff_sizes$non_parametric_glass_d_dependent
+                 all_eff_sizes$non_parametric_glass_d_dependent,
+                 all_eff_sizes$dominance_measure_dependent,
+                 all_eff_sizes$non_parametric_cohens_dz_dependent,
+                 all_eff_sizes$non_parametric_ovl_two_dependent
             ),
             list(all_test_statistics$mann_whitney_dependent,
                  all_test_statistics$wilcoxon_signed_rank_test),
