@@ -1,0 +1,18 @@
+.toc_container {
+background: #f8f8ff none repeat scroll 0 0;
+  border: 1px solid #aaa;
+  display: table;
+  font-size: 95%;
+  margin-bottom: 1em;
+  padding: 20px;
+  width: auto;
+}
+
+.toc_title {
+  font-weight: 700;
+  text-align: left;
+}
+
+.toc_container ul {
+    list-style: none outside none;
+}

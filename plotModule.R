@@ -98,7 +98,9 @@ plotUi <- function(id, plotChoices) {
         )
       )
     ),
-    fluidRow(plotOutput(ns("plot"))),
+    fluidRow(plotOutput(outputId = ns("plot"),
+                        width = "800px",
+                        height = "600px")),
     fluidRow(column(width = 6,
                     uiOutput(ns(
                       "downloadWidget"
@@ -109,7 +111,7 @@ plotUi <- function(id, plotChoices) {
 }
 
 
-plotServer <- function(id, x, INDEX, y, m1, m2, s1, s2, n1, n2, n, mode = c("rawData", "educational")) {
+plotServer <- function(id, x, INDEX, y, m1, m2, m3, m4, s1, s2, s3, s4, n1, n2, sdiff1, sdiff2, r1, r2, n, mode = c("rawData", "educational")) {
   moduleServer(id,
                function(input, output, session) {
                  
@@ -176,7 +178,7 @@ plotServer <- function(id, x, INDEX, y, m1, m2, s1, s2, n1, n2, n, mode = c("raw
                        )
                    switch(mode,
                           rawData = generate_data_plot(es = input$plotChoice, x = x(), INDEX = INDEX(), y = y(), kernel = input$kernel,reference_group = input$referenceGroup, tail = input$tail, cutoff = input$cutoff),
-                          educational = generate_data_plot(es = input$plotChoice, m1 = m1(), m2 = m2(), s1 = s1(), s2 = s2(), n1 = n1(), n2 = n2(), n = n(), kernel = input$kernel,reference_group = input$referenceGroup, tail = input$tail, cutoff = input$cutoff)
+                          educational = generate_data_plot(es = input$plotChoice, m1 = m1(), m2 = m2(), m3 = m3(), m4 = m4(), s1 = s1(), s2 = s2(), s3 = s3(), s4 = s4(), sdiff1 = sdiff1(), sdiff2 = sdiff2(), n1 = n1(), n2 = n2(), r1 = r1(), r2 = r2(), n = n(), kernel = input$kernel,reference_group = input$referenceGroup, tail = input$tail, cutoff = input$cutoff)
                           )
                  })
                  
@@ -191,10 +193,11 @@ plotServer <- function(id, x, INDEX, y, m1, m2, s1, s2, n1, n2, n, mode = c("raw
                      paste0(input$plotChoice, ".pdf")
                    },
                    content = function(file) {
-                     pdf(file = file)
+                     pdf(file = file,
+                         width = 10)
                      switch(mode,
                             rawData = generate_data_plot(es = input$plotChoice, x = x(), INDEX = INDEX(), y = y(), kernel = input$kernel,reference_group = input$referenceGroup, tail = input$tail, cutoff = input$cutoff),
-                            educational = generate_data_plot(es = input$plotChoice, m1 = m1(), m2 = m2(), s1 = s1(), s2 = s2(), n1 = n1(), n2 = n2(), kernel = input$kernel, reference_group = input$referenceGroup, tail = input$tail, cutoff = input$cutoff)
+                            educational = generate_data_plot(es = input$plotChoice, m1 = m1(), m2 = m2(), m3 = m3(), m4 = m4(), s1 = s1(), s2 = s2(), s3 = s3(), s4 = s4(), sdiff1 = sdiff1(), sdiff2 = sdiff2(), n1 = n1(), n2 = n2(), r1 = r1(), r2 = r2(), n = n(), kernel = input$kernel,reference_group = input$referenceGroup, tail = input$tail, cutoff = input$cutoff)
                      )
                      dev.off()
                    }

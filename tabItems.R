@@ -59,6 +59,7 @@ independentGroupsParametricUnivariateEducational <-
                  all_eff_sizes$bonett_d, 
                  all_eff_sizes$bonett_d_corr, 
                  all_eff_sizes$parametric_ovl,
+                 all_eff_sizes$parametric_ovl_two,
                  all_eff_sizes$parametric_cohens_u1,
                  all_eff_sizes$parametric_cohens_u2,
                  all_eff_sizes$parametric_cohens_u3,
@@ -231,10 +232,66 @@ dependentGroupsNonparametric <-
 # mixed Design ------------------------------------------------------------
 
 mixedDesignParametricRawData <-
-  tabItem(tabName = 'mixedDesignParametricRawData', 'Hello mixedDesignParametricRawData')
+  tabItem(tabName = 'mixedDesignParametricRawData',
+          generalUI(
+            id = 'mixedDesignParametricRawData',
+            acceptedFormat = ".csv",
+            design = "mixed",
+            mode = "rawData",
+            esChoices = 
+              list(all_eff_sizes$d_PPC_change,
+                   all_eff_sizes$g_PPC_change,
+                   all_eff_sizes$g_PPC_pre,
+                   all_eff_sizes$g_PPC_pre,
+                   all_eff_sizes$d_PPC_pooled_pre,
+                   all_eff_sizes$g_PPC_pooled_pre,
+                   all_eff_sizes$d_PPC_pooled_pre_post,
+                   all_eff_sizes$g_PPC_pooled_pre_post),
+            tsChoices = 
+              list(),
+            plotChoices = 
+              list(all_plots$parametric_PPC_change,
+                   all_plots$parametric_PPC_difference,
+                   all_plots$parametric_PPC_interaction),
+            description = descriptions$mixed_design_parametric
+          ))
 
 mixedDesignParametricEducational <-
-  tabItem(tabName = 'mixedDesignParametricEducational', 'Hello mixedDesignParametricEducational')
+  tabItem(tabName = 'mixedDesignParametricEducational', 
+          generalUI(
+            id = 'mixedDesignParametricEducational',
+            design = "mixed",
+            mode = "educational",
+            esChoices =
+              list(all_eff_sizes$d_PPC_change,
+                   all_eff_sizes$g_PPC_change,
+                   all_eff_sizes$d_PPC_pre,
+                   all_eff_sizes$g_PPC_pre,
+                   all_eff_sizes$d_PPC_pooled_pre,
+                   all_eff_sizes$g_PPC_pooled_pre,
+                   all_eff_sizes$d_PPC_pooled_pre_post,
+                   all_eff_sizes$g_PPC_pooled_pre_post),
+            tsChoices = 
+              list(),
+            plotChoices = 
+              list(all_plots$parametric_PPC_change,
+                   all_plots$parametric_PPC_difference,
+                   all_plots$parametric_PPC_interaction),
+            description = descriptions$mixed_design_parametric
+          ))
 
 mixedDesignNonParametric <-
-  tabItem(tabName = 'mixedDesignNonParametric', 'Hello mixedDesignNonParametric')
+  tabItem(tabName = 'mixedDesignNonParametric',
+          generalUI(
+            id = 'mixedDesignNonParametric',
+            acceptedFormat = ".csv",
+            design = "mixed",
+            mode = "rawData",
+            esChoices =
+              list(),
+            tsChoices = 
+              list(),
+            plotChoices = 
+              list(),
+            description = descriptions$mixed_design_nonparametric
+          ))
