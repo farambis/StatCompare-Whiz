@@ -1,31 +1,39 @@
 esServer <- function(input, output) {
   
   #independent Groups
-  generalServer("independentGroupsParametricUnivariateRawData",
-                "indGrps",
-                "rawData")
-  generalServer("independentGroupsParametricUnivariateEducational", 
-               "indGrps", 
-               "educational")
-  generalServer("independentGroupsNonparametric", 
-                "indGrps", 
-                "rawData", 
-                "nonparametric")
+  generalServer(id  = "independentGroupsParametricUnivariateRawData",
+                design = "indGrps",
+                mode = "rawData")
+  generalServer(id = "independentGroupsParametricUnivariateEducational", 
+                design = "indGrps", 
+                mode = "educational")
+  generalServer(id = "independentGroupsNonparametric", 
+                design = "indGrps", 
+                mode = "rawData", 
+                assumption = "nonparametric")
   
   #dependent Groups
-  generalServer("dependentGroupsParametricRawData", 
-                "depGrps", 
-                "rawData")
-  generalServer("dependentGroupsParametricEducational", 
-                "depGrps", 
-                "educational")
-  generalServer("dependentGroupsNonparametric", 
-                "depGrps", 
-                "rawData", 
-                "nonparametric"
-                )
+  generalServer(id = "dependentGroupsParametricRawData", 
+                design = "depGrps", 
+                mode = "rawData")
+  generalServer(id = "dependentGroupsParametricEducational", 
+                design = "depGrps", 
+                mode = "educational")
+  generalServer(id = "dependentGroupsNonparametric", 
+                design = "depGrps", 
+                mode = "rawData", 
+                assumption = "nonparametric")
   
-  #mixed Desing
+  #mixed Design
+  generalServer(id = "mixedDesignParametricRawData",
+                design = "mixed",
+                mode = "rawData")
+  generalServer(id = "mixedDesignParametricEducational",
+                design = "mixed",
+                mode = "educational")
+  generalServer(id = "mixedDesignNonParametric",
+                design = "mixed",
+                mode = "rawData",
+                assumption = "nonparametric")
   
 }
-dependentGroupsParametricEducational

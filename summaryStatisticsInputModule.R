@@ -58,12 +58,11 @@ header <- function(design = c("indGrps", "depGrps", "mixed"),
                    info = c("acrossGrps", "perGrp")) {
   ifelse(
     info == "acrossGrps",
-    paste0(
-      "SD of difference scores, n, & r",
-      ifelse(design == "depGrps",
-             "",
-             paste0(" group ", group))
-    ),
+    ifelse(design == "depGrps",
+           "",
+           paste0(" group ", group)
+           )
+    ,
     ifelse(
       design == "indGrps",
       paste0("group ", group),
@@ -87,7 +86,7 @@ uiColumn <-
            secondInput,
            thirdInput) {
     column <- tagList()
-    column$header <- tagList(h2(
+    column$header <- tagList(h4(
       header(
         design = design,
         measurement = measurement,
