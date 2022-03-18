@@ -36,6 +36,10 @@ tailRatioOptionsObserver <- function(selectedEs, session) observeEvent(selectedE
 initializeInputValidators <- function(selectedEs, nonParametricTailRatioCutoffAllowedRange) {
   esTsModuleIv <- InputValidator$new()
   esTsModuleIv$enable()
+  alpha_level_iv <- InputValidator$new()
+  alpha_level_iv$add_rule("alpha", sv_required())
+  alpha_level_iv$add_rule("alpha", function(x){if(x < 0.00001 || x > 0.99999) paste0("Set \U03B1 to a value between 0.00001 and 0.99999")})
+  
   nonparametric_iv <- InputValidator$new()
   nonparametric_iv$add_rule("kernel", sv_required())
   nonparametric_iv$condition(~contains(selectedEs(), nonparametricOptions[!grepl("tail_ratio", nonparametricOptions)]))
@@ -57,6 +61,7 @@ initializeInputValidators <- function(selectedEs, nonParametricTailRatioCutoffAl
   tail_ratio_iv$condition(~contains(selectedEs(), tailRatioOptions))
 
   # Add all child validators to plotModule_iv
+  esTsModuleIv$add_validator(alpha_level_iv)
   esTsModuleIv$add_validator(nonparametric_iv)
   esTsModuleIv$add_validator(tail_ratio_iv)
   return (esTsModuleIv)
@@ -106,7 +111,7 @@ createDownloadWidget <- function(namespace, selectedEs, inputValidator, name) {
 esAndTsUi <- function(id, esChoices, tsChoices) {
   ns <- NS(id)
   tagList(
-    column(width = 6,
+    column(width = 8,
            fluidRow(
            column(
              width = 6,
@@ -114,6 +119,11 @@ esAndTsUi <- function(id, esChoices, tsChoices) {
            ),
            column(
              width = 6,
+             numericInput(inputId = ns("alpha"),
+                          label = "Choose \U03B1 level of CI",
+                          value = 0.05,
+                          min = 0.00001,
+                          max = 0.99999),
              tabsetPanel(
                id = ns("tailRatioBool"),
                type = "hidden",
@@ -130,10 +140,20 @@ esAndTsUi <- function(id, esChoices, tsChoices) {
              )
            )),
     fluidRow(gt_output(ns("esTable")),
-             column(width = 6, uiOutput(ns("downloadEsWidget"))),)
+             column(width = 6, 
+                    uiOutput(ns("downloadEsWidget"))
+                    )
+             )
            ),
-    column(width = 6, checkboxGroupUi(ns("tsCheckboxGroup"), tsChoices, "Test Statistic"),
-           fluidRow(gt_output(ns("tsTable")), fluidRow(column(width = 6, uiOutput(ns("downloadTsWidget"))))))
+    if(length(tsChoices) > 0){
+      column(width = 4, 
+             checkboxGroupUi(ns("tsCheckboxGroup"), tsChoices, "Test Statistic"),
+             fluidRow(gt_output(ns("tsTable")),
+                      fluidRow(column(width = 6, 
+                                      uiOutput(ns("downloadTsWidget"))))
+             )
+      )
+    }
   )
 }
 
@@ -249,7 +269,7 @@ esAndTsRawDataServer <- function(id, assumption, dat, INDEX, x, y) {
                  tailRatioOptionsObserver(selectedEs, session)
 
                  getEsDataframe <- reactive({
-                   generate_es_raw_data_dataframe(es_list = selectedEs(), INDEX = INDEX(), x = x(), y = y(), tail = input$tail, ref = input$referenceGroup, cutoff = input$cutoff)
+                   generate_es_raw_data_dataframe(es_list = selectedEs(), INDEX = INDEX(), x = x(), y = y(), tail = input$tail, ref = input$referenceGroup, cutoff = input$cutoff, alpha = input$alpha)
                  })
 
                  getTsDataframe <- reactive({
@@ -261,7 +281,12 @@ esAndTsRawDataServer <- function(id, assumption, dat, INDEX, x, y) {
                    req(esTsModuleIv$is_valid())
                    (getEsDataframe() %>%
                      gt() %>%
-                     fmt_number(c('Effect Size', 'Ci lower limit', 'Ci upper limit', 'Bootstrap ci lower limit', 'Bootstrap ci upper limit'), decimals = 2))
+                     fmt_number(-1, decimals = 2)) %>%
+                     tab_footnote(footnote = "Confidence interval lower limit", locations = cells_column_labels("Ci Ll")) %>%
+                     tab_footnote(footnote = "Confidence interval upper limit", locations = cells_column_labels("Ci Ul")) %>%
+                     tab_footnote(footnote = "Bootstrap confidence interval lower limit", locations = cells_column_labels("Boot Ci Ll")) %>%
+                     tab_footnote(footnote = "Bootstrap confidence interval upper limit", locations = cells_column_labels("Boot Ci Ul")) %>%
+                     tab_style(style = cell_text(size = "small"),locations = cells_footnotes())
                  })
                  output$tsTable <- render_gt({
                    (getTsDataframe() %>%
@@ -296,7 +321,7 @@ esAndTsEducationalServer <- function(id, mean1, standardDeviation1, sampleSize1,
                  tailRatioOptionsObserver(selectedEs, session)
 
                  getEsDataframe <- reactive({
-                   generate_es_educational_dataframe(selectedEs(), mean1(), standardDeviation1(), sampleSize1(), correlation1(), standardDeviationDiff1(), mean2(), standardDeviation2(), sampleSize2(), mean3(), standardDeviation3(), mean4(), standardDeviation4(), correlation2(), standardDeviationDiff2(),input$tail, input$referenceGroup, input$cutoff)
+                   generate_es_educational_dataframe(selectedEs(), mean1(), standardDeviation1(), sampleSize1(), correlation1(), standardDeviationDiff1(), mean2(), standardDeviation2(), sampleSize2(), mean3(), standardDeviation3(), mean4(), standardDeviation4(), correlation2(), standardDeviationDiff2(),input$tail, input$referenceGroup, input$cutoff, alpha = input$alpha)
                  })
 
                  getTsDataframe <- reactive({
@@ -307,7 +332,10 @@ esAndTsEducationalServer <- function(id, mean1, standardDeviation1, sampleSize1,
                    req(esTsModuleIv$is_valid())
                    (getEsDataframe() %>%
                      gt() %>%
-                     fmt_number(c('Effect Size', 'Ci lower limit', 'Ci upper limit'), decimals = 2))
+                     fmt_number(-1, decimals = 2)) %>%
+                     tab_footnote(footnote = "Confidence interval lower limit", locations = cells_column_labels("Ci Ll")) %>%
+                     tab_footnote(footnote = "Confidence interval upper limit", locations = cells_column_labels("Ci Ul")) %>%
+                     tab_style(style = cell_text(size = "small"), locations = cells_footnotes())
                  })
                  output$tsTable <- render_gt({
                    (getTsDataframe() %>%

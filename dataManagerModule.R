@@ -73,6 +73,7 @@ dataManagerServer <-
           read.table(input$file$datapath,
                      sep = ",",
                      header = TRUE)
+
         })
         
         observeEvent(eventExpr = data(),

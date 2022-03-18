@@ -53,25 +53,27 @@ numericInputGroup <-
   }
 
 header <- function(design = c("indGrps", "depGrps", "mixed"),
-                   measurement = c("pretest", "posttest"),
+                   measurement = c("Pretest", "Posttest"),
                    group = c("a", "b"),
                    info = c("acrossGrps", "perGrp")) {
   ifelse(
     info == "acrossGrps",
-    ifelse(design == "depGrps",
-           "",
-           paste0(" group ", group)
-           )
-    ,
+    paste0(
+      ifelse(design == "depGrps",
+             "Across measurements:",
+             paste0("Group ", group))
+    ),
     ifelse(
       design == "indGrps",
-      paste0("group ", group),
+      paste0("Group ", group),
       ifelse(
         design == "depGrps",
         measurement,
-        paste0(measurement,
-               " group ",
-               group)
+        paste0("Group ",
+               group,
+               " ",
+               measurement
+               )
       )
     )
   )
@@ -126,7 +128,7 @@ summaryStatisticsInput <- function(id,
     width = 6,
     uiColumn(
       design = design,
-      measurement = "pretest",
+      measurement = "Pretest",
       group = "a",
       info = "perGrp",
       firstInput = numericInputs$means$mean1,
@@ -138,8 +140,8 @@ summaryStatisticsInput <- function(id,
     width = 6,
     uiColumn(
       design = design,
-      measurement = "posttest",
-      group = "b",
+      measurement = "Posttest",
+      group = ifelse(design == "indGrps", "b", "a"),
       info = "perGrp",
       firstInput = numericInputs$means$mean2,
       secondInput = numericInputs$standardDeviations$standardDeviation2,
@@ -167,7 +169,7 @@ summaryStatisticsInput <- function(id,
       width = 6,
       uiColumn(
         design = design,
-        measurement = "pretest",
+        measurement = "Pretest",
         group = "b",
         info = "perGrp",
         firstInput = numericInputs$means$mean3,
@@ -178,7 +180,7 @@ summaryStatisticsInput <- function(id,
       width = 6,
       uiColumn(
         design = design,
-        measurement = "posttest",
+        measurement = "Posttest",
         group = "b",
         info = "perGrp",
         firstInput = numericInputs$means$mean4,
