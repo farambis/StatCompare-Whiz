@@ -6,7 +6,7 @@ generalUI <- function (id, acceptedFormat, design, mode, esChoices, tsChoices, p
   pageWithSidebar(
     headerPanel = "",
     sidebarPanel = sidebarPanelUI(ns("sidebarPanel"), acceptedFormat, design, mode),
-    mainPanel = esMainPanel(ns("esMainPanel"), esChoices, tsChoices, plotChoices, description)
+    mainPanel = esMainPanel(ns("esMainPanel"), esChoices, tsChoices, plotChoices, description, mode)
   )
 }
 
