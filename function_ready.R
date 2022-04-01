@@ -499,7 +499,7 @@ stats_per_group <- function(x, trim = trim, winvar = winvar) {
   } else {
     winvar <- NULL
   }
-  return(list(n = n, ntr = ntr, m = m,trm = trm, var = v,  winvar = winvar, s = s))
+  return(list(n = n, ntr = ntr, m = m, trm = trm, var = v, winvar = winvar, s = s))
 }
 
 dependent_groups_stats <- function(x, y, trim, winvar = winvar) {
@@ -516,7 +516,8 @@ dependent_groups_stats <- function(x, y, trim, winvar = winvar) {
     winvardiff <- NULL
     wincov <- NULL
   }
-  return(list(n = n, ntr = ntr, r = r, wincov = wincov,  trmdiff = trmdiff, vdiff = vdiff, winvardiff = winvardiff, sdiff = sdiff))
+  return(list(n = n, ntr = ntr, trmdiff = trmdiff, vdiff = vdiff, winvardiff = winvardiff, sdiff = sdiff, r = r, wincov = wincov))
+
 }
 
 
@@ -530,22 +531,26 @@ mixed_design_stats <- function(x, y, INDEX){
   dataset2_post <- datasets_post[[2]]
   
   m1 <- mean(dataset1_pre)
+  v1 <- var(dataset1_pre)
   s1 <- sd(dataset1_pre)
   n1 <- length(dataset1_pre)
   m2 <- mean(dataset1_post)
+  v2 <- var(dataset1_post)
   s2 <- sd(dataset1_post)
   r1 <- cor(dataset1_pre, dataset1_post)
   sdiff1 <- sd(dataset1_pre - dataset1_post)
   m3 <- mean(dataset2_pre)
+  v3 <- var(dataset2_pre)
   s3 <- sd(dataset2_pre)
   n2 <- length(dataset2_pre)
   m4 <- mean(dataset2_post)
+  v4 <- var(dataset2_post)
   s4 <- sd(dataset2_post)
   r2 <- cor(dataset2_pre, dataset2_post)
   sdiff2 <- sd(dataset2_pre - dataset2_post)
   
-  return(list(m1 = m1, s1 = s1, n1 = n1, m2 = m2, s2 = s2, r1 = r1, sdiff1 = sdiff1,
-              m3 = m3, s3 = s3, n2 = n2, m4 = m4, s4 = s4, r2 = r2, sdiff2 = sdiff2))
+  return(list(m1 = m1, var1 = v1, s1 = s1, n1 = n1, m2 = m2, var2 = v2, s2 = s2, r1 = r1, sdiff1 = sdiff1,
+              m3 = m3, var3 = v3, s3 = s3, n2 = n2, m4 = m4, var4 = v4, s4 = s4, r2 = r2, sdiff2 = sdiff2))
   
 }
 
@@ -571,6 +576,130 @@ summary_stats <- function(x, INDEX = NULL, y = NULL, trim = 0, winvar = FALSE) {
   return(stats)
 }
 
+
+stats_names_key_value_ls <- list(n = "Sample size", 
+                                 ntr = "Trimmed sample size", 
+                                 m = "Mean", 
+                                 trm = "Trimmed mean", 
+                                 med = "Median", 
+                                 var = "Variance", 
+                                 winvar = "Winsorized variance", 
+                                 s = "Std. Deviation", 
+                                 iqr = "Iqr", 
+                                 mad = "MAD", 
+                                 trmdiff = "Difference of trimmed means", 
+                                 vdiff = "Cange score variance", 
+                                 winvardiff = "Change score winsorized variance", 
+                                 sdiff = "Change score std. deviation", 
+                                 r = "Correlation", 
+                                 wincov = "Winsorized covariance")
+
+stats_names_key_value_matching <- function(keys, key_value_ls){
+  values <- unlist(key_value_ls[keys])
+  return(values)
+}
+
+multivariate_summary_dfs <- function(x, INDEX){
+  # TODO
+}
+
+independent_groups_design_summary_dfs <- function(x, INDEX, trim = 0.2, winvar = TRUE){
+  
+  summary_stats_df <- rep(list(list()), 1)
+  stats <- summary_stats(x, INDEX, trim = trim, winvar = winvar)
+  data <- split(x, INDEX)
+  x <- data[[1]]
+  y <- data[[2]]
+  stats <- c(stats, list(med1 = median(x), med2 = median(y), iqr1 = IQR(x), iqr2 = IQR(y), mad1 = mad(x), mad2 = mad(y)))
+  row_names_keys <- gsub(patter="[0-9]", replacement = "", names(stats))[grepl(pattern="1$", names(stats))]
+  row_names <- stats_names_key_value_matching(row_names_keys, key_value_ls = stats_names_key_value_ls)
+  col1 <- round(unlist(stats[grepl(pattern="1$", names(stats))]), 2)
+  col2 <- round(unlist(stats[grepl(pattern="2$", names(stats))]), 2)
+  summary_stats_df[[1]][[1]] <- data.frame(`Group a` = col1,
+                                       `Group b` = col2, 
+                                       row.names = row_names)
+  summary_stats_df[[1]][[2]] <- paste0("Summary statistics for the two contrasted groups")
+  return(summary_stats_df)
+}
+
+dependent_groups_design_summary_dfs <- function(x, y){
+  
+  summary_stats_dfs <- rep(list(list()), 2)
+  stats <- summary_stats(x, y = y, trim = 0.2, winvar = TRUE)
+  stats <- c(stats, list(med1 = median(x), med2 = median(y), iqr1 = IQR(x), iqr2 = IQR(y), mad1 = mad(x), mad2 = mad(y)))
+  df1_row_names_keys <- gsub(pattern = "[0-9]", replacement = "", names(stats))[grepl(pattern="1$", names(stats))]
+  df1_row_names_keys <- df1_row_names_keys[!(df1_row_names_keys %in% c("n", "ntr"))]
+  df1_row_names <- stats_names_key_value_matching(df1_row_names_keys, key_value_ls = stats_names_key_value_ls)
+  df1_col1 <- round(unlist(stats[paste0(df1_row_names_keys, 1)]), 2)
+  df1_col2 <- round(unlist(stats[paste0(df1_row_names_keys, 2)]), 2)
+  summary_stats_dfs[[1]] <- list(data.frame(Pretest = df1_col1,
+                                       Posttest = df1_col2,
+                                       row.names = df1_row_names),
+                                 paste0("Summary statistics for pre- and posttest"))
+  
+  df2_row_names_keys <- names(stats)[grepl(pattern = "[^0-9]$", x = names(stats))]
+  df2_row_names <- stats_names_key_value_matching(df2_row_names_keys, key_value_ls = stats_names_key_value_ls)
+  df2_col1 <- round(unlist(stats[df2_row_names_keys]), 2)
+  summary_stats_dfs[[2]] <- list(data.frame(Value = df2_col1,
+                                       row.names = df2_row_names),
+                                 paste0("Summary statistics across measurements"))
+  return(summary_stats_dfs)
+}
+
+mixed_design_summary_dfs <- function(x, INDEX, y){
+  
+  summary_stats_dfs <- rep(list(list()), 4)
+  stats <- summary_stats(x, INDEX, y)
+  data <- split(x, INDEX)
+  data <- c(data, split(y, INDEX))
+  x1 <- data[[1]]
+  y1 <- data[[3]]
+  x2 <- data[[2]]
+  y2 <- data[[4]]
+  stats <- c(stats, list(med1 = median(x1), med2 = median(y1), med3 = median(x2), med4 = median(y2),
+                         iqr1 = IQR(x1), iqr2 = IQR(y1), iqr3 = IQR(x2), iqr4 = IQR(y2),
+                         mad1 = mad(x1), mad2 = mad(y1), mad3 = mad(x2), mad4 = IQR(y2)))
+  row_names_keys <- unique(gsub(patter="[0-9]", replacement = "", names(stats)))
+  per_measurement_df_row_names_keys <- row_names_keys[!(row_names_keys %in% c("n", "sdiff","r"))]
+  per_measurement_df_row_names <- stats_names_key_value_matching(per_measurement_df_row_names_keys, stats_names_key_value_ls)
+  across_measurements_df_row_names_keys <- row_names_keys[row_names_keys %in% c("n", "sdiff","r")]
+  across_measurements_df_row_names <- stats_names_key_value_matching(across_measurements_df_row_names_keys, stats_names_key_value_ls)
+  df1_col1 <- round(unlist(stats[paste0(per_measurement_df_row_names_keys,1)]), 2)
+  df1_col2 <- round(unlist(stats[paste0(per_measurement_df_row_names_keys, 2)]), 2)
+  summary_stats_dfs[[1]] <- list(data.frame(Pretest = df1_col1,
+                                       Posttest = df1_col2,
+                                       row.names = per_measurement_df_row_names),
+                                 paste0("Summary statistics for pre- and posttest of group a"))
+  df2_col1 <- round(unlist(stats[paste0(across_measurements_df_row_names_keys, 1)]),2)
+  summary_stats_dfs[[2]] <- list(data.frame(Value = df2_col1,
+                                       row.names = across_measurements_df_row_names),
+                                 paste0("Summary statistics across measurements of group a"))
+  df3_col1 <- round(unlist(stats[paste0(per_measurement_df_row_names_keys, 3)]), 2)
+  df3_col2 <- round(unlist(stats[paste0(per_measurement_df_row_names_keys, 4)]), 2)
+  summary_stats_dfs[[3]] <- list(data.frame(Pretest = df3_col1,
+                                       Posttest = df3_col2,
+                                       row.names = per_measurement_df_row_names),
+                                 paste0("Summary statistics for pre- and posttest of group b"))
+  df4_col1 <- round(unlist(stats[paste0(across_measurements_df_row_names_keys, 2)]), 2)
+  summary_stats_dfs[[4]] <- list(data.frame(Value = df4_col1,
+                                       row.names = across_measurements_df_row_names),
+                                 paste0("Summary statistics across measurements of group b"))
+  return(summary_stats_dfs)
+}
+
+generate_summary_statistics_data_frame <- function(x, INDEX = NULL, y = NULL){
+  
+  if (is.data.frame(x)) {
+    res <- multivariate_summary_dfs(x, INDEX)
+  } else if (is.null(y)){
+    res <- independent_groups_design_summary_dfs(x, INDEX)
+  } else if (is.null(INDEX)) {
+    res <- dependent_groups_design_summary_dfs(x, y)
+  } else {
+    res <- mixed_design_summary_dfs(x, INDEX, y)
+  }
+  return(res)
+}
 
 ## Various standard deviations: ----
 sd_combined <- function(x = NULL, INDEX = NULL, var1, var2, n1, n2, winvar1,
@@ -2400,7 +2529,7 @@ glass_d <- function(x = NULL, INDEX = NULL, y = NULL, m1, m2, s1, s2, standardis
 }
 
 glass_d_ci <- function(x = NULL, INDEX = NULL, m1, m2, s1, s2, n1, n2, standardised_by_group_1 = TRUE, alpha = 0.05) {
-  if (!is.null(x) && !is.null(y)) {
+  if (!is.null(x) && !is.null(INDEX)) {
     stats <- summary_stats(x = x, INDEX = INDEX)
     for (i in names(stats)) {
       assign(i, stats[[i]])
@@ -2454,7 +2583,7 @@ glass_d_corr <- function(x = NULL, INDEX = NULL, y = NULL, m1, m2, s1, s2, df, s
 }
 
 glass_d_corr_ci <- function(x = NULL, INDEX = NULL, m1, m2, s1, s2, n1, n2, standardised_by_group_1 = TRUE, alpha = 0.05) {
-  if (!is.null(x) && !is.null(y)) {
+  if (!is.null(x) && !is.null(INDEX)) {
     stats <- summary_stats(x = x, INDEX = INDEX)
     for (i in names(stats)) {
       assign(i, stats[[i]])
