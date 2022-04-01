@@ -82,9 +82,9 @@ $$ E = 1+A(\frac{B+C}{D}) $$
 in which case 
 $$ UL = \frac{1}{E} $$
 To get the lower end LL of the confidence interval we compute
-$$ A = (\frac{w}{n-w-1}) $$
+$$ A = (\frac{w}{n-w-1})^2 $$
 $$ B = 81(w)(n-w-1) -9n -8 $$
-$$ C = 3 \Phi^{-1}(1 - \frac{\alpha}{2}) \sqrt{9x(n-2-1)(9n+5-\Phi^{-1}(1 - \frac{\alpha}{2}) ^2) + n + 1} $$
+$$ C = 3 \Phi^{-1}(1 - \frac{\alpha}{2}) \sqrt{9w(n-2-1)(9n+5-\Phi^{-1}(1 - \frac{\alpha}{2}) ^2) + n + 1} $$
 $$ D = 81w^2 - 9w(2+ \Phi^{-1}(1 - \frac{\alpha}{2}) ^2) + 1 $$
 $$ E = 1 + A(\frac{B+C}{D}) $$
 in which case 
