@@ -2,31 +2,31 @@ source('uiTabItemGeneratingFunction.R')
 
 # all_eff_sizes and all_test_statistics are defined in function_ready.R 
 
-descriptions <- list(independent_parametric_univariate = "markdown/independent_parametric_univariate.md", independent_parametric_univariate = "markdown/independent_parametric_multivariate.md",
+descriptions <- list(independent_parametric = "markdown/independent_parametric.md", independent_parametric = "markdown/multivariate.md",
                      independent_nonparametric = "markdown/independent_nonparametric.md", dependent_parametric = "markdown/dependent_parametric.md",
                      dependent_nonparametric = "markdown/dependent_nonparametric.md", mixed_design_parametric = "markdown/mixed_design_parametric.md",
-                     mixed_design_nonparametric = "markdown/mixed_design_nonparametric.md")
+                     mixed_design_nonparametric = "markdown/mixed_design_nonparametric.md", multivariate_measures = "markdown/multivariate.md")
 
 # independentGroups -------------------------------------------------------
-independentGroupsParametricUnivariateRawData <-
+independentGroupsParametricRawData <-
   tabItem(
-    tabName = 'independentGroupsParametricUnivariateRawData',
+    tabName = 'independentGroupsParametricRawData',
     generalUI(
-      "independentGroupsParametricUnivariateRawData",
+      "independentGroupsParametricRawData",
       ".csv",
       "indGrps",
       "rawData",
-      list(all_eff_sizes$cohen_d, 
-           all_eff_sizes$hedges_g, 
+      list(all_eff_sizes$cohen_d,
+           all_eff_sizes$hedges_g,
            all_eff_sizes$glass_d,
-           all_eff_sizes$glass_d_corr, 
-           all_eff_sizes$bonett_d, 
+           all_eff_sizes$glass_d_corr,
+           all_eff_sizes$bonett_d,
            all_eff_sizes$bonett_d_corr,
-           all_eff_sizes$AKP_eqvar, 
+           all_eff_sizes$AKP_eqvar,
            all_eff_sizes$AKP_uneqvar,
            all_eff_sizes$parametric_ovl,
            all_eff_sizes$parametric_ovl_two,
-           all_eff_sizes$common_language, 
+           all_eff_sizes$common_language,
            all_eff_sizes$parametric_cohens_u1,
            all_eff_sizes$parametric_cohens_u2,
            all_eff_sizes$parametric_cohens_u3,
@@ -40,24 +40,24 @@ independentGroupsParametricUnivariateRawData <-
            all_plots$parametric_cohens_u3,
            all_plots$tail_ratio,
            all_plots$tail_ratio_zoom),
-      descriptions$independent_parametric_univariate
+      descriptions$independent_parametric
     )
   )
 
 
-independentGroupsParametricUnivariateEducational <-
-  tabItem(tabName = 'independentGroupsParametricUnivariateEducational',
+independentGroupsParametricEducational <-
+  tabItem(tabName = 'independentGroupsParametricEducational',
           generalUI(
-            "independentGroupsParametricUnivariateEducational", 
-            ".csv", 
-            "indGrps", 
+            "independentGroupsParametricEducational",
+            ".csv",
+            "indGrps",
             "educational",
-            list(all_eff_sizes$cohen_d, 
-                 all_eff_sizes$hedges_g, 
+            list(all_eff_sizes$cohen_d,
+                 all_eff_sizes$hedges_g,
                  all_eff_sizes$glass_d,
-                 all_eff_sizes$glass_d_corr, 
-                 all_eff_sizes$bonett_d, 
-                 all_eff_sizes$bonett_d_corr, 
+                 all_eff_sizes$glass_d_corr,
+                 all_eff_sizes$bonett_d,
+                 all_eff_sizes$bonett_d_corr,
                  all_eff_sizes$parametric_ovl,
                  all_eff_sizes$parametric_ovl_two,
                  all_eff_sizes$parametric_cohens_u1,
@@ -73,23 +73,15 @@ independentGroupsParametricUnivariateEducational <-
                  all_plots$parametric_cohens_u3,
                  all_plots$tail_ratio,
                  all_plots$tail_ratio_zoom),
-            descriptions$independent_parametric_univariate
+            descriptions$independent_parametric
           ))
-
-independentGroupsParametricMultivariateRawData <-
-  tabItem(tabName = 'independentGroupsParametricMultivariateRawData',
-          'Hello independentGroupsParametricMultivariateRawData')
-
-independentGroupsParametricMultivariateEducational <-
-  tabItem(tabName = 'independentGroupsParametricMultivariateEducational',
-          'Hello independentGroupsParametricMultivariateEducational')
 
 independentGroupsNonparametric <-
   tabItem(tabName = 'independentGroupsNonparametric',
           generalUI(
-            "independentGroupsNonparametric", 
-            ".csv", 
-            "indGrps", 
+            "independentGroupsNonparametric",
+            ".csv",
+            "indGrps",
             "rawData",
             list(all_eff_sizes$mann_whitney_based_ps,
                  all_eff_sizes$mann_whitney_based_ps_ignore_ties,
@@ -108,7 +100,7 @@ independentGroupsNonparametric <-
 
             ),
             list(all_test_statistics$mann_whitney),
-            list(all_plots$non_parametric_ovl, 
+            list(all_plots$non_parametric_ovl,
                  all_plots$non_parametric_cohens_u1,
                  all_plots$non_parametric_cohens_u3,
                  all_plots$non_parametric_tail_ratio,
@@ -123,10 +115,10 @@ independentGroupsNonparametric <-
 dependentGroupsParametricRawData <-
   tabItem(tabName = 'dependentGroupsParametricRawData',
           generalUI(
-            "dependentGroupsParametricRawData", 
-            ".csv", 
+            "dependentGroupsParametricRawData",
+            ".csv",
             "depGrps",
-            "rawData", 
+            "rawData",
             list(all_eff_sizes$cohens_d_dependent,
                  all_eff_sizes$hedges_g_dependent,
                  all_eff_sizes$cohens_drm,
@@ -152,7 +144,7 @@ dependentGroupsParametricRawData <-
                  all_eff_sizes$robust_glass_d_dependent,
                  all_eff_sizes$ps_dependent,
                  all_eff_sizes$ps_dependent_ignore_ties
-                 ),
+            ),
             list(all_test_statistics$dependent_student_t_test,
                  all_test_statistics$tukey_mclaughlin_t_test,
                  all_test_statistics$dependent_yuen_t_test),
@@ -166,7 +158,7 @@ dependentGroupsParametricRawData <-
 
 dependentGroupsParametricEducational <-
   tabItem(tabName = 'dependentGroupsParametricEducational',
-          generalUI("dependentGroupsParametricEducational", 
+          generalUI("dependentGroupsParametricEducational",
                     ".csv",
                     "depGrps",
                     "educational",
@@ -197,11 +189,11 @@ dependentGroupsParametricEducational <-
           ))
 
 dependentGroupsNonparametric <-
-  tabItem(tabName = 'dependentGroupsNonparametric', 
+  tabItem(tabName = 'dependentGroupsNonparametric',
           generalUI(
             "dependentGroupsNonparametric",
-            ".csv", 
-            "depGrps", 
+            ".csv",
+            "depGrps",
             "rawData",
             list(all_eff_sizes$ps_dependent,
                  all_eff_sizes$ps_dependent_ignore_ties,
@@ -230,7 +222,6 @@ dependentGroupsNonparametric <-
           ))
 
 
-
 # mixed Design ------------------------------------------------------------
 
 mixedDesignParametricRawData <-
@@ -240,7 +231,7 @@ mixedDesignParametricRawData <-
             acceptedFormat = ".csv",
             design = "mixed",
             mode = "rawData",
-            esChoices = 
+            esChoices =
               list(all_eff_sizes$d_PPC_change,
                    all_eff_sizes$g_PPC_change,
                    all_eff_sizes$g_PPC_pre,
@@ -249,9 +240,9 @@ mixedDesignParametricRawData <-
                    all_eff_sizes$g_PPC_pooled_pre,
                    all_eff_sizes$d_PPC_pooled_pre_post,
                    all_eff_sizes$g_PPC_pooled_pre_post),
-            tsChoices = 
+            tsChoices =
               list(),
-            plotChoices = 
+            plotChoices =
               list(all_plots$parametric_PPC_change,
                    all_plots$parametric_PPC_difference,
                    all_plots$parametric_PPC_interaction),
@@ -259,7 +250,7 @@ mixedDesignParametricRawData <-
           ))
 
 mixedDesignParametricEducational <-
-  tabItem(tabName = 'mixedDesignParametricEducational', 
+  tabItem(tabName = 'mixedDesignParametricEducational',
           generalUI(
             id = 'mixedDesignParametricEducational',
             design = "mixed",
@@ -273,9 +264,9 @@ mixedDesignParametricEducational <-
                    all_eff_sizes$g_PPC_pooled_pre,
                    all_eff_sizes$d_PPC_pooled_pre_post,
                    all_eff_sizes$g_PPC_pooled_pre_post),
-            tsChoices = 
+            tsChoices =
               list(),
-            plotChoices = 
+            plotChoices =
               list(all_plots$parametric_PPC_change,
                    all_plots$parametric_PPC_difference,
                    all_plots$parametric_PPC_interaction),
@@ -291,9 +282,37 @@ mixedDesignNonParametric <-
             mode = "rawData",
             esChoices =
               list(),
-            tsChoices = 
+            tsChoices =
               list(),
-            plotChoices = 
+            plotChoices =
               list(),
             description = descriptions$mixed_design_nonparametric
           ))
+
+multivariateRawData <-
+  tabItem(tabName = 'multivariateRawData',
+          generalUI(
+            id = 'multivariateRawData',
+            acceptedFormat = ".csv",
+            design = "multivariate",
+            mode = "rawData",
+            esChoices = list(),
+            tsChoices = list(),
+            plotChoices = list(),
+            description = descriptions$multivariate_measures
+          )
+  )
+
+multivariateEducational <- tabItem(tabName = 'multivariateEducational',
+                                   generalUI(
+                                     id = 'multivariateEducational',
+                                     acceptedFormat = ".csv",
+                                     design = "multivariate",
+                                     mode = "rawData",
+                                     esChoices = list(),
+                                     tsChoices = list(),
+                                     plotChoices = list(),
+                                     description = descriptions$multivariate_measures
+                                   )
+)
+

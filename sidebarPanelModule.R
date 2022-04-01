@@ -5,7 +5,7 @@ library(shiny)
 sidebarPanelUI <-
   function(id,
            acceptedFormats,
-           design = c("indGrps", "depGrps", "mixed"),
+           design = c("indGrps", "depGrps", "mixed", "multivariate"),
            mode = c("educational", "rawData")) {
     
     ns <- NS(namespace = id)

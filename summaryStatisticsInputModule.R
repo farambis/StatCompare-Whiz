@@ -105,7 +105,7 @@ uiColumn <-
   }
 
 summaryStatisticsInput <- function(id,
-                                   design = c("indGrps", "depGrps", "mixed")) {
+                                   design = c("indGrps", "depGrps", "mixed", "multivariate")) {
   ns <- NS(namespace = id)
   
   statistic <- c("mean", "standardDeviation", "sampleSize")
