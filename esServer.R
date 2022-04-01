@@ -1,10 +1,10 @@
 esServer <- function(input, output) {
   
   #independent Groups
-  generalServer(id  = "independentGroupsParametricUnivariateRawData",
+  generalServer(id  = "independentGroupsParametricRawData",
                 design = "indGrps",
                 mode = "rawData")
-  generalServer(id = "independentGroupsParametricUnivariateEducational", 
+  generalServer(id = "independentGroupsParametricEducational",
                 design = "indGrps", 
                 mode = "educational")
   generalServer(id = "independentGroupsNonparametric", 

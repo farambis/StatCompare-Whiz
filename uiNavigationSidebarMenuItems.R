@@ -1,7 +1,7 @@
 source('uiNavigationSidebarSubitems.R')
 
 independentGroups <- menuItem(text = 'Independent Groups', tabName = 'independentGroups',
-                               parametricSidebarItem(tabName = 'independentGroupsParametric', advanced = TRUE),
+                               parametricSidebarItem(tabName = 'independentGroupsParametric'),
                                nonparametricSidebarItem('independentGroupsNonparametric'))
 
 dependentGroups <- menuItem(text = 'Dependent Groups', tabName = 'dependentGroups',
@@ -11,3 +11,7 @@ dependentGroups <- menuItem(text = 'Dependent Groups', tabName = 'dependentGroup
 mixedDesign <- menuItem(text = 'Mixed Design', tabName = 'mixedDesign',
                          parametricSidebarItem('mixedDesignParametric'),
                          nonparametricSidebarItem('mixedDesignNonParametric'))
+
+multivariateMeasures <- menuItem(text = 'Multivariate Measures', tabName = 'multivariate',
+                                          menuItem(text = 'Raw Data', tabName = paste0('multivariate', 'RawData')),
+                                          menuItem(text = 'Educational', tabName = paste0('multivariate', 'Educational')))

@@ -2,16 +2,16 @@ source("tabItems.R")
 
 body <- dashboardBody(
   tabItems(
-    independentGroupsParametricUnivariateRawData,
-    independentGroupsParametricUnivariateEducational,
-    independentGroupsParametricMultivariateRawData,
-    independentGroupsParametricMultivariateEducational,
+    independentGroupsParametricRawData,
+    independentGroupsParametricEducational,
     independentGroupsNonparametric, 
     dependentGroupsParametricRawData, 
     dependentGroupsParametricEducational, 
     dependentGroupsNonparametric, 
     mixedDesignParametricRawData,
     mixedDesignParametricEducational,
-    mixedDesignNonParametric
+    mixedDesignNonParametric,
+    multivariateRawData,
+    multivariateEducational
   )
 )

@@ -2,4 +2,5 @@ source('uiNavigationSidebarMenuItems.R')
 navigationSidebar <- dashboardSidebar(sidebarMenu(id = "dashboardSidebar", 
                                         independentGroups, 
                                         dependentGroups, 
-                                        mixedDesign))
+                                        mixedDesign,
+                                        multivariateMeasures))
