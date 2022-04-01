@@ -17,6 +17,7 @@ all_eff_sizes <- list(
   AKP_eqvar = "AKP_eqvar",
   AKP_uneqvar = "AKP_uneqvar",
   mann_whitney_based_ps = "mann_whitney_based_ps",
+  mann_whitney_based_ps_ignore_ties = "mann_whitney_based_ps_ignore_ties",
   parametric_ovl = "parametric_ovl",
   ps_dependent = "ps_dependent",
   ps_dependent_ignore_ties = "ps_dependent_ignore_ties",
@@ -157,6 +158,7 @@ generate_es_raw_data_dataframe <- function(es_list, INDEX = NULL, x, y, tail, re
                   "standardized_median_difference_riq" = c(standardized_median_difference_riq(x = x, INDEX = INDEX), NA_real_, NA_real_, boot_general(x, INDEX, standardized_median_difference_riq, alpha)),
                   "standardized_median_difference_biweight" = c(standardized_median_difference_biweight(x = x, INDEX = INDEX), NA_real_, NA_real_, boot_general(x, INDEX, standardized_median_difference_biweight, alpha)),
                   "mann_whitney_based_ps" = c(mann_whitney_based_ps(x = x, INDEX = INDEX), mann_whitney_based_ps_ci(x = x, INDEX = INDEX, alpha = alpha), boot_general(x, INDEX, mann_whitney_based_ps, alpha)),
+                  "mann_whitney_based_ps_ignore_ties" = c(mann_whitney_based_ps(x = x, INDEX = INDEX, ignore_ties = TRUE), mann_whitney_based_ps_ci(x = x, INDEX = INDEX, ignore_ties = TRUE, alpha = alpha), boot_general(x, INDEX, mann_whitney_based_ps, alpha, ignore_ties = TRUE)),
                   "parametric_ovl" = c(parametric_ovl(x = x, INDEX = INDEX), parametric_ovl_ci(x = x, INDEX = INDEX, alpha = alpha), boot_general(x, INDEX, parametric_ovl, alpha)),
                   "non_parametric_ovl" = c(non_parametric_ovl(x, INDEX), NA_real_, NA_real_, boot_general(x, INDEX, non_parametric_ovl, alpha)), 
                   "generalized_odds_ratio" = c(generalized_odds_ratio(x = x, INDEX = INDEX), generalized_odds_ratio_ci(x = x, INDEX = INDEX, alpha = alpha), boot_general(x, INDEX, generalized_odds_ratio, alpha)),
@@ -200,6 +202,7 @@ generate_es_raw_data_dataframe <- function(es_list, INDEX = NULL, x, y, tail, re
                   "robust_cohens_d_dependent" = c(robust_cohens_d(x = x, y = y), robust_cohens_d_dependent_ci(x = x, y = y, alpha = alpha), boot_general_dependent_groups(x, y, robust_cohens_d, alpha)),
                   "robust_glass_d_dependent" = c(robust_glass_d(x = x, y = y), robust_glass_d_dependent_ci(x = x, y = y, alpha = alpha), boot_general_dependent_groups(x, y, robust_glass_d, alpha)),
                   "non_parametric_ovl_dependent" = c(non_parametric_ovl(x = x, y = y), NA_real_, NA_real_, boot_general_dependent_groups(x, y, non_parametric_ovl, alpha)),
+                  "generalized_odds_ratio_dependent" = c(generalized_odds_ratio(x = x, y = y), generalized_odds_ratio_ci(x = x, y = y, alpha = alpha), boot_general_dependent_groups(x, y, generalized_odds_ratio, alpha)),
                   "non_parametric_cohens_u1_dependent" = c(non_parametric_cohens_u1(x = x, y = y), NA_real_, NA_real_, boot_general_dependent_groups(x, y, non_parametric_cohens_u1, alpha)),
                   "non_parametric_cohens_u3_dependent" = c(non_parametric_cohens_u3(x = x, y = y), NA_real_, NA_real_, boot_general_dependent_groups(x, y, non_parametric_cohens_u3, alpha)),
                   "non_parametric_tail_ratio_dependent" = c(non_parametric_tail_ratio_dependent(x = x, y = y, tail = tail, reference_group = ref, cutoff = cutoff), non_parametric_tail_ratio_dependent_ci(x = x, y = y, tail = tail, reference_group = ref, cutoff = cutoff, alpha = alpha), boot_general_dependent_groups(x, y, non_parametric_tail_ratio_dependent, alpha, tail = tail, reference_group = ref, cutoff = cutoff)),
@@ -207,7 +210,7 @@ generate_es_raw_data_dataframe <- function(es_list, INDEX = NULL, x, y, tail, re
                   "dominance_measure_dependent" = c(dominance_measure_dependent(x = x, y = y), dominance_measure_dependent_ci(x, y, alpha = alpha), boot_general_dependent_groups(x, y, dominance_measure_dependent, alpha)),
                   "non_parametric_cohens_dz_dependent" = c(non_parametric_cohens_dz_dependent(x = x, y = y), NA_real_, NA_real_, boot_general_dependent_groups(x, y, non_parametric_cohens_dz_dependent, alpha)),
                   "non_parametric_ovl_two_dependent" = c(non_parametric_ovl_two(x = x, y = y), NA_real_, NA_real_, boot_general_dependent_groups(x, y, non_parametric_ovl_two, alpha)),
-                  "ps_dependent" = c(ps_dependent_groups(x, y, FALSE), ps_dependent_groups_ci(x, y, alpha = alpha), boot_general_dependent_groups(x, y, ps_dependent_groups, alpha, ignore_ties = FALSE)),
+                  "ps_dependent" = c(ps_dependent_groups(x, y, FALSE), ps_dependent_groups_ci(x, y, FALSE, alpha = alpha), boot_general_dependent_groups(x, y, ps_dependent_groups, alpha, ignore_ties = FALSE)),
                   "ps_dependent_ignore_ties" = c(ps_dependent_groups(x, y), ps_dependent_groups_ci(x, y, alpha = alpha), boot_general_dependent_groups(x, y, ps_dependent_groups, alpha)),
                   # Effect sizes for the pretest-posttest-control design:
                   "d_PPC_change" = c(d_PPC_change(x = x, y = y, INDEX = INDEX), d_PPC_change_ci(x = x, y = y, INDEX = INDEX, alpha = alpha), boot_general_mixed_design(x = x, y = y, INDEX = INDEX, FUN = d_PPC_change, alpha = alpha)),
@@ -1479,12 +1482,12 @@ calculate_z_for_u_statistic <- function(dataset1, dataset2) {
   result
 }
 
-mann_whitney_based_ps_ci <- function(x, INDEX, alpha = 0.05) {
+mann_whitney_based_ps_ci <- function(x, INDEX, ignore_ties = FALSE,  alpha = 0.05) {
   #second method from Newcombe (2005)
   dataset <- split(x, INDEX)
   m <- length(dataset[[1]])
   n <- length(dataset[[2]])
-  delta <- mann_whitney_based_ps(x, INDEX)
+  delta <- mann_whitney_based_ps(x, INDEX, ignore_ties)
   variance <- delta *
     (1 - delta) *
     (1 +
@@ -1531,7 +1534,7 @@ ps_dependent_groups <-
   }
 
 
-ps_dependent_groups_ci <- function(x, y, alpha = 0.05) {
+ps_dependent_groups_ci <- function(x, y, ignore_ties = TRUE ,alpha = 0.05) {
   #Pratt's confidence interval
   dataset1 <- x
   dataset2 <- y
@@ -1541,24 +1544,23 @@ ps_dependent_groups_ci <- function(x, y, alpha = 0.05) {
   w <- 0
   for (i in seq_along(dataset1)) {
     if (dataset1[i] > dataset2[i]) w <- w + 1
-    else if (dataset1[i] > dataset2[i]) w <- w + 0.5
+    else if(dataset1[i] == dataset2[i]) {
+      if (!ignore_ties)w <- w + 0.5
+      else n <- n-1
+    }
   }
   # upper boundary of ci
   z <- qnorm(1 - alpha / 2)
   a <- ((w + 1) / (n - w))^2
   b <- 81 * (w + 1) * (n - w) - 9 * n - 8
-  c <- -3 *
-    z *
-    sqrt(9 * (w + 1) * (n - w) * (9 * n + 5 - z^2) + n + 1)
+  c <- -3 * z * sqrt(9 * (w + 1) * (n - w) * (9 * n + 5 - z^2) + n + 1)
   d <- 81 * (w + 1)^2 - 9 * (w + 1) * (2 + z^2) + 1
   e <- 1 + a * ((b + c) / d)^3
   upper_bound <- 1 / e
   # lower boundary of ci
-  a <- (w / n - w - 1)^2
+  a <- (w / (n - w - 1))^2
   b <- 81 * w * (n - w - 1) - 9 * n - 8
-  c <- 3 *
-    z *
-    sqrt(9 * (n - w - 1) * (9 * n + 5 - z^2) + n + 1)
+  c <- 3 * z * sqrt(9 * (w) * (n - w - 1) * (9 * n + 5 - z^2) + n + 1)
   d <- 81 * w^2 - 9 * w * (2 + z^2) + 1
   e <- 1 + a * ((b + c) / d)^3
   lower_bound <- 1 / e
@@ -1574,7 +1576,7 @@ generalized_odds_ratio <- function(x, INDEX = NULL, y = NULL, ignore_ties = FALS
   return(ps / (1 - ps))
 }
 
-generalized_odds_ratio_ci <- function(INDEX, x, y = NULL, reverse = FALSE, alpha = 0.05) {
+generalized_odds_ratio_ci <- function (x, INDEX = NULL, y = NULL, alpha = 0.05) {
   if (is.null(y)) {
     dataset1 <- split(x, INDEX)[[1]]
     dataset2 <- split(x, INDEX)[[2]]
@@ -1583,11 +1585,16 @@ generalized_odds_ratio_ci <- function(INDEX, x, y = NULL, reverse = FALSE, alpha
     dataset1 <- x
     dataset2 <- y
   }
-  if (!reverse)cohen_d <- smd_uni(effsize = "cohen_d", n1 = length(dataset1), n2 = length(dataset2), m1 = mean(dataset1), m2 = mean(dataset2), var1 = var(dataset1), var2 = var(dataset2))
-  else cohen_d <- smd_uni(effsize = "cohen_d", n1 = length(dataset2), n2 = length(dataset1), m1 = mean(dataset2), m2 = mean(dataset1), var1 = var(dataset2), var2 = var(dataset1))
-  cohen_d_ci <- smd_ci(effsize = "cohen_d", val = cohen_d, n1 = length(dataset1), n2 = length(dataset2), var1 = var(dataset1), var2 = var(dataset2), alpha = alpha)[2:3]
-  delta_l <- cohen_d_ci[[1]]
-  delta_u <- cohen_d_ci[[2]]
+  m1 <- mean(dataset1)
+  m2 <- mean(dataset2)
+  if (m2 > m1) {
+    cohen_d <- smd_uni(effsize = "cohen_d", n1 = length(dataset1), n2 = length(dataset2), m1 = m1, m2 = m2, var1 = var(dataset1), var2 = var(dataset2))
+  } else {
+    cohen_d <- smd_uni(effsize = "cohen_d", n1 = length(dataset2), n2 = length(dataset1), m1 = m2, m2 = m1, var1 = var(dataset2), var2 = var(dataset1))
+  }
+  cohen_d_ci <- smd_ci(effsize = "cohen_d", val = cohen_d, n1 = length(dataset1), n2 = length(dataset2), var1 = var(dataset1), var2 = var(dataset2), alpha = alpha)
+  delta_l <- cohen_d_ci[[2]]
+  delta_u <- cohen_d_ci[[3]]
   w_l <- pnorm(delta_l / sqrt(2))
   w_u <- pnorm(delta_u / sqrt(2))
   lower_bound <- w_l / (1 - w_l)
