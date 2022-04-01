@@ -6,7 +6,7 @@ generalUI <- function (id, acceptedFormat, design, mode, esChoices, tsChoices, p
   pageWithSidebar(
     headerPanel = "",
     sidebarPanel = sidebarPanelUI(ns("sidebarPanel"), acceptedFormat, design, mode),
-    mainPanel = esMainPanel(ns("esMainPanel"), esChoices, tsChoices, plotChoices, description, mode)
+    mainPanel = esMainPanel(ns("esMainPanel"), esChoices, tsChoices, plotChoices, description, mode, design)
   )
 }
 
@@ -24,7 +24,8 @@ generalServer <- function(id, design, mode, assumption = "parametric") {
                      sidebarPanelResult$data,
                      sidebarPanelResult$inputDataIndex,
                      sidebarPanelResult$inputDataX, 
-                     sidebarPanelResult$inputDataY
+                     sidebarPanelResult$inputDataY,
+                     design
                    )} 
                  else {
                    MainPanelEducationalServer <- 
