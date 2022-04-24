@@ -281,8 +281,11 @@ mixedDesignNonParametric <-
             design = "mixed",
             mode = "rawData",
             esChoices =
-              list(),
-            tsChoices =
+              list(all_eff_sizes$non_parametric_d_PPC_pre,
+                   all_eff_sizes$non_parametric_d_PPC_pre_alternative,
+                   all_eff_sizes$non_parametric_d_PPC_change,
+                   all_eff_sizes$non_parametric_dominance_measure_mixed),
+            tsChoices = 
               list(),
             plotChoices =
               list(),

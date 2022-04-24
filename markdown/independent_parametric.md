@@ -203,9 +203,9 @@ The user of this application can compute tail ratios for a chosen cutoff value, 
 For a discussion of the history of the tail ratio, a proposal for a consensus regarding a naming and reporting convention, as well as for proposed benchmarks meant to aid the interpretation of tail ratios the reader is advised to turn to the article by Voracek et al. (2013).  
 
 The tail ratio effect size measure is implemented as follows:  
-The tail ratio can be though of as a risk ratio by considering scores below/above a cutoff value as "successes"/"hits" and scores above/below a cutoff as "failures"/"misses". The number of "hits" in group a is binomially distributed with parameters $n_a$ and $p_a$, where $p_a$ is the proportion of scores in population a below/above a cutoff. Conversely, the number of "hits" in group b is also binomially distributed with parameters $n_b$ and $p_b$, where $p_b$ is the proportion of scores in population b below/above a cutoff. The population tail ratio for a given cutoff value and region of interest is thus the ratio:  
+The tail ratio can be thought of as a risk ratio by considering scores below/above a cutoff value as "successes"/"hits" and scores above/below a cutoff as "failures"/"misses". The number of "hits" in group a is binomially distributed with parameters $n_a$ and $p_a$, where $p_a$ is the proportion of scores in population a below/above a cutoff. Conversely, the number of "hits" in group b is also binomially distributed with parameters $n_b$ and $p_b$, where $p_b$ is the proportion of scores in population b below/above a cutoff. The population tail ratio for a given cutoff value and region of interest is thus the ratio:  
 
-$$\frac{p_{a|b}}{p_{b|a}}$$
+$$\theta = \frac{p_{a|b}}{p_{b|a}}$$
 
 The observed data can be thought of as 2 x 2 table of the following form:  
 
@@ -230,39 +230,7 @@ and when "hits" are defined as scores above *t*:
 
 - $n_{11}$ is computed as: $n_{11} = n_{1.} * (1 - \Phi(\frac{t - \bar{X}_a}{s_a^2}))$  
 - $n_{21}$ is computed as: $n_{21} = n_{2.} * (1 - \Phi(\frac{t - \bar{X}_b}{s_b^2}))$  
-
-
-For the "non-parametric mode" of the application the cell frequencies are determined more straightforwardly as the number of observed scores below/above a cutoff *t*. No assumption is made regarding the underlying distribution of the scores.  
-When "hits" are defined as scores below *t*:  
-
-- $n_{11}$ is computed as: $n_{11} = \sum_{i=1}^{n_{1.}}I_{\{x \leq t\}}(x_{a_i})$  
-- $n_{21}$ is computed as: $n_{21} = \sum_{i=1}^{n_{2.}}I_{\{x \leq t\}}(x_{b_i})$  
-
-with 
-
-$$ I_{\{x \leq t\}}(x) = \begin{cases}
-    1 & \text{if} \qquad x \leq t \\
-    0 & \text{if} \qquad x \gt t 
-   \end{cases}
-$$
-
-and when "hits" are defined as scores above *t*:  
-
-- $n_{11}$ is computed as: $n_{11} = \sum_{i=1}^{n_{1.}}I_{\{x \geq t\}}(x_{a_i})$  
-- $n_{21}$ is computed as: $n_{21} = \sum_{i=1}^{n_{2.}}I_{\{x \geq t\}}(x_{b_i})$  
-
-with 
-
-$$ I_{\{x \geq t\}}(x) = \begin{cases}
-    1 & \text{if} \qquad x \geq t \\
-    0 & \text{if} \qquad x \lt t 
-   \end{cases}
-$$
-
-When "hits" are defined as scores below *t* 
-
-and when "hits" are defined as scores above *t* 
-
+  
 With $n_{11}, n_{21}, n_{1.}$ and $n_{2.}$ defined and computed the ratio of the binomial proportions $\hat{p}_a$ and $\hat{p}_b$ and consequently the point estimate of the tail ratio can be determined.  
 
 An approximate confidence interval is implemented for both the parametric and the non-parametric analyses. Fagerland et al. (2015) analysed multiple approximate and exact confidence intervals for the ratio of binomial proportions. While none of the assessed procedures yielded appropriate coverage rates across the various conditions the authors examined, the Koopman confidence interval (Koopman, 1984) performed decently across most of the studied scenarios and has been recommended by the authors. However, Fagerland et al. (2015) emphasize that while the Koopman interval is in general closest to the nominal level, it can be somewhat liberal (average coverage probabilities between 0.92 and 0.95 for an $1 - \alpha$ level of 0.95) for combinations of unequal sample sizes and small population proportions ($p_{a|b} \leq 0.2$). Koopman (1984) described an iterative search algorithm for finding the confidence limit, however Nam (1995) found a closed form formula, which has been implemented for this application. Since both the iterative search and the closed form solution are quite elaborate and have been described in detail in the cited literature, neither is described in detail here.  
@@ -308,18 +276,7 @@ or
 
 $$UL = \frac{s_a^2}{s_b^2} * F_{1 - \frac{\alpha}{2}, \nu_1, \nu_2}^{-1}$$
 
-This confidence interval is exact only when the data stem from normal populations. However, this method is highly sensitive to even slight deviations from normality and cannot be recommended for non-normal populations (Banga & Fox, 2013; Bonett, 2006).  
-
-Bonett (2006) modified a confidence interval procedure by Shoemaker (2003) which is based on the Layard test for homogeneity of variances (Layard, 1973) and analysed its performance for both normal and non-normal populations. The Bonett confidence interval procedure performed well when samples were drawn from normal (average coverage rates ranging from 0.951 to 0.958 for an $\alpha$-level of 0.95) as well as from moderately non-normal distributions (average coverage rates ranging from 0.925 to 0.969 for an $\alpha$-level of 0.95) (Bonett, 2006).  
-
-Banga and Fox (2013) further improved upon the Bonett procedure and compared the performance of their confidence interval to other robust confidence intervals. The Banga-Fox-Bonett confidence interval procedure yielded the most stable coverage probabilities when sampling data from a wide variety of distributions.  
-
-The Banga-Fox-Bonett confidence interval relies on iterative search and thus might result in an error under some conditions. Consequently, the following approach has been employed for the implementation of a "non-parametric" confidence interval for the variance ratio:  
-
-- the Banga-Fox-Bonett confidence interval is reported if the iterative search of the confidence limits does not result in an error. The interval is computed as described by Banga and Fox (2013).  
-- in case the iterative search does result in an error the user of the app receives a corresponding notification in the user interface and the Bonett confidence interval is reported. The Bonett confidence interval is computed as described by Bonett (2006).  
-
-If the sample of either group a or that of group b consists of less than 4 observations, NAs are returned as confidence limits due to the nature of the formula for the implemented confidence intervals. Neither the computation of the Banga-Fox-Bonett nor of the Bonett confidence interval is described in detail here as they both are rather elaborate - the reader is advised to study the cited literature for further details.  
+This confidence interval is exact only when the data stem from normal populations. However, this method is highly sensitive to even slight deviations from normality and cannot be recommended for non-normal populations (Banga & Fox, 2013; Bonett, 2006). Consequently, if any deviation from normality might be expected, the user is advised to inspect the "non-parametric" variance-ratio (found as an effect size in the "non-parametric" mode). As detailed in the documentation on the corresponing page, the point estimate will be identical to the one provided for the "parametric raw data" mode, however, a more robust confidence interval procedure is implemented.  
 
 Additionally, an $1 - \alpha$ percentile bootstrap CI is computed.  
 

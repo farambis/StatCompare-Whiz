@@ -24,7 +24,7 @@
  </ul>
 </div>
 
-<h2 id="PPC-intro">The Pretest-posttest-control design</h1>  
+<h2 id="PPC-intro">The Pretest-posttest-control design</h2>  
 
 The pretest-posttest-control (PPC) design, also know as the pretest-posttest control-group design or the independent groups pretest-posttest (IGPP) design amongst other synonyms entails the random/quasirandom assignement of research participants to one of two conditions(e.g., a treatment or a control condition; a novel treatment and a gold-standard treatment condition; etc.)  and the measurement of an outcome variable at two points in time (i.e., both prior to and after treatment) (Morris, 2008).  
 
@@ -300,6 +300,7 @@ Morris (2008) termed this estimator $d_{PPC2}$. Since we are referring to the bi
 <h4>Mathematical details of the implemented confidence interval procedure</h4>   
 
 Same as for $d_{PPC,\,pooled-pre}$ Morris (2008) details the derivation of the theoretical sampling distribution of $g_{PPC,\,pooled-pre}$. Both the sampling variance formula given by Morris (2008) as well as the implemented delta-method approximation suggested by Pustejovsky (2016) assume homogeneity of variances across populations and times of measurement as well as a common correlation of pre- and posttest scores in both populations! The estimate of the sampling variance is given by:
+
 
 $$\widehat{Var}(g_{PPC,\,pooled-pre}) = \widehat{Var}(J(\nu)d_{PPC,\,pooled-pre}) = J(\nu)^2\widehat{Var}(d_{PPC,\,pooled-pre}) = J(\nu)^2\frac{2(1-r_p)(n_a+n_b)}{n_an_b} + \frac{d_{PPC,\,pooled-pre}}{2\nu}$$  
 
