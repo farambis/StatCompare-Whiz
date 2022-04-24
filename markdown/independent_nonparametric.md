@@ -102,62 +102,211 @@ and $median_{pre}$ being the median of the prestest group.
 We could not identify a closed form formula for the confidence interval of this nonparametric effect size. Thus, a $1 - \alpha$ percentile bootstrap confidence interval is implemented exclusively.
 
 
-## Standardized Median differences 
-Standardized Median differences can also provide valuable insights into the differences between groups and is calculated as follows (Grissom & Kim, 2012): 
-$$\hat\delta =  \frac{Mdn_a - Mdn_b}{Mdn_{a|b}}$$
-with $Mdn_a$ being the Median of group a, $Mdn_b$ being the median of group b and $Mdn_{a|b}$ depending on the median standardization between the two groups.
-We could not identify a closed form formula for the confidence interval of this nonparametric effect size. Thus, a $1 - \alpha$ percentile bootstrap confidence interval is implemented exclusively.
-### Absolute Deviation from the median
+<h2 id="IG_NP_SMD> Standardized Median differences </h2>
+
+A Standardized Median difference can also provide valuable insights into differences between groups and is calculated as follows (Grissom & Kim, 2012): 
+
+$$\hat\delta =  \frac{Mdn_a - Mdn_b}{S_{a|b}}$$
+
+with $Mdn_a$ being the Median of group a, $Mdn_b$ being the median of group b and $S_{a|b}$ being the standardiser, which is some measure of variability of the baseline/control group (e.g., the median absolute  deviation of a gold standard treatment).
+
+For neither of the three standardised median differences described below were we able to identify a closed form formula for the confidence intervals associated with them. Thus, $1 - \alpha$ percentile bootstrap confidence intervals are implemented for these estimators exclusively.  
+  
+  
+  
+<h3 id="IG_NP_MAD"> Standardised by the \( MAD \) </h3>  
+
 The difference in Medians can be standardized by the Median Absolute Deviation (MAD) of the baseline/control group. 
 Then the median difference is calculated with the following formula(Grissom & Kim, 2012):
+
 $$\hat\delta =  \frac{Mdn_a - Mdn_b}{MAD_{a|b}}$$
-with MAD being
+
+with MAD being: 
+
 $$MAD = median(|X_i - median(X_i)|)$$
-The MAD is more robust to outliers than the standard deviation and has a lower sampling variance.
-### Difference in medians standardized by .75 RIQ
-The difference in medians can also be standardized by $.75R_{IQ}$ (Grissom & Kim, 2012):
+
+The MAD is more robust to outliers than the standard deviation and has a lower sampling variance.  
+  
+  
+  
+  
+<h3 id="IG_NP_RIQ"> Standardised by \(.75 \cdot R_{IQ}\) </h3>  
+
+The difference in medians can also be standardized by $.75 \cdot R_{IQ}$ (Grissom & Kim, 2012):
+
 $$\hat\delta = \frac{Mdn_a - Mdn_b}{.75R_{IQ{a|b}}}$$
-which is more outlier resistant than the standard deviation and at the same time approximates the standard devation - under normality - very well(Grissom & Kim, 2005).
-### Biweight Standard Deviation
+
+which is more outlier resistant than the standard deviation and at the same time approximates the standard devation - under normality - very well(Grissom & Kim, 2005).  
+  
+  
+  
+  
+<h3 id="IG_NP_bw"> Standardised by the Biweight Standard Deviation </h3>
+
 Differences in medians can be standardized by the biweight standard deviation of the control or baseline group (Grissom & Kim, 2005):
+
 $$\hat\delta = \frac{Mdn_a - Mdn_b}{S_{bw_{a|b}}}$$
+
 with $s_{bw_{a|b}}$ being 
+
 $$s_{bw_{a|b}} = \frac{\sqrt{n}\sqrt{\sum{a_i(X_i - median(X_i))^2(1-Y_{i}^{2}}}}{|\sum{a_i(1-1-Y_{i}^{2}}(1-5Y_{i}^{2})}$$
+
 with $Y_i$ and $a_i$ being
-$$ Y_i = \frac{X_i-median(X_i)}{9MAS}$$
-$$a_i = \{_{1, if |Y_i < 1}^{0, if |Y_i| \geq{1}}$$
+$$ Y_i = \frac{X_i-median(X_i)}{9MAD}$$
+$$a_i = \{_{1, \, if \, |Y_i| < 1}^{0, \, if \, |Y_i| \geq{1}}$$
+  
+  
+  
+  
+<h2 id="IG_NP_dGb"> Nonparametric Glass \( d_{G,\,b}\)</h2>
 
-## Nonparametric Glass d 
-A nonparametric version of Glass' $d_G$ is described by Kraemer and Andrews (1982) as well as by Hedges and Olkin (1985):
-$$ \hat\gamma_{b} = \Phi^{-1}(p_{b})$$
-with $p_{b}$ being
-$$ p_{a} = \frac{x < median(y)}{n} $$
-the proportion of group b measurements that are lower than the median of the group a measurements. Thus, $\hat{\gamma_b}$ is the $p_b$-quantile of the standard normal distribution. When the observations are independent and normally distributed, $\hat{\gamma_b}$ is an estimate of the population effect size 
-$$\Delta = \frac{\mu_a - \mu_b}{\sigma_b}$$
-When n is small $p_{a|b}$ might be equal to 0 or 1. To avoid consequently extreme effect sizes  $p_{a|b}$ is set to $\frac{1}{n_{a|b}+1}$  or  $\frac{n_{a|b}}{n_{a|b}+1}$ respectively in such cases.
-For further details, the reader is advised to consult Kraemer and Andrews (1982) as well as Hedges and Olkin (1985).
-We could not identify a closed form formula for the confidence interval of this nonparametric effect size. Thus, a $1 - \alpha$ percentile bootstrap confidence interval is implemented exclusively.
+A nonparametric version of Glass' $d_{G,\,b}$ is described by Hedges and Olkin (1985):  
 
-## Nonparametric Tail Ratio
+$$\hat\gamma_{b}^{\ast} = \Phi^{-1}(q_{b}^{\ast})$$
 
-## Nonparametric Variance Ratio
+where $q_{b}^{\ast}$ is given by:  
 
-Browne, R. H. (2010). *The t-test p value and its relationship to the effect size and P (X> Y)*. The American Statistician, 64(1), 30-33.
+$$ q_{b}^{\ast} = \frac{x_b < median(x_a)}{n_b} $$
 
-Cliff, N. (1993). *Dominance statistics: Ordinal analyses to answer ordinal questions.* Psychological bulletin, 114(3), 494--509. <https://doi.org/10.1037/0033-2909.114.3.494>
+Thus, $q_{b}^{\ast}$ is the proportion of group b measurements that are lower than the median of the group a measurements. Consequently, $\hat\gamma_{b}^{\ast}$ is the $q_{b}^{\ast}$-quantile of the standard normal distribution.
+The reason $\hat\gamma_{b}^{\ast}$ can be considered a nonparametric version of Glass' $d_{G,\,b}$ is owed to the fact that When the observations are independenty normally distributed, $\hat\gamma_{b}^{\ast}$ is an estimator of the population effect size $\Delta_b = \frac{\mu_a - \mu_b}{\sigma_b}$. This is the same population effect estimated by $d_{G,\,b}$.  
 
-Cohen, J. (1988). *Statistical Power Analysis for the Behavioral Sciences* (2nd ed.). Routledge. <https://doi.org/10.4324/9780203771587>
+It should be noted that Hedges and Olkin (1985) denoted this estimator as $\hat\gamma_{1}^{\ast}$. The subscript has been changed from $1$ to $b$ in order to match the used subscript with those used for other effect sizes in this documentation.    
 
-Del Giudice, M. (2019). *Measuring sex differences and similarities*. Gender and sexuality development: Contemporary theory and research.
+When n is small $q_{b}^{\ast}$ might be equal to 0 or 1. To avoid consequently extreme effect sizes  $q_{b}^{\ast}$ is set to $\frac{1}{n_{b}+1}$  or  $\frac{n_{b}}{n_{b}+1}$ respectively in such cases.
+For further details, the reader is advised to consult Hedges and Olkin (1985).  
 
-Feng, D. (2007). *Robustness and power of ordinal d for paired data*. Real data analysis, 163-183.
+We could not identify a closed form formula for the confidence interval of this nonparametric effect size. Thus, a $1 - \alpha$ percentile bootstrap confidence interval is implemented exclusively.  
+  
+  
+  
+  
+<h2 id="IG_NP_dGa"> Nonparametric Glass \( d_{G,\,a}\)</h2>
+  
+A nonparametric version of Glass' $d_{G,\,a}$ is described by Hedges and Olkin (1985):  
+
+$$\hat\gamma_{a}^{\ast} = \Phi^{-1}(q_{a}^{\ast})$$
+
+where $q_{a}^{\ast}$ is given by:  
+
+$$ q_{a}^{\ast} = \frac{x_a > median(x_b)}{n_a} $$
+
+Thus, $q_{a}^{\ast}$ is the proportion of group a measurements that are larger than the median of the group b measurements. Consequently, $\hat\gamma_{a}^{\ast}$ is the $q_{a}^{\ast}$-quantile of the standard normal distribution.
+The reason $\hat\gamma_{a}^{\ast}$ can be considered a nonparametric version of Glass' $d_{G,\,a}$ is owed to the fact that when the observations are independently normally distributed, $\hat\gamma_{a}^{\ast}$ is an estimator of the population effect size $\Delta_a = \frac{\mu_a - \mu_b}{\sigma_a}$. This is the same population effect estimated by $d_{G,\,a}$.  
+If the scores are normally distributed and the population a and population b variances are identical, much like Glass' $d_{G,\,b}$ and $d_{G,\,a}$, $\hat\gamma_{b}^{\ast}$ and $\hat\gamma_{a}^{\ast}$ estimate the same population effect $\delta = \frac{\mu_a - \mu_b}{\sigma}$ with $\sigma$ being the common populaiton standard deviation of groups a and b.  
+
+It should be noted that Hedges and Olkin (1985) denoted this estimator as $\hat\gamma_{2}^{\ast}$. The subscript has been changed from $2$ to $a$ in order to match the used subscript with those used for other effect sizes in this documentation.  
+
+When n is small $q_{a}^{\ast}$ might be equal to 0 or 1. To avoid consequently extreme effect sizes  $q_{a}^{\ast}$ is set to $\frac{1}{n_{a}+1}$  or  $\frac{n_{a}}{n_{a}+1}$ respectively in such cases.
+For further details, the reader is advised to consult Hedges and Olkin (1985).  
+
+We could not identify a closed form formula for the confidence interval of this nonparametric effect size. Thus, a $1 - \alpha$ percentile bootstrap confidence interval is implemented exclusively.  
+  
+  
+  
+  
+<h2 id="IG_NP_TR"> Nonparametric Tail Ratio </h2>
+
+For a detailed discussion of various possible use cases as well as of the interpretation of the tail ratio effect size please consult the documentation page of the "parametric mode" of the "independent samples design" menu item.  
+
+The tail ratio can be thought of as a risk ratio by considering scores below/above a cutoff value as "successes"/"hits" and scores above/below a cutoff as "failures"/"misses". The number of "hits" in group a is binomially distributed with parameters $n_a$ and $p_a$, where $p_a$ is the proportion of scores in population a below/above a cutoff. Conversely, the number of "hits" in group b is also binomially distributed with parameters $n_b$ and $p_b$, where $p_b$ is the proportion of scores in population b below/above a cutoff. The population tail ratio for a given cutoff value and region of interest is thus the ratio:  
+
+$$\theta = \frac{p_{a|b}}{p_{b|a}}$$
+
+The observed data can be thought of as 2 x 2 table of the following form:  
+
+| Group | hits | misses | sum |
+|-------|------|--------|-----|
+|a|$n_{11}$|$n_{12}$|$n_{1.}$ |
+|b|$n_{21}$|$n_{22}$|$n_{2.}$ |
+
+The point estimate of the population tail ratio can be written as:  
+
+$$\hat{\theta} = \frac{\hat{p}_{a|b}}{\hat{p}_{b|a}}$$
+
+with $\hat{p}_a = \frac{n_{11}}{n_{1.}}$ and $\hat{p}_b = \frac{n_{21}}{n_{2.}}$.  
+
+The cell frequencies are determined as the number of observed scores below/above a cutoff *t*. No assumption is made regarding the underlying distribution of the scores.  
+When "hits" are defined as scores below *t*:  
+
+- $n_{11}$ is computed as: $n_{11} = \sum_{i=1}^{n_{1.}}I_{\{x \leq t\}}(x_{a_i})$  
+- $n_{21}$ is computed as: $n_{21} = \sum_{i=1}^{n_{2.}}I_{\{x \leq t\}}(x_{b_i})$  
+
+with 
+
+$$ I_{\{x \leq t\}}(x) = \begin{cases}
+    1 & \text{if} \qquad x \leq t \\
+    0 & \text{if} \qquad x \gt t 
+   \end{cases}
+$$
+
+and when "hits" are defined as scores above *t*:  
+
+- $n_{11}$ is computed as: $n_{11} = \sum_{i=1}^{n_{1.}}I_{\{x \geq t\}}(x_{a_i})$  
+- $n_{21}$ is computed as: $n_{21} = \sum_{i=1}^{n_{2.}}I_{\{x \geq t\}}(x_{b_i})$  
+
+with 
+
+$$ I_{\{x \geq t\}}(x) = \begin{cases}
+    1 & \text{if} \qquad x \geq t \\
+    0 & \text{if} \qquad x \lt t 
+   \end{cases}
+$$
+
+With $n_{11}, n_{21}, n_{1.}$ and $n_{2.}$ defined and computed the ratio of the binomial proportions $\hat{p}_a$ and $\hat{p}_b$ and consequently the point estimate of the tail ratio can be determined.  
+
+An approximate confidence interval is implemented for both the parametric and the non-parametric analyses. Fagerland et al. (2015) analysed multiple approximate and exact confidence intervals for the ratio of binomial proportions. While none of the assessed procedures yielded appropriate coverage rates across the various conditions the authors examined, the Koopman confidence interval (Koopman, 1984) performed decently across most of the studied scenarios and has been recommended by the authors. However, Fagerland et al. (2015) emphasize that while the Koopman interval is in general closest to the nominal level, it can be somewhat liberal (average coverage probabilities between 0.92 and 0.95 for an $1 - \alpha$ level of 0.95) for combinations of unequal sample sizes and small population proportions ($p_{a|b} \leq 0.2$). Koopman (1984) described an iterative search algorithm for finding the confidence limit, however Nam (1995) found a closed form formula, which has been implemented for this application. Since both the iterative search and the closed form solution are quite elaborate and have been described in detail in the cited literature, neither is described in detail here.  
+
+Additionally, an $1 - \alpha$ percentile bootstrap CI is computed.  
+  
+  
+  
+  
+<h2 id="IG_NP_VR"> Nonparametric Variance Ratio </h2>
+
+The population effect of interest as well as the implemented point estimate of the population effect are identical to the ones detailed in the documentation page of the "parametric educational" and the "parametric raw data" modes. The only difference to the implementation for the "parametric" modes is the implemented confidence interval procedure detailed here.  
+
+Bonett (2006) modified a confidence interval procedure by Shoemaker (2003) which is based on the Layard test for homogeneity of variances (Layard, 1973) and analysed its performance for both normal and non-normal populations. The Bonett confidence interval procedure performed well when samples were drawn from normal (average coverage rates ranging from 0.951 to 0.958 for an $\alpha$-level of 0.95) as well as from moderately non-normal distributions (average coverage rates ranging from 0.925 to 0.969 for an $\alpha$-level of 0.95) (Bonett, 2006).  
+
+Banga and Fox (2013) further improved upon the Bonett procedure and compared the performance of their confidence interval to other robust confidence intervals. The Banga-Fox-Bonett confidence interval procedure yielded the most stable coverage probabilities when sampling data from a wide variety of distributions.  
+
+The Banga-Fox-Bonett confidence interval relies on iterative search and thus might result in an error under some conditions. Consequently, the following approach has been employed for the implementation of a "non-parametric" confidence interval for the variance ratio:  
+
+- the Banga-Fox-Bonett confidence interval is reported if the iterative search of the confidence limits does not result in an error. The interval is computed as described by Banga and Fox (2013).  
+- in case the iterative search does result in an error the user of the app receives a corresponding notification in the user interface and the Bonett confidence interval is reported. The Bonett confidence interval is computed as described by Bonett (2006).  
+
+If the sample of either group a or that of group b consists of less than 4 observations, NAs are returned as confidence limits due to the nature of the formula for the implemented confidence intervals. Neither the computation of the Banga-Fox-Bonett nor of the Bonett confidence interval is described in detail here as they both are rather elaborate - the reader is advised to study the cited literature for further details.  
+
+Additionally, an $1 - \alpha$ percentile bootstrap CI is computed.  
+  
+  
+  
+<hr></hr>
+
+<h1 id="IG_NP_refs"> References </h1>  
+  
+Banga, s. J., & Fox, G. D. (2013). Bonett's method. State College, PA: Minitab, Inc. <https://support.minitab.com/en-us/minitab/21/media/pdfs/translate/Bonetts_Method_Two_Variances.pdf>  
+
+Bonett, D. G. (2006). Robust confidence interval for a ratio of standard deviations. *Applied Psychological Measurement*, *30*(5), 432--439. <https://doi.org/10.1177/0146621605279551>  
+
+Browne, R. H. (2010). *The t-test p value and its relationship to the effect size and P (X> Y)*. The American Statistician, 64(1), 30-33. <https://doi.org/10.1198/tast.2010.08261>  
+
+Cliff, N. (1993). *Dominance statistics: Ordinal analyses to answer ordinal questions.* Psychological bulletin, 114(3), 494--509. <https://doi.org/10.1037/0033-2909.114.3.494>  
+
+Cohen, J. (1988). *Statistical Power Analysis for the Behavioral Sciences* (2nd ed.). Routledge. <https://doi.org/10.4324/9780203771587>  
+
+Del Giudice, M. (2019). *Measuring sex differences and similarities*. Gender and sexuality development: Contemporary theory and research.  
+
+Fagerland, M. W., Lydersen, S., & Laake, P. (2015). Recommended confidence intervals for two independent binomial proportions. *Statistical Methods in Medical Research*, *24*(2), 224--254. <https://doi.org/10.1177/0962280211415469>  
+
+Feng, D. (2007). *Robustness and power of ordinal d for paired data*. Real data analysis, 163-183.  
 
 Grissom, R. J., & Kim, J. J. (2005). *Effect sizes for research: Univariate and multivariate applications* (2nd ed.). Taylor and Francis Group.  
 
-Grissom, R. J., & Kim, J. J. (2012). *Effect sizes for research: Univariate and multivariate applications* (2nd ed.). Taylor and Francis Group.
+Grissom, R. J., & Kim, J. J. (2012). *Effect sizes for research: Univariate and multivariate applications* (2nd ed.). Taylor and Francis Group.  
 
-Hedges, L. V., & Olkin, I. (1985). *Statistical methods for meta-analysis*. Academic Press
+Hedges, L. V., & Olkin, I. (1985). *Statistical methods for meta-analysis*. Academic Press.  
 
-Kraemer, H. C., & Andrews, G. (1982). *A nonparametric technique for meta-analysis effect size calculation*. Psychological bulletin, 91(2), 404.
+Kraemer, H. C., & Andrews, G. (1982). *A nonparametric technique for meta-analysis effect size calculation*. Psychological bulletin, 91(2), 404. <https://psycnet.apa.org/doi/10.1037/0033-2909.91.2.404>  
 
-Schmid, F., & Schmidt, A. (2006). *Nonparametric estimation of the coefficient of overlapping—theory and empirical application*. Computational statistics & data analysis, 50(6), 1583-1596.
+Schmid, F., & Schmidt, A. (2006). *Nonparametric estimation of the coefficient of overlapping—theory and empirical application*. Computational statistics & data analysis, 50(6), 1583-1596. <https://doi.org/10.1016/j.csda.2005.01.014>  
