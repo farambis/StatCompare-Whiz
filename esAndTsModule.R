@@ -100,7 +100,16 @@ non_parametric_tail_ratio_cutoff_error <- function(value, min, max) {
   }
 }
 
-createDownloadWidget <- function(namespace, selectedEs, inputValidator, name) {
+createDownloadWidgetRaw <- function(namespace, design, selectedEs, inputValidator, name, INDEX, x, y) {
+  renderUI({
+    ns <- namespace
+        req(isTruthy(x()) && isTruthy(y()) || isTruthy(x()) && isTruthy(INDEX()), selectedEs(), inputValidator$is_valid())
+        if (design == "mixed") req(isTruthy(x()) && isTruthy(y()) && isTruthy(INDEX()))
+        downloadButton(ns(name), class = "btn-primary")
+  })
+}
+
+createDownloadWidgetEducational <- function(namespace, selectedEs, inputValidator, name) {
   renderUI({
     ns <- namespace
     req(selectedEs(), inputValidator$is_valid())
@@ -253,7 +262,7 @@ contains <- function(list1, list2) {
   return(FALSE)
 }
 
-esAndTsRawDataServer <- function(id, assumption, dat, INDEX, x, y) {
+esAndTsRawDataServer <- function(id, design, assumption, INDEX, x, y) {
   moduleServer(id,
                function(input, output, session) {
                  selectedEs <- checkboxGroupServer("esCheckboxGroup")
@@ -294,9 +303,9 @@ esAndTsRawDataServer <- function(id, assumption, dat, INDEX, x, y) {
                      fmt_number(-1, decimals = 2))
                  })
 
-                 output$downloadEsWidget <- createDownloadWidget(session$ns, selectedEs, esTsModuleIv, "downloadEs")
+                 output$downloadEsWidget <- createDownloadWidgetRaw(session$ns, design, selectedEs, esTsModuleIv, "downloadEs", INDEX, x, y)
                  output$downloadEs <- csvDownloadHandler("effect_size.csv", getEsDataframe)
-                 output$downloadTsWidget <- createDownloadWidget(session$ns, selectedTs, esTsModuleIv, "downloadTs")
+                 output$downloadTsWidget <- createDownloadWidgetRaw(session$ns, design, selectedTs, esTsModuleIv, "downloadTs", INDEX, x, y)
                  output$downloadTs <- csvDownloadHandler("test_statistic.csv", getTsDataframe)
 
                  bootstrapNotification(selectedEs)
@@ -349,9 +358,9 @@ esAndTsEducationalServer <- function(id, mean1, standardDeviation1, sampleSize1,
                    downloadButton(ns("downloadEs"), class = "btn-primary")
                  })
 
-                 output$downloadEsWidget <- createDownloadWidget(session$ns, selectedEs, esTsModuleIv, "downloadEs")
+                 output$downloadEsWidget <- createDownloadWidgetEducational(session$ns, selectedEs, esTsModuleIv, "downloadEs")
                  output$downloadEs <- csvDownloadHandler("effect_size.csv", getEsDataframe)
-                 output$downloadTsWidget <- createDownloadWidget(session$ns, selectedTs, esTsModuleIv, "downloadTs")
+                 output$downloadTsWidget <- createDownloadWidgetEducational(session$ns, selectedTs, esTsModuleIv, "downloadTs")
                  output$downloadTs <- csvDownloadHandler("test_statistic.csv", getTsDataframe)
                  referenceGroup <- reactive(input$referenceGroup)
                  tail <- reactive(input$tail)
