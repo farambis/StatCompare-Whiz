@@ -37,7 +37,7 @@ esMainPanelRawDataServer <- function(id, assumption, dat, index, x, y, design) {
 
                  summaryStatisticsTableServer("summaryStatisticsTable", design, x, index, y)
 
-                 esAndTsRawDataServer("esAndTs", assumption, dat, index, x, y)
+                 esAndTsRawDataServer("esAndTs", design, assumption, index, x, y)
                  plotServer("plotting", mode = "rawData", x = x, INDEX = index, y = y)
                })
 }

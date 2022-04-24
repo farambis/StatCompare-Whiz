@@ -68,13 +68,34 @@ dataManagerServer <-
     moduleServer(
       id = id,
       module = function(input, output, session) {
+
         data <- reactive({
           req(input$file)
           read.table(input$file$datapath,
                      sep = ",",
                      header = TRUE)
-
         })
+
+        dataManagerIv <- InputValidator$new()
+        dataManagerIv$enable()
+        dataManagerIv$add_rule("file", sv_required())
+        dataManagerIv$add_rule("inputDataX", sv_required())
+
+        dependentIv <- InputValidator$new()
+        dependentIv$add_rule("inputDataY", sv_required())
+        dependentIv$condition(~ design %in% c("depGrps", "mixed"))
+        dataManagerIv$add_validator(dependentIv)
+
+        independentIv <- InputValidator$new()
+        independentIv$add_rule("inputDataIndex", sv_required())
+        independentIv$add_rule("inputDataIndex", function(value){
+              if (length(unique(data()[value[[1]]][[1]]))!=2) {
+                paste0("The group variable has to contain exactly two different values")
+              }
+          })
+        independentIv$condition(~ design %in% c("indGrps", "mixed"))
+        dataManagerIv$add_validator(independentIv)
+
         
         observeEvent(eventExpr = data(),
                      handlerExpr = {
@@ -115,8 +136,7 @@ dataManagerServer <-
         
         if (design %in% c("indGrps", "mixed")) {
           inputDataVariables[["inputDataIndex"]] <- reactive({
-            req(data())
-            req(input$inputDataIndex)
+            req(dataManagerIv$is_valid())
             data()[[input$inputDataIndex]]
           })
         } else {
@@ -124,15 +144,13 @@ dataManagerServer <-
         }
         
         inputDataVariables[["inputDataX"]] <- reactive({
-          req(data())
-          req(input$inputDataX)
+          req(dataManagerIv$is_valid())
           data()[[input$inputDataX]]
         })
         
         if (design %in% c("depGrps", "mixed")) {
           inputDataVariables[["inputDataY"]] <- reactive({
-            req(data())
-            req(input$inputDataY)
+            req(dataManagerIv$is_valid())
             data()[[input$inputDataY]]
           })
         } else {

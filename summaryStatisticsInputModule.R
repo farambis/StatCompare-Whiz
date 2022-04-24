@@ -14,19 +14,19 @@ numericInputGroup <-
       correlation = "r",
       standardDeviationDiff = "SD of difference scores"
     )
-    
+
     value <- switch(
       statistic,
       mean = 100,
       standardDeviation = 10,
       sampleSize = 20,
       correlation = 0.7,
-      standardDeviationDiff = 6
+      standardDeviationDiff = NULL
     )
-    
-    min <- ifelse(statistic == "correlation",-1, NA)
+
+    min <- ifelse(statistic == "correlation", -1, NA)
     max <- ifelse(statistic == "correlation", 1, NA)
-    
+
     nloop <- switch(
       statistic,
       mean = ifelse(design == "mixed", 4, 2),
@@ -35,9 +35,9 @@ numericInputGroup <-
       correlation = ifelse(design == "mixed", 2, 1),
       standardDeviationDiff = ifelse(design == "mixed", 2, 1)
     )
-    
+
     IDs <- vapply(paste0(statistic, 1:nloop), ns, character(1))
-    
+
     numericInputs <-
       lapply(
         IDs,
@@ -48,7 +48,7 @@ numericInputGroup <-
         max = max
       )
     names(numericInputs) <- paste0(statistic, 1:nloop)
-    
+
     return(numericInputs)
   }
 
@@ -73,7 +73,7 @@ header <- function(design = c("indGrps", "depGrps", "mixed"),
                group,
                " ",
                measurement
-               )
+        )
       )
     )
   )
@@ -107,23 +107,23 @@ uiColumn <-
 summaryStatisticsInput <- function(id,
                                    design = c("indGrps", "depGrps", "mixed", "multivariate")) {
   ns <- NS(namespace = id)
-  
+
   statistic <- c("mean", "standardDeviation", "sampleSize")
-  
+
   if (design != "indGrps") {
     statistic <- c(statistic, "correlation", "standardDeviationDiff")
   }
-  
+
   numericInputs <-
     lapply(statistic,
            numericInputGroup,
            ns = ns,
            design = design)
-  
+
   names(numericInputs) <- paste0(statistic, "s")
-  
+
   generatedUi <- tagList()
-  
+
   generatedUi$firstRow <- fluidRow(column(
     width = 6,
     uiColumn(
@@ -132,22 +132,26 @@ summaryStatisticsInput <- function(id,
       group = "a",
       info = "perGrp",
       firstInput = numericInputs$means$mean1,
-      secondInput = numericInputs$standardDeviations$standardDeviation1,
+      secondInput = numericInputs$
+        standardDeviations$
+        standardDeviation1,
       thirdInput = numericInputs$sampleSizes$sampleSize1
     )
   ),
-  column(
-    width = 6,
-    uiColumn(
-      design = design,
-      measurement = "Posttest",
-      group = ifelse(design == "indGrps", "b", "a"),
-      info = "perGrp",
-      firstInput = numericInputs$means$mean2,
-      secondInput = numericInputs$standardDeviations$standardDeviation2,
-      thirdInput = numericInputs$sampleSizes$sampleSize2
-    )
-  ))
+                                   column(
+                                     width = 6,
+                                     uiColumn(
+                                       design = design,
+                                       measurement = "Posttest",
+                                       group = ifelse(design == "indGrps", "b", "a"),
+                                       info = "perGrp",
+                                       firstInput = numericInputs$means$mean2,
+                                       secondInput = numericInputs$
+                                         standardDeviations$
+                                         standardDeviation2,
+                                       thirdInput = numericInputs$sampleSizes$sampleSize2
+                                     )
+                                   ))
   if (design != "indGrps") {
     generatedUi$secondRow <- fluidRow(column(
       width = 6,
@@ -159,10 +163,12 @@ summaryStatisticsInput <- function(id,
         info = "acrossGrps",
         firstInput = numericInputs$sampleSizes$sampleSize1,
         secondInput = numericInputs$correlations$correlation1,
-        thirdInput = numericInputs$standardDeviationDiffs$standardDeviationDiff1
+        thirdInput = numericInputs$
+          standardDeviationDiffs$
+          standardDeviationDiff1
       )
     ),
-    tags$hr())
+                                      tags$hr())
   }
   if (design == "mixed") {
     generatedUi$thirdRow <- fluidRow(column(
@@ -173,20 +179,24 @@ summaryStatisticsInput <- function(id,
         group = "b",
         info = "perGrp",
         firstInput = numericInputs$means$mean3,
-        secondInput = numericInputs$standardDeviations$standardDeviation3
+        secondInput = numericInputs$
+          standardDeviations$
+          standardDeviation3
       )
     ),
-    column(
-      width = 6,
-      uiColumn(
-        design = design,
-        measurement = "Posttest",
-        group = "b",
-        info = "perGrp",
-        firstInput = numericInputs$means$mean4,
-        secondInput = numericInputs$standardDeviations$standardDeviation4
-      )
-    ))
+                                     column(
+                                       width = 6,
+                                       uiColumn(
+                                         design = design,
+                                         measurement = "Posttest",
+                                         group = "b",
+                                         info = "perGrp",
+                                         firstInput = numericInputs$means$mean4,
+                                         secondInput = numericInputs$
+                                           standardDeviations$
+                                           standardDeviation4
+                                       )
+                                     ))
     generatedUi$fourthRow <- fluidRow(column(
       width = 6,
       offset = 3,
@@ -197,16 +207,66 @@ summaryStatisticsInput <- function(id,
         info = "acrossGrps",
         firstInput = numericInputs$sampleSizes$sampleSize2,
         secondInput = numericInputs$correlations$correlation2,
-        numericInputs$standardDeviationDiffs$standardDeviationDiff2
+        numericInputs$
+          standardDeviationDiffs$
+          standardDeviationDiff2
       )
     ))
   }
   return(generatedUi)
 }
 
+validateNonNegative <- function(value) {
+  if (value < 0) {
+    paste0("Standard Deviation must not be negative")
+  }
+}
+
+validateNotGreaterThen <- function(value, boundary) {
+  if (value > boundary) {
+    paste0("Value must not be higher than ", boundary, " or lower than ", -boundary)
+  }
+}
+
 summaryStatisticsServer <- function(id) {
   moduleServer(id,
                function(input, output, session) {
+
+
+                 summaryStatisticIv <- InputValidator$new()
+                 summaryStatisticIv$enable()
+                 summaryStatisticIv$add_rule("mean1", sv_required())
+                 summaryStatisticIv$add_rule("standardDeviation1", sv_required())
+                 summaryStatisticIv$add_rule("standardDeviation1", function(value) validateNonNegative(value))
+                 summaryStatisticIv$add_rule("sampleSize1", sv_required())
+                 summaryStatisticIv$add_rule("sampleSize1", function(value) validateNonNegative(value))
+                 summaryStatisticIv$add_rule("correlation1", sv_required())
+                 summaryStatisticIv$add_rule("correlation1", function(value) validateNotGreaterThen(abs(value), 1))
+                 summaryStatisticIv$add_rule("standardDeviationDiff1", function(value) {
+                   if (!is.null(value) && !is.na(value)) {
+                     validateNonNegative(value)
+                   }
+                 })
+                 summaryStatisticIv$add_rule("mean2", sv_required())
+                 summaryStatisticIv$add_rule("mean1", sv_required())
+                 summaryStatisticIv$add_rule("standardDeviation2", sv_required())
+                 summaryStatisticIv$add_rule("standardDeviation2", function(value) validateNonNegative(value))
+                 summaryStatisticIv$add_rule("sampleSize2", sv_required())
+                 summaryStatisticIv$add_rule("sampleSize2", function(value) validateNonNegative(value))
+                 summaryStatisticIv$add_rule("mean3", sv_required())
+                 summaryStatisticIv$add_rule("standardDeviation3", sv_required())
+                 summaryStatisticIv$add_rule("standardDeviation3", function(value) validateNonNegative(value))
+                 summaryStatisticIv$add_rule("mean4", sv_required())
+                 summaryStatisticIv$add_rule("standardDeviation4", sv_required())
+                 summaryStatisticIv$add_rule("standardDeviation4", function(value) validateNonNegative(value))
+                 summaryStatisticIv$add_rule("correlation2", sv_required())
+                 summaryStatisticIv$add_rule("correlation2", function(value) validateNotGreaterThen(abs(value), 1))
+                 summaryStatisticIv$add_rule("standardDeviationDiff2", function(value) {
+                   if (!is.null(value) && !is.na(value)) {
+                     validateNonNegative(value)
+                   }
+                 })
+
                  summaryStatisticInputs <- list(
                    mean1 = reactive(input$mean1),
                    standardDeviation1 = reactive(input$standardDeviation1),
