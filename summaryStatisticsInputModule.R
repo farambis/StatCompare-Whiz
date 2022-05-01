@@ -218,7 +218,7 @@ summaryStatisticsInput <- function(id,
 
 validateNonNegative <- function(value) {
   if (value < 0) {
-    paste0("Standard Deviation must not be negative")
+    paste0("Value must not be negative")
   }
 }
 

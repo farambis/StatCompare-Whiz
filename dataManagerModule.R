@@ -17,14 +17,14 @@ dataManagerUI <-
            acceptedFormats,
            design = c("indGrps", "depGrps", "mixed")) {
     ns <- NS(namespace = id)
-    
+
     dataManagerIO <- tagList()
-    
-    
+
+
     dataManagerIO[["fileInput"]] <- fileInput(inputId = ns("file"),
                                               label = "Upload your datafile",
                                               accept = acceptedFormats)
-    
+
     if (design %in% c("indGrps", "mixed")) {
       dataManagerIO[["selectInputGroup"]] <-
         selectInput(
@@ -33,7 +33,7 @@ dataManagerUI <-
           choices = NULL
         )
     }
-    
+
     dataManagerIO[["selectInputData"]] <-
       selectInput(
         inputId = ns("inputDataX"),
@@ -43,8 +43,8 @@ dataManagerUI <-
         ),
         choices = NULL
       )
-    
-    
+
+
     if (design %in% c("depGrps", "mixed")) {
       dataManagerIO[["selectInputPostdata"]] <-
         selectInput(
@@ -52,13 +52,11 @@ dataManagerUI <-
           label = "Select posttest measure:",
           choices = NULL
         )
-      
+
     }
-    
-    
+
     return(dataManagerIO)
   }
-
 
 
 dataManagerServer <-
@@ -96,7 +94,7 @@ dataManagerServer <-
         independentIv$condition(~ design %in% c("indGrps", "mixed"))
         dataManagerIv$add_validator(independentIv)
 
-        
+
         observeEvent(eventExpr = data(),
                      handlerExpr = {
                        if (design %in% c("indGrps", "mixed")) {
@@ -107,7 +105,7 @@ dataManagerServer <-
                            selected = character()
                          )
                        }
-                       
+
                        updateSelectInput(
                          session,
                          "inputDataX",
@@ -115,7 +113,7 @@ dataManagerServer <-
                                                type = is.numeric),
                          selected = character()
                        )
-                       
+
                        if (design %in% c("depGrps", "mixed")) {
                          updateSelectInput(
                            session,
@@ -126,14 +124,14 @@ dataManagerServer <-
                          )
                        }
                      })
-        
+
         inputDataVariables <- list()
-        
+
         inputDataVariables[["data"]] <- reactive({
           req(data())
           data()
         })
-        
+
         if (design %in% c("indGrps", "mixed")) {
           inputDataVariables[["inputDataIndex"]] <- reactive({
             req(dataManagerIv$is_valid())
@@ -142,12 +140,12 @@ dataManagerServer <-
         } else {
           inputDataVariables[["inputDataIndex"]] <- reactiveVal(NULL)
         }
-        
+
         inputDataVariables[["inputDataX"]] <- reactive({
           req(dataManagerIv$is_valid())
           data()[[input$inputDataX]]
         })
-        
+
         if (design %in% c("depGrps", "mixed")) {
           inputDataVariables[["inputDataY"]] <- reactive({
             req(dataManagerIv$is_valid())
@@ -156,9 +154,9 @@ dataManagerServer <-
         } else {
           inputDataVariables[["inputDataY"]] <- reactiveVal(NULL)
         }
-        
+
         return(inputDataVariables)
       }
-      
+
     )
   }

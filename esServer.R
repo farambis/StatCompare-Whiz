@@ -1,29 +1,29 @@
 esServer <- function(input, output) {
-  
+
   #independent Groups
-  generalServer(id  = "independentGroupsParametricRawData",
+  generalServer(id = "independentGroupsParametricRawData",
                 design = "indGrps",
                 mode = "rawData")
   generalServer(id = "independentGroupsParametricEducational",
-                design = "indGrps", 
+                design = "indGrps",
                 mode = "educational")
-  generalServer(id = "independentGroupsNonparametric", 
-                design = "indGrps", 
-                mode = "rawData", 
+  generalServer(id = "independentGroupsNonparametric",
+                design = "indGrps",
+                mode = "rawData",
                 assumption = "nonparametric")
-  
+
   #dependent Groups
-  generalServer(id = "dependentGroupsParametricRawData", 
-                design = "depGrps", 
+  generalServer(id = "dependentGroupsParametricRawData",
+                design = "depGrps",
                 mode = "rawData")
-  generalServer(id = "dependentGroupsParametricEducational", 
-                design = "depGrps", 
+  generalServer(id = "dependentGroupsParametricEducational",
+                design = "depGrps",
                 mode = "educational")
-  generalServer(id = "dependentGroupsNonparametric", 
-                design = "depGrps", 
-                mode = "rawData", 
+  generalServer(id = "dependentGroupsNonparametric",
+                design = "depGrps",
+                mode = "rawData",
                 assumption = "nonparametric")
-  
+
   #mixed Design
   generalServer(id = "mixedDesignParametricRawData",
                 design = "mixed",
@@ -35,5 +35,11 @@ esServer <- function(input, output) {
                 design = "mixed",
                 mode = "rawData",
                 assumption = "nonparametric")
-  
+
+  #multivariate Design
+  generalServer(id = "multivariateEducational",
+                design = "multivariate",
+                mode = "educational",
+                assumption = "parametric")
+
 }

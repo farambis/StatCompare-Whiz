@@ -1,7 +1,7 @@
 source('sidebarPanelModule.R')
 source('mainPanel.R')
 
-generalUI <- function (id, acceptedFormat, design, mode, esChoices, tsChoices, plotChoices, description) {
+generalUI <- function(id, acceptedFormat, design, mode, esChoices, tsChoices, plotChoices, description) {
   ns <- NS(id)
   pageWithSidebar(
     headerPanel = "",
@@ -16,35 +16,37 @@ generalServer <- function(id, design, mode, assumption = "parametric") {
                function(input, output, session) {
                  sidebarPanelResult <-
                    sidebarPanelServer("sidebarPanel", design, mode)
-                 if (mode == "rawData") {
-                 MainPanelServer <-
-                   esMainPanelRawDataServer(
-                     "esMainPanel",
-                     assumption,
-                     sidebarPanelResult$data,
-                     sidebarPanelResult$inputDataIndex,
-                     sidebarPanelResult$inputDataX, 
-                     sidebarPanelResult$inputDataY,
-                     design
-                   )} 
+                 if (design == "multivariate" && mode == "educational") {
+                   MainPanelServer <- esMainPanelMultivariateEducationalServer("esMainPanel", sidebarPanelResult$means, sidebarPanelResult$covarianceMatrix, sidebarPanelResult$n1, sidebarPanelResult$n2)
+                 } else if (mode == "rawData") {
+                   MainPanelServer <-
+                     esMainPanelRawDataServer(
+                       "esMainPanel",
+                       assumption,
+                       sidebarPanelResult$data,
+                       sidebarPanelResult$inputDataIndex,
+                       sidebarPanelResult$inputDataX,
+                       sidebarPanelResult$inputDataY,
+                       design
+                     ) }
                  else {
-                   MainPanelEducationalServer <- 
+                   MainPanelEducationalServer <-
                      esMainPanelEducationalServer(
-                       "esMainPanel", 
-                       sidebarPanelResult$mean1, 
-                       sidebarPanelResult$standardDeviation1, 
-                       sidebarPanelResult$sampleSize1, 
-                       sidebarPanelResult$correlation1, 
-                       sidebarPanelResult$standardDeviationDiff1, 
-                       sidebarPanelResult$mean2, 
-                       sidebarPanelResult$standardDeviation2, 
-                       sidebarPanelResult$sampleSize2, 
-                       sidebarPanelResult$mean3, 
-                       sidebarPanelResult$standardDeviation3, 
-                       sidebarPanelResult$mean4, 
+                       "esMainPanel",
+                       sidebarPanelResult$mean1,
+                       sidebarPanelResult$standardDeviation1,
+                       sidebarPanelResult$sampleSize1,
+                       sidebarPanelResult$correlation1,
+                       sidebarPanelResult$standardDeviationDiff1,
+                       sidebarPanelResult$mean2,
+                       sidebarPanelResult$standardDeviation2,
+                       sidebarPanelResult$sampleSize2,
+                       sidebarPanelResult$mean3,
+                       sidebarPanelResult$standardDeviation3,
+                       sidebarPanelResult$mean4,
                        sidebarPanelResult$standardDeviation4,
-                       sidebarPanelResult$correlation2, 
+                       sidebarPanelResult$correlation2,
                        sidebarPanelResult$standardDeviationDiff2
-                     )}
+                     ) }
                })
 }

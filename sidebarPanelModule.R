@@ -1,5 +1,6 @@
 source(file = "dataManagerModule.R", local = TRUE)
 source(file = "summaryStatisticsInputModule.R", local = TRUE)
+source(file = "multivariateInput.R", local = TRUE)
 library(shiny)
 
 sidebarPanelUI <-
@@ -7,28 +8,31 @@ sidebarPanelUI <-
            acceptedFormats,
            design = c("indGrps", "depGrps", "mixed", "multivariate"),
            mode = c("educational", "rawData")) {
-    
+
     ns <- NS(namespace = id)
-    
+
     inputList <- tagList()
-    
+
     if (mode == "rawData") {
       inputList <-
         sidebarPanel(dataManagerUI(id = ns("uploadedData"),
                                    acceptedFormats = acceptedFormats,
                                    design = design))
+    } else if (mode == "educational" && design == "multivariate") {
+      inputList <- sidebarPanel(multivariateInputUI(id = ns("multivariateInput"), acceptedFormats = acceptedFormats))
     } else if (mode == "educational") {
       inputList <-
         sidebarPanel(summaryStatisticsInput(id = ns("summaryStatisticsInput"),
-                               design = design))
+                                            design = design))
     }
+
     return(inputList)
   }
 
 
 sidebarPanelServer <-
   function(id,
-           design = c("indGrps", "depGrps", "mixed"),
+           design = c("indGrps", "depGrps", "mixed", "multivariate"),
            mode = c("educational", "rawData")) {
     stopifnot(!is.reactive(design))
     stopifnot(!is.reactive(mode))
@@ -38,7 +42,10 @@ sidebarPanelServer <-
         if (mode == "rawData") {
           inputDataVariables <- dataManagerServer("uploadedData", design)
           return(inputDataVariables)
-        } else if(mode == "educational"){
+        } else if (mode == "educational" && design == "multivariate") {
+          inputValues <- multivariateInputServer("multivariateInput")
+          return(inputValues)
+        } else if (mode == "educational") {
           inputSummaryStatistics <- summaryStatisticsServer("summaryStatisticsInput")
           return(inputSummaryStatistics)
         }

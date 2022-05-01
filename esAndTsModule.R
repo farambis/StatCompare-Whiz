@@ -9,17 +9,17 @@ csvDownloadHandler <- function(filename, FUN) {
   )
 }
 
-nonparametricOptionsObserver <- function (selectedEs, session) observeEvent(selectedEs(), {
-    if (contains(selectedEs(), nonparametricOptions[!grepl("tail_ratio", nonparametricOptions)])) {
-      updateTabsetPanel(session,
-                        inputId = "parametricBool",
-                        selected = "parametricFALSE")
-    } else {
-      updateTabsetPanel(session,
-                        inputId = "parametricBool",
-                        selected = "parametricTRUE")
-    }
-  })
+nonparametricOptionsObserver <- function(selectedEs, session) observeEvent(selectedEs(), {
+  if (contains(selectedEs(), nonparametricOptions[!grepl("tail_ratio", nonparametricOptions)])) {
+    updateTabsetPanel(session,
+                      inputId = "parametricBool",
+                      selected = "parametricFALSE")
+  } else {
+    updateTabsetPanel(session,
+                      inputId = "parametricBool",
+                      selected = "parametricTRUE")
+  }
+})
 
 tailRatioOptionsObserver <- function(selectedEs, session) observeEvent(selectedEs(), {
   if (contains(selectedEs(), tailRatioOptions)) {
@@ -33,13 +33,25 @@ tailRatioOptionsObserver <- function(selectedEs, session) observeEvent(selectedE
   }
 })
 
+tailRatioMultivariateObserver <- function(selectedEs, session) observeEvent(selectedEs(), {
+  if (contains(selectedEs(), "tail_ratio_multivariate")) {
+    updateTabsetPanel(session,
+                      inputId = "tailRatioMultivariateBool",
+                      selected = "tailRatioMultivariateTRUE")
+  } else {
+    updateTabsetPanel(session,
+                      inputId = "tailRatioMultivariateBool",
+                      selected = "tailRatioMultivariateFALSE")
+  }
+})
+
 initializeInputValidators <- function(selectedEs, nonParametricTailRatioCutoffAllowedRange) {
   esTsModuleIv <- InputValidator$new()
   esTsModuleIv$enable()
   alpha_level_iv <- InputValidator$new()
   alpha_level_iv$add_rule("alpha", sv_required())
-  alpha_level_iv$add_rule("alpha", function(x){if(x < 0.00001 || x > 0.99999) paste0("Set \U03B1 to a value between 0.00001 and 0.99999")})
-  
+  alpha_level_iv$add_rule("alpha", function(x) { if (x < 0.00001 || x > 0.99999) paste0("Set \U03B1 to a value between 0.00001 and 0.99999") })
+
   nonparametric_iv <- InputValidator$new()
   nonparametric_iv$add_rule("kernel", sv_required())
   nonparametric_iv$condition(~contains(selectedEs(), nonparametricOptions[!grepl("tail_ratio", nonparametricOptions)]))
@@ -60,14 +72,19 @@ initializeInputValidators <- function(selectedEs, nonParametricTailRatioCutoffAl
   }
   tail_ratio_iv$condition(~contains(selectedEs(), tailRatioOptions))
 
+  tail_ratio_multivariate_iv <- InputValidator$new()
+  tail_ratio_multivariate_iv$add_rule("z", sv_required())
+  tail_ratio_multivariate_iv$condition(~contains(selectedEs(), "tail_ratio_multivariate"))
+
   # Add all child validators to plotModule_iv
   esTsModuleIv$add_validator(alpha_level_iv)
   esTsModuleIv$add_validator(nonparametric_iv)
   esTsModuleIv$add_validator(tail_ratio_iv)
-  return (esTsModuleIv)
+  esTsModuleIv$add_validator(tail_ratio_multivariate_iv)
+  return(esTsModuleIv)
 }
 
-non_parametric_tail_ratio_cutoff_range <- function(x = NULL, INDEX = NULL, y = NULL){
+non_parametric_tail_ratio_cutoff_range <- function(x = NULL, INDEX = NULL, y = NULL) {
   if (!is.null(INDEX)) {
     dataset <- split(x, INDEX)
     dataset1 <- dataset[[1]]
@@ -92,10 +109,10 @@ non_parametric_tail_ratio_cutoff_range <- function(x = NULL, INDEX = NULL, y = N
 non_parametric_tail_ratio_cutoff_error <- function(value, min, max) {
 
   test <- min > value || value > max
-  if(isTRUE(test)){
+  if (isTRUE(test)) {
     paste0("The cutoff is out of bounds! One group lacks observations in the selected range. Please select a value between ",
            ceiling(min),
-           " and ", 
+           " and ",
            floor(max))
   }
 }
@@ -103,9 +120,11 @@ non_parametric_tail_ratio_cutoff_error <- function(value, min, max) {
 createDownloadWidgetRaw <- function(namespace, design, selectedEs, inputValidator, name, INDEX, x, y) {
   renderUI({
     ns <- namespace
-        req(isTruthy(x()) && isTruthy(y()) || isTruthy(x()) && isTruthy(INDEX()), selectedEs(), inputValidator$is_valid())
-        if (design == "mixed") req(isTruthy(x()) && isTruthy(y()) && isTruthy(INDEX()))
-        downloadButton(ns(name), class = "btn-primary")
+    req(isTruthy(x()) && isTruthy(y()) || isTruthy(x()) && isTruthy(INDEX()), selectedEs(), inputValidator$is_valid())
+    if (design == "mixed") req(isTruthy(x()) &&
+                                 isTruthy(y()) &&
+                                 isTruthy(INDEX()))
+    downloadButton(ns(name), class = "btn-primary")
   })
 }
 
@@ -122,43 +141,53 @@ esAndTsUi <- function(id, esChoices, tsChoices) {
   tagList(
     column(width = 8,
            fluidRow(
-           column(
-             width = 6,
-             checkboxGroupUi(ns("esCheckboxGroup"), esChoices, "Effect Sizes"),
-           ),
-           column(
-             width = 6,
-             numericInput(inputId = ns("alpha"),
-                          label = "Choose \U03B1 level of CI",
-                          value = 0.05,
-                          min = 0.00001,
-                          max = 0.99999),
-             tabsetPanel(
-               id = ns("tailRatioBool"),
-               type = "hidden",
-               tabPanelBody("tailRatioFALSE"),
-               tabPanelBody("tailRatioTRUE",
-                            tailRatioControls(ns = ns))
+             column(
+               width = 6,
+               checkboxGroupUi(ns("esCheckboxGroup"), esChoices, "Effect Sizes"),
              ),
-             tabsetPanel(
-               id = ns("parametricBool"),
-               type = "hidden",
-               tabPanelBody("parametricTRUE"),
-               tabPanelBody("parametricFALSE",
-                            nonparametricControls(ns = ns))
-             )
-           )),
-    fluidRow(gt_output(ns("esTable")),
-             column(width = 6, 
-                    uiOutput(ns("downloadEsWidget"))
+             column(
+               width = 6,
+               numericInput(inputId = ns("alpha"),
+                            label = "Choose \U03B1 level of CI",
+                            value = 0.05,
+                            min = 0.00001,
+                            max = 0.99999),
+               tabsetPanel(
+                 id = ns("tailRatioBool"),
+                 type = "hidden",
+                 tabPanelBody("tailRatioFALSE"),
+                 tabPanelBody("tailRatioTRUE",
+                              tailRatioControls(ns = ns))
+               ),
+               tabsetPanel(
+                 id = ns("tailRatioMultivariateBool"),
+                 type = "hidden",
+                 tabPanelBody("tailRatioMultivariateFALSE"),
+                 tabPanelBody("tailRatioMultivariateTRUE",
+                              numericInput(do.call(ns, list("z")),
+                                           label = "Specify z value:",
+                                           value = NULL)
+                 )
+               ),
+               tabsetPanel(
+                 id = ns("parametricBool"),
+                 type = "hidden",
+                 tabPanelBody("parametricTRUE"),
+                 tabPanelBody("parametricFALSE",
+                              nonparametricControls(ns = ns))
+               )
+             )),
+           fluidRow(gt_output(ns("esTable")),
+                    column(width = 6,
+                           uiOutput(ns("downloadEsWidget"))
                     )
-             )
-           ),
-    if(length(tsChoices) > 0){
-      column(width = 4, 
+           )
+    ),
+    if (length(tsChoices) > 0) {
+      column(width = 4,
              checkboxGroupUi(ns("tsCheckboxGroup"), tsChoices, "Test Statistic"),
              fluidRow(gt_output(ns("tsTable")),
-                      fluidRow(column(width = 6, 
+                      fluidRow(column(width = 6,
                                       uiOutput(ns("downloadTsWidget"))))
              )
       )
@@ -189,68 +218,68 @@ inhomogenousVariancesNotification <- function(selectedEs, x, INDEX) observeEvent
 )
 
 
-nonParametricVarianceRatioCiErrorNotification <- function(x, INDEX, selectedEs){
-  
+nonParametricVarianceRatioCiErrorNotification <- function(x, INDEX, selectedEs) {
+
   bangaFoxBonettCiError <- reactive({
     req(x(), INDEX(), selectedEs())
-    if("non_parametric_variance_ratio" %in% selectedEs()){
+    if ("non_parametric_variance_ratio" %in% selectedEs()) {
       banga_fox_bonett_ci_error(x(), INDEX(), alpha = 0.05)
     } else {
       FALSE
     }
-    })
-  
+  })
+
   observeEvent(
     req(bangaFoxBonettCiError()),
-    {
-      if(bangaFoxBonettCiError()){
-        showNotification("Note: Banga-Fox-Bonett confidence interval implementation for the variance ratio failed - Bonett confidence interval computed",
-                                   duration = 8, closeButton = TRUE, type = "message")
-      }
+  {
+    if (bangaFoxBonettCiError()) {
+      showNotification("Note: Banga-Fox-Bonett confidence interval implementation for the variance ratio failed - Bonett confidence interval computed",
+                       duration = 8, closeButton = TRUE, type = "message")
     }
+  }
   )
 }
 
-dependentTailRatioCiRawDataErrorNotification <- function(selectedEs, assumption, x, y, reference_group, tail, cutoff, alpha = 0.05){
-  
+dependentTailRatioCiRawDataErrorNotification <- function(selectedEs, assumption, x, y, reference_group, tail, cutoff, alpha = 0.05) {
+
   namBlackwelderCiError <- reactive({
     req(x(), y(), selectedEs(), reference_group(), cutoff(), tail())
-    if(any(c(all_eff_sizes$tail_ratio_dependent, all_eff_sizes$non_parametric_tail_ratio_dependent) %in% selectedEs())){
+    if (any(c(all_eff_sizes$tail_ratio_dependent, all_eff_sizes$non_parametric_tail_ratio_dependent) %in% selectedEs())) {
       nam_blackwelder_ci_error(x = x(), y = y(), mode = "rawData", assumption = assumption, reference_group = reference_group(), cutoff = cutoff(), tail = tail(), alpha = alpha)
     } else {
       FALSE
     }
   })
-  
+
   observeEvent(
     req(namBlackwelderCiError()),
-    {
-      if(namBlackwelderCiError()){
-        showNotification("Note: Nam-Blackwelder confidence interval implementation for the tail ratio failed - Bonett-Price confidence interval computed!",
-                         duration = 8, closeButton = TRUE, type = "message")
-      }
+  {
+    if (namBlackwelderCiError()) {
+      showNotification("Note: Nam-Blackwelder confidence interval implementation for the tail ratio failed - Bonett-Price confidence interval computed!",
+                       duration = 8, closeButton = TRUE, type = "message")
     }
+  }
   )
 }
 
-dependentTailRatioCiEducationalModeErrorNotification <- function(selectedEs, m1, m2, s1, s2, n, r, reference_group, tail, cutoff, alpha = 0.05){
-  
+dependentTailRatioCiEducationalModeErrorNotification <- function(selectedEs, m1, m2, s1, s2, n, r, reference_group, tail, cutoff, alpha = 0.05) {
+
   namBlackwelderCiError <- reactive({
     req(m1(), m2(), s1(), s2(), n(), r(), selectedEs(), reference_group(), cutoff(), tail())
-    if(all_eff_sizes$tail_ratio_dependent %in% selectedEs()){
+    if (all_eff_sizes$tail_ratio_dependent %in% selectedEs()) {
       nam_blackwelder_ci_error(m1 = m1(), m2 = m2(), s1 = s1(), s2 = s2(), r = r(), n = n(), mode = "educational", assumption = NULL, reference_group = reference_group(), tail = tail(), cutoff = cutoff(), alpha = alpha)
     } else {
       FALSE
-    } 
+    }
   })
   observeEvent(
     req(namBlackwelderCiError()),
-    {
-      if(namBlackwelderCiError()){
-        showNotification("Note: Nam-Blackwelder confidence interval implementation for the tail ratio failed - Bonett-Price confidence interval computed!",
-                         duration = 8, closeButton = TRUE, type = "message")
-      }
+  {
+    if (namBlackwelderCiError()) {
+      showNotification("Note: Nam-Blackwelder confidence interval implementation for the tail ratio failed - Bonett-Price confidence interval computed!",
+                       duration = 8, closeButton = TRUE, type = "message")
     }
+  }
   )
 }
 
@@ -295,7 +324,7 @@ esAndTsRawDataServer <- function(id, design, assumption, INDEX, x, y) {
                      tab_footnote(footnote = "Confidence interval upper limit", locations = cells_column_labels("Ci Ul")) %>%
                      tab_footnote(footnote = "Bootstrap confidence interval lower limit", locations = cells_column_labels("Boot Ci Ll")) %>%
                      tab_footnote(footnote = "Bootstrap confidence interval upper limit", locations = cells_column_labels("Boot Ci Ul")) %>%
-                     tab_style(style = cell_text(size = "small"),locations = cells_footnotes())
+                     tab_style(style = cell_text(size = "small"), locations = cells_footnotes())
                  })
                  output$tsTable <- render_gt({
                    (getTsDataframe() %>%
@@ -330,7 +359,7 @@ esAndTsEducationalServer <- function(id, mean1, standardDeviation1, sampleSize1,
                  tailRatioOptionsObserver(selectedEs, session)
 
                  getEsDataframe <- reactive({
-                   generate_es_educational_dataframe(selectedEs(), mean1(), standardDeviation1(), sampleSize1(), correlation1(), standardDeviationDiff1(), mean2(), standardDeviation2(), sampleSize2(), mean3(), standardDeviation3(), mean4(), standardDeviation4(), correlation2(), standardDeviationDiff2(),input$tail, input$referenceGroup, input$cutoff, alpha = input$alpha)
+                   generate_es_educational_dataframe(selectedEs(), mean1(), standardDeviation1(), sampleSize1(), correlation1(), standardDeviationDiff1(), mean2(), standardDeviation2(), sampleSize2(), mean3(), standardDeviation3(), mean4(), standardDeviation4(), correlation2(), standardDeviationDiff2(), input$tail, input$referenceGroup, input$cutoff, alpha = input$alpha)
                  })
 
                  getTsDataframe <- reactive({
@@ -367,4 +396,22 @@ esAndTsEducationalServer <- function(id, mean1, standardDeviation1, sampleSize1,
                  cutoff <- reactive(input$cutoff)
                  dependentTailRatioCiEducationalModeErrorNotification(selectedEs, mean1, mean2, standardDeviation1, standardDeviation2, sampleSize1, correlation1, referenceGroup, tail, cutoff)
                })
+}
+
+esAndTsMultivariateEducationalServer <- function(id, means, covarianceMatrix, n1, n2) {
+  moduleServer(id, function(input, output, session) {
+    selectedEs <- checkboxGroupServer("esCheckboxGroup")
+    esTsModuleIv <- initializeInputValidators(selectedEs)
+    tailRatioMultivariateObserver(selectedEs, session)
+    getEsDataframe <- reactive({
+      generate_multivariate_educational_dataframe(selectedEs(), means(), covarianceMatrix(), n1(), n2(), z = input$z, alpha = input$alpha)
+    })
+    output$esTable <- render_gt({
+      req(esTsModuleIv$is_valid())
+      (getEsDataframe() %>%
+        gt() %>%
+        fmt_number(-1, decimals = 2))
+    })
+  })
+
 }
