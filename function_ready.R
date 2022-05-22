@@ -298,7 +298,7 @@ generate_es_educational_dataframe <- function(es_list, mean1, standardDeviation1
                   "parametric_cohens_u3_dependent" = c(parametric_cohens_u3_dependent(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1), parametric_cohens_u3_dependent_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, sdiff = standardDeviationDiff1, n = sampleSize1, r = correlation1, var_equal = TRUE, alpha = alpha)),
                   "variance_ratio_dependent" = c(variance_ratio(s1 = standardDeviation1, s2 = standardDeviation2), variance_ratio_dependent_ci(s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1, r = correlation1, alpha = alpha)),
                   "tail_ratio_dependent" = c(tail_ratio(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2,tail = tail, reference_group = ref, cutoff = cutoff), tail_ratio_dependent_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, r = correlation1, n = sampleSize1, tail = tail, reference_group = ref, cutoff = cutoff, alpha = alpha)),
-                  # Effect sizes for the pretest-posttest-control desing:
+                  # Effect sizes for the pretest-posttest-control design:
                   "d_PPC_change" = c(d_PPC_change(m1 = mean1, s1 = standardDevation1, m2 = mean2, s2 = standardDeviation2, m3 = mean3, s3 = standardDeviation3, m4 = mean4, s4 = standardDeviation4, r1 = correlation1, r2 = correlation2, sdiff1 = standardDeviationDiff1, sdiff2 = standardDeviationDiff2), d_PPC_change_ci(m1 = mean1, s1 = standardDevation1, m2 = mean2, s2 = standardDeviation2, m3 = mean3, s3 = standardDeviation3, m4 = mean4, s4 = standardDeviation4, r1 = correlation1, r2 = correlation2, sdiff1 = standardDeviationDiff1, sdiff2 = standardDeviationDiff2, n1 = sampleSize1, n2 = sampleSize2, alpha = alpha)),
                   "g_PPC_change" = c(g_PPC_change(m1 = mean1, s1 = standardDeviation1, m2 = mean2, s2 = standardDeviation2, n1 = sampleSize1, r1 = correlation1, sdiff1 = standardDeviationDiff1, m3 = mean3, s3 = standardDeviation3, m4 = mean4, s4 = standardDeviation4, n2 = sampleSize2, r2 = correlation2, sdiff2 = standardDeviationDiff2), g_PPC_change_ci(m1 = mean1, s1 = standardDeviation1, m2 = mean2, s2 = standardDeviation2, n1 = sampleSize1, r1 = correlation1, sdiff1 = standardDeviationDiff1, m3 = mean3, s3 = standardDeviation3, m4 = mean4, s4 = standardDeviation4, n2 = sampleSize2, r2 = correlation2, sdiff2 = standardDeviationDiff2, alpha = alpha)),
                   "d_PPC_pre" = c(d_PPC_pre(m1 = mean1, s1 = standardDeviation1, m2 = mean2, m3 = mean3, s3 = standardDeviation3, m4 = mean4), d_PPC_pre_ci(m1 = mean1, s1 = standardDeviation1, m2 = mean2, n1 = sampleSize1, r1 = correlation1, m3 = mean3, s3 = standardDeviation3, m4 = mean4, n2 = sampleSize2, r2 = correlation2, alpha = alpha)),
@@ -322,6 +322,37 @@ generate_es_educational_dataframe <- function(es_list, mean1, standardDeviation1
   return(es_dataframe)
 }
 
+generate_multivariate_raw_data_dataframe <- function(es_list, dat, INDEX, alpha, z) {
+  es_result <- vector(mode = "double", length = 0L)
+  es_ci_lower <- vector(mode = "double", length = 0L)
+  es_ci_upper <- vector(mode = "double", length = 0L)
+  for (i in es_list) {
+    if (!i %in% all_eff_sizes) stop("This is not an offered effect size!\n")
+    res <- switch(i,
+                  "mahalanobis_d" = c(mahalanobis_d(dat, INDEX), mahalanobis_d_raw_data_ci(dat, INDEX, alpha)),
+                  "bias_corrected_d_multivariate" = c(bias_corrected_d_multivariate(dat, INDEX), NA_real_, NA_real_),
+                  "ovl_multivariate" = c(ovl_multivariate(dat, INDEX), NA_real_, NA_real_),
+                  "ovl_two_multivariate" = c(ovl_two_multivariate(dat, INDEX), NA_real_, NA_real_),
+                  "pcc_multivariate" = c(pcc_multivariate(dat, INDEX), NA_real_, NA_real_),
+                  "u1_multivariate" = c(u1_multivariate(dat, INDEX), NA_real_, NA_real_),
+                  "u3_multivariate" = c(u3_multivariate(dat, INDEX), NA_real_, NA_real_),
+                  "common_language_multivariate" = c(common_language_multivariate(dat, INDEX), NA_real_, NA_real_),
+                  "tail_ratio_multivariate" = c(tail_ratio_multivariate(dat, INDEX, z), NA_real_, NA_real_)
+    )
+    es_result <- c(es_result, res[[1]])
+    es_ci_lower <- c(es_ci_lower, res[[2]])
+    es_ci_upper <- c(es_ci_upper, res[[3]])
+  }
+  es_dataframe <- data.frame(
+    es_list,
+    es_result,
+    es_ci_lower,
+    es_ci_upper
+  )
+  colnames(es_dataframe) <- c("Name", "Effect Size", "Ci Ll", "Ci Ul")
+  return(es_dataframe)
+}
+
 generate_multivariate_educational_dataframe <- function(es_list, means, covariance_matrix, n1, n2, alpha, z) {
   es_result <- vector(mode = "double", length = 0L)
   es_ci_lower <- vector(mode = "double", length = 0L)
@@ -329,7 +360,7 @@ generate_multivariate_educational_dataframe <- function(es_list, means, covarian
   for (i in es_list) {
     if (!i %in% all_eff_sizes) stop("This is not an offered effect size!\n")
     res <- switch(i,
-                  "mahalanobis_d" = c(mahalanobis_d_educational(means, covariance_matrix), mahalanobis_d_ci(means, covariance_matrix, n1, n2, alpha)),
+                  "mahalanobis_d" = c(mahalanobis_d_educational(means, covariance_matrix), mahalanobis_d_educational_ci(means, covariance_matrix, n1, n2, alpha)),
                   "bias_corrected_d_multivariate" = c(bias_corrected_d_multivariate_educational(means, covariance_matrix, n1, n2), NA_real_, NA_real_),
                   "ovl_multivariate" = c(ovl_multivariate_educational(means, covariance_matrix), NA_real_, NA_real_),
                   "ovl_two_multivariate" = c(ovl_two_multivariate_educational(means, covariance_matrix), NA_real_, NA_real_),
@@ -3586,16 +3617,47 @@ non_parametric_dominance_measure_mixed_ci <- function(x, y, INDEX, alpha) {
 
 
 # multivariate Design
+
+pooled_cor_matrices <- function(mat1, mat2, n1, n2){
+  res_mat <- matrix(numeric(length(mat1)), ncol=ncol(mat1))
+  for(i in seq_len(length(mat1))){
+    res_mat[[i]] <- pooled_correlation(n1, n2, mat1[[i]], mat2[[i]])
+  }
+  diag(res_mat) <- rep(1, ncol(mat1))
+  return(res_mat)
+}
+
+mahalanobis_d <- function (x, INDEX) {
+  cohens_ds <- vapply(x, smd_uni, FUN.VALUE = numeric(1), effsize="cohen_d", INDEX=INDEX)
+  data <- split(x, INDEX)
+  cor_mat1 <- cor(data[[1]])
+  cor_mat2 <- cor(data[[2]])
+  pooled_cor_mat <- pooled_cor_matrices(cor_mat1, cor_mat2, nrow(data[[1]]), nrow(data[[2]]))
+  d <- sqrt(mahalanobis(cohens_ds, pooled_cor_mat, center=FALSE))
+  return(drop(d))
+}
+
 mahalanobis_d_educational <- function(means, covariance_matrix) {
   dif <- means[[1]] - means[[2]]
   mahalanobis_d <- sqrt(t(dif) %*% solve(covariance_matrix) %*% dif)
   return (mahalanobis_d)
 }
 
-mahalanobis_d_ci <- function(means, covariance_matrix, n1, n2, alpha = 0.05) {
+mahalanobis_d_raw_data_ci <- function(x, INDEX, alpha) {
+  mahalanobis_d <- mahalanobis_d(x, INDEX)
+  data <- split(x, INDEX)
+  n1 <- nrow(data[[1]])
+  n2 <- nrow(data[[2]])
+  return(mahalanobis_d_ci(mahalanobis_d, ncol(x), n1, n2, alpha))
+}
+
+mahalanobis_d_educational_ci <- function(means, covariance_matrix, n1, n2, alpha) {
+  return (mahalanobis_d_ci(mahalanobis_d_educational(means, covariance_matrix), nrow(means), n1, n2, alpha))
+}
+
+mahalanobis_d_ci <- function(mahalanobis_d, p, n1, n2, alpha = 0.05) {
   conf.level <- 1-alpha
-  mahalanbis_d2 <- mahalanobis_d_educational(means, covariance_matrix)^2
-  p <- nrow(means)
+  mahalanbis_d2 <- mahalanobis_d^2
   if (!is.null(n1))	{
     f_cal <- (mahalanbis_d2)*(n1*n2*(n1+n2-p-1))/(p*(n1+n2)*(n1+n2-2))
     lower_prob <- conf.level+(1-conf.level)/2
@@ -3655,16 +3717,43 @@ mahalanobis_d_ci <- function(means, covariance_matrix, n1, n2, alpha = 0.05) {
 
 }
 
-bias_corrected_d_multivariate_educational <- function(means, covariance_matrix, n1, n2) {
-  k <- nrow(means)
-  mahalanobis_d <- mahalanobis_d_educational(means, covariance_matrix)
-  d <- (n1+n2-k-3)/(n1+n2-2) * mahalanobis_d^2 - k * (n1+n2)/(n1*n2)
-  d <- ifelse(d>0, d, 0)
+calc_bias_corrected_d_multivariate <- function(k, mahalanobis_d, n1, n2) {
+  d <- (n1 + n2 - k - 3) / (n1 + n2 - 2) * mahalanobis_d^2 - k * (n1 + n2) / (n1 * n2)
+  d <- ifelse(d > 0, d, 0)
   return(sqrt(d))
 }
 
+bias_corrected_d_multivariate <- function(x, INDEX) {
+  k <- ncol(x)
+  mahalanobis_d <- mahalanobis_d(x, INDEX)
+  data <- split(x, INDEX)
+  n1 <- nrow(data[[1]])
+  n2 <- nrow(data[[2]])
+  return(calc_bias_corrected_d_multivariate(k, mahalanobis_d, n1, n2))
+}
+
+bias_corrected_d_multivariate_educational <- function(means, covariance_matrix, n1, n2) {
+  k <- nrow(means)
+  mahalanobis_d <- mahalanobis_d_educational(means, covariance_matrix)
+  return(calc_bias_corrected_d_multivariate(k, mahalanobis_d, n1, n2))
+}
+
+calc_ovl_multivariate <- function(mahalanobis_d) return(2 * pnorm(-mahalanobis_d / 2))
+
+ovl_multivariate <- function(x, INDEX) {
+  mahalanobis_d <- mahalanobis_d(x, INDEX)
+  calc_ovl_multivariate(mahalanobis_d)
+}
+
+
 ovl_multivariate_educational <- function(means, covariance_matrix) {
-  return(2 * pnorm(-mahalanobis_d_educational(means, covariance_matrix)/2))
+  mahalanobis_d <- mahalanobis_d_educational(means, covariance_matrix)
+  return(calc_ovl_multivariate(mahalanobis_d))
+}
+
+ovl_two_multivariate <- function(x, INDEX) {
+  ovl <- ovl_multivariate(x, INDEX)
+  return (ovl/(2-ovl))
 }
 
 ovl_two_multivariate_educational <- function(means, covariance_matrix) {
@@ -3672,24 +3761,61 @@ ovl_two_multivariate_educational <- function(means, covariance_matrix) {
   return(ovl/(2-ovl))
 }
 
+u1_multivariate <- function(x, INDEX) {
+  ovl <- ovl_multivariate(x, INDEX)
+  return(1-ovl/(2-ovl))
+}
+
 u1_multivariate_educational <- function(means, covariance_matrix) {
   ovl <- ovl_multivariate_educational(means, covariance_matrix)
   return(1-ovl/(2-ovl))
 }
 
+calc_u3_multivariate <- function(mahalanobis_d) return(pnorm(mahalanobis_d))
+
+u3_multivariate <- function(x, INDEX) {
+  mahalanobis_d <- mahalanobis_d(x, INDEX)
+  return(calc_u3_multivariate(mahalanobis_d))
+}
+
 u3_multivariate_educational <- function(means, covariance_matrix) {
-  return(pnorm(mahalanobis_d_educational(means, covariance_matrix)))
+  mahalanobis_d <- mahalanobis_d_educational(means, covariance_matrix)
+  return(calc_u3_multivariate(mahalanobis_d))
+}
+
+
+calc_common_lnaguage_multivariate <- function(mahalanobis_d) return(pnorm(mahalanobis_d / sqrt(2)))
+
+common_language_multivariate <- function(x, INDEX) {
+  mahalanobis_d <- mahalanobis_d(x, INDEX)
+  return(calc_common_lnaguage_multivariate(mahalanobis_d))
 }
 
 common_language_multivariate_educational <- function(means, covariance_matrix) {
-  return(pnorm(mahalanobis_d_educational(means, covariance_matrix)/sqrt(2)))
+  mahalanobis_d <- mahalanobis_d_educational(means, covariance_matrix)
+  return(calc_common_lnaguage_multivariate(mahalanobis_d))
+}
+
+calc_pcc_multivariate <- function(mahalanobis_d) return(pnorm(mahalanobis_d / 2))
+
+pcc_multivariate <- function(x, INDEX) {
+  mahalanobis_d <- mahalanobis_d(x, INDEX)
+  return(calc_pcc_multivariate(mahalanobis_d))
 }
 
 pcc_multivariate_educational <- function(means, covariance_matrix) {
-  return(pnorm(mahalanobis_d_educational(means, covariance_matrix)/2))
+  mahalanobis_d <- mahalanobis_d_educational(means, covariance_matrix)
+  return(calc_pcc_multivariate(mahalanobis_d))
+}
+
+calc_tail_ratio_multivariate <- function(mahalanobis_d, z) return(pnorm(mahalanobis_d - z) / pnorm(-z))
+
+tail_ratio_multivariate <- function(x, INDEX, z) {
+  mahalanobis_d <- mahalanobis_d(x, INDEX)
+  calc_tail_ratio_multivariate(mahalanobis_d, z)
 }
 
 tail_ratio_multivariate_educational <- function(means, covariance_matrix, z) {
-  return(pnorm(mahalanobis_d_educational(means, covariance_matrix)-z)/pnorm(-z))
+  mahalanobis_d <- mahalanobis_d_educational(means, covariance_matrix)
+  return(calc_tail_ratio_multivariate(mahalanobis_d, z))
 }
-

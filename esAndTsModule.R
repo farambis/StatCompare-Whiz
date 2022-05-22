@@ -398,6 +398,32 @@ esAndTsEducationalServer <- function(id, mean1, standardDeviation1, sampleSize1,
                })
 }
 
+esAndTsMultivariateRawDataServer <- function(id, data, INDEX, dataInputX) {
+  moduleServer(id, function(input, output, session) {
+    selectedEs <- checkboxGroupServer("esCheckboxGroup")
+    esTsModuleIv <- initializeInputValidators(selectedEs)
+    tailRatioMultivariateObserver(selectedEs, session)
+    getEsDataframe <- reactive({
+      generate_multivariate_raw_data_dataframe(selectedEs(), data()[dataInputX()], INDEX(), input$alpha, input$z)
+    })
+    output$esTable <- render_gt({
+      req(esTsModuleIv$is_valid())
+      (getEsDataframe() %>%
+        gt() %>%
+        fmt_number(-1, decimals = 2))
+    })
+
+    output$downloadEsWidget <- renderUI({
+      ns <- session$ns
+      req(selectedEs())
+      downloadButton(ns("downloadEs"), class = "btn-primary")
+    })
+
+    output$downloadEsWidget <- createDownloadWidgetEducational(session$ns, selectedEs, esTsModuleIv, "downloadEs")
+    output$downloadEs <- csvDownloadHandler("effect_size.csv", getEsDataframe)
+  })
+}
+
 esAndTsMultivariateEducationalServer <- function(id, means, covarianceMatrix, n1, n2) {
   moduleServer(id, function(input, output, session) {
     selectedEs <- checkboxGroupServer("esCheckboxGroup")
@@ -412,6 +438,15 @@ esAndTsMultivariateEducationalServer <- function(id, means, covarianceMatrix, n1
         gt() %>%
         fmt_number(-1, decimals = 2))
     })
+    output$downloadEsWidget <- renderUI({
+      ns <- session$ns
+      req(selectedEs())
+      downloadButton(ns("downloadEs"), class = "btn-primary")
+    })
+
+    output$downloadEsWidget <- createDownloadWidgetEducational(session$ns, selectedEs, esTsModuleIv, "downloadEs")
+    output$downloadEs <- csvDownloadHandler("effect_size.csv", getEsDataframe)
   })
 
 }
+

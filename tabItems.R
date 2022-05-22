@@ -299,7 +299,17 @@ multivariateRawData <-
             acceptedFormat = ".csv",
             design = "multivariate",
             mode = "rawData",
-            esChoices = list(),
+            esChoices = list(
+              all_eff_sizes$mahalanobis_d,
+              all_eff_sizes$bias_corrected_d_multivariate,
+              all_eff_sizes$ovl_multivariate,
+              all_eff_sizes$ovl_two_multivariate,
+              all_eff_sizes$pcc_multivariate,
+              all_eff_sizes$u1_multivariate,
+              all_eff_sizes$u3_multivariate,
+              all_eff_sizes$common_language_multivariate,
+              all_eff_sizes$tail_ratio_multivariate
+            ),
             tsChoices = list(),
             plotChoices = list(),
             description = descriptions$multivariate_measures

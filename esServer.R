@@ -37,6 +37,10 @@ esServer <- function(input, output) {
                 assumption = "nonparametric")
 
   #multivariate Design
+  generalServer(id = "multivariateRawData",
+                design = "multivariate",
+                mode = "rawData",
+                assumption = "parametetric")
   generalServer(id = "multivariateEducational",
                 design = "multivariate",
                 mode = "educational",

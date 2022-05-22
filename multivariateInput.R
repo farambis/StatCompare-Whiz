@@ -1,21 +1,52 @@
-multivariateInputUI <- function(id, acceptedFormats) {
+multivariateInputUI <- function(id, mode, acceptedFormats) {
   ns <- NS(namespace = id)
-  fileInputList <- tagList()
-  fileInputList[["means"]] <- fileInput(inputId = ns("fileMeans"),
-                                        label = "Upload a file containing the means of the values",
-                                        accept = acceptedFormats)
-  fileInputList[["covarianceMatrix"]] <- fileInput(inputId = ns("fileCovarianceMatrix"),
-                                                   label = "Upload a file containing the covariance matrix",
-                                                   accept = acceptedFormats)
-  fileInputList[["n1"]] <- numericInput(inputId = ns("n1"), label = "n1", value = 100)
-  fileInputList[["n2"]] <- numericInput(inputId = ns("n2"), label = "n2", value = 100)
-  return(fileInputList)
+  userInput <- tagList()
+  if (mode == "rawData") {
+    userInput[["data"]] <- fileInput(inputId = ns("fileDat"),
+                                     label = "Upload your datafile",
+                                     accept = acceptedFormats)
+    userInput[["inputDataIndex"]] <-
+      selectInput(
+        inputId = ns("inputDataIndex"),
+        label = "Select group variable:",
+        choices = NULL
+      )
+
+    userInput[["inputDataX"]] <-
+      selectInput(
+        inputId = ns("inputDataX"),
+        label = paste0(
+          "Select input data"),
+        choices = NULL,
+        multiple = TRUE
+      )
+
+  } else {
+    userInput[["means"]] <- fileInput(inputId = ns("fileMeans"),
+                                      label = "Upload a file containing the means of the values",
+                                      accept = acceptedFormats)
+    userInput[["covarianceMatrix"]] <- fileInput(inputId = ns("fileCovarianceMatrix"),
+                                                 label = "Upload a file containing the covariance matrix",
+                                                 accept = acceptedFormats)
+    userInput[["n1"]] <- numericInput(inputId = ns("n1"), label = "n1", value = 100)
+    userInput[["n2"]] <- numericInput(inputId = ns("n2"), label = "n2", value = 100)
+  }
+
+  return(userInput)
 }
 
-multivariateInputServer <- function(id) {
+multivariateInputServer <- function(id, mode) {
   moduleServer(
     id = id,
     module = function(input, output, session) {
+
+      data <- reactive({
+        req(input$fileDat)
+        read.table(input$fileDat$datapath,
+                   sep = ",",
+                   header = TRUE)
+      })
+
       dataMeans <- reactive({
         req(input$fileMeans)
         read.table(input$fileMeans$datapath,
@@ -31,6 +62,24 @@ multivariateInputServer <- function(id) {
       })
 
       inputData <- list()
+
+      inputData[["data"]] <- reactive({
+        req(data())
+        req(multivariateIv$is_valid())
+        data()
+      })
+
+      inputData[["inputDataIndex"]] <- reactive({
+        req(multivariateIv$is_valid())
+        data()[[input$inputDataIndex]]
+
+      })
+
+      inputData[["inputDataX"]] <- reactive({
+        req(multivariateIv$is_valid())
+        input$inputDataX
+      })
+
       inputData[["means"]] <- reactive({
         req(dataMeans())
         req(multivariateIv$is_valid())
@@ -53,17 +102,53 @@ multivariateInputServer <- function(id) {
         input$n2
       })
 
+      observeEvent(eventExpr = data(),
+                   handlerExpr = {
+                     updateSelectInput(
+                       session,
+                       "inputDataIndex",
+                       choices = var_options(data()),
+                       selected = character()
+                     )
+
+
+                     updateSelectInput(
+                       session,
+                       "inputDataX",
+                       choices = var_options(data(),
+                                             type = is.numeric),
+                       selected = character(),
+                     ) })
+
       multivariateIv <- InputValidator$new()
       multivariateIv$enable()
-      multivariateIv$add_rule("fileMeans", sv_required())
-      multivariateIv$add_rule("fileCovarianceMatrix", sv_required())
-      multivariateIv$add_rule("fileCovarianceMatrix", function(value) {
-        if (nrow(dataCovarianceMatrix()) != ncol(dataCovarianceMatrix())) {
-          paste0("Number of rows and columns have to be the same")
-        }
-      })
-      multivariateIv$add_rule("n1", function(value) validateNonNegative(value))
-      multivariateIv$add_rule("n2", function(value) validateNonNegative(value))
+      if (mode == "rawData") {
+        multivariateIv$add_rule("fileDat", sv_required())
+        multivariateIv$add_rule("inputDataIndex", sv_required())
+        multivariateIv$add_rule("inputDataX", sv_required())
+        multivariateIv$add_rule("inputDataIndex", function(value) {
+            if (length(unique(data()[[value]])) != 2) {
+              paste0("The group variable has to contain exactly two different values")
+            }
+        })
+        multivariateIv$add_rule("inputDataX", function(value) {
+              if (contains(list1 = value, list2 = input$inputDataIndex)) {
+                paste0("You can't select the group variable as an outcome variable")
+              }
+        })
+      } else if (mode == "educational") {
+        multivariateIv$add_rule("fileMeans", sv_required())
+        multivariateIv$add_rule("fileCovarianceMatrix", sv_required())
+        multivariateIv$add_rule("fileCovarianceMatrix", function(value) {
+          if (nrow(dataCovarianceMatrix()) != ncol(dataCovarianceMatrix())) {
+            paste0("Number of rows and columns have to be the same")
+          }
+        })
+        multivariateIv$add_rule("n1", sv_required())
+        multivariateIv$add_rule("n1", function(value) validateNonNegative(value))
+        multivariateIv$add_rule("n2", sv_required())
+        multivariateIv$add_rule("n2", function(value) validateNonNegative(value))
+      }
       return(inputData)
     }
   )

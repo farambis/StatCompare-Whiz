@@ -9,7 +9,7 @@ esMainPanel <- function(id, esChoices, tsChoices, plotChoices, description, mode
     id = ns("mainPanel"),
     if (mode == "rawData")tabPanel(title = "Data", DT::DTOutput(ns("dataTable")), hr(), summaryStatisticsTableUI(ns("summaryStatisticsTable"), design = design)),
     tabPanel(title = "Effect Sizes & Test Statistics", esAndTsUi(ns("esAndTs"), esChoices, tsChoices)),
-    if(length(plotChoices)!=0) tabPanel(title = "Plots", plotUi(ns("plotting"), plotChoices = plotChoices)),
+    if (length(plotChoices) != 0) tabPanel(title = "Plots", plotUi(ns("plotting"), plotChoices = plotChoices)),
     tabPanel(title = icon("info-circle"), withMathJax(includeMarkdown(description)))
   ))
 }
@@ -47,10 +47,31 @@ esMainPanelEducationalServer <- function(id, mean1, standardDeviation1, sampleSi
                })
 }
 
+esMainPanelMultivariateRawDataServer <- function(id, data, index, dataInputX) {
+  moduleServer(id,
+               function(input, output, session) {
+                 output$dataTable <- DT::renderDT({
+                   req(data())
+                   d <- data()
+                   double_vars <- sapply(d, is.double)
+                   d[double_vars] <- round(d[double_vars], 2)
+                   d
+                 },
+                   options = list(
+                     searching = FALSE,
+                     pageLength = 10,
+                     scrollX = TRUE,
+                     lengthMenu = c(5, 10, 25, 50, 100)))
+
+                 esAndTsMultivariateRawDataServer("esAndTs", data, index, dataInputX)
+               })
+}
+
 esMainPanelMultivariateEducationalServer <- function(id, means, covarianceMatrix, n1, n2) {
   moduleServer(id,
                function(input, output, session) {
                  esAndTsMultivariateEducationalServer("esAndTs", means, covarianceMatrix, n1, n2)
                })
 }
+
 
