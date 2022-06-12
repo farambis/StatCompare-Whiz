@@ -26,9 +26,9 @@ dashed_line <- 2
 generate_data_plot <- function(es_plot, x = NULL, INDEX = NULL, y = NULL, m1, m2, m3, m4, s1, s2, s3, s4, sdiff1, sdiff2, n1, n2, r1, r2, n = NULL, kernel, reference_group, tail, cutoff) {
   if (!es_plot %in% all_plots) stop("this is not an offered plot!\n")
   res <- switch(es_plot,
-                "parametric_ovl" = plot_parametric_overlap(x, INDEX, y = y, m1 = m1, m2 = m2, s1 = s1, s2 = s2, n1 = n1, n2 = n2),
-                "parametric_cohens_u1" = plot_cohens_u1(x, INDEX, y = y, m1 = m1, m2 = m2, s1 = s1, s2 = s2, n1 = n1, n2 = n2),
-                "parametric_cohens_u3" = plot_cohens_u3(x, INDEX, y = y, m1 = m1, m2 = m2, s1 = s1, s2 = s2),
+                "parametric_ovl" = plot_parametric_overlap(x, INDEX, y = y, m1 = m1, m2 = m2, s1 = s1, s2 = s2, n1 = n1, n2 = n2, n = n),
+                "parametric_cohens_u1" = plot_cohens_u1(x, INDEX, y = y, m1 = m1, m2 = m2, s1 = s1, s2 = s2, n1 = n1, n2 = n2, n = n),
+                "parametric_cohens_u3" = plot_cohens_u3(x, INDEX, y = y, m1 = m1, m2 = m2, s1 = s1, s2 = s2, n1 = n1, n2 = n2, n = n),
                 "tail_ratio" = plot_tail_ratio(x, INDEX, y = y, m1 = m1, m2 = m2, s1 = s1, s2 = s2, n1 = n1, n2 = n2, n = n, reference_group = reference_group, tail = tail, cutoff = cutoff),
                 "tail_ratio_zoom" = plot_tail_ratio_zoom(x, INDEX, y = y, m1 = m1, m2 = m2, s1 = s1, s2 = s2, n1 = n1, n2 = n2, n = n, reference_group = reference_group, tail = tail, cutoff = cutoff),
                 "parametric_PPC_change" = plot_parametric_ppc_change(x, INDEX, y, m1, s1, m2, s2, sdiff1, r1, m3, s3, m4, s4, sdiff2, r2),
@@ -62,7 +62,7 @@ plot_parametric_overlap <- function(x = NULL, INDEX = NULL, y = NULL,
     }
   }
   
-  pooled_sd <- sd_pooled(s1 = s1, s2 = s2, n1 = n1, n2 = n2)
+  pooled_sd <- ifelse(is.null(n), sd_pooled(s1 = s1, s2 = s2, n1 = n1, n2 = n2), sd_pooled(s1 = s1, s2 = s2, n1 = n, n2 = n))
   x_from <- min(m1, m2) - 3.5 * pooled_sd
   x_to <- max(m1, m2) + 3.5 * pooled_sd
   x_length <- max(((x_to - x_from) * 2), 201)
@@ -94,7 +94,7 @@ plot_parametric_overlap <- function(x = NULL, INDEX = NULL, y = NULL,
            y0 = c(0, 0), 
            y1 = c(max(y_group1), max(y_group2)), 
            lty = c("dashed", "dotted")
-           )
+  )
   title(main = "Visualisation of Cohen's d and the overlapping coefficient")
   mtext(text = "Homogeneity of variances assumed and thus pooled standard deviation is used for plotting")
   graphics::box()
@@ -164,7 +164,7 @@ plot_cohens_u1 <- function(x = NULL, INDEX = NULL, y = NULL,
     
   }
   
-  pooled_sd <- sd_pooled(s1 = s1, s2 = s2, n1 = n1, n2 = n2)
+  pooled_sd <- ifelse(is.null(n), sd_pooled(s1 = s1, s2 = s2, n1 = n1, n2 = n2), sd_pooled(s1 = s1, s2 = s2, n1 = n, n2 = n))
   x_from <- min(m1, m2) - 3.5 * pooled_sd
   x_to <- max(m1, m2) + 3.5 * pooled_sd
   x_length <- max(((x_to - x_from) * 2), 201)
@@ -225,7 +225,7 @@ plot_cohens_u1 <- function(x = NULL, INDEX = NULL, y = NULL,
                            parametric_cohens_u1(m1 = m1, m2 = m2, var1 = s1^2, var2 = s2^2, n1 = n1, n2 = n2),
                            parametric_cohens_u1_dependent(m1 = m1, m2 = m2, s1 = s1, s2 = s2, n = n)),
                          2)
-                       ),
+                     ),
                      paste0(
                        "OVL2==~",
                        round(
@@ -234,9 +234,9 @@ plot_cohens_u1 <- function(x = NULL, INDEX = NULL, y = NULL,
                            parametric_ovl_two(m1 = m1, m2 = m2, var1 = s1^2, var2 = s2^2, n1 = n1, n2 = n2),
                            parametric_ovl_two_dependent(m1 = m1, m2 = m2, s1 = s1, s2 = s2, n = n)
                          ),
-                       2)
-                       )
+                         2)
                      )
+  )
   par(mar = c(3, 0.5, 3, 0))
   plot(c(0,1), c(0,1), type = "n", axes = FALSE, xlab = "", ylab = "", main = "")
   segments(x0 = 0, x1 = 0.15,
@@ -269,11 +269,15 @@ plot_cohens_u1 <- function(x = NULL, INDEX = NULL, y = NULL,
 ## Plot for parametric Cohen's U3 effect measure  ----
 
 plot_cohens_u3 <- function(x = NULL, INDEX = NULL, y = NULL,
-                           m1, m2, s1, s2) {
+                           m1, m2, s1, s2, n1, n2, n = NULL) {
   
+  group_names <- c("Group a", "Group b")
+  measurement_names <- c("Measurement a", "Measurement b")
   if(!is.null(x)){
     if(!is.null(INDEX)){
       stats <- summary_stats(x = x, INDEX = INDEX)
+      INDEX_fct <- factor(INDEX)
+      group_names <- levels(INDEX_fct)
     } else {
       stats <- summary_stats(x = x, y = y)
     }
@@ -282,22 +286,53 @@ plot_cohens_u3 <- function(x = NULL, INDEX = NULL, y = NULL,
     }
   }
   
-  temp <- s1
-  s1 <- ifelse(m1 == max(m1, m2), s1, s2)
-  s2 <- ifelse(m1 == max(m1, m2), s2, temp)
+  eff_size_labs <- c(paste0("d==~", 
+                            round(
+                              ifelse(
+                                is.null(n),
+                                smd_uni(effsize = "cohen_d", m1 = m1, m2 = m2, var1 = s1^2, var2 = s2^2, n1 = n1, n2 = n2),
+                                cohens_d_dependent(m1 = m1, m2 = m2, s1 = s1, s2 = s2, n = n)),
+                              2)),
+                     paste0("VR==~", 
+                            round(variance_ratio(s1 = s1, s2 = s2, group_1_reference = TRUE), 2)
+                     ),
+                     paste0(
+                       "U3==~",
+                       round(
+                         ifelse(
+                           is.null(n),
+                           parametric_cohens_u3(m1 = m1, m2 = m2, var1 = s1^2, var2 = s2^2, n1 = n1, n2 = n2),
+                           parametric_cohens_u3_dependent(m1 = m1, m2 = m2, s1 = s1, s2 = s2, n = n)),
+                         2)
+                     )
+  )
   
-  temp <- max(m1, m2)
-  m2 <- min(m1, m2)
-  m1 <- temp
+  bool <- m1 < m2
   
-  x_from <- m2 - (3.5 * max(s1, s2))
-  x_to <- m1 + 3.5 * max(s1, s2)
+  temp <- group_names
+  group_names[[1]] <- temp[ifelse(bool, 2, 1)]
+  group_names[[2]] <- temp[ifelse(bool, 1, 2)]
+  
+  temp <- measurement_names
+  measurement_names[[1]] <- temp[ifelse(bool, 2, 1)]
+  measurement_names[[2]] <- temp[ifelse(bool, 1, 2)]
+  
+  temp <- c(s1, s2)
+  s1 <- temp[ifelse(bool, 2, 1)]
+  s2 <- temp[ifelse(bool, 1, 2)]
+  
+  temp <- c(m1, m2)
+  m1 <- temp[ifelse(bool, 2, 1)]
+  m2 <- temp[ifelse(bool, 1, 2)]
+  
+  pooled_sd <- ifelse(is.null(n), sd_pooled(s1 = s1, s2 = s2, n1 = n1, n2 = n2), sd_pooled(s1 = s1, s2 = s2, n1 = n, n2 = n))
+  x_from <- m2 - 3.5 * pooled_sd
+  x_to <- m1 + 3.5 * pooled_sd
   x_length <- max(((x_to - x_from) * 2), 201)
   x <- seq(x_from, x_to, length.out = x_length)
   
-  y_group1 <- dnorm(x, m1, s1)
-  y_group2 <- dnorm(x, m2, s2)
-  
+  y_group1 <- dnorm(x, m1, pooled_sd)
+  y_group2 <- dnorm(x, m2, pooled_sd)
   
   y_min <- min(y_group1, y_group2)
   y_max <- max(y_group1, y_group2)
@@ -305,48 +340,69 @@ plot_cohens_u3 <- function(x = NULL, INDEX = NULL, y = NULL,
   y_to <- y_max + ((y_max - y_min) / 5)
   y <- c(y_from, y_to)
   
+  u3_x <- c(x[[1]], x[x <= m1], m1, m1)
+  u3_y <- c(0, y_group2[x <= m1], dnorm(m1, m2, s2), 0)
   
-  polygon_x <- c(x[[1]], x[x <= m1], m1, m1)
-  polygon_y <- c(0, y_group2[x <= m1], dnorm(m1, m2, s2), 0)
-  
+  layout(matrix(c(1,2), ncol = 2, byrow = TRUE), widths = c(4,1))
+  par.old <- par(mar = c(3, 4, 3, 0))
   plot(x = range(x), y, type = "n", axes = FALSE, xlab = "", ylab = "", main = "")
   axis(side = 1, at = round(seq(x_from, x_to, length.out = 5), digits = 2))
   axis(side = 2, at = round(seq(y_from, y_to, length.out = 5), digits = 3), las = 2)
-  polygon(polygon_x, polygon_y, col = col_polygon, border = NA)
-  
+  polygon(u3_x, u3_y, col = col_polygon2, border = NA)
   lines(x, y_group1, col = col1)
   lines(x, y_group2, col = col2)
+  segments(x0 = c(m1, m2), 
+           x1 = c(m1, m2), 
+           y0 = c(0, 0), 
+           y1 = c(max(y_group1), max(y_group2)), 
+           lty = c("dashed", "dotted")
+  )
+  title(main = "Visualisation of Cohen's d and Cohen's U3")
+  mtext(text = "Homogeneity of variances assumed and thus pooled standard deviation is used for plotting")
+  graphics::box()
   
-  segments(x0 = m1, x1 = m1, y0 = 0, y1 = dnorm(m1, m1, s1))
-  legend(x = x_from, xjust = 0, y = y_to, yjust = 1,
-         col = c(col1, col2, col_polygon),
-         pch = c(NA, NA, 15),
-         lty = c(solid_line, solid_line, NA),
-         legend = c("Group 1",
-                    "Group 2",
-                    paste0("U3 =", 
-                           round(
-                             ifelse(
-                               is.null(n),
-                               parametric_cohens_u3(m1 = m1, m2 = m2, var1 = s1^2, var2 = s2^2, n1 = n1, n2 = n2),
-                               parametric_cohens_u3_dependent(m1 = m1, m2 = m2, s1 = s1, s2 = s2, n = n)
-                               ),
-                             2)
-                           )
-                    ),
-         bty = "n")
+  par(mar = c(3, 0.5, 3, 0))
+  plot(c(0,1), c(0,1), type = "n", axes = FALSE, xlab = "", ylab = "", main = "")
+  segments(x0 = 0, x1 = 0.15,
+           y0 = c(1, 0.95, 0.85, 0.8), y1 = c(1, 0.95, 0.85, 0.8),
+           lty = c("solid", "dashed", "solid", "dotted"),
+           lwd = 1.25,
+           col = c(col1, "black", col2, "black"))
+  rect(xlef = 0, xright = 0.15, 
+       ybottom = 0.7 - (0.025/2), 
+       ytop = 0.7 + (0.025/2), 
+       col = col_polygon, border = NA)
+  text(x = 0.2, 
+       y = c(1, 0.95, 0.85, 0.8, 0.7, 0.65, 0.6), 
+       adj = c(0, 0.5),
+       labels = c(
+         ifelse(is.null(n), group_names[[1]], measurement_names[[1]]),
+         str2expression(text = paste0("bar(x)==~", round(m1, 2))),
+         ifelse(is.null(n), group_names[[2]], measurement_names[[2]]),
+         str2expression(text = paste0("bar(x)==~", round(m2, 2))),
+         str2expression(text = eff_size_labs[[3]]),
+         str2expression(text = eff_size_labs[[2]]),
+         str2expression(text = eff_size_labs[[1]])),
+       cex = 1.25)
+  par(par.old)
+  layout(mat = 1)
+  
 }
 
 ## Plot for parametric tail ratio (without and with zoom) ----
 plot_tail_ratio <- function(x = NULL, INDEX = NULL, y = NULL,
-                               m1, m2, s1, s2, n1, n2, n = NULL,
-                               reference_group = c("group1", "group2"),
-                               tail = c("lower", "upper"), 
-                               cutoff) {
+                            m1, m2, s1, s2, n = NULL,
+                            reference_group = c("group1", "group2"),
+                            tail = c("lower", "upper"), 
+                            cutoff) {
   
+  group_names <- c("Group a", "Group b")
+  measurement_names <- c("Measurement a", "Measurement b")
   if(!is.null(x)){
     if(!is.null(INDEX)){
       stats <- summary_stats(x = x, INDEX = INDEX)
+      INDEX_fct <- factor(INDEX)
+      group_names <- levels(INDEX_fct)
     } else {
       stats <- summary_stats(x = x, y = y)
     }
@@ -378,7 +434,8 @@ plot_tail_ratio <- function(x = NULL, INDEX = NULL, y = NULL,
   tail_polygon_y1 <- c(0, dnorm(tail_region_x, m1, s1), 0)
   tail_polygon_y2 <- c(0, dnorm(tail_region_x, m2, s2), 0)
   
-  
+  layout(matrix(c(1,2), ncol = 2, byrow = TRUE), widths = c(4,1))
+  par.old <- par(mar = c(3,4,3,0))
   plot(x = range(x), y, type = "n", axes = FALSE, xlab = "", ylab = "", main = "")
   axis(side = 1, at = round(seq(x_from, x_to, length.out = 5), digits = 2))
   axis(side = 2, at = round(seq(y_from, y_to, length.out = 5), digits = 3), las = 2)
@@ -386,36 +443,71 @@ plot_tail_ratio <- function(x = NULL, INDEX = NULL, y = NULL,
   polygon(tail_polygon_x, tail_polygon_y2, col = col_tail2, border = NA)
   lines(x, y_group1, col = col1)
   lines(x, y_group2, col = col2)
-  segments(x0 = c(m1, m2, cutoff), x1 = c(m1, m2, cutoff), y0 = c(0, 0, 0),
-           y1 = c(max(y_group1), max(y_group2), max(y_group1, y_group2)),
-           lty = c("dashed", "dashed", "solid"))
-  legend(x = x_from, xjust = 0, y = y_to, yjust = 1,
-         col = "white",
-         pch = 15,
-         legend = c(paste0("Cutoff = ", round(cutoff,2)),
-                    paste0("d = ", round(
-                      ifelse(
-                        is.null(n),
-                        smd_uni(effsize = "cohen_d", m1 = m1, m2 = m2, var1 = s1^2, var2 = s2^2, n1 = n1, n2 = n2),
-                        cohens_d_dependent(m1 = m1, m2 = m2, s1 = s1, s2 = s2, n = n)),
-                      2)),
-                    paste0("VR = ", round(variance_ratio(s1 = s1, s2 = s2, group_1_reference = ifelse(reference_group == "group1", TRUE, FALSE)), 2)),
-                    paste0("TR = ", round(tail_ratio(m1 = m1, m2 = m2, s1 = s1, s2 = s2, reference_group = reference_group, tail = tail, cutoff = cutoff), 2))),
-         bty = "n")
+  segments(x0 = c(m1, m2, cutoff), 
+           x1 = c(m1, m2, cutoff), 
+           y0 = c(0, 0, 0), 
+           y1 = c(max(y_group1), max(y_group2), max(y_group1, y_group2)), 
+           lty = c("dashed", "dotted", "solid")
+  )
+  title(main = "Visualisation of the tail ratio and Glass' d")
+  graphics::box()
   
+  eff_size_labs <- c(paste0("d[G]==~", 
+                            round(
+                              glass_d(m1 = m1, m2 = m2, s1 = s1, s2 = s2, standardised_by_group_1 = ifelse(reference_group == "group1", TRUE, FALSE)),
+                              2)),
+                     paste0("VR==~", 
+                            round(variance_ratio(s1 = s1, s2 = s2, group_1_reference = ifelse(reference_group == "group1", TRUE, FALSE)), 2)
+                     ),
+                     paste0(
+                       "TR==~",
+                       round(
+                         tail_ratio(m1 = m1, m2 = m2, s1 = s1, s2 = s2, reference_group = reference_group, tail = tail, cutoff = cutoff), 2)
+                     )
+  )
   
+  par(mar = c(3, 0.5, 3, 0))
+  plot(c(0,1), c(0,1), type = "n", axes = FALSE, xlab = "", ylab = "", main = "")
+  segments(x0 = 0, x1 = 0.15,
+           y0 = c(1, 0.95, 0.85, 0.8), y1 = c(1, 0.95, 0.85, 0.8),
+           lty = c("solid", "dashed", "solid", "dotted"),
+           lwd = 1.25,
+           col = c(col1, "black", col2, "black"))
+  rect(xlef = 0, xright = 0.15, 
+       ybottom = rep(0.7 + (0.025/2), 2), 
+       ytop = rep(0.7 - (0.025/2),2),
+       col = c(col_tail1, col_tail2), 
+       border = NA)
+  text(x = c(0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2), 
+       y = c(1, 0.95, 0.85, 0.8, 0.7, 0.65, 0.6), 
+       adj = c(0, 0.5),
+       labels = c(
+         ifelse(is.null(n), group_names[[1]], measurement_names[[1]]),
+         str2expression(text = paste0("bar(x)==~", round(m1, 2))),
+         ifelse(is.null(n), group_names[[2]], measurement_names[[2]]),
+         str2expression(text = paste0("bar(x)==~", round(m2, 2))),
+         str2expression(text = eff_size_labs[[3]]),
+         str2expression(text = eff_size_labs[[2]]),
+         str2expression(text = eff_size_labs[[1]])),
+       cex = 1.25)
+  par(par.old)
+  layout(mat = 1)
 }
 
 
 plot_tail_ratio_zoom <- function(x = NULL, INDEX = NULL, y = NULL,
-                                    m1, m2, s1, s2, n1, n2, n = NULL,
-                                    reference_group = c("grp1", "grp2"),
-                                    tail = c("lower", "upper"), 
-                                    cutoff) {
+                                 m1, m2, s1, s2, n = NULL,
+                                 reference_group = c("grp1", "grp2"),
+                                 tail = c("lower", "upper"), 
+                                 cutoff) {
   
+  group_names <- c("Group a", "Group b")
+  measurement_names <- c("Measurement a", "Measurement b")
   if(!is.null(x)){
     if(!is.null(INDEX)){
       stats <- summary_stats(x = x, INDEX = INDEX)
+      INDEX_fct <- factor(INDEX)
+      group_names <- levels(INDEX_fct)
     } else {
       stats <- summary_stats(x = x, y = y)
     }
@@ -441,6 +533,8 @@ plot_tail_ratio_zoom <- function(x = NULL, INDEX = NULL, y = NULL,
   y_to <- y_max + ((y_max - y_min) / 5)
   y <- c(y_from, y_to)
   
+  layout(matrix(c(1,2), ncol = 2, byrow = TRUE), widths = c(4,1))
+  par.old <- par(mar = c(3,4,3,0))
   plot(x = range(x), y, type = "n", axes = FALSE, xlab = "", ylab = "", main = "")
   axis(side = 1, at = round(seq(x_from, x_to, length.out = 5), digits = 2))
   axis(side = 2, at = round(seq(y_from, y_to, length.out = 5), digits = 3), las = 2)
@@ -449,40 +543,63 @@ plot_tail_ratio_zoom <- function(x = NULL, INDEX = NULL, y = NULL,
   lines(x, y_group1, col = col1)
   lines(x, y_group2, col = col2)
   segments(x0 = cutoff, x1 = cutoff, y0 = 0, y1 = y_to, lty = 1)
-  legend(x = ifelse(tail %in% "lower", x_from, x_to),
-         xjust = ifelse(tail %in% "lower", 0, 1),
-         y = y_to,
-         yjust = 1,
-         col = "white",
-         pch = 15,
-         legend = c(paste0("Cutoff = ", round(cutoff,2)),
-                    paste0("d = ", round(
-                      ifelse(
-                        is.null(n),
-                        smd_uni(effsize = "cohen_d", m1 = m1, m2 = m2, var1 = s1^2, var2 = s2^2, n1 = n1, n2 = n2),
-                        cohens_d_dependent(m1 = m1, m2 = m2, s1 = s1, s2 = s2, n = n)),
-                      2)),
-                    paste0("VR = ", round(variance_ratio(s1 = s1, s2 = s2, group_1_reference = ifelse(reference_group == "group1", TRUE, FALSE)), 2)),
-                    paste0("TR = ", round(tail_ratio(m1 = m1, m2 = m2, s1 = s1, s2 = s2, reference_group = reference_group, tail = tail, cutoff = cutoff), 2))),
-         bty = "n")
+  title(main = "Zoomed-in visualisation of the tail ratio")
+  graphics::box()
   
+  eff_size_labs <- c(paste0("d[G]==~", 
+                            round(
+                              glass_d(m1 = m1, m2 = m2, s1 = s1, s2 = s2, standardised_by_group_1 = ifelse(reference_group == "group1", TRUE, FALSE)),
+                              2)),
+                     paste0("VR==~", 
+                            round(variance_ratio(s1 = s1, s2 = s2, group_1_reference = ifelse(reference_group == "group1", TRUE, FALSE)), 2)
+                     ),
+                     paste0(
+                       "TR==~",
+                       round(
+                         tail_ratio(m1 = m1, m2 = m2, s1 = s1, s2 = s2, reference_group = reference_group, tail = tail, cutoff = cutoff), 2)
+                     )
+  )
   
+  par(mar = c(3, 0.5, 3, 0))
+  plot(c(0,1), c(0,1), type = "n", axes = FALSE, xlab = "", ylab = "", main = "")
+  segments(x0 = 0, x1 = 0.15,
+           y0 = c(1, 0.9), y1 = c(1, 0.9),
+           lty = c("solid", "solid"),
+           lwd = 1.25,
+           col = c(col1, col2))
+  rect(xlef = 0, xright = 0.15, 
+       ybottom = rep(0.8 + (0.025/2), 2), 
+       ytop = rep(0.8 - (0.025/2),2),
+       col = c(col_tail1, col_tail2), 
+       border = NA)
+  text(x = c(0.2, 0.2, 0.2, 0.2, 0.2), 
+       y = c(1, 0.9, 0.8, 0.75, 0.7), 
+       adj = c(0, 0.5),
+       labels = c(
+         ifelse(is.null(n), group_names[[1]], measurement_names[[1]]),
+         ifelse(is.null(n), group_names[[2]], measurement_names[[2]]),
+         str2expression(text = eff_size_labs[[3]]),
+         str2expression(text = eff_size_labs[[2]]),
+         str2expression(text = eff_size_labs[[1]])),
+       cex = 1.25)
+  par(par.old)
+  layout(mat = 1)
 }
 
 
 # Non-parametric plots ----
 # Plots for the non-parametric tail ratio (with and without zoom) ----
 plot_non_parametric_tail_ratio <- function(x = NULL, INDEX = NULL, y = NULL,
-                                   reference_group = c("grp1", "grp2"),
-                                   tail = c("lower", "upper"), 
-                                   cutoff, bw = "nrd0", 
-                                   kernel = c("gaussian",
-                                              "epanechnikov",
-                                              "rectangular",
-                                              "triangular",
-                                              "biweight",
-                                              "cosine",
-                                              "optcosine")) {
+                                           reference_group = c("group1", "group2"),
+                                           tail = c("lower", "upper"), 
+                                           cutoff, bw = "nrd0", 
+                                           kernel = c("gaussian",
+                                                      "epanechnikov",
+                                                      "rectangular",
+                                                      "triangular",
+                                                      "biweight",
+                                                      "cosine",
+                                                      "optcosine")) {
   
   
   if (!is.null(INDEX)) {
@@ -490,11 +607,15 @@ plot_non_parametric_tail_ratio <- function(x = NULL, INDEX = NULL, y = NULL,
     dataset1 <- original_dataset[[1]]
     dataset2 <- original_dataset[[2]]
     tail_ratio_non_parametric <- non_parametric_tail_ratio(x, INDEX, reference_group, tail, cutoff)
+    INDEX_fct <- factor(INDEX)
+    group_names <- levels(INDEX_fct)
   } else if (!is.null(y)){
     dataset1 <- x
     dataset2 <- y
     tail_ratio_non_parametric <- non_parametric_tail_ratio_dependent(x, y, reference_group, tail, cutoff)
+    measurement_names <- c("Measurement a", "Measurement b")
   }
+  
   d1 <- density(dataset1, bw = bw, kernel = kernel)
   d2 <- density(dataset2, bw = bw, kernel = kernel)
   f1 <- approxfun(d1$x, d1$y)
@@ -514,6 +635,8 @@ plot_non_parametric_tail_ratio <- function(x = NULL, INDEX = NULL, y = NULL,
   tail_polygon_y1 <- c(0, f1(tail_region_x), 0)
   tail_polygon_y2 <- c(0, f2(tail_region_x), 0)
   
+  layout(matrix(c(1,2), ncol = 2, byrow = TRUE), widths = c(4,1))
+  par.old <- par(mar = c(3,4,3,0))
   plot(x = c(x_min, x_max), y = c(y_min, y_max), xlab = '', ylab = '', main = "", type = 'n',
        axes = FALSE)
   axis(side = 1, round(seq(x_min, x_max, length.out = 5), digits = 2))
@@ -522,43 +645,83 @@ plot_non_parametric_tail_ratio <- function(x = NULL, INDEX = NULL, y = NULL,
   polygon(tail_polygon_x, tail_polygon_y2, col = col_tail2, border = NA, density = NULL)
   lines(d1, col = col1)
   lines(d2, col = col2)
-  segments(x0 = c(mean(dataset1), mean(dataset2), cutoff), x1 = c(mean(dataset1), mean(dataset2), cutoff), y0 = c(0, 0, 0),
-           y1 = c(f1(mean(dataset1)), f2(mean(dataset2)), max(d1$y, d2$y)),
-           lty = c("dashed", "dashed", "solid"))
-  legend(x = x_min, xjust = 0, y = y_max, yjust = 1,
-         col = "white",
-         pch = 15,
-         legend = c(paste0("Cutoff = ", round(cutoff,2)),
-                    paste0("VR = ", round(variance_ratio(x = x, INDEX = INDEX, y = y, group_1_reference = ifelse(reference_group == "group1", TRUE, FALSE)), 2)),
-                    paste0("TR = ", round(tail_ratio_non_parametric, 2))),
-
-         bty = "n")
+  segments(x0 = c(mean(dataset1), mean(dataset2), cutoff), 
+           x1 = c(mean(dataset1), mean(dataset2), cutoff), 
+           y0 = c(0, 0, 0),
+           y1 = c(f1(mean(dataset1)), 
+                  f2(mean(dataset2)), 
+                  max(d1$y, d2$y)),
+           lty = c("dashed", "dotted", "solid"))
+  rug(x = jitter(c(x,y)))
+  title(main = "Visualisation of the tail ratio")
+  graphics::box()
   
+  eff_size_labs <- c(paste0("VR==~", 
+                            round(variance_ratio(s1 = s1, s2 = s2, group_1_reference = ifelse(reference_group == "group1", TRUE, FALSE)), 2)
+  ),
+  paste0(
+    "TR==~",
+    round(
+      tail_ratio_non_parametric, 2)
+  )
+  )
   
+  par(mar = c(3, 0.5, 3, 0))
+  plot(c(0,1), c(0,1), type = "n", axes = FALSE, xlab = "", ylab = "", main = "")
+  segments(x0 = 0, x1 = 0.15,
+           y0 = c(1, 0.95, 0.85, 0.8), y1 = c(1, 0.95, 0.85, 0.8),
+           lty = c("solid", "dashed", "solid", "dotted"),
+           lwd = 1.25,
+           col = c(col1, "black", col2, "black"))
+  rect(xlef = 0, xright = 0.15, 
+       ybottom = rep(0.7 + (0.025/2), 2), 
+       ytop = rep(0.7 - (0.025/2),2),
+       col = c(col_tail1, col_tail2), 
+       border = NA)
+  text(x = c(0.2, 0.2, 0.2, 0.2, 0.2, 0.2), 
+       y = c(1, 0.95, 0.85, 0.8, 0.7, 0.65), 
+       adj = c(0, 0.5),
+       labels = c(
+         ifelse(is.null(y), group_names[[1]], measurement_names[[1]]),
+         str2expression(text = paste0("bar(x)==~", round(mean(dataset1), 2))),
+         ifelse(is.null(y), group_names[[2]], measurement_names[[2]]),
+         str2expression(text = paste0("bar(x)==~", round(mean(dataset2), 2))),
+         str2expression(text = eff_size_labs[[2]]),
+         str2expression(text = eff_size_labs[[1]])),
+       cex = 1.25)
+  par(par.old)
+  layout(mat = 1)
 }
 
+
+
 plot_non_parametric_tail_ratio_zoom <- function(x = NULL, INDEX = NULL, y = NULL,
-                                        reference_group = c("grp1", "grp2"),
-                                        tail = c("lower", "upper"), 
-                                        cutoff, 
-                                        bw = "nrd0", 
-                                        kernel = c("gaussian",
-                                                   "epanechnikov",
-                                                   "rectangular",
-                                                   "triangular",
-                                                   "biweight",
-                                                   "cosine",
-                                                   "optcosine")) {
+                                                reference_group = c("grp1", "grp2"),
+                                                tail = c("lower", "upper"), 
+                                                cutoff, 
+                                                bw = "nrd0", 
+                                                kernel = c("gaussian",
+                                                           "epanechnikov",
+                                                           "rectangular",
+                                                           "triangular",
+                                                           "biweight",
+                                                           "cosine",
+                                                           "optcosine")) {
   if (!is.null(INDEX)) {
     original_dataset <- split(x, INDEX)
     dataset1 <- original_dataset[[1]]
     dataset2 <- original_dataset[[2]]
     tail_ratio_non_parametric <- non_parametric_tail_ratio(x, INDEX, reference_group, tail, cutoff)
+    INDEX_fct <- factor(INDEX)
+    group_names <- levels(INDEX_fct)
   } else if (!is.null(y)){
     dataset1 <- x
     dataset2 <- y
     tail_ratio_non_parametric <- non_parametric_tail_ratio_dependent(x, y, reference_group, tail, cutoff)
+    measurement_names <- c("Measurement a", "Measurement b")
   }
+  
+  
   
   d1 <- density(dataset1, bw = bw, kernel = kernel)
   d2 <- density(dataset2, bw = bw, kernel = kernel)
@@ -576,6 +739,8 @@ plot_non_parametric_tail_ratio_zoom <- function(x = NULL, INDEX = NULL, y = NULL
   y_max <- y_max + (y_max - y_min) / 5
   
   
+  layout(matrix(c(1,2), ncol = 2, byrow = TRUE), widths = c(4,1))
+  par.old <- par(mar = c(3,4,3,0))
   plot(x = c(x_min, x_max), y = c(y_min, y_max), xlab = '', ylab = '', main = "", type = 'n',
        axes = FALSE)
   axis(side = 1, round(seq(x_min, x_max, length.out = 5), digits = 2))
@@ -585,15 +750,43 @@ plot_non_parametric_tail_ratio_zoom <- function(x = NULL, INDEX = NULL, y = NULL
   lines(x_axis, f1(x_axis), col = col1)
   lines(x_axis, f2(x_axis), col = col2)
   segments(x0 = cutoff, x1 = cutoff, y0 = 0, y1 = y_max, lty = 1)
-  legend(x = ifelse(tail %in% "lower", x_min, x_max),
-         xjust = ifelse(tail %in% "lower", 0, 1),
-         y = y_max,
-         yjust = 1,
-         legend = c(paste0("Cutoff = ", round(cutoff,2)),
-                    paste0("VR = ", round(variance_ratio(x = x, INDEX = INDEX, y = y, group_1_reference = ifelse(reference_group == "group1", TRUE, FALSE)), 2)),
-                    paste0("TR = ", round(tail_ratio_non_parametric, 2))),
-         bty = "n")
+  suppressWarnings(rug(x = jitter(c(x,y))))
+  title(main = "Zoomed-in visualisation of the tail ratio")
+  graphics::box()
   
+  eff_size_labs <- c(paste0("VR==~", 
+                            round(variance_ratio(s1 = s1, s2 = s2, group_1_reference = ifelse(reference_group == "group1", TRUE, FALSE)), 2)
+  ),
+  paste0(
+    "TR==~",
+    round(
+      tail_ratio_non_parametric, 2)
+  )
+  )
+  
+  par(mar = c(3, 0.5, 3, 0))
+  plot(c(0,1), c(0,1), type = "n", axes = FALSE, xlab = "", ylab = "", main = "")
+  segments(x0 = 0, x1 = 0.15,
+           y0 = c(1, 0.9), y1 = c(1, 0.9),
+           lty = c("solid", "solid"),
+           lwd = 1.25,
+           col = c(col1, col2))
+  rect(xlef = 0, xright = 0.15, 
+       ybottom = rep(0.8 + (0.025/2), 2), 
+       ytop = rep(0.8 - (0.025/2),2),
+       col = c(col_tail1, col_tail2), 
+       border = NA)
+  text(x = c(0.2, 0.2, 0.2, 0.2), 
+       y = c(1, 0.9, 0.8, 0.75), 
+       adj = c(0, 0.5),
+       labels = c(
+         ifelse(is.null(y), group_names[[1]], measurement_names[[1]]),
+         ifelse(is.null(y), group_names[[2]], measurement_names[[2]]),
+         str2expression(text = eff_size_labs[[2]]),
+         str2expression(text = eff_size_labs[[1]])),
+       cex = 1.25)
+  par(par.old)
+  layout(mat = 1)
 }
 
 ## Plot for non-parametric overlap coefficient ----
@@ -612,24 +805,18 @@ plot_non_parametric_overlap <- function(x = NULL, INDEX = NULL, y = NULL,
     original_dataset <- split(x, INDEX)
     dataset1 <- original_dataset[[1]]
     dataset2 <- original_dataset[[2]]
-    cohens_d <- smd_uni("cohen_d", x = x, INDEX = INDEX)
-    non_parametric_ovl <- non_parametric_ovl(x = x, INDEX = INDEX, bw = bw, kernel = kernel)
-    non_parametric_ovl_two <- non_parametric_ovl_two(x, INDEX)
+    INDEX_fct <- factor(INDEX)
+    group_names <- levels(INDEX_fct)
   } else if (!is.null(y)){
     dataset1 <- x
     dataset2 <- y
-    cohens_d_dependent(x = x, y = y)
-    non_parametric_ovl <- NA_real_ #TODO: ergaenze hier sobald implementiert
-    non_parametric_ovl_two <- NA_real_ #TODO: ergaenze hier sobald implementiert
+    measurement_names <- c("Measurement a", "Measurement b")
   }
+  
   d1 <- density(dataset1, bw = bw, kernel = kernel)
   d2 <- density(dataset2, bw = bw, kernel = kernel)
   f1 <- approxfun(d1$x, d1$y)
   f2 <- approxfun(d2$x, d2$y)
-  min <- max(min(d1$x), min(d2$x))
-  max <- min(max(d1$x), max(d2$x))
-  interval <- seq(min, max, length.out = intervals)
-  y_values_min <- pmin(f1(interval), f2(interval))
   
   x_min <- min(d1$x, d2$x)
   x_max <- max(d1$x, d2$x)
@@ -637,26 +824,59 @@ plot_non_parametric_overlap <- function(x = NULL, INDEX = NULL, y = NULL,
   y_max <- max(d1$y, d2$y)
   y_max <- y_max + (y_max - y_min) / 5
   
+  ovl_x <- seq(x_min, x_max, length.out = intervals)
+  ovl_y <- pmin(f1(ovl_x), f2(ovl_x))
+  
+  layout(matrix(c(1,2), ncol = 2, byrow = TRUE), widths = c(4,1))
+  par.old <- par(mar = c(3,4,3,0))
   plot(x = c(x_min, x_max), y = c(y_min, y_max), xlab = '', ylab = '', main = "", type = 'n',
        axes = FALSE)
-  
   axis(side = 1, round(seq(x_min, x_max, length.out = 5), digits = 2))
   axis(side = 2, round(seq(y_min, y_max, length.out = 5), digits = 3), las = 2)
-  polygon(c(interval[[1]], interval),
-          c(0, y_values_min), border = NA,
+  polygon(c(x_min, ovl_x, x_max),
+          c(0, ovl_y, 0), border = NA,
           col = col_polygon,
           density = NULL)
   lines(d1, col = col1)
   lines(d2, col = col2)
-  legend(x = x_min, xjust = 0, y = y_max, yjust = 1,
-         bty = "n",
-         legend = c("Group 1",
-                    "Group 2",
-                    paste0("OVL = ", round(non_parametric_ovl, 2)),
-                    paste("OVL2 = ", round(non_parametric_ovl_two, 2))),
-         col = c(col1, col2, col_polygon, col_polygon),
-         pch = 15)
+  segments(x0 = c(mean(dataset1), mean(dataset2)), 
+           x1 = c(mean(dataset1), mean(dataset2)), 
+           y0 = c(0, 0), 
+           y1 = c(f1(mean(dataset1)), f2(mean(dataset2))), 
+           lty = c("dashed", "dotted")
+  )
+  rug(jitter(c(x,y)))
+  title(main = "Visualisation of the overlapping coefficient")
+  graphics::box()
+  
+  eff_size_labs <- paste0(
+    "OVL==~",
+    round(
+      non_parametric_ovl <- non_parametric_ovl(x = x, INDEX = INDEX, y = y, bw = bw, kernel = kernel),2)
+  )
+  
+  par(mar = c(3, 0.5, 3, 0))
+  plot(c(0,1), c(0,1), type = "n", axes = FALSE, xlab = "", ylab = "", main = "")
+  segments(x0 = 0, x1 = 0.15,
+           y0 = c(1, 0.95, 0.85, 0.8), y1 = c(1, 0.95, 0.85, 0.8),
+           lty = c("solid", "dashed", "solid", "dotted"),
+           lwd = 1.25,
+           col = c(col1, "black", col2, "black"))
+  rect(xlef = 0, xright = 0.15, ybottom = 0.7 + (0.025/2), ytop = 0.7 - (0.025/2), col = col_polygon, border = NA)
+  text(x = c(0.2, 0.2, 0.2, 0.2, 0.2), 
+       y = c(1, 0.95, 0.85, 0.8, 0.7), 
+       adj = c(0, 0.5),
+       labels = c(
+         ifelse(is.null(y), group_names[[1]], measurement_names[[1]]),
+         str2expression(text = paste0("bar(x)==~", round(mean(dataset1), 2))),
+         ifelse(is.null(y), group_names[[2]], measurement_names[[2]]),
+         str2expression(text = paste0("bar(x)==~", round(mean(dataset2), 2))),
+         str2expression(text = eff_size_labs[[1]])),
+       cex = 1.25)
+  par(par.old)
+  layout(mat = 1)
 }
+
 
 ## Plot for nonparametric Cohen's U1 effect measure ----
 plot_non_parametric_u1 <- function(x = NULL, INDEX = NULL,  y = NULL,
@@ -673,39 +893,91 @@ plot_non_parametric_u1 <- function(x = NULL, INDEX = NULL,  y = NULL,
     original_dataset <- split(x, INDEX)
     dataset1 <- original_dataset[[1]]
     dataset2 <- original_dataset[[2]]
-    cohens_u1_non_parametric <- non_parametric_cohens_u1(x, INDEX)
+    INDEX_fct <- factor(INDEX)
+    group_names <- levels(INDEX_fct)
   } else if (!is.null(y)){
     dataset1 <- x
     dataset2 <- y
-    cohens_u1_non_parametric <- NA_real_ #TODO: ergaenze hier sobald implementiert
+    measurement_names <- c("Measurement a", "Measurement b")
   }
+  
   d1 <- density(dataset1, bw = bw, kernel = kernel)
   d2 <- density(dataset2, bw = bw, kernel = kernel)
+  f1 <- approxfun(d1$x, d1$y)
+  f2 <- approxfun(d2$x, d2$y)
   x_min <- min(d1$x, d2$x)
   x_max <- max(d1$x, d2$x)
   y_min <- min(d1$y, d2$y)
   y_max <- max(d1$y, d2$y)
   y_max <- y_max + (y_max - y_min) / 5
   
+  ovl2_x <- c(x_min, seq(x_min, x_max, len = max(((x_min - x_max) * 2), 201)), x_max)
+  ovl2_y <- pmin(f1(ovl2_x), f2(ovl2_x))
+  
+  u1_x <- c(d1$x, rev(d2$x))
+  u1_y <- c(c(d1$y, rev(d2$y)))
+  
+  layout(matrix(c(1,2), ncol = 2, byrow = TRUE), widths = c(4,1))
+  par.old <- par(mar = c(3,4,3,0))
   plot(x = c(x_min, x_max), y = c(y_min, y_max), xlab = '', ylab = '', main = "", type = 'n',
        axes = FALSE)
   
   axis(side = 1, round(seq(x_min, x_max, length.out = 5), digits = 2))
   axis(side = 2, round(seq(y_min, y_max, length.out = 5), digits = 3), las = 2)
-  polygon(c(d1$x, rev(d2$x)),
-          c(d1$y, rev(d2$y)), border = NA,
-          col = col_polygon,
-          density = NULL)
+  polygon(ovl2_x, ovl2_y, border = NA, col = col_polygon2, density = NULL)
+  polygon(u1_x, u1_y, border = NA, col = col_polygon, density = NULL)
   lines(d1, col = col1)
   lines(d2, col = col2)
-  legend(x = x_min, xjust = 0, y = y_max, yjust = 1,
-         bty = "n",
-         legend = c("Group 1",
-                    "Group 2",
-                    paste("U1 = ", round(cohens_u1_non_parametric, 2))),
-         col = c(col1, col2, col_polygon),
-         pch = 15)
+  segments(x0 = c(mean(dataset1), mean(dataset2)), 
+           x1 = c(mean(dataset1), mean(dataset2)), 
+           y0 = c(0, 0), 
+           y1 = c(f1(mean(dataset1)), f2(mean(dataset2))), 
+           lty = c("dashed", "dotted")
+  )
+  rug(jitter(c(x,y)))
+  title(main = "Visualisation of OVL2 and Cohen's U1")
+  graphics::box()
+  
+  eff_size_labs <- c(paste0(
+    "U1==~",
+    round(non_parametric_cohens_u1(x = x, INDEX = INDEX, y = y, kernel = kernel), 2)
+  ),
+  paste0(
+    "OVL2==~",
+    round(non_parametric_ovl_two(x = x, INDEX = INDEX, y = y, kernel = kernel), 2)
+  )
+  )
+  par(mar = c(3, 0.5, 3, 0))
+  plot(c(0,1), c(0,1), type = "n", axes = FALSE, xlab = "", ylab = "", main = "")
+  segments(x0 = 0, x1 = 0.15,
+           y0 = c(1, 0.95, 0.85, 0.8), y1 = c(1, 0.95, 0.85, 0.8),
+           lty = c("solid", "dashed", "solid", "dotted"),
+           lwd = 1.25,
+           col = c(col1, "black", col2, "black"))
+  rect(xlef = 0, xright = 0.15, 
+       ybottom = c(0.7 - (0.025/2), 0.65 - (0.025/2)), 
+       ytop = c(0.7 + (0.025/2), 0.65 + (0.025/2)), 
+       col = c(col_polygon2, col_polygon), border = NA)
+  text(x = 0.2, 
+       y = c(1, 0.95, 0.85, 0.8, 0.7, 0.65), 
+       adj = c(0, 0.5),
+       labels = c(
+         ifelse(is.null(y), group_names[[1]], measurement_names[[1]]),
+         str2expression(text = paste0("bar(x)==~", round(mean(dataset1), 2))),
+         ifelse(is.null(y), group_names[[2]], measurement_names[[2]]),
+         str2expression(text = paste0("bar(x)==~", round(mean(dataset2), 2))),
+         str2expression(text = eff_size_labs[[2]]),
+         str2expression(text = eff_size_labs[[1]])),
+       cex = 1.25)
+  par(par.old)
+  layout(mat = 1)
 }
+
+
+
+
+
+
 
 ## Plot for Mann-Whitney-U based effect measures ----
 boxplot_pairwise_difference_scores <- function(x = NULL, INDEX = NULL, y = NULL) {
@@ -747,16 +1019,33 @@ plot_non_parametric_u3 <- function(x = NULL, INDEX = NULL, y = NULL,
     original_dataset <- split(x, INDEX)
     dataset1 <- original_dataset[[1]]
     dataset2 <- original_dataset[[2]]
-    cohens_u3_non_parametric <- non_parametric_cohens_u3(x, INDEX)
-  } else if (!is.null(y)){
+    INDEX_fct <- factor(INDEX)
+    group_names <- levels(INDEX_fct)
+  } else {
     dataset1 <- x
     dataset2 <- y
-    cohens_u3_non_parametric <- NA_real_ # TODO: ergaenzen wenn implementiert
+    measurement_names <- c("Measurement a", "Measurement b")
   }
-  if (median(dataset1) < median(dataset2)) {
+  eff_size_labs <- c(paste0(
+    "U3==~",
+    round(non_parametric_cohens_u3(x = x, INDEX = INDEX, y = y),2)
+  )
+  )
+  
+  bool <- median(dataset1) < median(dataset2)
+  if (bool) {
     tmp <- dataset1
     dataset1 <- dataset2
     dataset2 <- tmp
+  }
+  if (!is.null(INDEX)) {
+    temp <- group_names
+    group_names[[1]] <- temp[ifelse(bool, 2, 1)]
+    group_names[[2]] <- temp[ifelse(bool, 1, 2)]
+  } else {
+    temp <- measurement_names
+    measurement_names[[1]] <- temp[ifelse(bool, 2, 1)]
+    measurement_names[[2]] <- temp[ifelse(bool, 1, 2)]
   }
   
   d1 <- density(dataset1, bw = bw, kernel = kernel)
@@ -769,48 +1058,69 @@ plot_non_parametric_u3 <- function(x = NULL, INDEX = NULL, y = NULL,
   y_min <- min(d1$y, d2$y)
   y_max <- max(d1$y, d2$y)
   y_max <- y_max + (y_max - y_min) / 5
-  median_region_x <- seq(0, median(dataset1), length.out = 1000)
-  polygon_x <- c(0, median_region_x, median(dataset1))
-  polygon_y <- c(0, f2(median_region_x), 0)
+  median_region_x <- seq(x_min, median(dataset1), length.out = 1000)
+  u3_x <- c(0, median_region_x, median(dataset1))
+  u3_y <- c(0, f2(median_region_x), 0)
   
+  
+  layout(matrix(c(1,2), ncol = 2, byrow = TRUE), widths = c(4,1))
+  par.old <- par(mar = c(3,4,3,0))
   plot(x = c(x_min, x_max), y = c(y_min, y_max), xlab = '', ylab = '', main = "", type = 'n',
        axes = FALSE)
   axis(side = 1, round(seq(x_min, x_max, length.out = 5), digits = 2))
   axis(side = 2, round(seq(y_min, y_max, length.out = 5), digits = 3), las = 2)
-  
-  polygon(polygon_x, polygon_y, col = col2)
-  
-  segments(x0 = median(dataset1), y0 = 0,
-           y1 = f1(median(dataset1)), lty = solid_line, col = seg_col2)
-  
+  polygon(u3_x, u3_y, col = col_polygon2, border = NA, density = NULL)
+  segments(x0 = c(median(dataset2), median(dataset1)),
+           x1 = c(median(dataset2), median(dataset1)),
+           y0 = 0,
+           y1 = c(f2(median(dataset2)), f1(median(dataset1))),
+           lty = c("dashed", "solid"))
   lines(d1, col = col1)
   lines(d2, col = col2)
-  legend(x = x_min, xjust = 0, y = y_max, yjust = 1,
-         bty = "n",
-         legend = c("Group with higher median",
-                    "Group with lower median",
-                    paste("U3 = ", round(cohens_u3_non_parametric,2)), 
-                    "median from group with higher median"),
-         col = c(col1, col2, "white", "black", "black"), 
-         lty = c(blank_line, blank_line, blank_line, solid_line),
-         pch = c(15, 15, 15, NA, NA))
+  rug(jitter(c(x,y)))
+  title(main = "Visualisation of OVL2 and Cohen's U1")
+  graphics::box()
   
+  
+  par(mar = c(3, 0.5, 3, 0))
+  plot(c(0,1), c(0,1), type = "n", axes = FALSE, xlab = "", ylab = "", main = "")
+  segments(x0 = 0, x1 = 0.15,
+           y0 = c(1, 0.95, 0.85, 0.8), y1 = c(1, 0.95, 0.85, 0.8),
+           lty = c("solid", "solid", "solid", "dashed"),
+           lwd = 1.25,
+           col = c(col1, "black", col2, "black"))
+  rect(xlef = 0, xright = 0.15, 
+       ybottom = c(0.7 - (0.025/2)), 
+       ytop = c(0.7 + (0.025/2)), 
+       col = c(col_polygon2, col_polygon), border = NA)
+  text(x = 0.2, 
+       y = c(1, 0.95, 0.85, 0.8, 0.7), 
+       adj = c(0, 0.5),
+       labels = c(
+         ifelse(is.null(y), group_names[[1]], measurement_names[[1]]),
+         str2expression(text = paste0("Med(x)==~", round(median(dataset1), 2))),
+         ifelse(is.null(y), group_names[[2]], measurement_names[[2]]),
+         str2expression(text = paste0("Med(x)==~", round(median(dataset2), 2))),
+         str2expression(text = eff_size_labs[[1]])),
+       cex = 1.25)
+  par(par.old)
+  layout(mat = 1)
 }
 
 # Mixed design (PPC-design) plots ----
 
 plot_parametric_ppc_difference <- function(x = NULL, INDEX = NULL, y = NULL,
-                                    m1, s1, m2, s2, m3, s3, m4, s4) {
+                                           m1, s1, m2, s2, m3, s3, m4, s4) {
   
   group_names <- c("Group a", "Group b")
   measurement_names <- c("Pretest", "Posttest")
   if(!is.null(x) && !is.null(y) && !is.null(INDEX)){
-      stats <- summary_stats(x = x, y = y, INDEX = INDEX)
+    stats <- summary_stats(x = x, y = y, INDEX = INDEX)
     for (i in names(stats)) {
       assign(i, stats[[i]])
     }
-      INDEX_fct <- factor(INDEX)
-      group_names <- levels(INDEX_fct)
+    INDEX_fct <- factor(INDEX)
+    group_names <- levels(INDEX_fct)
   }
   
   x_from <- min(m1, m2, m3, m4) - (3.5 * max(s1, s2, s3, s4))
@@ -939,7 +1249,7 @@ plot_parametric_ppc_change <- function(x = NULL, INDEX = NULL, y = NULL,
            y0 = c(0, 0), 
            y1 = c(max(y_group1), max(y_group2)), 
            lty = c("dashed", "dotted")
-           )
+  )
   title(expression(paste("Visualising ", d["PPC-Change"])))
   graphics::box()
   
@@ -966,7 +1276,7 @@ plot_parametric_ppc_change <- function(x = NULL, INDEX = NULL, y = NULL,
 
 
 plot_parametric_ppc_interaction <- function(x = NULL, INDEX = NULL, y = NULL,
-                                        m1, s1, m2, s2, m3, s3, m4, s4, n1, n2, alpha = 0.05) {
+                                            m1, s1, m2, s2, m3, s3, m4, s4, n1, n2, alpha = 0.05) {
   
   measurement_names <- c("Pretest", "Posttest")
   group_names <- c("Group a", "Group b")
