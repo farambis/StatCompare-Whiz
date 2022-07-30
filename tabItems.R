@@ -104,7 +104,9 @@ independentGroupsNonparametric <-
                  all_plots$non_parametric_cohens_u1,
                  all_plots$non_parametric_cohens_u3,
                  all_plots$non_parametric_tail_ratio,
-                 all_plots$non_parametric_tail_ratio_zoom),
+                 all_plots$non_parametric_tail_ratio_zoom,
+                 all_plots$boxplot_pairwise_difference_scores
+              ),
             descriptions$independent_nonparametric
           ))
 
@@ -212,12 +214,14 @@ dependentGroupsNonparametric <-
                  all_eff_sizes$non_parametric_ovl_two_dependent
             ),
             list(all_test_statistics$mann_whitney_dependent,
-                 all_test_statistics$wilcoxon_signed_rank_test),
+                 all_test_statistics$wilcoxon_signed_rank_test
+            ),
             list(all_plots$non_parametric_ovl,
                  all_plots$non_parametric_cohens_u1,
                  all_plots$non_parametric_cohens_u3,
                  all_plots$non_parametric_tail_ratio,
-                 all_plots$non_parametric_tail_ratio_zoom),
+                 all_plots$non_parametric_tail_ratio_zoom,
+                 all_plots$boxplot_pairwise_difference_scores),
             descriptions$dependent_nonparametric
           ))
 

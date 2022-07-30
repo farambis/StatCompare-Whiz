@@ -70,6 +70,7 @@ nonparametricControls <- function(ns){
 }
 
 plotUi <- function(id, plotChoices) {
+
   ns <- NS(id)
   fluidPage(
     fluidRow(
@@ -120,7 +121,6 @@ plotServer <- function(id, x, INDEX, y, m1, m2, m3, m4, s1, s2, s3, s4, n1, n2, 
                  plotModule_iv$add_rule("plotChoice", sv_required())
                  plotModule_iv$enable()
 
-
                  observeEvent(input$plotChoice,
                               {
                                 if (input$plotChoice %in% nonparametricOptions) {
@@ -157,6 +157,15 @@ plotServer <- function(id, x, INDEX, y, m1, m2, m3, m4, s1, s2, s3, s4, n1, n2, 
                  nonparametric_iv$add_rule("kernel", sv_required())
                  nonparametric_iv$condition(~ input$plotChoice %in% nonparametricOptions)
 
+                 boxplot_iv <- InputValidator$new()
+                 boxplot_iv$add_rule("plotChoice", function(choice) {
+                   if (!is.null(choice) && choice == all_plots$boxplot_pairwise_difference_scores) {
+                     if (length(x()) > 200) {
+                       paste0("This option is only available for n < 200")
+                     }
+                   }
+                 } )
+
                  # validate tail ratio input controls
                  tail_ratio_iv <- InputValidator$new()
                  tail_ratio_iv$add_rule("tail", sv_required())
@@ -171,6 +180,7 @@ plotServer <- function(id, x, INDEX, y, m1, m2, m3, m4, s1, s2, s3, s4, n1, n2, 
                  # Add all child validators to plotModule_iv
                  plotModule_iv$add_validator(nonparametric_iv)
                  plotModule_iv$add_validator(tail_ratio_iv)
+                 plotModule_iv$add_validator(boxplot_iv)
                  
                  output$plot <- renderPlot({
                     req(input$plotChoice,
