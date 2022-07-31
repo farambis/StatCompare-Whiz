@@ -7,7 +7,7 @@ $$ PS = Pr(Y_a > Y_b) $$
 Therefore, the PS measures the probabilistic superiority of one group's scores over another group's scores. Since it is a probability, the result ranges from 0 to1. A PS of 0 means that every member of Population $a$ is outscored by every member of Population $b$. A PS of 1 means that every member of Population $a$ outscores every member of Population $b$.
 The number of times that the scores from one specified sample are higher than the scores from the other sample with which they are paired is called the _U statistic_. Therefore, we can define(Grissom & Kim, 2005): 
 $$ \hat{P}_{a>b} = \frac{U}{n_a n_b} $$
-wit $n_a n_b$ being the number of possible comparisons and $U$ being the number of wins for a specified sample.  
+with $n_a n_b$ being the number of possible comparisons and $U$ being the number of wins for a specified sample. In the above case ties are counted as 0.5. However, there is also the option to ignore ties. Then ties are not added to U and the denominator of the formula above is subtracted by the number of ties.
 
 The exact confidence interval is calculated based on Newcombe(2006):
 $$ UL = \hat{\theta} + z \sqrt{var(\hat{\theta})} $$

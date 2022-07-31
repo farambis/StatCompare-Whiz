@@ -155,7 +155,7 @@ generate_es_raw_data_dataframe <- function(es_list, INDEX = NULL, x, y, tail, re
   es_ci_upper <- vector(mode = "double", length = 0L)
   es_boot_ci_lower <- vector(mode = "double", length = 0L)
   es_boot_ci_upper <- vector(mode = "double", length = 0L)
-  
+
   for (i in es_list) {
     if (!i %in% all_eff_sizes) stop("This is not an offered effect size!\n")
     res <- switch(i,
@@ -163,7 +163,7 @@ generate_es_raw_data_dataframe <- function(es_list, INDEX = NULL, x, y, tail, re
                   "cohen_d" = c(smd_ci(effsize = i, val = smd_uni(effsize = i, x = x, INDEX = INDEX), x = x, INDEX = INDEX, alpha = alpha), boot_general(x, INDEX, smd_uni, alpha, effsize = i)),
                   "hedges_g" = c(smd_ci(effsize = i, val = smd_uni(effsize = i, x = x, INDEX = INDEX), x = x, INDEX = INDEX, alpha = alpha), boot_general(x, INDEX, smd_uni, alpha, effsize = i)),
                   "glass_d" = c(glass_d(x, INDEX, standardised_by_group_1 = TRUE), glass_d_ci(x, INDEX, standardised_by_group_1 = TRUE, alpha = alpha), boot_general(x, INDEX, glass_d, alpha, standardised_by_group_1 = TRUE)),
-                  "glass_d_corr" = c(glass_d_corr(x, INDEX, standardised_by_group_1 = TRUE), glass_d_corr_ci(x, INDEX, standardised_by_group_1 = TRUE), boot_general(x, INDEX, glass_d_corr, alpha,standardised_by_group_1 = TRUE)),
+                  "glass_d_corr" = c(glass_d_corr(x, INDEX, standardised_by_group_1 = TRUE), glass_d_corr_ci(x, INDEX, standardised_by_group_1 = TRUE), boot_general(x, INDEX, glass_d_corr, alpha, standardised_by_group_1 = TRUE)),
                   "bonett_d" = c(smd_ci(effsize = i, val = smd_uni(effsize = i, x = x, INDEX = INDEX), x = x, INDEX = INDEX, alpha = alpha), boot_general(x, INDEX, smd_uni, alpha, effsize = i)),
                   "bonett_d_corr" = c(smd_ci(effsize = i, val = smd_uni(effsize = i, x = x, INDEX = INDEX), x = x, INDEX = INDEX, alpha = alpha), boot_general(x, INDEX, smd_uni, alpha, effsize = i)),
                   "AKP_eqvar" = c(smd_ci(effsize = i, val = smd_uni(effsize = i, x = x, INDEX = INDEX), x = x, INDEX = INDEX, alpha = alpha), boot_general(x, INDEX, smd_uni, alpha, effsize = i)),
@@ -186,7 +186,7 @@ generate_es_raw_data_dataframe <- function(es_list, INDEX = NULL, x, y, tail, re
                   "variance_ratio" = c(variance_ratio(x = x, INDEX = INDEX), variance_ratio_independent_ci(x = x, INDEX = INDEX, alpha = alpha), boot_general(x, INDEX, variance_ratio, alpha)),
                   "non_parametric_variance_ratio" = c(variance_ratio(x = x, INDEX = INDEX), non_parametric_variance_ratio_independent_ci(x = x, INDEX = INDEX, alpha = alpha), boot_general(x, INDEX, variance_ratio, alpha)),
                   "tail_ratio" = c(tail_ratio(x = x, INDEX = INDEX, reference_group = ref, tail = tail, cutoff = cutoff), tail_ratio_independent_ci(x = x, INDEX = INDEX, reference_group = ref, tail = tail, cutoff = cutoff, alpha = alpha), boot_general(x, INDEX, tail_ratio, alpha, reference_group = ref, tail = tail, cutoff = cutoff)),
-                  "non_parametric_tail_ratio" = c(non_parametric_tail_ratio(x = x, INDEX = INDEX, reference_group = ref, tail = tail, cutoff = cutoff), non_parametric_tail_ratio_independent_ci(x =x, INDEX = INDEX, reference_group = ref, tail = tail, cutoff = cutoff, alpha = alpha), boot_general(x, INDEX, non_parametric_tail_ratio, alpha, reference_group = ref, tail = tail, cutoff = cutoff)),
+                  "non_parametric_tail_ratio" = c(non_parametric_tail_ratio(x = x, INDEX = INDEX, reference_group = ref, tail = tail, cutoff = cutoff), non_parametric_tail_ratio_independent_ci(x = x, INDEX = INDEX, reference_group = ref, tail = tail, cutoff = cutoff, alpha = alpha), boot_general(x, INDEX, non_parametric_tail_ratio, alpha, reference_group = ref, tail = tail, cutoff = cutoff)),
                   "parametric_cohens_u3" = c(parametric_cohens_u3(x = x, INDEX = INDEX), parametric_cohens_u3_ci(x, INDEX, alpha = alpha), boot_general(x, INDEX, parametric_cohens_u3, alpha)),
                   "non_parametric_glass_d" = c(non_parametric_glass_d(x = x, INDEX = INDEX), NA_real_, NA_real_, boot_general(x, INDEX, non_parametric_glass_d, alpha)),
                   "dominance_measure" = c(dominance_measure_based_es(x = x, INDEX = INDEX), dominance_measure_ci(x, INDEX, alpha = alpha), boot_general(x, INDEX, dominance_measure_based_es, alpha)),
@@ -297,7 +297,7 @@ generate_es_educational_dataframe <- function(es_list, mean1, standardDeviation1
                   "parametric_cohens_u2_dependent" = c(parametric_cohens_u2_dependent(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1), parametric_cohens_u2_dependent_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1, r = correlation1, alpha = alpha)),
                   "parametric_cohens_u3_dependent" = c(parametric_cohens_u3_dependent(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1), parametric_cohens_u3_dependent_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, sdiff = standardDeviationDiff1, n = sampleSize1, r = correlation1, var_equal = TRUE, alpha = alpha)),
                   "variance_ratio_dependent" = c(variance_ratio(s1 = standardDeviation1, s2 = standardDeviation2), variance_ratio_dependent_ci(s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1, r = correlation1, alpha = alpha)),
-                  "tail_ratio_dependent" = c(tail_ratio(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2,tail = tail, reference_group = ref, cutoff = cutoff), tail_ratio_dependent_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, r = correlation1, n = sampleSize1, tail = tail, reference_group = ref, cutoff = cutoff, alpha = alpha)),
+                  "tail_ratio_dependent" = c(tail_ratio(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, tail = tail, reference_group = ref, cutoff = cutoff), tail_ratio_dependent_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, r = correlation1, n = sampleSize1, tail = tail, reference_group = ref, cutoff = cutoff, alpha = alpha)),
                   # Effect sizes for the pretest-posttest-control design:
                   "d_PPC_change" = c(d_PPC_change(m1 = mean1, s1 = standardDeviation1, m2 = mean2, s2 = standardDeviation2, m3 = mean3, s3 = standardDeviation3, m4 = mean4, s4 = standardDeviation4, r1 = correlation1, r2 = correlation2, sdiff1 = standardDeviationDiff1, sdiff2 = standardDeviationDiff2), d_PPC_change_ci(m1 = mean1, s1 = standardDeviation1, m2 = mean2, s2 = standardDeviation2, m3 = mean3, s3 = standardDeviation3, m4 = mean4, s4 = standardDeviation4, r1 = correlation1, r2 = correlation2, sdiff1 = standardDeviationDiff1, sdiff2 = standardDeviationDiff2, n1 = sampleSize1, n2 = sampleSize2, alpha = alpha)),
                   "g_PPC_change" = c(g_PPC_change(m1 = mean1, s1 = standardDeviation1, m2 = mean2, s2 = standardDeviation2, n1 = sampleSize1, r1 = correlation1, sdiff1 = standardDeviationDiff1, m3 = mean3, s3 = standardDeviation3, m4 = mean4, s4 = standardDeviation4, n2 = sampleSize2, r2 = correlation2, sdiff2 = standardDeviationDiff2), g_PPC_change_ci(m1 = mean1, s1 = standardDeviation1, m2 = mean2, s2 = standardDeviation2, n1 = sampleSize1, r1 = correlation1, sdiff1 = standardDeviationDiff1, m3 = mean3, s3 = standardDeviation3, m4 = mean4, s4 = standardDeviation4, n2 = sampleSize2, r2 = correlation2, sdiff2 = standardDeviationDiff2, alpha = alpha)),
@@ -326,30 +326,36 @@ generate_multivariate_raw_data_dataframe <- function(es_list, dat, INDEX, alpha,
   es_result <- vector(mode = "double", length = 0L)
   es_ci_lower <- vector(mode = "double", length = 0L)
   es_ci_upper <- vector(mode = "double", length = 0L)
+  es_boot_ci_lower <- vector(mode = "double", length = 0L)
+  es_boot_ci_upper <- vector(mode = "double", length = 0L)
   for (i in es_list) {
     if (!i %in% all_eff_sizes) stop("This is not an offered effect size!\n")
     res <- switch(i,
-                  "mahalanobis_d" = c(mahalanobis_d(dat, INDEX), mahalanobis_d_raw_data_ci(dat, INDEX, alpha)),
-                  "bias_corrected_d_multivariate" = c(bias_corrected_d_multivariate(dat, INDEX), NA_real_, NA_real_),
-                  "ovl_multivariate" = c(ovl_multivariate(dat, INDEX), NA_real_, NA_real_),
-                  "ovl_two_multivariate" = c(ovl_two_multivariate(dat, INDEX), NA_real_, NA_real_),
-                  "pcc_multivariate" = c(pcc_multivariate(dat, INDEX), NA_real_, NA_real_),
-                  "u1_multivariate" = c(u1_multivariate(dat, INDEX), NA_real_, NA_real_),
-                  "u3_multivariate" = c(u3_multivariate(dat, INDEX), NA_real_, NA_real_),
-                  "common_language_multivariate" = c(common_language_multivariate(dat, INDEX), NA_real_, NA_real_),
-                  "tail_ratio_multivariate" = c(tail_ratio_multivariate(dat, INDEX, z), NA_real_, NA_real_)
+                  "mahalanobis_d" = c(mahalanobis_d(dat, INDEX), mahalanobis_d_raw_data_ci(dat, INDEX, alpha), boot_multivariate(dat, INDEX, mahalanobis_d, alpha = alpha)),
+                  "bias_corrected_d_multivariate" = c(bias_corrected_d_multivariate(dat, INDEX), NA_real_, NA_real_, boot_multivariate(dat, INDEX, bias_corrected_d_multivariate, alpha = alpha)),
+                  "ovl_multivariate" = c(ovl_multivariate(dat, INDEX), NA_real_, NA_real_, boot_multivariate(dat, INDEX, ovl_multivariate, alpha = alpha)),
+                  "ovl_two_multivariate" = c(ovl_two_multivariate(dat, INDEX), NA_real_, NA_real_, boot_multivariate(dat, INDEX, ovl_two_multivariate, alpha = alpha)),
+                  "pcc_multivariate" = c(pcc_multivariate(dat, INDEX), NA_real_, NA_real_, boot_multivariate(dat, INDEX, pcc_multivariate, alpha = alpha)),
+                  "u1_multivariate" = c(u1_multivariate(dat, INDEX), NA_real_, NA_real_, boot_multivariate(dat, INDEX, u1_multivariate, alpha = alpha)),
+                  "u3_multivariate" = c(u3_multivariate(dat, INDEX), NA_real_, NA_real_, boot_multivariate(dat, INDEX, u3_multivariate, alpha = alpha)),
+                  "common_language_multivariate" = c(common_language_multivariate(dat, INDEX), NA_real_, NA_real_, boot_multivariate(dat, INDEX, common_language_multivariate, alpha = alpha)),
+                  "tail_ratio_multivariate" = c(tail_ratio_multivariate(dat, INDEX, z), NA_real_, NA_real_, boot_multivariate(dat, INDEX, tail_ratio_multivariate, alpha = alpha, z = z))
     )
     es_result <- c(es_result, res[[1]])
     es_ci_lower <- c(es_ci_lower, res[[2]])
     es_ci_upper <- c(es_ci_upper, res[[3]])
+    es_boot_ci_lower <- c(es_boot_ci_lower, res[[4]])
+    es_boot_ci_upper <- c(es_boot_ci_upper, res[[5]])
   }
   es_dataframe <- data.frame(
     es_list,
     es_result,
     es_ci_lower,
-    es_ci_upper
+    es_ci_upper,
+    es_boot_ci_lower,
+    es_boot_ci_upper
   )
-  colnames(es_dataframe) <- c("Name", "Effect Size", "Ci Ll", "Ci Ul")
+  colnames(es_dataframe) <- c("Name", "Effect Size", "Ci Ll", "Ci Ul", "Boot Ci Ll", "Boot Ci Ul")
   return(es_dataframe)
 }
 
@@ -448,27 +454,27 @@ generate_non_parametric_ts_dataframe <- function(ts_list, INDEX, x, y) {
 ## Error detector function ----
 error_detector <- function(x, INDEX, trim, na.rm) {
   if (!is.numeric(x)) stop("\nx must be numeric")
-  
+
   if (length(x) != length(INDEX)) stop("\nx and INDEX must have the same length")
-  
+
   n_grps <- unique(INDEX[!is.na(INDEX)])
   if (length(n_grps) < 2 || length(n_grps) > 2) stop("\nINDEX should contain two unique values")
-  
+
   if (typeof(na.rm) != "logical") stop("\nna.rm must be set to TRUE or FALSE")
-  
+
   if (trim < 0 || trim > 0.5) stop("\ntrim < 0 or > 0.5, specify a value within these bounds")
-  
+
   i_NA <- complete.cases(x, INDEX)
   if (!na.rm && any(!i_NA)) {
     stop("\nNAs present in x and/or INDEX")
   }
-  
+
 }
 
 ## Winsorized Variances ----
 
 winsor <- function(x, trim = 0.2, na.rm = TRUE) {
-  
+
   # this function winsorizes a vector
   #
   # x ...... vector to winsorize
@@ -478,33 +484,33 @@ winsor <- function(x, trim = 0.2, na.rm = TRUE) {
   # the lower *trim* percent of the sorted vector is replaced with the lowest
   # score that is not trimmed, and the upper *trim* percent of the sorted
   # vector is replaced by the largest non trimmed  score.
-  
+
   if (na.rm) x <- x[!is.na(x)]
-  
+
   if (trim < 0 || trim > 0.5) stop("\ntrim < 0 or > 0.5, specify a value within these bounds")
-  
-  
+
+
   y <- sort(x)
   n <- length(y)
   i_lower <- floor(trim * n) + 1
   i_upper <- (n + 1) - i_lower
-  
+
   val_lower <- y[i_lower]
   val_upper <- y[i_upper]
-  
+
   x <- ifelse(x <= val_lower, val_lower,
               ifelse(x >= val_upper, val_upper, x))
-  
-  
+
+
   nmbr_nas <- sum(is.na(x))
   if (nmbr_nas != 0) {
     warning("\nNAs present in x - these will be ignored for winsorization\nNAs will be added to the end of the winsorized vector\nSet na.rm = TRUE if you want NAs removed")
     nas <- rep(NA, times = nmbr_nas)
     return(c(x, nas))
   }
-  
+
   return(x)
-  
+
 }
 
 ## Determine sample size after trimming ----
@@ -517,7 +523,7 @@ n_trim <- function(x = NULL, n, trim = 0.2) {
 
 ## Determine degrees of freedom -----
 degrees_freedom <- function(effsize, n1, n2, ntr1, ntr2, standardised_by_group_1 = TRUE) {
-  
+
   df <- switch(effsize,
                "cohen_d" = n1 + n2 - 2,
                "hedges_g" = n1 + n2 - 2,
@@ -527,7 +533,7 @@ degrees_freedom <- function(effsize, n1, n2, ntr1, ntr2, standardised_by_group_1
                "bonett_d_corr" = n1 + n2 - 2,
                "AKP_eqvar" = ntr1 + ntr2 - 2,
                "AKP_uneqvar" = ifelse(standardised_by_group_1, ntr1, ntr2) - 1)
-  
+
   return(df)
 }
 
@@ -597,19 +603,19 @@ dependent_groups_stats <- function(x, y, trim, winvar = winvar) {
     wincov <- NULL
   }
   return(list(n = n, ntr = ntr, trmdiff = trmdiff, vdiff = vdiff, winvardiff = winvardiff, sdiff = sdiff, r = r, wincov = wincov))
-  
+
 }
 
 
 mixed_design_stats <- function(x, y, INDEX){
-  
+
   datasets_pre <- split(x, INDEX)
   dataset1_pre <- datasets_pre[[1]]
   dataset2_pre <- datasets_pre[[2]]
   datasets_post <- split(y, INDEX)
   dataset1_post <- datasets_post[[1]]
   dataset2_post <- datasets_post[[2]]
-  
+
   m1 <- mean(dataset1_pre)
   v1 <- var(dataset1_pre)
   s1 <- sd(dataset1_pre)
@@ -628,10 +634,10 @@ mixed_design_stats <- function(x, y, INDEX){
   s4 <- sd(dataset2_post)
   r2 <- cor(dataset2_pre, dataset2_post)
   sdiff2 <- sd(dataset2_pre - dataset2_post)
-  
+
   return(list(m1 = m1, var1 = v1, s1 = s1, n1 = n1, m2 = m2, var2 = v2, s2 = s2, r1 = r1, sdiff1 = sdiff1,
               m3 = m3, var3 = v3, s3 = s3, n2 = n2, m4 = m4, var4 = v4, s4 = s4, r2 = r2, sdiff2 = sdiff2))
-  
+
 }
 
 summary_stats <- function(x, INDEX = NULL, y = NULL, trim = 0, winvar = FALSE) {
@@ -674,27 +680,27 @@ stats_names_key_value_ls <- list(n = "Sample size",
                                  r = "Correlation",
                                  wincov = "Winsorized covariance")
 
-stats_names_key_value_matching <- function(keys, key_value_ls){
+stats_names_key_value_matching <- function(keys, key_value_ls) {
   values <- unlist(key_value_ls[keys])
   return(values)
 }
 
-multivariate_summary_dfs <- function(x, INDEX){
+multivariate_summary_dfs <- function(x, INDEX) {
   # TODO
 }
 
 independent_groups_design_summary_dfs <- function(x, INDEX, trim = 0.2, winvar = TRUE){
-  
+
   summary_stats_df <- rep(list(list()), 1)
   stats <- summary_stats(x, INDEX, trim = trim, winvar = winvar)
   data <- split(x, INDEX)
   x <- data[[1]]
   y <- data[[2]]
   stats <- c(stats, list(med1 = median(x), med2 = median(y), iqr1 = IQR(x), iqr2 = IQR(y), mad1 = mad(x), mad2 = mad(y)))
-  row_names_keys <- gsub(patter="[0-9]", replacement = "", names(stats))[grepl(pattern="1$", names(stats))]
+  row_names_keys <- gsub(patter = "[0-9]", replacement = "", names(stats))[grepl(pattern = "1$", names(stats))]
   row_names <- stats_names_key_value_matching(row_names_keys, key_value_ls = stats_names_key_value_ls)
-  col1 <- round(unlist(stats[grepl(pattern="1$", names(stats))]), 2)
-  col2 <- round(unlist(stats[grepl(pattern="2$", names(stats))]), 2)
+  col1 <- round(unlist(stats[grepl(pattern = "1$", names(stats))]), 2)
+  col2 <- round(unlist(stats[grepl(pattern = "2$", names(stats))]), 2)
   summary_stats_df[[1]][[1]] <- data.frame(`Group a` = col1,
                                            `Group b` = col2,
                                            row.names = row_names)
@@ -703,11 +709,11 @@ independent_groups_design_summary_dfs <- function(x, INDEX, trim = 0.2, winvar =
 }
 
 dependent_groups_design_summary_dfs <- function(x, y){
-  
+
   summary_stats_dfs <- rep(list(list()), 2)
   stats <- summary_stats(x, y = y, trim = 0.2, winvar = TRUE)
   stats <- c(stats, list(med1 = median(x), med2 = median(y), iqr1 = IQR(x), iqr2 = IQR(y), mad1 = mad(x), mad2 = mad(y)))
-  df1_row_names_keys <- gsub(pattern = "[0-9]", replacement = "", names(stats))[grepl(pattern="1$", names(stats))]
+  df1_row_names_keys <- gsub(pattern = "[0-9]", replacement = "", names(stats))[grepl(pattern = "1$", names(stats))]
   df1_row_names_keys <- df1_row_names_keys[!(df1_row_names_keys %in% c("n", "ntr"))]
   df1_row_names <- stats_names_key_value_matching(df1_row_names_keys, key_value_ls = stats_names_key_value_ls)
   df1_col1 <- round(unlist(stats[paste0(df1_row_names_keys, 1)]), 2)
@@ -716,7 +722,7 @@ dependent_groups_design_summary_dfs <- function(x, y){
                                             Posttest = df1_col2,
                                             row.names = df1_row_names),
                                  paste0("Summary statistics for pre- and posttest"))
-  
+
   df2_row_names_keys <- names(stats)[grepl(pattern = "[^0-9]$", x = names(stats))]
   df2_row_names <- stats_names_key_value_matching(df2_row_names_keys, key_value_ls = stats_names_key_value_ls)
   df2_col1 <- round(unlist(stats[df2_row_names_keys]), 2)
@@ -727,7 +733,7 @@ dependent_groups_design_summary_dfs <- function(x, y){
 }
 
 mixed_design_summary_dfs <- function(x, INDEX, y){
-  
+
   summary_stats_dfs <- rep(list(list()), 4)
   stats <- summary_stats(x, INDEX, y)
   data <- split(x, INDEX)
@@ -739,18 +745,18 @@ mixed_design_summary_dfs <- function(x, INDEX, y){
   stats <- c(stats, list(med1 = median(x1), med2 = median(y1), med3 = median(x2), med4 = median(y2),
                          iqr1 = IQR(x1), iqr2 = IQR(y1), iqr3 = IQR(x2), iqr4 = IQR(y2),
                          mad1 = mad(x1), mad2 = mad(y1), mad3 = mad(x2), mad4 = IQR(y2)))
-  row_names_keys <- unique(gsub(patter="[0-9]", replacement = "", names(stats)))
-  per_measurement_df_row_names_keys <- row_names_keys[!(row_names_keys %in% c("n", "sdiff","r"))]
+  row_names_keys <- unique(gsub(patter = "[0-9]", replacement = "", names(stats)))
+  per_measurement_df_row_names_keys <- row_names_keys[!(row_names_keys %in% c("n", "sdiff", "r"))]
   per_measurement_df_row_names <- stats_names_key_value_matching(per_measurement_df_row_names_keys, stats_names_key_value_ls)
-  across_measurements_df_row_names_keys <- row_names_keys[row_names_keys %in% c("n", "sdiff","r")]
+  across_measurements_df_row_names_keys <- row_names_keys[row_names_keys %in% c("n", "sdiff", "r")]
   across_measurements_df_row_names <- stats_names_key_value_matching(across_measurements_df_row_names_keys, stats_names_key_value_ls)
-  df1_col1 <- round(unlist(stats[paste0(per_measurement_df_row_names_keys,1)]), 2)
+  df1_col1 <- round(unlist(stats[paste0(per_measurement_df_row_names_keys, 1)]), 2)
   df1_col2 <- round(unlist(stats[paste0(per_measurement_df_row_names_keys, 2)]), 2)
   summary_stats_dfs[[1]] <- list(data.frame(Pretest = df1_col1,
                                             Posttest = df1_col2,
                                             row.names = per_measurement_df_row_names),
                                  paste0("Summary statistics for pre- and posttest of group a"))
-  df2_col1 <- round(unlist(stats[paste0(across_measurements_df_row_names_keys, 1)]),2)
+  df2_col1 <- round(unlist(stats[paste0(across_measurements_df_row_names_keys, 1)]), 2)
   summary_stats_dfs[[2]] <- list(data.frame(Value = df2_col1,
                                             row.names = across_measurements_df_row_names),
                                  paste0("Summary statistics across measurements of group a"))
@@ -767,11 +773,11 @@ mixed_design_summary_dfs <- function(x, INDEX, y){
   return(summary_stats_dfs)
 }
 
-generate_summary_statistics_data_frame <- function(x, INDEX = NULL, y = NULL){
-  
+generate_summary_statistics_data_frame <- function(x, INDEX = NULL, y = NULL) {
+
   if (is.data.frame(x)) {
     res <- multivariate_summary_dfs(x, INDEX)
-  } else if (is.null(y)){
+  } else if (is.null(y)) {
     res <- independent_groups_design_summary_dfs(x, INDEX)
   } else if (is.null(INDEX)) {
     res <- dependent_groups_design_summary_dfs(x, y)
@@ -785,8 +791,8 @@ generate_summary_statistics_data_frame <- function(x, INDEX = NULL, y = NULL){
 sd_combined <- function(x = NULL, INDEX = NULL, var1, var2, n1, n2, winvar1,
                         winvar2, ntr1, ntr2, winsor = FALSE, trim = 0.2, na.rm = TRUE,
                         type = c("pooled", "mean", "grp_1", "grp_2", "se_pooled", "se_welch", "se_yuen")) {
-  
-  
+
+
   if (!is.null(x) && !is.null(INDEX)) {
     stats <- summary_stats(x = x, INDEX = INDEX, trim = trim, winvar = winsor)
     for (i in names(stats)) {
@@ -797,7 +803,7 @@ sd_combined <- function(x = NULL, INDEX = NULL, var1, var2, n1, n2, winvar1,
     var1 <- winvar1
     var2 <- winvar2
   }
-  
+
   res <- switch(type,
                 "pooled" = sqrt((((n1 - 1) * var1) + ((n2 - 1) * var2)) / (n1 + n2 - 2)),
                 "mean" = sqrt((var1 + var2) / 2),
@@ -807,7 +813,7 @@ sd_combined <- function(x = NULL, INDEX = NULL, var1, var2, n1, n2, winvar1,
                 "se_welch" = sqrt((var1 / n1) + (var2 / n2)),
                 "se_yuen" = sqrt(((n1 - 1) * var1 / (ntr1 * (ntr1 - 1))) + ((n2 - 1) * var2 / (ntr2 * (ntr2 - 1))))
   )
-  
+
   return(res)
 }
 
@@ -818,10 +824,10 @@ smd_uni <- function(effsize = c("cohen_d", "hedges_g", "glass_d", "glass_d_corr"
                                 "bonett_d", "bonett_d_corr", "AKP_eqvar", "AKP_uneqvar"),
                     x = NULL, INDEX = NULL, m1, m2, var1, var2, n1, n2, trm1,
                     trm2, winvar1, winvar2, ntr1, ntr2, na.rm = TRUE, trim = 0.2) {
-  
+
   # this function
-  
-  
+
+
   if (!is.null(x) && !is.null(INDEX)) {
     if ("AKP_eqvar" %in% effsize || "AKP_uneqvar" %in% effsize) {
       winvar <- TRUE
@@ -833,7 +839,7 @@ smd_uni <- function(effsize = c("cohen_d", "hedges_g", "glass_d", "glass_d_corr"
       assign(i, stats[[i]])
     }
   }
-  
+
   res <- switch(effsize,
                 "cohen_d" = (m2 - m1) / sd_combined(var1 = var1, var2 = var2, n1 = n1, n2 = n2, type = "pooled"),
                 "hedges_g" = hedges_bias_correction(df = degrees_freedom(effsize, n1, n2)) * (m2 - m1) / sd_combined(var1 = var1, var2 = var2, n1 = n1, n2 = n2, type = "pooled"),
@@ -843,32 +849,32 @@ smd_uni <- function(effsize = c("cohen_d", "hedges_g", "glass_d", "glass_d_corr"
                 "bonett_d_corr" = hedges_bias_correction(df = degrees_freedom(effsize, n1, n2)) * (m2 - m1) / sd_combined(var1 = var1, var2 = var2, type = "mean"),
                 "AKP_eqvar" = AKP_correction(trim = trim) * (trm2 - trm1) / sd_combined(winvar1 = winvar1, winvar2 = winvar2, n1 = n1, n2 = n2, type = "pooled", winsor = TRUE, trim = trim),
                 "AKP_uneqvar" = AKP_correction(trim = trim) * (trm2 - trm1) / sd_combined(winvar1 = winvar1, winvar2 = winvar2, type = "grp_1", winsor = TRUE, trim = trim))
-  
+
   names(res) <- effsize
   return(res)
-  
+
 }
 
 # CIs for univariate SMDs  ----
 ## confidence intervals for noncentrality parameters ----
 non_centrality_parameter_ci <- function(non_centrality_parameter, df, alpha) {
   cibound_candidates <- c(min(-5, -abs(non_centrality_parameter) * 7), max(5, abs(non_centrality_parameter) * 7))
-  
+
   non_centrality_parameter_ci_lower <- suppressWarnings(
     uniroot(f = function(x) {
       pt(q = non_centrality_parameter, df = df, ncp = x) - (1 - (alpha / 2))
     },
     interval = cibound_candidates)
   )$root
-  
-  
+
+
   non_centrality_parameter_ci_upper <- suppressWarnings(
     uniroot(f = function(x) {
       pt(q = non_centrality_parameter, df = df, ncp = x) - alpha / 2
     },
     interval = cibound_candidates)
   )$root
-  
+
   ncp_ci <- c(non_centrality_parameter_ci_lower, non_centrality_parameter_ci_upper)
   return(ncp_ci)
 }
@@ -878,7 +884,7 @@ smd_ci <- function(effsize = c("cohen_d", "hedges_g", "glass_d", "glass_d_corr",
                                "bonett_d", "bonett_d_corr", "AKP_eqvar", "AKP_uneqvar"),
                    x = NULL, INDEX = NULL, val, n1, n2, n, var1, var2, ntr1, ntr2,
                    winvar1, winvar2, trim = 0.2, alpha = 0.05) {
-  
+
   # this function computes confidence intervals (ci) for various effect sizes using
   # exact/approximate formulas
   #
@@ -900,8 +906,8 @@ smd_ci <- function(effsize = c("cohen_d", "hedges_g", "glass_d", "glass_d_corr",
   # based on noncentral t-distributions are computed. For the effect size
   # recommended by Bonett (2008), the confidence interval is computed using the
   # formula for the variance of the effect size based on large sample theory.
-  
-  
+
+
   if (!is.null(x) && !is.null(INDEX)) {
     if ("AKP_eqvar" %in% effsize || "AKP_uneqvar" %in% effsize) {
       winvar <- TRUE
@@ -913,12 +919,12 @@ smd_ci <- function(effsize = c("cohen_d", "hedges_g", "glass_d", "glass_d_corr",
       assign(i, stats[[i]])
     }
   }
-  
+
   df <- degrees_freedom(effsize, n1, n2, ntr1, ntr2, standardised_by_group_1 = TRUE)
-  
+
   if (effsize %in% c("bonett_d", "bonett_d_corr")) {
     sdm <- sd_combined(var1 = var1, var2 = var2, type = "mean")
-    
+
     ls_var <- switch(effsize,
                      "bonett_d" = val^2 * (var1^2 / (n1 - 1) + var2^2 / (n2 - 1)) / (8 * sdm^4) +
                        (var1 / (sdm^2 * (n1 - 1))) +
@@ -928,7 +934,7 @@ smd_ci <- function(effsize = c("cohen_d", "hedges_g", "glass_d", "glass_d_corr",
                                           var2 / (sdm^2 * (n2 - 1))) * (hedges_bias_correction(df = n1 + n2 - 2)^2)
     )
   } else {
-    
+
     non_centrality_parameter <- switch(effsize,
                                        "cohen_d" = val / sqrt((1 / n1) + (1 / n2)),
                                        "hedges_g" = val / sqrt((1 / n1) + (1 / n2)),
@@ -937,7 +943,7 @@ smd_ci <- function(effsize = c("cohen_d", "hedges_g", "glass_d", "glass_d_corr",
                                        "AKP_eqvar" = sqrt((ntr1 * ntr2) / (ntr1 + ntr2)) * ((trm2 - trm1) / sqrt(((n1 + n2 - 2) * (sd_combined(winvar1 = winvar1, winvar2 = winvar2, n1 = n1, n2 = n2, type = "pooled", winsor = TRUE, trim = trim)^2)) / (ntr1 + ntr2 - 2))),
                                        "AKP_uneqvar" = val / (AKP_correction(trim = trim) * sqrt(((n1 - 1) / (ntr1 * (ntr1 - 1))) + (((n2 - 1) * winvar2) / ((ntr2 * (ntr2 - 1)) * winvar1))))
     )
-    
+
     if (effsize %in% "hedges_g") {
       non_centrality_parameter_ci_lower <- qt(alpha / 2, df = df, ncp = non_centrality_parameter)
       non_centrality_parameter_ci_upper <- qt(1 - (alpha / 2), df = df, ncp = non_centrality_parameter)
@@ -945,9 +951,9 @@ smd_ci <- function(effsize = c("cohen_d", "hedges_g", "glass_d", "glass_d_corr",
     } else {
       ncp_ci <- non_centrality_parameter_ci(non_centrality_parameter, df, alpha)
     }
-    
+
   }
-  
+
   smd_ci <- switch(effsize,
                    "cohen_d" = ncp_ci * sqrt((1 / n1) + (1 / n2)),
                    "hedges_g" = ncp_ci * sqrt((1 / n1) + (1 / n2)),
@@ -958,7 +964,7 @@ smd_ci <- function(effsize = c("cohen_d", "hedges_g", "glass_d", "glass_d_corr",
                    "AKP_eqvar" = ncp_ci * (AKP_correction(trim = trim) * sqrt(((ntr1 + ntr2) * (n1 + n2 - 2)) / (ntr1 * ntr2 * (ntr1 + ntr2 - 2)))),
                    "AKP_uneqvar" = ncp_ci * (AKP_correction(trim = trim) * sqrt(((n1 - 1) / (ntr1 * (ntr1 - 1))) + (((n2 - 1) * winvar2) / ((ntr2 * (ntr2 - 1)) * winvar1))))
   )
-  
+
   res <- list(effsize = unname(val),
               lower_bound = smd_ci[[1]],
               upper_bound = smd_ci[[2]])
@@ -987,7 +993,7 @@ boot_general <- function(x, INDEX, FUN, alpha = 0.05, ...) {
   cl_lower <- boot_val[lower + 1]
   cl_upper <- boot_val[upper]
   return(list(lower_bound = cl_lower, upper_bound = cl_upper))
-  
+
 }
 
 
@@ -996,11 +1002,11 @@ boot_general_dependent_groups <- function(x, y, FUN, alpha = 0.05, ...) {
   data_mat <- cbind(x, y)
   boot_dat <- rep(list(numeric(length = length(data_mat) * 2)), times = nboot)
   for (i in 1:nboot) {
-    boot_dat[[i]] <- data_mat[sample(1:nrow(data_mat), replace = TRUE), ]
+    boot_dat[[i]] <- data_mat[sample(seq_len(nrow(data_mat)), replace = TRUE),]
   }
   boot_val <- sort(
     unlist(
-      lapply(boot_dat, FUN = function(d){do.call(FUN, args = list(x = d[, 1], y = d[, 2], ...))}),
+      lapply(boot_dat, FUN = function(d) { do.call(FUN, args = list(x = d[, 1], y = d[, 2], ...)) }),
       use.names = FALSE
     )
   )
@@ -1016,17 +1022,17 @@ boot_general_mixed_design <- function(x, y, INDEX, FUN, alpha = 0.05, ...) {
   INDEX_fct <- sort(as.factor(INDEX))
   data_mat <- cbind(x, y)
   original <- list()
-  original[[1]] <- data_mat[INDEX == levels(INDEX_fct)[[1]], ]
-  original[[2]] <- data_mat[INDEX == levels(INDEX_fct)[[2]], ]
+  original[[1]] <- data_mat[INDEX == levels(INDEX_fct)[[1]],]
+  original[[2]] <- data_mat[INDEX == levels(INDEX_fct)[[2]],]
   boot_dat <- rep(list(numeric(length = nrow(data_mat) * 2)), times = nboot)
   for (i in seq_len(nboot)) {
-    x_boot <- original[[1]][sample(seq_len(nrow(original[[1]])), replace = TRUE), ]
-    y_boot <- original[[2]][sample(seq_len(nrow(original[[2]])), replace = TRUE), ]
+    x_boot <- original[[1]][sample(seq_len(nrow(original[[1]])), replace = TRUE),]
+    y_boot <- original[[2]][sample(seq_len(nrow(original[[2]])), replace = TRUE),]
     boot_dat[[i]] <- rbind(x_boot, y_boot)
   }
   boot_val <- sort(
     unlist(
-      lapply(boot_dat, FUN = function(d){do.call(FUN, args = list(x = d[, 1], y = d[, 2], INDEX = INDEX_fct, ...))}),
+      lapply(boot_dat, FUN = function(d) { do.call(FUN, args = list(x = d[, 1], y = d[, 2], INDEX = INDEX_fct, ...)) }),
       use.names = FALSE
     )
   )
@@ -1035,7 +1041,32 @@ boot_general_mixed_design <- function(x, y, INDEX, FUN, alpha = 0.05, ...) {
   cl_lower <- boot_val[lower + 1]
   cl_upper <- boot_val[upper]
   return(list(lower_bound = cl_lower, upper_bound = cl_upper))
-  
+
+}
+
+boot_multivariate <- function(x, INDEX, FUN, alpha = 0.05, ...) {
+  nboot <- 200
+  data <- split(x, INDEX)
+  group1 <- data[[1]]
+  group2 <- data[[2]]
+  INDEX <- sort(as.factor(INDEX))
+  my_list <- list(as.data.frame(matrix(0, ncol=ncol(x), nrow=nrow(x))))
+  boot_dat <- rep(my_list, times = nboot)
+  for (i in seq_len(nboot)) {
+    group1_boot <- group1[sample(seq_len(nrow(group1)), replace = TRUE), ]
+    group2_boot <- group2[sample(seq_len(nrow(group2)), replace = TRUE), ]
+    boot_dat[[i]] <- rbind(group1_boot, group2_boot)
+  }
+  boot_val <- sort(
+    unlist(
+      lapply(boot_dat, FUN = FUN, INDEX, ...),
+      use.names = FALSE)
+  )
+  lower <- nboot * (alpha / 2)
+  upper <- nboot - lower
+  cl_lower <- boot_val[lower + 1]
+  cl_upper <- boot_val[upper]
+  return(list(lower_bound = cl_lower, upper_bound = cl_upper))
 }
 
 # t-test functions(student, welch, yuen, ...) ----
@@ -1102,7 +1133,7 @@ dependent_yuen_t <- function(trm1, trm2, winvar1, winvar2, wincov, n, ntr) {
 
 ## tukey mcLaughlin t test for a single group ----
 tukey_mclaughlin_t_test <- function(trm, winvar, n, ntr, trim) {
-  
+
   se <- sqrt(winvar) / ((1 - 2 * trim) * sqrt(n))
   df <- ntr - 1
   t_val <- trm / se
@@ -1114,7 +1145,7 @@ tukey_mclaughlin_t_test <- function(trm, winvar, n, ntr, trim) {
 
 
 ## grand t-test function: ----
-t_test <- function(x = NULL, INDEX = NULL, y = NULL, m1, m2, var1, var2, r, n1, 
+t_test <- function(x = NULL, INDEX = NULL, y = NULL, m1, m2, var1, var2, r, n1,
                    n2, sdiff = NA, trim = 0.2,
                    type = c("student_t_test",
                             "dependent_student_t_test",
@@ -1137,7 +1168,7 @@ t_test <- function(x = NULL, INDEX = NULL, y = NULL, m1, m2, var1, var2, r, n1,
       assign(i, stats[[i]])
     }
   }
-  
+
   res <- switch(type,
                 student_t_test = student_t(m1, m2, var1, var2, n1, n2),
                 dependent_student_t_test = student_t_dependent(m1, m2, var1, var2, r, sdiff, n1),
@@ -1146,17 +1177,17 @@ t_test <- function(x = NULL, INDEX = NULL, y = NULL, m1, m2, var1, var2, r, n1,
                 dependent_yuen_t_test = dependent_yuen_t(trm1, trm2, winvar1, winvar2, wincov, n1, ntr),
                 tukey_mclaughlin_t_test = tukey_mclaughlin_t_test(trm = trmdiff, winvar = winvardiff, n1, ntr, trim = trim)
   )
-  
-  
+
+
   return(res)
-  
+
 }
 
 # non-parametric hypothesis tests: ----
 ## Wilcoxon signed rank test
 
 wilcoxon_signed_rank_test <- function(x, y) {
-  
+
   i <- complete.cases(x, y)
   x <- y[i] - x[i]
   zeroes_present <- any(x == 0)
@@ -1181,11 +1212,11 @@ wilcoxon_signed_rank_test <- function(x, y) {
     z_val <- (numerator - continuity_correction) / se_T_plus
     p_val <- 2 * min(pnorm(z_val), pnorm(z_val, lower.tail = FALSE))
   }
-  
+
   return(list(T_plus = T_plus,
               z_val = z_val,
               p_val = p_val))
-  
+
 }
 
 # standardized median differences
@@ -1263,7 +1294,7 @@ variance_ratio <- function(x = NULL, INDEX = NULL, y = NULL, s1, s2, group_1_ref
       s2 <- sd(y)
     }
   }
-  
+
   num <- ifelse(group_1_reference, s2^2, s1^2)
   denom <- ifelse(group_1_reference, s1^2, s2^2)
   vr <- ifelse(log, log(num / denom), num / denom)
@@ -1281,12 +1312,12 @@ variance_ratio_independent_ci <- function(x = NULL, INDEX = NULL, s1, s2, n1, n2
   }
   lower_bound <- vr * ifelse(group_1_reference, qf(alpha/2, n1 - 1, n2 - 1), qf(alpha/2, n2 - 1, n1 - 1))
   upper_bound <- vr * ifelse(group_1_reference, qf(1 - alpha/2, n1 - 1, n2 - 1), qf(1 - alpha/2, n2 - 1, n1 - 1))
-  
+
   return(list(lower_bound = lower_bound,
               upper_bound = upper_bound))
 }
 
-non_parametric_variance_ratio_independent_ci <- function(x = NULL, INDEX = NULL, group_1_reference = TRUE, alpha = 0.05){
+non_parametric_variance_ratio_independent_ci <- function(x = NULL, INDEX = NULL, group_1_reference = TRUE, alpha = 0.05) {
   dataset <- split(x, INDEX)
   dataset1 <- dataset[[ifelse(group_1_reference, 2, 1)]]
   dataset2 <- dataset[[ifelse(group_1_reference, 1, 2)]]
@@ -1294,7 +1325,7 @@ non_parametric_variance_ratio_independent_ci <- function(x = NULL, INDEX = NULL,
   var2 <- var(dataset2)
   n1 <- length(dataset1)
   n2 <- length(dataset2)
-  if((n1 < 4) || (n2 <4)){
+  if ((n1 < 4) || (n2 < 4)) {
     return(list(lower_bound = NA_real_,
                 upper_bound = NA_real_))
   }
@@ -1309,11 +1340,11 @@ non_parametric_variance_ratio_independent_ci <- function(x = NULL, INDEX = NULL,
   K <- (n1 - 1) / (n2 - 1)
   gamma1 <- n1 * sum((dataset1 - trimmed_mean1)^4) / (sum((dataset1 - mean(dataset1))^2)^2)
   gamma2 <- n2 * sum((dataset2 - trimmed_mean2)^4) / (sum((dataset2 - mean(dataset2))^2)^2)
-  z_crit <- qnorm(alpha/2)
+  z_crit <- qnorm(alpha / 2)
   c <- (n1 / (n1 - z_crit)) * ((n2 - z_crit) / n2)
-  vr <- var1/var2
+  vr <- var1 / var2
   xl_xu <- try(find_banga_fox_bonett_xl_xu(z_crit, c, A, B, K, gamma1, gamma2, n1, n2), silent = TRUE)
-  if("try-error" %in% class(xl_xu)){
+  if ("try-error" %in% class(xl_xu)) {
     bonett2006_variance_ratio_ci <- bonett2006_variance_ratio_ci(dataset1, dataset2, n1, n2, trimmed_mean1, trimmed_mean2, alpha, vr)
     lower_bound <- bonett2006_variance_ratio_ci[[1]]
     upper_bound <- bonett2006_variance_ratio_ci[[2]]
@@ -1326,13 +1357,13 @@ non_parametric_variance_ratio_independent_ci <- function(x = NULL, INDEX = NULL,
 }
 
 
-banga_fox_bonett_ci_error <- function(x, INDEX, group_1_reference = TRUE, alpha = 0.05){
+banga_fox_bonett_ci_error <- function(x, INDEX, group_1_reference = TRUE, alpha = 0.05) {
   dataset <- split(x, INDEX)
   dataset1 <- dataset[[ifelse(group_1_reference, 2, 1)]]
   dataset2 <- dataset[[ifelse(group_1_reference, 1, 2)]]
   n1 <- length(dataset1)
   n2 <- length(dataset2)
-  if((n1 < 4) || (n2 <4)){
+  if ((n1 < 4) || (n2 < 4)) {
     return(FALSE)
   }
   trim1 <- 1 / (2 * sqrt(n1 - 4))
@@ -1346,31 +1377,31 @@ banga_fox_bonett_ci_error <- function(x, INDEX, group_1_reference = TRUE, alpha 
   K <- (n1 - 1) / (n2 - 1)
   gamma1 <- n1 * sum((dataset1 - trimmed_mean1)^4) / (sum((dataset1 - mean(dataset1))^2)^2)
   gamma2 <- n2 * sum((dataset2 - trimmed_mean2)^4) / (sum((dataset2 - mean(dataset2))^2)^2)
-  z_crit <- qnorm(alpha/2)
+  z_crit <- qnorm(alpha / 2)
   c <- (n1 / (n1 - z_crit)) * ((n2 - z_crit) / n2)
   xl_xu <- try(find_banga_fox_bonett_xl_xu(z_crit, c, A, B, K, gamma1, gamma2, n1, n2), silent = TRUE)
   return("try-error" %in% class(xl_xu))
 }
 
-banga_fox_bonett_se <- function(x, A, B, gamma1, gamma2, K, n1, n2){
+banga_fox_bonett_se <- function(x, A, B, gamma1, gamma2, K, n1, n2) {
   A * ((gamma1 * (K^2 / n1) + gamma2 * (x^2 / n2)) / ((K + x)^2)) - B
 }
 
-banga_fox_bonett_H <- function(x, z_crit, c, A, B, gamma1, gamma2, K, n1, n2){
-  log(x)^2 - z_crit^2*banga_fox_bonett_se(x = c*x, A = A, B = B, K = K, gamma1 = gamma1, gamma2 = gamma2, n1 = n1, n2 = n2)
+banga_fox_bonett_H <- function(x, z_crit, c, A, B, gamma1, gamma2, K, n1, n2) {
+  log(x)^2 - z_crit^2 * banga_fox_bonett_se(x = c * x, A = A, B = B, K = K, gamma1 = gamma1, gamma2 = gamma2, n1 = n1, n2 = n2)
 }
 
-find_banga_fox_bonett_xl_xu <- function(z_crit, c, A, B, K, gamma1, gamma2, n1, n2){
+find_banga_fox_bonett_xl_xu <- function(z_crit, c, A, B, K, gamma1, gamma2, n1, n2) {
   xl <- suppressWarnings(
     uniroot(f = banga_fox_bonett_H,
-            interval = c(0,1),
+            interval = c(0, 1),
             z_crit = z_crit, c = c, A = A, B = B, gamma1 = gamma1, gamma2 = gamma2, K = K, n1 = n1, n2 = n2
     )$root
   )
   xu <- 1/suppressWarnings(
     uniroot(f = banga_fox_bonett_H,
-            interval = c(0,1),
-            z_crit = z_crit, c = 1/c, A = A, B = B, gamma1 = gamma2, gamma2 = gamma1, K = 1/K, n1 = n2, n2 = n1
+            interval = c(0, 1),
+            z_crit = z_crit, c = 1 / c, A = A, B = B, gamma1 = gamma2, gamma2 = gamma1, K = 1 / K, n1 = n2, n2 = n1
     )$root
   )
   return(list(xl = xl,
@@ -1378,13 +1409,13 @@ find_banga_fox_bonett_xl_xu <- function(z_crit, c, A, B, K, gamma1, gamma2, n1, 
 }
 
 
-bonett2006_variance_ratio_ci <- function(dataset1, dataset2, n1, n2, trimmed_mean1, trimmed_mean2, alpha, vr){
+bonett2006_variance_ratio_ci <- function(dataset1, dataset2, n1, n2, trimmed_mean1, trimmed_mean2, alpha, vr) {
   gamma_pooled <- (n1 + n2) * (sum((dataset1 - trimmed_mean1)^4, (dataset2 - trimmed_mean2)^4)) / (sum((dataset1 - mean(dataset1))^2, (dataset2 - mean(dataset2))^2)^2)
-  k1 <- (n1 - 3)/n1
-  k2 <- (n2 - 3)/n2
-  z_crit <- qnorm(alpha/2)
-  c <- (n1/(n1 - z_crit))/(n2/(n2 - z_crit))
-  se <- sqrt((gamma_pooled - k1)/(n1 - 1) + (gamma_pooled - k2)/(n2 - 1))
+  k1 <- (n1 - 3) / n1
+  k2 <- (n2 - 3) / n2
+  z_crit <- qnorm(alpha / 2)
+  c <- (n1 / (n1 - z_crit)) / (n2 / (n2 - z_crit))
+  se <- sqrt((gamma_pooled - k1) / (n1 - 1) + (gamma_pooled - k2) / (n2 - 1))
   lower_bound <- exp(log(c * vr) + z_crit * se)
   upper_bound <- exp(log(c * vr) + abs(z_crit) * se)
   return(list(lower_bound = lower_bound,
@@ -1398,10 +1429,10 @@ tail_ratio <- function(x = NULL, INDEX = NULL, y = NULL,
                        reference_group = c("group1", "group2"),
                        tail = c("lower", "upper"),
                        cutoff) {
-  
+
   if (!is.null(x)) {
     if (!is.null(INDEX)) {
-      
+
       stats <- summary_stats(x = x, INDEX = INDEX)
     } else if (!is.null(y)) {
       stats <- summary_stats(x = x, y = y)
@@ -1410,10 +1441,10 @@ tail_ratio <- function(x = NULL, INDEX = NULL, y = NULL,
       assign(i, stats[[i]])
     }
   }
-  
+
   cdf_group1 <- pnorm(cutoff, m1, s1)
   cdf_group2 <- pnorm(cutoff, m2, s2)
-  
+
   tail_ratio <- switch(reference_group,
                        "group1" = ifelse(tail %in% "lower", cdf_group2 / cdf_group1, (1 - cdf_group2) / (1 - cdf_group1)),
                        "group2" = ifelse(tail %in% "lower", cdf_group1 / cdf_group2, (1 - cdf_group1) / (1 - cdf_group2)),
@@ -1432,7 +1463,7 @@ tail_ratio_independent_ci <- function(x = NULL, INDEX = NULL,
       assign(i, stats[[i]])
     }
   }
-  if(reference_group == "group1"){
+  if (reference_group == "group1") {
     m1_temp <- m1
     s1_temp <- s1
     n1_temp <- n1
@@ -1455,7 +1486,7 @@ tail_ratio_independent_ci <- function(x = NULL, INDEX = NULL,
 ### Non-parametric tail ratios: ----
 # tail ratio is calcuated as a risk ratio
 non_parametric_tail_ratio <- function(x, INDEX, reference_group = c("group1", "group2"), tail = c("lower", "upper"), cutoff) {
-  
+
   dataset <- split(x, INDEX)
   dataset1 <- dataset[[ifelse(reference_group == "group1", 2, 1)]]
   dataset2 <- dataset[[ifelse(reference_group == "group1", 1, 2)]]
@@ -1463,16 +1494,16 @@ non_parametric_tail_ratio <- function(x, INDEX, reference_group = c("group1", "g
   n2. <- length(dataset2)
   n11 <- ifelse(tail == "lower", sum(dataset1 <= cutoff), sum(dataset1 >= cutoff))
   n21 <- ifelse(tail == "lower", sum(dataset2 <= cutoff), sum(dataset2 >= cutoff))
-  p1 <- n11/n1.
-  p2 <- n21/n2.
-  if(p1 == 0) return(0)
-  if(p2 == 0) return(Inf)
-  tr <- p1/p2
+  p1 <- n11 / n1.
+  p2 <- n21 / n2.
+  if (p1 == 0) return(0)
+  if (p2 == 0) return(Inf)
+  tr <- p1 / p2
   return(tr)
 }
 
-non_parametric_tail_ratio_independent_ci <- function(x, INDEX, reference_group = c("group1", "group2"), tail = c("lower", "upper"), cutoff, alpha = 0.05){
-  
+non_parametric_tail_ratio_independent_ci <- function(x, INDEX, reference_group = c("group1", "group2"), tail = c("lower", "upper"), cutoff, alpha = 0.05) {
+
   dataset <- split(x, INDEX)
   dataset1 <- dataset[[ifelse(reference_group == "group1", 2, 1)]]
   dataset2 <- dataset[[ifelse(reference_group == "group1", 1, 2)]]
@@ -1485,29 +1516,33 @@ non_parametric_tail_ratio_independent_ci <- function(x, INDEX, reference_group =
               upper_bound = confidence_bounds[["upper_bound"]]))
 }
 
-koopman_nam_risk_ratio_ci <- function(n11, n21, n1., n2., alpha){
-  
-  z_crit <- qnorm(alpha/2)
+koopman_nam_risk_ratio_ci <- function(n11, n21, n1., n2., alpha) {
+
+  z_crit <- qnorm(alpha / 2)
   if ((n11 == 0) && (n21 == 0)) {
     lower_bound <- 0
     upper_bound <- Inf
-  } else{
-    a1 <- n2.*(n2.*(n1. + n2.)*n11 + n1.*(n2. + n11) * (z_crit^2))
-    a2 <- -n2.*(n2.*n1.*(n11 + n21) + 2*(n1. + n2.)*n21*n11 + n1.*(n2. + n21 + 2*n11)*(z_crit^2))
-    a3 <- 2*n2.*n1.*n21*(n11 + n21) + (n1. + n2.)*(n21^2)*n11 + n2.*n1.*(n11 + n21)*(z_crit^2)
-    a4 <- -n1.*(n21^2)*(n11 + n21)
-    b1 <- a2/a1
-    b2 <- a3/a1
-    b3 <- a4/a1
-    c1 <- b2 - b1^2/3
-    c2 <- b3 - b1*b2/3 + 2*b1^3/27
-    theta <- acos(sqrt(27)*c2/(2*c1*sqrt(-c1)))
-    t1 <- -2*sqrt(-c1/3)*cos(pi/3 - theta/3)
-    t2 <- -2*sqrt(-c1/3)*cos(pi/3 + theta/3)
-    t3 <- 2*sqrt(-c1/3)*cos(theta/3)
-    p2_MLE1 <- t1 - b1/3
-    p2_MLE2 <- t2 - b1/3
-    p2_MLE3 <- t3 - b1/3
+  } else {
+    a1 <- n2. * (n2. * (n1. + n2.) * n11 + n1. * (n2. + n11) * (z_crit^2))
+    a2 <- -n2. * (n2. * n1. * (n11 + n21) +
+      2 * (n1. + n2.) * n21 * n11 +
+      n1. * (n2. + n21 + 2 * n11) * (z_crit^2))
+    a3 <- 2 * n2. * n1. * n21 * (n11 + n21) +
+      (n1. + n2.) * (n21^2) * n11 +
+      n2. * n1. * (n11 + n21) * (z_crit^2)
+    a4 <- -n1. * (n21^2) * (n11 + n21)
+    b1 <- a2 / a1
+    b2 <- a3 / a1
+    b3 <- a4 / a1
+    c1 <- b2 - b1^2 / 3
+    c2 <- b3 - b1 * b2 / 3 + 2 * b1^3 / 27
+    theta <- acos(sqrt(27) * c2 / (2 * c1 * sqrt(-c1)))
+    t1 <- -2 * sqrt(-c1 / 3) * cos(pi / 3 - theta / 3)
+    t2 <- -2 * sqrt(-c1 / 3) * cos(pi / 3 + theta / 3)
+    t3 <- 2 * sqrt(-c1 / 3) * cos(theta / 3)
+    p2_MLE1 <- t1 - b1 / 3
+    p2_MLE2 <- t2 - b1 / 3
+    p2_MLE3 <- t3 - b1 / 3
     p2_MLE_bounds_candidates <- sort(c(p2_MLE1, p2_MLE2, p2_MLE3))
     p2_MLE_lower_bound <- p2_MLE_bounds_candidates[[2]]
     p2_MLE_upper_bound <- p2_MLE_bounds_candidates[[1]]
@@ -1520,30 +1555,30 @@ koopman_nam_risk_ratio_ci <- function(n11, n21, n1., n2., alpha){
       upper_bound <- nam_p2_MLE_to_phi(n11, n21, n1., n2., p2_MLE_upper_bound)
     }
     else if ((n21 == n2.) && (n11 == n1.)) {
-      lower_bound <- n1./(n1. + z_crit^2)
-      upper_bound <- (n2. + z_crit^2)/n2.
+      lower_bound <- n1. / (n1. + z_crit^2)
+      upper_bound <- (n2. + z_crit^2) / n2.
     }
     else if ((n11 == n1.) || (n21 == n2.)) {
       if ((n21 == n2.) && (n11 == 0)) {
         lower_bound <- 0
       }
       if ((n21 == n2.) && (n11 != 0)) {
-        phat1 <- n21/n2.
-        phat2 <- n11/n1.
-        phihat <- phat2/phat1
+        phat1 <- n21 / n2.
+        phat2 <- n11 / n1.
+        phihat <- phat2 / phat1
         phi_lower <- 0.95 * phihat
         chi2 <- 0
         while (chi2 <= z_crit) {
           a <- (n2. + n1.) * phi_lower
           b <- -((n21 + n1.) * phi_lower + n11 + n2.)
           c <- n11 + n21
-          p1hat <- (-b - sqrt(b^2 - 4*a*c))/(2*a)
+          p1hat <- (-b - sqrt(b^2 - 4 * a * c)) / (2 * a)
           p2hat <- p1hat * phi_lower
           q2hat <- 1 - p2hat
-          var <- (n2. * n1. * p2hat)/(n1. * (phi_lower - p2hat) + n2. * q2hat)
-          chi2 <- ((x1 - n1 * p2hat)/q2hat)/sqrt(var)
+          var <- (n2. * n1. * p2hat) / (n1. * (phi_lower - p2hat) + n2. * q2hat)
+          chi2 <- ((x1 - n1 * p2hat) / q2hat) / sqrt(var)
           lower_bound <- phi_lower
-          phi_lower <- lower_bound/1.0001
+          phi_lower <- lower_bound / 1.0001
         }
       }
       i <- n21
@@ -1556,9 +1591,9 @@ koopman_nam_risk_ratio_ci <- function(n11, n21, n1., n2., alpha){
         ni <- n1.
         nj <- n2.
       }
-      phat1 <- i/ni
-      phat2 <- j/nj
-      phihat <- phat2/phat1
+      phat1 <- i / ni
+      phat2 <- j / nj
+      phihat <- phat2 / phat1
       phi_upper <- 1.1 * phihat
       if ((n21 == n2.) && (n11 == 0)) {
         if (n2 < 100) {
@@ -1573,16 +1608,16 @@ koopman_nam_risk_ratio_ci <- function(n11, n21, n1., n2., alpha){
         a <- (ni + nj) * phi_upper
         b <- -((i + nj) * phi_upper + j + ni)
         c <- i + j
-        p1hat <- (-b - sqrt(b^2 - 4 * a * c))/(2 * a)
+        p1hat <- (-b - sqrt(b^2 - 4 * a * c)) / (2 * a)
         p2hat <- p1hat * phi_upper
         q2hat <- 1 - p2hat
-        var <- (ni * nj * p2hat)/(nj * (phi_upper - p2hat) + ni * q2hat)
-        chi1 <- ((j - nj * p2hat)/q2hat)/sqrt(var)
+        var <- (ni * nj * p2hat) / (nj * (phi_upper - p2hat) + ni * q2hat)
+        chi1 <- ((j - nj * p2hat) / q2hat) / sqrt(var)
         phiu1 <- phi_upper
         phiu <- 1.0001 * phiu1
       }
       if (n11 == n1.) {
-        lower_bound <- 1/phiu1
+        lower_bound <- 1 / phiu1
         upper_bound <- nam_p2_MLE_to_phi(n11, n21, n1., n2., p2_MLE_upper_bound)
       }
       else {
@@ -1597,30 +1632,36 @@ koopman_nam_risk_ratio_ci <- function(n11, n21, n1., n2., alpha){
   }
 }
 
-nam_p2_MLE_to_phi <- function(n11, n21, n1., n2., p2_MLE_bound){
-  res <- (1 - (n1. - n11) * (1 - p2_MLE_bound)/(n21 + n1. - (n2. + n1.) * p2_MLE_bound))/p2_MLE_bound
+nam_p2_MLE_to_phi <- function(n11, n21, n1., n2., p2_MLE_bound) {
+  res <- (1 - (n1. - n11) * (1 - p2_MLE_bound) / (n21 + n1. - (n2. + n1.) * p2_MLE_bound)) / p2_MLE_bound
 }
 
 
-newcombe_price_bonett_risk_ratio_ci <- function(n11, n21, n1., n2., alpha){
-  z_crit <- qnorm(alpha/2)
-  
+newcombe_price_bonett_risk_ratio_ci <- function(n11, n21, n1., n2., alpha) {
+  z_crit <- qnorm(alpha / 2)
+
   n11 <- ifelse(n11 == 0, z_crit^2, n11)
   n21 <- ifelse(n21 == 0, z_crit^2, n21)
-  p1 <- n11/n1.
-  p2 <- n21/n2.
-  ci <- exp(log(p1/p2)+c(-1,1)*2*asinh((z_crit/2)*sqrt(1/n11 + 1/n21 - 1/n1. - 1/n2.)))
+  p1 <- n11 / n1.
+  p2 <- n21 / n2.
+  ci <- exp(log(p1 / p2) + c(-1, 1) *
+    2 *
+    asinh((z_crit / 2) * sqrt(1 / n11 + 1 / n21 - 1 / n1. - 1 / n2.)))
   lower_bound <- ci[[1]]
   upper_bound <- ci[[2]]
   return(list(lower_bound = lower_bound,
               upper_bound = upper_bound))
 }
 
-adjusted_katz_log_risk_ratio_ci <- function(n11, n21, n1., n2., alpha){
-  z_crit <- qnorm(alpha/2)
-  p1_adjusted <- (n11 + 0.5)/(n1. + 0.5)
-  p2_adjusted <- (n21 + 0.5)/(n2. + 0.5)
-  ci <- exp(log(p1_adjusted/p2_adjusted)+c(1,-1)*z_crit*sqrt(1/(n11 + 0.5) + 1/(n21 + 0.5) - 1/(n1. + 0.5) - 1/(n2. + 0.5)))
+adjusted_katz_log_risk_ratio_ci <- function(n11, n21, n1., n2., alpha) {
+  z_crit <- qnorm(alpha / 2)
+  p1_adjusted <- (n11 + 0.5) / (n1. + 0.5)
+  p2_adjusted <- (n21 + 0.5) / (n2. + 0.5)
+  ci <- exp(log(p1_adjusted / p2_adjusted) + c(1, -1) *
+    z_crit *
+    sqrt(1 / (n11 + 0.5) + 1 / (n21 + 0.5) -
+           1 / (n1. + 0.5) -
+           1 / (n2. + 0.5)))
   lower_bound <- ci[[1]]
   upper_bound <- ci[[2]]
   return(list(lower_bound = lower_bound,
@@ -1691,7 +1732,7 @@ calculate_z_for_u_statistic <- function(dataset1, dataset2) {
   result
 }
 
-mann_whitney_based_ps_ci <- function(x, INDEX, ignore_ties = FALSE,  alpha = 0.05) {
+mann_whitney_based_ps_ci <- function(x, INDEX, ignore_ties = FALSE, alpha = 0.05) {
   #second method from Newcombe (2005)
   dataset <- split(x, INDEX)
   m <- length(dataset[[1]])
@@ -1743,7 +1784,7 @@ ps_dependent_groups <-
   }
 
 
-ps_dependent_groups_ci <- function(x, y, ignore_ties = TRUE ,alpha = 0.05) {
+ps_dependent_groups_ci <- function(x, y, ignore_ties = TRUE, alpha = 0.05) {
   #Pratt's confidence interval
   dataset1 <- x
   dataset2 <- y
@@ -1753,23 +1794,27 @@ ps_dependent_groups_ci <- function(x, y, ignore_ties = TRUE ,alpha = 0.05) {
   w <- 0
   for (i in seq_along(dataset1)) {
     if (dataset1[i] > dataset2[i]) w <- w + 1
-    else if(dataset1[i] == dataset2[i]) {
+    else if (dataset1[i] == dataset2[i]) {
       if (!ignore_ties)w <- w + 0.5
-      else n <- n-1
+      else n <- n - 1
     }
   }
   # upper boundary of ci
   z <- qnorm(1 - alpha / 2)
   a <- ((w + 1) / (n - w))^2
   b <- 81 * (w + 1) * (n - w) - 9 * n - 8
-  c <- -3 * z * sqrt(9 * (w + 1) * (n - w) * (9 * n + 5 - z^2) + n + 1)
+  c <- -3 *
+    z *
+    sqrt(9 * (w + 1) * (n - w) * (9 * n + 5 - z^2) + n + 1)
   d <- 81 * (w + 1)^2 - 9 * (w + 1) * (2 + z^2) + 1
   e <- 1 + a * ((b + c) / d)^3
   upper_bound <- 1 / e
   # lower boundary of ci
   a <- (w / (n - w - 1))^2
   b <- 81 * w * (n - w - 1) - 9 * n - 8
-  c <- 3 * z * sqrt(9 * (w) * (n - w - 1) * (9 * n + 5 - z^2) + n + 1)
+  c <- 3 *
+    z *
+    sqrt(9 * (w) * (n - w - 1) * (9 * n + 5 - z^2) + n + 1)
   d <- 81 * w^2 - 9 * w * (2 + z^2) + 1
   e <- 1 + a * ((b + c) / d)^3
   lower_bound <- 1 / e
@@ -1804,7 +1849,7 @@ get_db <- function(x, y) {
     for (yi in seq_along(y))
       if (xi != yi) {
         if (x[xi] > y[yi]) {
-          counter <- counter -1
+          counter <- counter - 1
         } else if (x[xi] < y[yi]) {
           counter <- counter + 1
         }
@@ -1822,14 +1867,14 @@ dominance_measure_dependent <- function(x, y) {
   return(d_w + d_b)
 }
 
-get_di. <- function (x, yi) {
+get_di. <- function(x, yi) {
   counter <- 0
   for (xi in x) {
     if (xi > yi) {
       counter <- counter + 1
     }
   }
-  return (counter / length(x) )
+  return(counter / length(x))
 }
 
 get_sum_di_squared <- function(d_b, x, y) {
@@ -1848,17 +1893,17 @@ get_sum_di._star <- function(d_b, x, y) {
     di. <- get_di.(x, i)
     sum_di <- sum_di + di. - d_b
   }
-  return (sum_di)
+  return(sum_di)
 }
 
 get_sum_sum_dij_star_square <- function(d_b, x, y) {
   counter <- 0
   for (xi in seq_along(x))
     counter_xi <- 0
-  for(yi in seq_along(y)) {
+  for (yi in seq_along(y)) {
     if (x[xi] != y[yi]) {
-      dij <- ifelse(x[xi] > y[yi], 1, -1 )
-      dij_star <- dij -d_b
+      dij <- ifelse(x[xi] > y[yi], 1, -1)
+      dij_star <- dij - d_b
       counter_xi <- counter_xi + dij_star
     }
     counter <- counter + counter_xi^2
@@ -1899,9 +1944,9 @@ get_cov_db_dw <- function(db, dw, x, y) {
     dij <- 0
     dji <- 0
     for (yi in seq_along(y)) {
-      if (x[xi]>y[yi]) {
+      if (x[xi] > y[yi]) {
         dij <- dij + 1
-      } else if (x[xi]>y[yi]) {
+      } else if (x[xi] > y[yi]) {
         dji <- dji + 1
       }
     }
@@ -1911,10 +1956,10 @@ get_cov_db_dw <- function(db, dw, x, y) {
     } else if (x[xi] > y[xi]) {
       dii <- -1
     }
-    counter <- counter + (dij + dji)*dii
+    counter <- counter + (dij + dji) * dii
   }
   n <- length(x)
-  return((counter - 2*n * (n-1)*db * dw)/(n * (n - 1)*(n-2)))
+  return((counter - 2 * n * (n - 1) * db * dw) / (n * (n - 1) * (n - 2)))
 }
 
 get_var_db_dw <- function(x, y) {
@@ -1926,8 +1971,10 @@ get_var_db_dw <- function(x, y) {
   sum_di_squared_di. <- get_sum_di_squared(d_b, x, y)
   sum_sum_dij_start_square <- get_sum_sum_dij_star_square(d_b, x, y)
   sum_sum_dij_start_squared_inside <- get_sum_sum_dij_star_squared_inside(d_b, x, y)
-  var_db <- ((n-1)^2 * (sum_di.^2 + sum_d.i + 2*sum_di_squared_di.) - sum_sum_dij_start_square - sum_sum_dij_start_squared_inside)/(n*(n-1)*(n-2)*(n-3))
-  var_dw <- (get_dw_numerator(d_w, x, y))/(n-1)
+  var_db <- ((n - 1)^2 * (sum_di.^2 + sum_d.i + 2 * sum_di_squared_di.) -
+    sum_sum_dij_start_square -
+    sum_sum_dij_start_squared_inside) / (n * (n - 1) * (n - 2) * (n - 3))
+  var_dw <- (get_dw_numerator(d_w, x, y)) / (n - 1)
   cov_db_dw <- get_cov_db_dw(d_b, d_w, x, y)
   return(var_db + var_dw + 2 * cov_db_dw)
 }
@@ -1939,10 +1986,10 @@ dominance_measure_dependent_ci <- function(x, y, alpha) {
   n <- length(x)
   d <- dominance_measure_dependent(x, y)
   var_db_dw <- get_var_db_dw(x, y)
-  
+
   z <- qnorm(1 - alpha / 2)
-  upper_bound <- d + z*(var_db_dw/sqrt(n))
-  lower_bound <- d - z*(var_db_dw/sqrt(n))
+  upper_bound <- d + z * (var_db_dw / sqrt(n))
+  lower_bound <- d - z * (var_db_dw / sqrt(n))
   return(list(lower_bound = lower_bound, upper_bound = upper_bound))
 }
 
@@ -1989,8 +2036,8 @@ common_language_es_ci <- function(x = NULL, INDEX = NULL, m1, m2, var1, var2, n1
     cohen_d <- smd_uni(effsize = "cohen_d", m1 = m1, m2 = m2, var1 = var1, var2 = var2, n1 = n1, n2 = n2)
     cis <- smd_ci(effsize = "cohen_d", val = cohen_d, n1 = n1, n2 = n2, var1 = var1, var2 = var2, alpha = alpha)[2:3]
   }
-  lower_bound <- pnorm(abs(cis[[ifelse(cohen_d >0, 1, 2)]]) / sqrt(2))
-  upper_bound <- pnorm(abs(cis[[ifelse(cohen_d >0, 2, 1)]]) / sqrt(2))
+  lower_bound <- pnorm(abs(cis[[ifelse(cohen_d > 0, 1, 2)]]) / sqrt(2))
+  upper_bound <- pnorm(abs(cis[[ifelse(cohen_d > 0, 2, 1)]]) / sqrt(2))
   return(list(lower_bound = lower_bound, upper_bound = upper_bound))
 }
 
@@ -2039,9 +2086,9 @@ non_parametric_glass_d <- function(x = NULL, INDEX = NULL, y = NULL) {
 }
 
 non_parametric_cohens_dz_dependent <- function(x, y) {
-  p_gain <- p_gain(x,y)
+  p_gain <- p_gain(x, y)
   p_gain <- correct_for_extreme_eff_sizes(length(x), p_gain)
-  return (qnorm(p_gain))
+  return(qnorm(p_gain))
 }
 
 # overlap measures ----
@@ -2106,7 +2153,7 @@ non_parametric_ovl_two <- function(x = NULL,
     dataset1 <- x
     dataset2 <- y
   }
-  ovl <- non_parametric_ovl(x = x, INDEX = INDEX, y=y, kernel = kernel)
+  ovl <- non_parametric_ovl(x = x, INDEX = INDEX, y = y, kernel = kernel)
   d1 <- density(dataset1, bw = "nrd0", kernel = "gaussian")
   d2 <- density(dataset2, bw = "nrd0", kernel = "gaussian")
   f1 <- approxfun(d1$x, d1$y)
@@ -2129,21 +2176,21 @@ non_parametric_ovl_two <- function(x = NULL,
     if (is.na(f2_interval_x)) {
       f2_interval_x <- 0
     }
-    f1_interval_x_1 <- f1(interval[x+1])
+    f1_interval_x_1 <- f1(interval[x + 1])
     if (is.na(f1_interval_x_1)) {
       f1_interval_x_1 <- 0
     }
-    f2_interval_x_1 <- f2(interval[x+1])
+    f2_interval_x_1 <- f2(interval[x + 1])
     if (is.na(f2_interval_x_1)) {
       f2_interval_x_1 <- 0
     }
-    
+
     sum <-
       sum + 1 / 2 * (max(f1_interval_x, f2_interval_x) + max(f1_interval_x_1, f2_interval_x_1))
   }
-  
+
   area <- (max - min) / num_intervals * sum
-  
+
   return (ovl/area)
 }
 
@@ -2191,8 +2238,8 @@ non_parametric_cohens_u1 <- function(x = NULL, INDEX = NULL, y = NULL, kernel = 
   "cosine",
   "optcosine"
 )) {
-  ovl_two <- non_parametric_ovl_two(x=x, INDEX=INDEX, y=y, kernel = kernel)
-  return(1 -ovl_two)
+  ovl_two <- non_parametric_ovl_two(x = x, INDEX = INDEX, y = y, kernel = kernel)
+  return(1 - ovl_two)
 }
 
 parametric_cohens_u1 <- function(x = NULL, INDEX = NULL, m1, m2, var1, var2, n1, n2) {
@@ -2214,7 +2261,7 @@ parametric_cohens_u2 <- function(x = NULL, INDEX = NULL, m1, m2, var1, var2, n1,
     cohens_d <- smd_uni(effsize = "cohen_d", m1 = m1, m2 = m2, var1 = var1, var2 = var2, n1 = n1, n2 = n2)
   }
   return(pnorm(abs(cohens_d / 2)))
-  
+
 }
 
 parametric_cohens_u2_ci <- function(x = NULL, INDEX = NULL, m1, m2, var1, var2, n1, n2, alpha = 0.05) {
@@ -2283,7 +2330,7 @@ parametric_cohens_u3_ci <- function(x, INDEX, m1, m2, var1, var2, n1, n2, var_eq
     }
     lower_bound <- pnorm(cohen_d_ci[[1]])
     upper_bound <- pnorm(cohen_d_ci[[2]])
-    
+
   } else if (!var_equal) {
     if (!missing(x) && !missing(INDEX)) {
       original_dataset <- split(x, INDEX)
@@ -2297,9 +2344,9 @@ parametric_cohens_u3_ci <- function(x, INDEX, m1, m2, var1, var2, n1, n2, var_eq
     }
     lower_bound <- pnorm(glass_d_ci[[1]])
     upper_bound <- pnorm(glass_d_ci[[2]])
-    
+
   }
-  
+
   return(list(lower_bound = lower_bound, upper_bound = upper_bound))
 }
 
@@ -2801,23 +2848,23 @@ parametric_cohens_u3_dependent_ci <- function(x = NULL, y = NULL, m1, m2, s1, s2
 
 
 variance_ratio_dependent_ci <- function(x = NULL, y = NULL, s1, s2, n, r, group_1_reference = TRUE, alpha = 0.05) {
-  if(!is.null(x) && !is.null(y)){
+  if (!is.null(x) && !is.null(y)) {
     n <- length(x)
     s1 <- sd(x)
     s2 <- sd(y)
-    r <- cor(x,y)
+    r <- cor(x, y)
   }
   vr <- variance_ratio(s1 = s1, s2 = s2, group_1_reference = group_1_reference, log = FALSE)
-  t_crit <- qt(alpha/2, df = n - 2)
-  k <- 1 + (2 * (1 - r^2) * t_crit^2)/(n - 2)
+  t_crit <- qt(alpha / 2, df = n - 2)
+  k <- 1 + (2 * (1 - r^2) * t_crit^2) / (n - 2)
   lower_bound <- vr * (k - sqrt(k^2 - 1))
   upper_bound <- vr * (k + sqrt(k^2 - 1))
   return(list(lower_bound = lower_bound,
               upper_bound = upper_bound))
 }
 
-non_parametric_variance_ratio_dependent_ci <- function(x = NULL, y = NULL, group_1_reference = TRUE, alpha = 0.05){
-  if(group_1_reference){
+non_parametric_variance_ratio_dependent_ci <- function(x = NULL, y = NULL, group_1_reference = TRUE, alpha = 0.05) {
+  if (group_1_reference) {
     temp <- x
     x <- y
     y <- temp
@@ -2825,20 +2872,20 @@ non_parametric_variance_ratio_dependent_ci <- function(x = NULL, y = NULL, group
   m1 <- mean(x)
   m2 <- mean(y)
   n <- length(x)
-  trim <- 1 / (2*sqrt((n - 4)))
+  trim <- 1 / (2 * sqrt((n - 4)))
   trimmed_mean1 <- mean(x, trim = trim)
   trimmed_mean2 <- mean(y, trim = trim)
-  gamma1 <- (n * sum((x - trimmed_mean1)^4))/(sum((x - m1)^2)^2)
-  gamma2 <- (n * sum((y - trimmed_mean2)^4))/(sum((y - m2)^2)^2)
-  nu1 <- (gamma1 - (n - 3)/n) / (n - 4)
-  nu2 <- (gamma2 - (n - 3)/n) / (n -4)
+  gamma1 <- (n * sum((x - trimmed_mean1)^4)) / (sum((x - m1)^2)^2)
+  gamma2 <- (n * sum((y - trimmed_mean2)^4)) / (sum((y - m2)^2)^2)
+  nu1 <- (gamma1 - (n - 3) / n) / (n - 4)
+  nu2 <- (gamma2 - (n - 3) / n) / (n - 4)
   d1 <- (x - m1)^2
   d2 <- (y - m2)^2
   r_d <- cor(d1, d2)
   a <- r_d * sqrt(nu1 * nu2)
-  z_crit <- qnorm(alpha/2)
-  vr <- log(var(x)/var(y))
-  variance_ratio_dependent_ci <- exp(vr + c(z_crit, abs(z_crit)) * sqrt(nu1 + nu2 - 2*a))
+  z_crit <- qnorm(alpha / 2)
+  vr <- log(var(x) / var(y))
+  variance_ratio_dependent_ci <- exp(vr + c(z_crit, abs(z_crit)) * sqrt(nu1 + nu2 - 2 * a))
   lower_bound <- variance_ratio_dependent_ci[[1]]
   upper_bound <- variance_ratio_dependent_ci[[2]]
   return(list(lower_bound = lower_bound,
@@ -2846,16 +2893,16 @@ non_parametric_variance_ratio_dependent_ci <- function(x = NULL, y = NULL, group
 }
 
 nam_blackwelder_parametric_tr_ci_error <- function(x = NULL, y = NULL, m1, m2, s1, s2, r, n,
-                                                   reference_group, cutoff, tail, alpha = 0.05){
-  if(!is.null(x) && !is.null(y)){
-    stats <- summary_stats(x = x, y = y, )
-    for(i in names(stats)){
+                                                   reference_group, cutoff, tail, alpha = 0.05) {
+  if (!is.null(x) && !is.null(y)) {
+    stats <- summary_stats(x = x, y = y,)
+    for (i in names(stats)) {
       assign(i, stats[[i]])
     }
   }
   means <- c(m1, m2)
   sigmas <- matrix(c(s1^2, s1 * s2 * r, s1 * s2 * r, s2^2), byrow = TRUE, ncol = 2)
-  pretest_success <- ifelse(tail == "lower", pnorm(cutoff, m1, s1), 1  - pnorm(cutoff, m1, s1))
+  pretest_success <- ifelse(tail == "lower", pnorm(cutoff, m1, s1), 1 - pnorm(cutoff, m1, s1))
   posttest_success <- ifelse(tail == "lower", pnorm(cutoff, m2, s2), 1 - pnorm(cutoff, m2, s2))
   n1. <- ifelse(reference_group == "group1", posttest_success, pretest_success) * n
   n.1 <- ifelse(reference_group == "group1", pretest_success, posttest_success) * n
@@ -2891,15 +2938,15 @@ nam_blackwelder_parametric_tr_ci_error <- function(x = NULL, y = NULL, m1, m2, s
     n22 <- pretest_failure_posttest_failure * n
     n12 <- ifelse(reference_group == "group1", pretest_failure_posttest_success, pretest_success_posttest_failure) * n
     n21 <- ifelse(reference_group == "group1", pretest_success_posttest_failure, pretest_failure_posttest_success) * n
-    tr <- n1./n.1
-    wald_se <- sqrt((n12 + n21)/(n1. * n.1))
+    tr <- n1. / n.1
+    wald_se <- sqrt((n12 + n21) / (n1. * n.1))
     interval <- exp(log(tr) + c(-3, 3) * wald_se)
-    parametric_tr_dependent_ci <- try(nam_blackwelder_asymptotic_cml(n1., n.1, n11, n12, n21,n22, interval, alpha = alpha), silent = TRUE)
+    parametric_tr_dependent_ci <- try(nam_blackwelder_asymptotic_cml(n1., n.1, n11, n12, n21, n22, interval, alpha = alpha), silent = TRUE)
     return("try-error" %in% class(parametric_tr_dependent_ci))
   }
 }
 
-nam_blackwelder_non_parametric_tr_ci_error <- function(x, y, reference_group, tail, cutoff, alpha){
+nam_blackwelder_non_parametric_tr_ci_error <- function(x, y, reference_group, tail, cutoff, alpha) {
   n <- length(x)
   pretest_success <- ifelse(tail == "lower", sum(x <= cutoff), sum(x >= cutoff))
   posttest_success <- ifelse(tail == "lower", sum(y <= cutoff), sum(y >= cutoff))
@@ -2913,37 +2960,39 @@ nam_blackwelder_non_parametric_tr_ci_error <- function(x, y, reference_group, ta
     pretest_failure_posttest_success <- ifelse(tail == "lower", sum(x > cutoff & y <= cutoff), sum(x < cutoff & y >= cutoff))
     pretest_failure_posttest_failure <- ifelse(tail == "lower", sum(x > cutoff & y > cutoff), sum(x < cutoff & y < cutoff))
     pretest_success_posttest_success <- ifelse(tail == "lower", sum(x <= cutoff & y <= cutoff), sum(x >= cutoff & y >= cutoff))
-    
+
     n11 <- pretest_success_posttest_success
     n22 <- pretest_failure_posttest_failure
     n12 <- ifelse(reference_group == "group1", pretest_failure_posttest_success, pretest_success_posttest_failure)
     n21 <- ifelse(reference_group == "group1", pretest_success_posttest_failure, pretest_failure_posttest_success)
-    tr <- n1./n.1
-    wald_se <- sqrt((n12 + n21)/(n1. * n.1))
+    tr <- n1. / n.1
+    wald_se <- sqrt((n12 + n21) / (n1. * n.1))
     interval <- exp(log(tr) + c(-3, 3) * wald_se)
-    non_parametric_tr_dependent_ci <- try(nam_blackwelder_asymptotic_cml(n1., n.1, n11, n12, n21,n22, interval, alpha = alpha), silent = TRUE)
+    non_parametric_tr_dependent_ci <- try(nam_blackwelder_asymptotic_cml(n1., n.1, n11, n12, n21, n22, interval, alpha = alpha), silent = TRUE)
     return("try-error" %in% class(non_parametric_tr_dependent_ci))
   }
 }
 
-nam_blackwelder_ci_error <- function(x, y, m1, m2, s1, s2, r, n, mode, assumption, reference_group, tail, cutoff, alpha = 0.05){
-  if(mode == "educational"){
+nam_blackwelder_ci_error <- function(x, y, m1, m2, s1, s2, r, n, mode, assumption, reference_group, tail, cutoff, alpha = 0.05) {
+  if (mode == "educational") {
     return(nam_blackwelder_parametric_tr_ci_error(m1 = m1, m2 = m2, s1 = s1, s2 = s2, r = r, n = n, reference_group = reference_group, tail = tail, cutoff = cutoff, alpha = alpha))
   } else {
-    if(assumption == "nonparametric"){
+    if (assumption == "nonparametric") {
       return(nam_blackwelder_non_parametric_tr_ci_error(x = x, y = y, reference_group = reference_group, tail = tail, cutoff = cutoff, alpha = alpha))
-    } else{
+    } else {
       return(nam_blackwelder_parametric_tr_ci_error(x = x, y = y, reference_group = reference_group, tail = tail, cutoff = cutoff, alpha = alpha))
     }
   }
 }
 
 find_nam_blackwelder_asymptotic_cml <- function(n1., n.1, n11, n12, n21, n22, interval, z_val) {
-  res <-   suppressWarnings(
-    uniroot(f = function(x){
-      p12 <- (-n1. + (x^2*(n.1 + 2*n12)) + sqrt((n1. - ((x^2)*2.1))^2 + 4 * x^2 * n12 * n21))/(2*n*x*(x + 1))
-      p21 <- (x * p12) - ((x - 1) * (1 - (n22/n)))
-      ((sqrt(n) * (n1. - x * n.1))/(n * sqrt(x * (p12 + p21)))) - z_val
+  res <- suppressWarnings(
+    uniroot(f = function(x) {
+      p12 <- (-n1. +
+        (x^2 * (n.1 + 2 * n12)) +
+        sqrt((n1. - ((x^2) * 2.1))^2 + 4 * x^2 * n12 * n21)) / (2 * n * x * (x + 1))
+      p21 <- (x * p12) - ((x - 1) * (1 - (n22 / n)))
+      ((sqrt(n) * (n1. - x * n.1)) / (n * sqrt(x * (p12 + p21)))) - z_val
     },
     interval = interval)
   )$root
@@ -3018,18 +3067,18 @@ tail_ratio_dependent_ci <- function(x = NULL, y = NULL, m1, m2, s1, s2, r, n,
   n22 <- pretest_failure_posttest_failure * n
   n12 <- ifelse(reference_group == "group1", pretest_failure_posttest_success, pretest_success_posttest_failure) * n
   n21 <- ifelse(reference_group == "group1", pretest_success_posttest_failure, pretest_failure_posttest_success) * n
-  tail_ratio_dependent <- n1./n.1
-  wald_se <- sqrt((n12 + n21)/(n1. * n.1))
+  tail_ratio_dependent <- n1. / n.1
+  wald_se <- sqrt((n12 + n21) / (n1. * n.1))
   interval <- exp(log(tail_ratio_dependent) + c(-3, 3) * wald_se)
   any_marginal_counts_zero <- any(c(n1., n.1) == 0)
   if (any_marginal_counts_zero) {
     lower_bound <- NA_real_
     upper_bound <- NA_real_
   } else {
-    tail_ratio_dependent_ci <- try(nam_blackwelder_asymptotic_cml(n1., n.1, n11, n12, n21,n22, interval, alpha = alpha), silent = TRUE)
-    if("try-error" %in% class(tail_ratio_dependent_ci)) {
+    tail_ratio_dependent_ci <- try(nam_blackwelder_asymptotic_cml(n1., n.1, n11, n12, n21, n22, interval, alpha = alpha), silent = TRUE)
+    if ("try-error" %in% class(tail_ratio_dependent_ci)) {
       tail_ratio_dependent_ci <- bonett_price_hybrid_wilson_score(n1., n.1, n11, n12, n21, alpha = alpha)
-      
+
     }
     lower_bound <- tail_ratio_dependent_ci[[1]]
     upper_bound <- tail_ratio_dependent_ci[[2]]
@@ -3040,7 +3089,7 @@ tail_ratio_dependent_ci <- function(x = NULL, y = NULL, m1, m2, s1, s2, r, n,
 
 
 robust_cohens_dz <- function(x, y, trim = 0.2) {
-  
+
   stats <- summary_stats(x = x, y = y, trim = trim, winvar = TRUE)
   for (i in names(stats)) {
     assign(i, stats[[i]])
@@ -3051,7 +3100,7 @@ robust_cohens_dz <- function(x, y, trim = 0.2) {
 }
 
 robust_cohens_d <- function(x = NULL, INDEX = NULL, y = NULL, trim = 0.2) {
-  
+
   if (!is.null(x)) {
     if (!is.null(INDEX)) {
       stats <- summary_stats(x = x, INDEX = INDEX, trim = trim, winvar = TRUE)
@@ -3069,7 +3118,7 @@ robust_cohens_d <- function(x = NULL, INDEX = NULL, y = NULL, trim = 0.2) {
 
 
 robust_cohens_d_dependent_ci <- function(x, y, trim = 0.2, alpha = 0.05) {
-  
+
   stats <- summary_stats(x = x, y = y, trim = trim, winvar = TRUE)
   for (i in names(stats)) {
     assign(i, stats[[i]])
@@ -3086,11 +3135,11 @@ robust_cohens_d_dependent_ci <- function(x, y, trim = 0.2, alpha = 0.05) {
     sqrt((2 * (d1 + d2 - 2 * d12)) / (winvar1 + winvar2))
   return(list(lower_bound = robust_cohens_d_dependent_ci[[1]],
               upper_bound = robust_cohens_d_dependent_ci[[2]]))
-  
+
 }
 
 robust_glass_d <- function(x = NULL, INDEX = NULL, y = NULL, trim = 0.2, standardised_by_group_1 = TRUE) {
-  
+
   if (!is.null(x)) {
     if (!is.null(INDEX)) {
       stats <- summary_stats(x = x, INDEX = INDEX, trim = trim, winvar = TRUE)
@@ -3108,7 +3157,7 @@ robust_glass_d <- function(x = NULL, INDEX = NULL, y = NULL, trim = 0.2, standar
 }
 
 robust_glass_d_dependent_ci <- function(x, y, trim = 0.2, standardised_by_group_1 = TRUE, alpha = 0.05) {
-  
+
   stats <- summary_stats(x = x, y = y, trim = trim, winvar = TRUE)
   for (i in names(stats)) {
     assign(i, stats[[i]])
@@ -3131,8 +3180,8 @@ robust_glass_d_dependent_ci <- function(x, y, trim = 0.2, standardised_by_group_
 
 
 non_parametric_tail_ratio_dependent <- function(x = NULL, y = NULL, reference_group = c("group1", "group2"), tail = c("lower", "upper"), cutoff){
-  
-  
+
+
   pretest_success <- ifelse(tail == "lower", sum(x <= cutoff), sum(x >= cutoff))
   posttest_success <- ifelse(tail == "lower", sum(y <= cutoff), sum(y >= cutoff))
   any_marginal_counts_zero <- any(c(pretest_success, posttest_success) == 0)
@@ -3146,7 +3195,7 @@ non_parametric_tail_ratio_dependent <- function(x = NULL, y = NULL, reference_gr
 
 
 non_parametric_tail_ratio_dependent_ci <- function(x, y, reference_group = c("group1", "group2"), cutoff, tail = c("lower", "upper"), alpha = 0.05) {
-  
+
   n <- length(x)
   pretest_success <- ifelse(tail == "lower", sum(x <= cutoff), sum(x >= cutoff))
   pretest_failure <- ifelse(tail == "lower", sum(x > cutoff), sum(x < cutoff))
@@ -3182,43 +3231,40 @@ non_parametric_tail_ratio_dependent_ci <- function(x, y, reference_group = c("gr
 }
 
 
-
-
-
 # Mixed design parametric ----
 
-d_PPC_change <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, m2, s2, r1, sdiff1 = NA, m3, s3, m4, s4, r2, sdiff2 = NA){
-  
-  if(!is.null(x) && !is.null(y) && !is.null(INDEX)){
+d_PPC_change <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, m2, s2, r1, sdiff1 = NULL, m3, s3, m4, s4, r2, sdiff2 = NULL) {
+
+  if (!is.null(x) && !is.null(y) && !is.null(INDEX)) {
     stats <- summary_stats(x = x, y = y, INDEX = INDEX)
-    for(i in names(stats)){
+    for (i in names(stats)) {
       assign(i, stats[[i]])
     }
   }
-  if(is.na(sdiff1)) sdiff1 <- sd_diff(s1, s2, r1)
-  if(is.na(sdiff2)) sdiff2 <- sd_diff(s3, s4, r2)
+  if (is.null(sdiff1)) sdiff1 <- sd_diff(s1, s2, r1)
+  if (is.null(sdiff2)) sdiff2 <- sd_diff(s3, s4, r2)
   cohens_dz_a <- cohens_dz(m1 = m1, m2 = m2, sdiff = sdiff1)
   cohens_dz_b <- cohens_dz(m1 = m3, m2 = m4, sdiff = sdiff2)
   res <- cohens_dz_a - cohens_dz_b
   return(res)
 }
 
-var_dz_large_sample_approx <- function(m1, m2, sdiff, n){
+var_dz_large_sample_approx <- function(m1, m2, sdiff, n) {
   dz <- cohens_dz(m1 = m1, m2 = m2, sdiff = sdiff)
-  res <- 1/n + dz^2/(2*(n - 1))
+  res <- 1 / n + dz^2 / (2 * (n - 1))
   return(res)
 }
 
-d_PPC_change_ci <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, n1, m2, s2, r1, sdiff1 = NA, m3, s3, n2, m4, s4, r2, sdiff2 = NA, alpha = 0.05){
-  
-  if(!is.null(x) && !is.null(y) && !is.null(INDEX)){
+d_PPC_change_ci <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, n1, m2, s2, r1, sdiff1 = NULL, m3, s3, n2, m4, s4, r2, sdiff2 = NULL, alpha = 0.05) {
+
+  if (!is.null(x) && !is.null(y) && !is.null(INDEX)) {
     stats <- summary_stats(x = x, y = y, INDEX = INDEX)
-    for(i in names(stats)){
+    for (i in names(stats)) {
       assign(i, stats[[i]])
     }
   }
-  if(is.na(sdiff1)) sdiff1 <- sd_diff(s1, s2, r1)
-  if(is.na(sdiff2)) sdiff2 <- sd_diff(s3, s4, r2)
+  if (is.null(sdiff1)) sdiff1 <- sd_diff(s1, s2, r1)
+  if (is.null(sdiff2)) sdiff2 <- sd_diff(s3, s4, r2)
   d <- d_PPC_change(m1 = m1, m2 = m2, sdiff1 = sdiff1, m3 = m3, m4 = m4, sdiff2 = sdiff2)
   v <- var_dz_large_sample_approx(m1, m2, sdiff1, n1) + var_dz_large_sample_approx(m3, m4, sdiff2, n2)
   ci <- d + c(qnorm(alpha / 2), qnorm(1 - alpha / 2)) * sqrt(v)
@@ -3226,32 +3272,32 @@ d_PPC_change_ci <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, n1, m2, s2
               upper_bound = ci[[2]]))
 }
 
-g_PPC_change <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, m2, s2, n1, r1, sdiff1 = NA, m3, s3, m4, s4, n2, r2, sdiff2 = NA){
-  
-  if(!is.null(x) && !is.null(y) && !is.null(INDEX)){
+g_PPC_change <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, m2, s2, n1, r1, sdiff1 = NULL, m3, s3, m4, s4, n2, r2, sdiff2 = NULL) {
+
+  if (!is.null(x) && !is.null(y) && !is.null(INDEX)) {
     stats <- summary_stats(x = x, y = y, INDEX = INDEX)
-    for(i in names(stats)){
+    for (i in names(stats)) {
       assign(i, stats[[i]])
     }
   }
-  if(is.na(sdiff1)) sdiff1 <- sd_diff(s1, s2, r1)
-  if(is.na(sdiff2)) sdiff2 <- sd_diff(s3, s4, r2)
+  if (is.null(sdiff1)) sdiff1 <- sd_diff(s1, s2, r1)
+  if (is.null(sdiff2)) sdiff2 <- sd_diff(s3, s4, r2)
   hedges_gz_a <- hedges_gz(m1 = m1, m2 = m2, sdiff = sdiff1, n = n1)
   hedges_gz_b <- hedges_gz(m1 = m3, m2 = m4, sdiff = sdiff2, n = n2)
   res <- hedges_gz_a - hedges_gz_b
   return(res)
 }
 
-g_PPC_change_ci <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, n1, m2, s2, r1, sdiff1 = NA, m3, s3, n2, m4, s4, r2, sdiff2 = NA, alpha = 0.05){
-  
-  if(!is.null(x) && !is.null(y) && !is.null(INDEX)){
+g_PPC_change_ci <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, n1, m2, s2, r1, sdiff1 = NULL, m3, s3, n2, m4, s4, r2, sdiff2 = NULL, alpha = 0.05) {
+
+  if (!is.null(x) && !is.null(y) && !is.null(INDEX)) {
     stats <- summary_stats(x = x, y = y, INDEX = INDEX)
-    for(i in names(stats)){
+    for (i in names(stats)) {
       assign(i, stats[[i]])
     }
   }
-  if(is.na(sdiff1)) sdiff1 <- sd_diff(s1, s2, r1)
-  if(is.na(sdiff2)) sdiff2 <- sd_diff(s3, s4, r2)
+  if (is.null(sdiff1)) sdiff1 <- sd_diff(s1, s2, r1)
+  if (is.null(sdiff2)) sdiff2 <- sd_diff(s3, s4, r2)
   g <- g_PPC_change(m1 = m1, m2 = m2, n1 = n1, sdiff1 = sdiff1, m3 = m3, m4 = m4, n2 = n2, sdiff2 = sdiff2)
   v <- hedges_bias_correction(df = n1 - 1)^2 * var_dz_large_sample_approx(m1, m2, sdiff1, n1) + hedges_bias_correction(df = n2 - 1)^2 * var_dz_large_sample_approx(m3, m4, sdiff2, n2)
   ci <- g + c(qnorm(alpha / 2), qnorm(1 - alpha / 2)) * sqrt(v)
@@ -3260,12 +3306,11 @@ g_PPC_change_ci <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, n1, m2, s2
 }
 
 
+d_PPC_pre <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, m2, m3, s3, m4) {
 
-d_PPC_pre <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, m2, m3, s3, m4){
-  
-  if(!is.null(x) && !is.null(y) && !is.null(INDEX)){
+  if (!is.null(x) && !is.null(y) && !is.null(INDEX)) {
     stats <- summary_stats(x = x, y = y, INDEX = INDEX)
-    for(i in names(stats)){
+    for (i in names(stats)) {
       assign(i, stats[[i]])
     }
   }
@@ -3275,18 +3320,18 @@ d_PPC_pre <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, m2, m3, s3, m4){
   return(res)
 }
 
-var_glass_d_large_sample_approx <- function(m1, s1, m2, n, r){
+var_glass_d_large_sample_approx <- function(m1, s1, m2, n, r) {
   d <- glass_d(m1 = m1, m2 = m2, s1 = s1, standardised_by_group_1 = TRUE)
-  res <- 2*(1-r)/n + d^2/(2*n)
+  res <- 2 * (1 - r) / n + d^2 / (2 * n)
   return(res)
 }
 
 
-d_PPC_pre_ci <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, m2, n1, r1, m3, s3, m4, n2, r2, alpha = 0.05){
-  
-  if(!is.null(x) && !is.null(y) && !is.null(INDEX)){
+d_PPC_pre_ci <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, m2, n1, r1, m3, s3, m4, n2, r2, alpha = 0.05) {
+
+  if (!is.null(x) && !is.null(y) && !is.null(INDEX)) {
     stats <- summary_stats(x = x, y = y, INDEX = INDEX)
-    for(i in names(stats)){
+    for (i in names(stats)) {
       assign(i, stats[[i]])
     }
   }
@@ -3299,10 +3344,10 @@ d_PPC_pre_ci <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, m2, n1, r1, m
 
 
 g_PPC_pre <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, m2, n1, m3, s3, m4, n2){
-  
+
   if(!is.null(x) && !is.null(y) && !is.null(INDEX)){
     stats <- summary_stats(x = x, y = y, INDEX = INDEX)
-    for(i in names(stats)){
+    for (i in names(stats)) {
       assign(i, stats[[i]])
     }
   }
@@ -3312,18 +3357,18 @@ g_PPC_pre <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, m2, n1, m3, s3, 
   return(res)
 }
 
-var_glass_d_corr_large_sample_approx <- function(m1, s1, m2, n, r){
+var_glass_d_corr_large_sample_approx <- function(m1, s1, m2, n, r) {
   g <- glass_d_corr(m1 = m1, m2 = m2, df = n - 1)
-  res <- 2*(1-r)/n + g^2/(2*(n-1))
+  res <- 2 * (1 - r) / n + g^2 / (2 * (n - 1))
   return(res)
 }
 
 
-g_PPC_pre_ci <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, m2, n1, r1, m3, s3, m4, n2, r2, alpha = 0.05){
-  
-  if(!is.null(x) && !is.null(y) && !is.null(INDEX)){
+g_PPC_pre_ci <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, m2, n1, r1, m3, s3, m4, n2, r2, alpha = 0.05) {
+
+  if (!is.null(x) && !is.null(y) && !is.null(INDEX)) {
     stats <- summary_stats(x = x, y = y, INDEX = INDEX)
-    for(i in names(stats)){
+    for (i in names(stats)) {
       assign(i, stats[[i]])
     }
   }
@@ -3335,43 +3380,43 @@ g_PPC_pre_ci <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, m2, n1, r1, m
 }
 
 d_PPC_pooled_pre <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, m2, n1, m3, s3, m4, n2){
-  
+
   if(!is.null(x) && !is.null(y) && !is.null(INDEX)){
     stats <- summary_stats(x = x, y = y, INDEX = INDEX)
-    for(i in names(stats)){
+    for (i in names(stats)) {
       assign(i, stats[[i]])
     }
   }
   s_pre_pooled <- sd_pooled(s1, s3, n1, n2)
   mean_change_diff <- (m2 - m1) - (m4 - m3)
-  res <- mean_change_diff/s_pre_pooled
+  res <- mean_change_diff / s_pre_pooled
   return(res)
 }
 
-pooled_correlation <- function(n1, n2, r1, r2){
-  z1 <- 0.5 * log((1 + r1)/(1 - r1))
-  se_z1 <- 1/sqrt(n1 - 3)
-  w_z1 <- 1/se_z1^2
-  z2 <- 0.5 * log((1 + r2)/(1 - r2))
-  se_z2 <- 1/sqrt(n2 - 3)
-  w_z2 <- 1/se_z2^2
-  z <- (z1 * w_z1 + z2 * w_z2)/(w_z1 + w_z2)
-  res <- (exp(2 * z) - 1)/(1 + exp(2 * z))
+pooled_correlation <- function(n1, n2, r1, r2) {
+  z1 <- 0.5 * log((1 + r1) / (1 - r1))
+  se_z1 <- 1 / sqrt(n1 - 3)
+  w_z1 <- 1 / se_z1^2
+  z2 <- 0.5 * log((1 + r2) / (1 - r2))
+  se_z2 <- 1 / sqrt(n2 - 3)
+  w_z2 <- 1 / se_z2^2
+  z <- (z1 * w_z1 + z2 * w_z2) / (w_z1 + w_z2)
+  res <- (exp(2 * z) - 1) / (1 + exp(2 * z))
   return(res)
 }
 
-var_d_PPC_pooled_pre <- function(d, n1, n2, r1, r2){
+var_d_PPC_pooled_pre <- function(d, n1, n2, r1, r2) {
   r_p <- pooled_correlation(n1, n2, r1, r2)
   df <- n1 + n2 - 2
-  res <- 2 * (1 - r_p) * ((n1 + n2)/(n1 * n2)) + (d^2)/(2*df)
+  res <- 2 * (1 - r_p) * ((n1 + n2) / (n1 * n2)) + (d^2) / (2 * df)
   return(res)
 }
 
-d_PPC_pooled_pre_ci <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, m2, n1, r1, m3, s3, m4, n2, r2, alpha = 0.05){
-  
-  if(!is.null(x) && !is.null(y) && !is.null(INDEX)){
+d_PPC_pooled_pre_ci <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, m2, n1, r1, m3, s3, m4, n2, r2, alpha = 0.05) {
+
+  if (!is.null(x) && !is.null(y) && !is.null(INDEX)) {
     stats <- summary_stats(x = x, y = y, INDEX = INDEX)
-    for(i in names(stats)){
+    for (i in names(stats)) {
       assign(i, stats[[i]])
     }
   }
@@ -3383,64 +3428,64 @@ d_PPC_pooled_pre_ci <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, m2, n1
 }
 
 
-g_PPC_pooled_pre <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, m2, n1, m3, s3, m4, n2){
-  if(!is.null(x) && !is.null(y) && !is.null(INDEX)){
+g_PPC_pooled_pre <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, m2, n1, m3, s3, m4, n2) {
+  if (!is.null(x) && !is.null(y) && !is.null(INDEX)) {
     stats <- summary_stats(x = x, y = y, INDEX = INDEX)
-    for(i in names(stats)){
+    for (i in names(stats)) {
       assign(i, stats[[i]])
     }
   }
   s_pre_pooled <- sd_pooled(s1, s3, n1, n2)
   mean_change_diff <- (m2 - m1) - (m4 - m3)
   c <- hedges_bias_correction(df = n1 + n2 - 2)
-  res <- c * mean_change_diff/s_pre_pooled
+  res <- c * mean_change_diff / s_pre_pooled
   return(res)
 }
 
 
-g_PPC_pooled_pre_ci <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, m2, n1, r1, m3, s3, m4, n2, r2, alpha = 0.05){
-  
-  if(!is.null(x) && !is.null(y) && !is.null(INDEX)){
+g_PPC_pooled_pre_ci <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, m2, n1, r1, m3, s3, m4, n2, r2, alpha = 0.05) {
+
+  if (!is.null(x) && !is.null(y) && !is.null(INDEX)) {
     stats <- summary_stats(x = x, y = y, INDEX = INDEX)
-    for(i in names(stats)){
+    for (i in names(stats)) {
       assign(i, stats[[i]])
     }
   }
   d <- d_PPC_pooled_pre(m1 = m1, s1 = s1, m2 = m2, n1 = n1, m3 = m3, s3 = s3, m4 = m4, n2 = n2)
   c <- hedges_bias_correction(df = n1 + n2 - 2)
   v <- var_d_PPC_pooled_pre(d, n1, n2, r1, r2)
-  ci <- c*d + c(qnorm(alpha / 2), qnorm(1 - alpha / 2)) * sqrt(v*c^2)
+  ci <- c * d + c(qnorm(alpha / 2), qnorm(1 - alpha / 2)) * sqrt(v * c^2)
   return(list(lower_bound = ci[[1]],
               upper_bound = ci[[2]]))
 }
 
 
-d_PPC_pooled_pre_post <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, m2, s2, n1, m3, s3, m4, s4, n2){
-  
-  if(!is.null(x) && !is.null(y) && !is.null(INDEX)){
+d_PPC_pooled_pre_post <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, m2, s2, n1, m3, s3, m4, s4, n2) {
+
+  if (!is.null(x) && !is.null(y) && !is.null(INDEX)) {
     stats <- summary_stats(x = x, y = y, INDEX = INDEX)
-    for(i in names(stats)){
+    for (i in names(stats)) {
       assign(i, stats[[i]])
     }
   }
-  s_pre_post_pooled <- ((n1 - 1)*(s1 + s2) + (n2 - 1)*(s3 + s4))/(2*(n1 + n2 - 2))
+  s_pre_post_pooled <- ((n1 - 1) * (s1 + s2) + (n2 - 1) * (s3 + s4)) / (2 * (n1 + n2 - 2))
   mean_change_diff <- (m2 - m1) - (m4 - m3)
-  res <- mean_change_diff/s_pre_post_pooled
+  res <- mean_change_diff / s_pre_post_pooled
   return(res)
 }
 
-var_d_PPC_pooled_pre_post <- function(d, n1, n2, r1, r2){
+var_d_PPC_pooled_pre_post <- function(d, n1, n2, r1, r2) {
   r_p <- pooled_correlation(n1, n2, r1, r2)
-  df <- 2*(n1 + n2 - 2)/(1 + r_p^2)
-  res <- 2 * (1 - r_p) * ((n1 + n2)/(n1 * n2)) + (d^2)/(2*df)
+  df <- 2 * (n1 + n2 - 2) / (1 + r_p^2)
+  res <- 2 * (1 - r_p) * ((n1 + n2) / (n1 * n2)) + (d^2) / (2 * df)
   return(res)
 }
 
-d_PPC_pooled_pre_post_ci <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, m2, s2, n1, r1, m3, s3, m4, s4, n2, r2, alpha = 0.05){
-  
-  if(!is.null(x) && !is.null(y) && !is.null(INDEX)){
+d_PPC_pooled_pre_post_ci <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, m2, s2, n1, r1, m3, s3, m4, s4, n2, r2, alpha = 0.05) {
+
+  if (!is.null(x) && !is.null(y) && !is.null(INDEX)) {
     stats <- summary_stats(x = x, y = y, INDEX = INDEX)
-    for(i in names(stats)){
+    for (i in names(stats)) {
       assign(i, stats[[i]])
     }
   }
@@ -3451,33 +3496,33 @@ d_PPC_pooled_pre_post_ci <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, m
               upper_bound = ci[[2]]))
 }
 
-g_PPC_pooled_pre_post <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, m2, s2, n1, r1, m3, s3, m4, s4, n2, r2){
-  if(!is.null(x) && !is.null(y) && !is.null(INDEX)){
+g_PPC_pooled_pre_post <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, m2, s2, n1, r1, m3, s3, m4, s4, n2, r2) {
+  if (!is.null(x) && !is.null(y) && !is.null(INDEX)) {
     stats <- summary_stats(x = x, y = y, INDEX = INDEX)
-    for(i in names(stats)){
+    for (i in names(stats)) {
       assign(i, stats[[i]])
     }
   }
-  s_pre_post_pooled <- ((n1 - 1)*(s1 + s2) + (n2 - 1)*(s3 + s4))/(2*(n1 + n2 - 2))
+  s_pre_post_pooled <- ((n1 - 1) * (s1 + s2) + (n2 - 1) * (s3 + s4)) / (2 * (n1 + n2 - 2))
   mean_change_diff <- (m2 - m1) - (m4 - m3)
   r_p <- pooled_correlation(n1, n2, r1, r2)
-  c <- hedges_bias_correction(df = 2*(n1 + n2 - 2)/(1 + r_p^2))
-  res <- c * mean_change_diff/s_pre_post_pooled
+  c <- hedges_bias_correction(df = 2 * (n1 + n2 - 2) / (1 + r_p^2))
+  res <- c * mean_change_diff / s_pre_post_pooled
   return(res)
 }
 
-g_PPC_pooled_pre_post_ci <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, m2, s2, n1, r1, m3, s3, m4, s4, n2, r2, alpha = 0.05){
-  if(!is.null(x) && !is.null(y) && !is.null(INDEX)){
+g_PPC_pooled_pre_post_ci <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, m2, s2, n1, r1, m3, s3, m4, s4, n2, r2, alpha = 0.05) {
+  if (!is.null(x) && !is.null(y) && !is.null(INDEX)) {
     stats <- summary_stats(x = x, y = y, INDEX = INDEX)
-    for(i in names(stats)){
+    for (i in names(stats)) {
       assign(i, stats[[i]])
     }
   }
   d <- d_PPC_pooled_pre_post(m1 = m1, s1 = s1, m2 = m2, s2 = s2, n1 = n1, m3 = m3, s3 = s3, m4 = m4, s4 = s4, n2 = n2)
   r_p <- pooled_correlation(n1, n2, r1, r2)
-  c <- hedges_bias_correction(df = 2*(n1 + n2 - 2)/(1 + r_p^2))
+  c <- hedges_bias_correction(df = 2 * (n1 + n2 - 2) / (1 + r_p^2))
   v <- var_d_PPC_pooled_pre_post(d, n1, n2, r1, r2)
-  ci <- c*d + c(qnorm(alpha / 2), qnorm(1 - alpha / 2)) * sqrt(v*c^2)
+  ci <- c * d + c(qnorm(alpha / 2), qnorm(1 - alpha / 2)) * sqrt(v * c^2)
   return(list(lower_bound = ci[[1]],
               upper_bound = ci[[2]]))
 }
@@ -3490,7 +3535,7 @@ p_pre <- function(x, y) {
       counter <- counter + 1
     }
   }
-  return(counter/length(x))
+  return(counter / length(x))
 }
 
 p_post <- function(x, y) {
@@ -3501,7 +3546,7 @@ p_post <- function(x, y) {
       counter <- counter + 1
     }
   }
-  return(counter/length(y))
+  return(counter / length(y))
 }
 
 non_parametric_d_PPC_pre <- function(x, y, INDEX, alternative = FALSE) {
@@ -3511,7 +3556,7 @@ non_parametric_d_PPC_pre <- function(x, y, INDEX, alternative = FALSE) {
   datasets_post <- split(y, INDEX)
   dataset1_post <- datasets_post[[1]]
   dataset2_post <- datasets_post[[2]]
-  
+
   if (!alternative) {
     p_a <- p_pre(dataset1_pre, dataset1_post)
     p_a <- correct_for_extreme_eff_sizes(length(dataset1_pre), p_a)
@@ -3523,10 +3568,10 @@ non_parametric_d_PPC_pre <- function(x, y, INDEX, alternative = FALSE) {
     p_b <- p_post(dataset2_pre, dataset2_post)
     p_b <- correct_for_extreme_eff_sizes(length(dataset2_post), p_b)
   }
-  return (qnorm(p_a)- qnorm(p_b))
+  return(qnorm(p_a) - qnorm(p_b))
 }
 
-p_gain <- function (x, y) {
+p_gain <- function(x, y) {
   n_x <- length(x)
   n_y <- length(y)
   if (n_x != n_y) {
@@ -3540,7 +3585,7 @@ p_gain <- function (x, y) {
       counter <- counter + 0.5
     }
   }
-  return (counter/n_x)
+  return(counter / n_x)
 }
 
 non_parametric_d_PPC_change <- function(x, y, INDEX) {
@@ -3550,12 +3595,12 @@ non_parametric_d_PPC_change <- function(x, y, INDEX) {
   datasets_post <- split(y, INDEX)
   dataset1_post <- datasets_post[[1]]
   dataset2_post <- datasets_post[[2]]
-  
+
   p_gain_a <- p_gain(dataset1_pre, dataset1_post)
   p_gain_a <- correct_for_extreme_eff_sizes(length(dataset1_pre), p_gain_a)
   p_gain_b <- p_gain(dataset2_pre, dataset2_post)
   p_gain_b <- correct_for_extreme_eff_sizes(length(dataset2_pre), p_gain_b)
-  return (qnorm(p_gain_a) - qnorm(p_gain_b))
+  return(qnorm(p_gain_a) - qnorm(p_gain_b))
 }
 
 non_parametric_dominance_measure_mixed <- function(x, y, INDEX) {
@@ -3565,8 +3610,8 @@ non_parametric_dominance_measure_mixed <- function(x, y, INDEX) {
   datasets_post <- split(y, INDEX)
   dataset1_post <- datasets_post[[1]]
   dataset2_post <- datasets_post[[2]]
-  
-  return (dominance_measure_dependent(dataset1_pre, dataset1_post) - dominance_measure_dependent(dataset2_pre, dataset2_post))
+
+  return(dominance_measure_dependent(dataset1_pre, dataset1_post) - dominance_measure_dependent(dataset2_pre, dataset2_post))
 }
 
 non_parametric_dominance_measure_mixed_ci <- function(x, y, INDEX, alpha) {
@@ -3579,40 +3624,40 @@ non_parametric_dominance_measure_mixed_ci <- function(x, y, INDEX, alpha) {
   d <- non_parametric_dominance_measure_mixed(x, y, INDEX)
   var_1 <- get_var_db_dw(dataset1_pre, dataset1_post)
   var_2 <- get_var_db_dw(dataset2_pre, dataset2_post)
-  
+
   z <- qnorm(1 - alpha / 2)
-  upper_bound <- d + z*sqrt((var_1 + var_2))
-  lower_bound <- d - z*sqrt((var_1 + var_2))
+  upper_bound <- d + z * sqrt((var_1 + var_2))
+  lower_bound <- d - z * sqrt((var_1 + var_2))
   return(list(lower_bound = lower_bound, upper_bound = upper_bound))
-  
+
 }
 
 
 # multivariate Design
 
-pooled_cor_matrices <- function(mat1, mat2, n1, n2){
-  res_mat <- matrix(numeric(length(mat1)), ncol=ncol(mat1))
-  for(i in seq_len(length(mat1))){
+pooled_cor_matrices <- function(mat1, mat2, n1, n2) {
+  res_mat <- matrix(numeric(length(mat1)), ncol = ncol(mat1))
+  for (i in seq_len(length(mat1))) {
     res_mat[[i]] <- pooled_correlation(n1, n2, mat1[[i]], mat2[[i]])
   }
   diag(res_mat) <- rep(1, ncol(mat1))
   return(res_mat)
 }
 
-mahalanobis_d <- function (x, INDEX) {
-  cohens_ds <- vapply(x, smd_uni, FUN.VALUE = numeric(1), effsize="cohen_d", INDEX=INDEX)
+mahalanobis_d <- function(x, INDEX) {
+  cohens_ds <- vapply(x, smd_uni, FUN.VALUE = numeric(1), effsize = "cohen_d", INDEX = INDEX)
   data <- split(x, INDEX)
   cor_mat1 <- cor(data[[1]])
   cor_mat2 <- cor(data[[2]])
   pooled_cor_mat <- pooled_cor_matrices(cor_mat1, cor_mat2, nrow(data[[1]]), nrow(data[[2]]))
-  d <- sqrt(mahalanobis(cohens_ds, pooled_cor_mat, center=FALSE))
+  d <- sqrt(mahalanobis(cohens_ds, pooled_cor_mat, center = FALSE))
   return(drop(d))
 }
 
 mahalanobis_d_educational <- function(means, covariance_matrix) {
   dif <- means[[1]] - means[[2]]
   mahalanobis_d <- sqrt(t(dif) %*% solve(covariance_matrix) %*% dif)
-  return (mahalanobis_d)
+  return(mahalanobis_d)
 }
 
 mahalanobis_d_raw_data_ci <- function(x, INDEX, alpha) {
@@ -3624,69 +3669,69 @@ mahalanobis_d_raw_data_ci <- function(x, INDEX, alpha) {
 }
 
 mahalanobis_d_educational_ci <- function(means, covariance_matrix, n1, n2, alpha) {
-  return (mahalanobis_d_ci(mahalanobis_d_educational(means, covariance_matrix), nrow(means), n1, n2, alpha))
+  return(mahalanobis_d_ci(mahalanobis_d_educational(means, covariance_matrix), nrow(means), n1, n2, alpha))
 }
 
 mahalanobis_d_ci <- function(mahalanobis_d, p, n1, n2, alpha = 0.05) {
-  conf.level <- 1-alpha
+  conf.level <- 1 - alpha
   mahalanbis_d2 <- mahalanobis_d^2
-  if (!is.null(n1))	{
-    f_cal <- (mahalanbis_d2)*(n1*n2*(n1+n2-p-1))/(p*(n1+n2)*(n1+n2-2))
-    lower_prob <- conf.level+(1-conf.level)/2
-    upper_prob <- (1-conf.level)/2
-    critical_F_upper <- qf(upper_prob, p, n1+n2-p-1)
-    critical_F_lower <- qf(lower_prob, p, n1+n2-p-1)
-    
+  if (!is.null(n1)) {
+    f_cal <- (mahalanbis_d2) * (n1 * n2 * (n1 + n2 - p - 1)) / (p * (n1 + n2) * (n1 + n2 - 2))
+    lower_prob <- conf.level + (1 - conf.level) / 2
+    upper_prob <- (1 - conf.level) / 2
+    critical_F_upper <- qf(upper_prob, p, n1 + n2 - p - 1)
+    critical_F_lower <- qf(lower_prob, p, n1 + n2 - p - 1)
+
     # lower
-    if (mahalanbis_d2>critical_F_lower) {
-      ncp_est_max <- 10000/(1/n1+1/n2)
+    if (mahalanbis_d2 > critical_F_lower) {
+      ncp_est_max <- 10000 / (1 / n1 + 1 / n2)
       ncp_est_min <- 0
-      ncp_est <- (ncp_est_max-ncp_est_min)/2
-      
-      est_p <- pf(f_cal, p, (n1+n2-p-1), lower.tail=TRUE, ncp=ncp_est)
-      
-      while(abs(est_p-lower_prob) > .00001) {
-        if ((est_p-lower_prob) < 0) {ncp_est_max <- ncp_est
-        ncp_est <- ncp_est_min+(ncp_est_max-ncp_est_min)/2
+      ncp_est <- (ncp_est_max - ncp_est_min) / 2
+
+      est_p <- pf(f_cal, p, (n1 + n2 - p - 1), lower.tail = TRUE, ncp = ncp_est)
+
+      while (abs(est_p - lower_prob) > .00001) {
+        if ((est_p - lower_prob) < 0) { ncp_est_max <- ncp_est
+          ncp_est <- ncp_est_min + (ncp_est_max - ncp_est_min) / 2
         }
-        else {ncp_est_min <- ncp_est
-        ncp_est <- ncp_est_min+(ncp_est_max-ncp_est_min)/2
+        else { ncp_est_min <- ncp_est
+          ncp_est <- ncp_est_min + (ncp_est_max - ncp_est_min) / 2
         }
-        est_p <- pf(f_cal, p, (n1+n2-p-1), lower.tail=TRUE, ncp=ncp_est);
+        est_p <- pf(f_cal, p, (n1 + n2 - p - 1), lower.tail = TRUE, ncp = ncp_est);
       }
-      lower_bound <- sqrt(ncp_est*(1/n1+1/n2))
+      lower_bound <- sqrt(ncp_est * (1 / n1 + 1 / n2))
     }
     else {
       lower_bound <- NA
     }
-    
+
     # upper
-    if (mahalanbis_d2>critical_F_upper) {
-      ncp_est_max <- 10000/(1/n1+1/n2)
+    if (mahalanbis_d2 > critical_F_upper) {
+      ncp_est_max <- 10000 / (1 / n1 + 1 / n2)
       ncp_est_min <- 0
-      ncp_est <- (ncp_est_max-ncp_est_min)/2
-      
-      est_p <- pf(f_cal, p, (n1+n2-p-1), lower.tail=TRUE, ncp=ncp_est)
-      
-      while(abs(est_p-upper_prob) > .00001 ) {
-        if ((est_p-upper_prob) < 0) {
+      ncp_est <- (ncp_est_max - ncp_est_min) / 2
+
+      est_p <- pf(f_cal, p, (n1 + n2 - p - 1), lower.tail = TRUE, ncp = ncp_est)
+
+      while (abs(est_p - upper_prob) > .00001) {
+        if ((est_p - upper_prob) < 0) {
           ncp_est_max <- ncp_est
-          ncp_est <- ncp_est_min+(ncp_est_max-ncp_est_min)/2
+          ncp_est <- ncp_est_min + (ncp_est_max - ncp_est_min) / 2
         }
         else {
           ncp_est_min <- ncp_est
-          ncp_est <- ncp_est_min+(ncp_est_max-ncp_est_min)/2
+          ncp_est <- ncp_est_min + (ncp_est_max - ncp_est_min) / 2
         }
-        est_p <- pf(f_cal, p, (n1+n2-p-1), lower.tail=TRUE, ncp=ncp_est);
+        est_p <- pf(f_cal, p, (n1 + n2 - p - 1), lower.tail = TRUE, ncp = ncp_est);
       }
-      upper_bound <- sqrt(ncp_est*(1/n1+1/n2))
+      upper_bound <- sqrt(ncp_est * (1 / n1 + 1 / n2))
     }
     else upper_bound <- NA
   }
-  
+
   return(list(lower_bound = lower_bound,
               upper_bound = upper_bound))
-  
+
 }
 
 calc_bias_corrected_d_multivariate <- function(k, mahalanobis_d, n1, n2) {
@@ -3725,22 +3770,22 @@ ovl_multivariate_educational <- function(means, covariance_matrix) {
 
 ovl_two_multivariate <- function(x, INDEX) {
   ovl <- ovl_multivariate(x, INDEX)
-  return (ovl/(2-ovl))
+  return(ovl / (2 - ovl))
 }
 
 ovl_two_multivariate_educational <- function(means, covariance_matrix) {
   ovl <- ovl_multivariate_educational(means, covariance_matrix)
-  return(ovl/(2-ovl))
+  return(ovl / (2 - ovl))
 }
 
 u1_multivariate <- function(x, INDEX) {
   ovl <- ovl_multivariate(x, INDEX)
-  return(1-ovl/(2-ovl))
+  return(1 - ovl / (2 - ovl))
 }
 
 u1_multivariate_educational <- function(means, covariance_matrix) {
   ovl <- ovl_multivariate_educational(means, covariance_matrix)
-  return(1-ovl/(2-ovl))
+  return(1 - ovl / (2 - ovl))
 }
 
 calc_u3_multivariate <- function(mahalanobis_d) return(pnorm(mahalanobis_d))
