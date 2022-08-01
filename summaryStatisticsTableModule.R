@@ -1,7 +1,7 @@
 summaryStatisticsTableUI <- function(id, design) {
   ns <- NS(id)
   generatedUi <- tagList()
-  if (design == "multiVar") {
+  if (design == "multivariate") {
     generatedUi$firstRow <- fluidRow(column(width=6, gt_output(ns("summary_table1"))), 
                                      column(width=6, gt_output(ns("summary_table2"))))
   } else if (design =="indGrps"){
@@ -27,9 +27,11 @@ summaryStatisticsTableServer <- function(id, design, x, INDEX, y){
                                    indGrps = 1,
                                    depGrps = 2,
                                    mixed = 4,
-                                   multiVar = 2)
+                                   multivariate = 2)
                  
-                 summary_stats_dfs <- reactive({generate_summary_statistics_data_frame(x = x(), INDEX = INDEX(), y = y())})
+                 summary_stats_dfs <- reactive({
+                   generate_summary_statistics_data_frame(x = x(), INDEX = INDEX(), y = y(), design=design)
+                   })
                  
                  lapply(1:num_tbl,
                         function(i){

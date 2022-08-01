@@ -640,10 +640,10 @@ mixed_design_stats <- function(x, y, INDEX){
 
 }
 
+
+
 summary_stats <- function(x, INDEX = NULL, y = NULL, trim = 0, winvar = FALSE) {
-  if (is.data.frame(x)) {
-    # TODO: summary statistics for multivariate effect sizes
-  } else if (is.null(y)) {
+  if (is.null(y)) {
     stats <- tapply(X = x, INDEX = INDEX, FUN = stats_per_group, trim = trim, winvar = winvar, simplify = FALSE)
     stats_names <- names(stats[[1]])
     stats_names <- paste0(stats_names, rep(1:2, each = length(stats_names)))
@@ -685,9 +685,6 @@ stats_names_key_value_matching <- function(keys, key_value_ls) {
   return(values)
 }
 
-multivariate_summary_dfs <- function(x, INDEX) {
-  # TODO
-}
 
 independent_groups_design_summary_dfs <- function(x, INDEX, trim = 0.2, winvar = TRUE){
 
@@ -773,13 +770,58 @@ mixed_design_summary_dfs <- function(x, INDEX, y){
   return(summary_stats_dfs)
 }
 
-generate_summary_statistics_data_frame <- function(x, INDEX = NULL, y = NULL) {
 
-  if (is.data.frame(x)) {
+multivariate_summary_dfs <- function(x, INDEX){
+  summary_stats_dfs <- rep(list(list()), 2)
+  var_names <- names(x)
+  if(!is.list(x) | ncol(x)==1) x <- as.data.frame(x)
+  df1_col1 <- round(vapply(x, smd_uni, FUN.VALUE = numeric(1), effsize="cohen_d", INDEX=INDEX), 2)
+  df1_row_names <- var_names
+  summary_stats_dfs[[1]] <- list(data.frame(`Cohen's d` = df1_col1,
+                                            row.names = df1_row_names,
+                                            check.names = FALSE),
+                                 paste0("Cohen's d of each analysed variable"))
+  
+  probs <- c(0, 0.5, 1)
+  if(ncol(as.data.frame(x))==1){
+    df2_col1 <- rep(NA, length(probs))
+    df2_col2 <- rep(NA, length(probs))
+  } else {
+    data <- split(x, INDEX)
+    cor_mat1 <- cor(data[[1]])
+    cor_mat2 <- cor(data[[2]])
+    pooled_cor_mat <- pool_cor_mat(cor_mat1, cor_mat2, nrow(data[[1]]), nrow(data[[2]]))
+    rownames(pooled_cor_mat) <- rownames(cor_mat1)
+    colnames(pooled_cor_mat) <- colnames(cor_mat2) 
+    
+    pooled_cor_quantiles <- quantile(abs(pooled_cor_mat[upper.tri(pooled_cor_mat)]), probs = probs, names = FALSE, type = 3)
+    pooled_cor_mat_upper <- pooled_cor_mat
+    pooled_cor_mat_upper[lower.tri(pooled_cor_mat_upper, diag = TRUE)] <- 2
+    quantiles_indices <- matrix(0, ncol=2, nrow=length(probs))
+    for (i in seq_len(length(probs))){
+      quantiles_indices[i,] <- which(abs(pooled_cor_mat_upper) == pooled_cor_quantiles[[i]], arr.ind = TRUE)[1,]
+    }
+    df2_col1 <- paste0(rownames(pooled_cor_mat)[quantiles_indices[,1]],
+                       " & ",
+                       colnames(pooled_cor_mat)[quantiles_indices[,2]])
+    df2_col2 <- round(pooled_cor_mat[quantiles_indices], 2)
+  }
+  df2_row_names <- c("Min.", "Median", "Max.")
+  summary_stats_dfs[[2]] <- list(data.frame(Variables = df2_col1,
+                                            r = df2_col2,
+                                            row.names = df2_row_names),
+                                 paste0("Minimum, median and maximum values of the pooled correlation matrix"))
+  return(summary_stats_dfs)
+}
+
+
+generate_summary_statistics_data_frame <- function(x, INDEX = NULL, y = NULL, design){
+
+  if (design=="multivariate") {
     res <- multivariate_summary_dfs(x, INDEX)
-  } else if (is.null(y)) {
+  } else if (design=="indGrps"){
     res <- independent_groups_design_summary_dfs(x, INDEX)
-  } else if (is.null(INDEX)) {
+  } else if (design=="depGrps") {
     res <- dependent_groups_design_summary_dfs(x, y)
   } else {
     res <- mixed_design_summary_dfs(x, INDEX, y)
@@ -3393,20 +3435,20 @@ d_PPC_pooled_pre <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, m2, n1, m
   return(res)
 }
 
-pooled_correlation <- function(n1, n2, r1, r2) {
-  z1 <- 0.5 * log((1 + r1) / (1 - r1))
-  se_z1 <- 1 / sqrt(n1 - 3)
-  w_z1 <- 1 / se_z1^2
-  z2 <- 0.5 * log((1 + r2) / (1 - r2))
-  se_z2 <- 1 / sqrt(n2 - 3)
-  w_z2 <- 1 / se_z2^2
-  z <- (z1 * w_z1 + z2 * w_z2) / (w_z1 + w_z2)
-  res <- (exp(2 * z) - 1) / (1 + exp(2 * z))
+pool_cor <- function(n1, n2, r1, r2){
+  z1 <- 0.5 * log((1 + r1)/(1 - r1))
+  se_z1 <- 1/sqrt(n1 - 3)
+  w_z1 <- 1/se_z1^2
+  z2 <- 0.5 * log((1 + r2)/(1 - r2))
+  se_z2 <- 1/sqrt(n2 - 3)
+  w_z2 <- 1/se_z2^2
+  z <- (z1 * w_z1 + z2 * w_z2)/(w_z1 + w_z2)
+  res <- (exp(2 * z) - 1)/(1 + exp(2 * z))
   return(res)
 }
 
-var_d_PPC_pooled_pre <- function(d, n1, n2, r1, r2) {
-  r_p <- pooled_correlation(n1, n2, r1, r2)
+var_d_PPC_pooled_pre <- function(d, n1, n2, r1, r2){
+  r_p <- pool_cor(n1, n2, r1, r2)
   df <- n1 + n2 - 2
   res <- 2 * (1 - r_p) * ((n1 + n2) / (n1 * n2)) + (d^2) / (2 * df)
   return(res)
@@ -3474,10 +3516,11 @@ d_PPC_pooled_pre_post <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, m2, 
   return(res)
 }
 
-var_d_PPC_pooled_pre_post <- function(d, n1, n2, r1, r2) {
-  r_p <- pooled_correlation(n1, n2, r1, r2)
-  df <- 2 * (n1 + n2 - 2) / (1 + r_p^2)
-  res <- 2 * (1 - r_p) * ((n1 + n2) / (n1 * n2)) + (d^2) / (2 * df)
+
+var_d_PPC_pooled_pre_post <- function(d, n1, n2, r1, r2){
+  r_p <- pool_cor(n1, n2, r1, r2)
+  df <- 2*(n1 + n2 - 2)/(1 + r_p^2)
+  res <- 2 * (1 - r_p) * ((n1 + n2)/(n1 * n2)) + (d^2)/(2*df)
   return(res)
 }
 
@@ -3505,9 +3548,9 @@ g_PPC_pooled_pre_post <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, m2, 
   }
   s_pre_post_pooled <- ((n1 - 1) * (s1 + s2) + (n2 - 1) * (s3 + s4)) / (2 * (n1 + n2 - 2))
   mean_change_diff <- (m2 - m1) - (m4 - m3)
-  r_p <- pooled_correlation(n1, n2, r1, r2)
-  c <- hedges_bias_correction(df = 2 * (n1 + n2 - 2) / (1 + r_p^2))
-  res <- c * mean_change_diff / s_pre_post_pooled
+  r_p <- pool_cor(n1, n2, r1, r2)
+  c <- hedges_bias_correction(df = 2*(n1 + n2 - 2)/(1 + r_p^2))
+  res <- c * mean_change_diff/s_pre_post_pooled
   return(res)
 }
 
@@ -3519,8 +3562,8 @@ g_PPC_pooled_pre_post_ci <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, m
     }
   }
   d <- d_PPC_pooled_pre_post(m1 = m1, s1 = s1, m2 = m2, s2 = s2, n1 = n1, m3 = m3, s3 = s3, m4 = m4, s4 = s4, n2 = n2)
-  r_p <- pooled_correlation(n1, n2, r1, r2)
-  c <- hedges_bias_correction(df = 2 * (n1 + n2 - 2) / (1 + r_p^2))
+  r_p <- pool_cor(n1, n2, r1, r2)
+  c <- hedges_bias_correction(df = 2*(n1 + n2 - 2)/(1 + r_p^2))
   v <- var_d_PPC_pooled_pre_post(d, n1, n2, r1, r2)
   ci <- c * d + c(qnorm(alpha / 2), qnorm(1 - alpha / 2)) * sqrt(v * c^2)
   return(list(lower_bound = ci[[1]],
@@ -3635,10 +3678,10 @@ non_parametric_dominance_measure_mixed_ci <- function(x, y, INDEX, alpha) {
 
 # multivariate Design
 
-pooled_cor_matrices <- function(mat1, mat2, n1, n2) {
-  res_mat <- matrix(numeric(length(mat1)), ncol = ncol(mat1))
-  for (i in seq_len(length(mat1))) {
-    res_mat[[i]] <- pooled_correlation(n1, n2, mat1[[i]], mat2[[i]])
+pool_cor_mat <- function(mat1, mat2, n1, n2){
+  res_mat <- matrix(numeric(length(mat1)), ncol=ncol(mat1))
+  for(i in seq_len(length(mat1))){
+    res_mat[[i]] <- pool_cor(n1, n2, mat1[[i]], mat2[[i]])
   }
   diag(res_mat) <- rep(1, ncol(mat1))
   return(res_mat)
@@ -3649,8 +3692,8 @@ mahalanobis_d <- function(x, INDEX) {
   data <- split(x, INDEX)
   cor_mat1 <- cor(data[[1]])
   cor_mat2 <- cor(data[[2]])
-  pooled_cor_mat <- pooled_cor_matrices(cor_mat1, cor_mat2, nrow(data[[1]]), nrow(data[[2]]))
-  d <- sqrt(mahalanobis(cohens_ds, pooled_cor_mat, center = FALSE))
+  pooled_cor_mat <- pool_cor_mat(cor_mat1, cor_mat2, nrow(data[[1]]), nrow(data[[2]]))
+  d <- sqrt(mahalanobis(cohens_ds, pooled_cor_mat, center=FALSE))
   return(drop(d))
 }
 

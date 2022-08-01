@@ -238,7 +238,7 @@ mixedDesignParametricRawData <-
             esChoices =
               list(all_eff_sizes$d_PPC_change,
                    all_eff_sizes$g_PPC_change,
-                   all_eff_sizes$g_PPC_pre,
+                   all_eff_sizes$d_PPC_pre,
                    all_eff_sizes$g_PPC_pre,
                    all_eff_sizes$d_PPC_pooled_pre,
                    all_eff_sizes$g_PPC_pooled_pre,

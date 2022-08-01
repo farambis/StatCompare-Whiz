@@ -62,7 +62,7 @@ esMainPanelMultivariateRawDataServer <- function(id, data, index, dataInputX) {
                      pageLength = 10,
                      scrollX = TRUE,
                      lengthMenu = c(5, 10, 25, 50, 100)))
-
+                 summaryStatisticsTableServer("summaryStatisticsTable", design="multivariate", x=reactive(data()[dataInputX()]), index, y=NULL)
                  esAndTsMultivariateRawDataServer("esAndTs", data, index, dataInputX)
                })
 }
