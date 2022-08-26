@@ -5,6 +5,7 @@
 # funktion die Gruppierungsvariable richtig faktorisiert werden kann
 
 # Grand functions computing every effect size and test statistic for the app ----
+
 ## List of every effect size and test statistic ----
 all_eff_sizes <- list(
   # Effect sizes for independent groups:
@@ -275,6 +276,7 @@ generate_es_educational_dataframe <- function(es_list, mean1, standardDeviation1
                   "bonett_d_corr" = smd_ci(effsize = i, val = smd_uni(effsize = i, m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2), n1 = sampleSize1, n2 = sampleSize2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, alpha = alpha),
                   "common_language" = c(common_language_es(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2), common_language_es_ci(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2, alpha = alpha)),
                   "parametric_ovl" = c(parametric_ovl(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2), parametric_ovl_ci(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2, alpha = alpha)),
+                  "parametric_ovl_two" = c(parametric_ovl_two(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2), parametric_ovl_two_ci(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2, alpha = alpha)),
                   "parametric_cohens_u1" = c(parametric_cohens_u1(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2), parametric_cohens_u1_ci(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2, alpha = alpha)),
                   "parametric_cohens_u2" = c(parametric_cohens_u2(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2), parametric_cohens_u2_ci(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2, alpha = alpha)),
                   "parametric_cohens_u3" = c(parametric_cohens_u3(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2), parametric_cohens_u3_ci(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2, alpha = alpha)),
@@ -688,6 +690,7 @@ stats_names_key_value_matching <- function(keys, key_value_ls) {
 
 independent_groups_design_summary_dfs <- function(x, INDEX, trim = 0.2, winvar = TRUE){
 
+  group_names <- levels(factor(INDEX))
   summary_stats_df <- rep(list(list()), 1)
   stats <- summary_stats(x, INDEX, trim = trim, winvar = winvar)
   data <- split(x, INDEX)
@@ -698,10 +701,12 @@ independent_groups_design_summary_dfs <- function(x, INDEX, trim = 0.2, winvar =
   row_names <- stats_names_key_value_matching(row_names_keys, key_value_ls = stats_names_key_value_ls)
   col1 <- round(unlist(stats[grepl(pattern = "1$", names(stats))]), 2)
   col2 <- round(unlist(stats[grepl(pattern = "2$", names(stats))]), 2)
-  summary_stats_df[[1]][[1]] <- data.frame(`Group a` = col1,
-                                           `Group b` = col2,
-                                           row.names = row_names)
-  summary_stats_df[[1]][[2]] <- paste0("Summary statistics for the two contrasted groups")
+  summary_stats_df[[1]][[1]] <- data.frame(grp1 = col1,
+                                           grp2 = col2,
+                                           row.names = row_names,
+                                           check.names = FALSE)
+  names(summary_stats_df[[1]][[1]])[1:2] <- group_names
+  summary_stats_df[[1]][[2]] <- paste0("Summary statistics per group")
   return(summary_stats_df)
 }
 
@@ -715,10 +720,11 @@ dependent_groups_design_summary_dfs <- function(x, y){
   df1_row_names <- stats_names_key_value_matching(df1_row_names_keys, key_value_ls = stats_names_key_value_ls)
   df1_col1 <- round(unlist(stats[paste0(df1_row_names_keys, 1)]), 2)
   df1_col2 <- round(unlist(stats[paste0(df1_row_names_keys, 2)]), 2)
-  summary_stats_dfs[[1]] <- list(data.frame(Pretest = df1_col1,
-                                            Posttest = df1_col2,
-                                            row.names = df1_row_names),
-                                 paste0("Summary statistics for pre- and posttest"))
+  summary_stats_dfs[[1]] <- list(data.frame(`Measurement 1` = df1_col1,
+                                            `Measurement 2` = df1_col2,
+                                            row.names = df1_row_names,
+                                            check.names = FALSE),
+                                 paste0("Summary statistics per measurement")) 
 
   df2_row_names_keys <- names(stats)[grepl(pattern = "[^0-9]$", x = names(stats))]
   df2_row_names <- stats_names_key_value_matching(df2_row_names_keys, key_value_ls = stats_names_key_value_ls)
@@ -731,6 +737,7 @@ dependent_groups_design_summary_dfs <- function(x, y){
 
 mixed_design_summary_dfs <- function(x, INDEX, y){
 
+  group_names <- levels(factor(INDEX))
   summary_stats_dfs <- rep(list(list()), 4)
   stats <- summary_stats(x, INDEX, y)
   data <- split(x, INDEX)
@@ -749,24 +756,26 @@ mixed_design_summary_dfs <- function(x, INDEX, y){
   across_measurements_df_row_names <- stats_names_key_value_matching(across_measurements_df_row_names_keys, stats_names_key_value_ls)
   df1_col1 <- round(unlist(stats[paste0(per_measurement_df_row_names_keys, 1)]), 2)
   df1_col2 <- round(unlist(stats[paste0(per_measurement_df_row_names_keys, 2)]), 2)
-  summary_stats_dfs[[1]] <- list(data.frame(Pretest = df1_col1,
-                                            Posttest = df1_col2,
-                                            row.names = per_measurement_df_row_names),
-                                 paste0("Summary statistics for pre- and posttest of group a"))
+  summary_stats_dfs[[1]] <- list(data.frame(`Measurement 1` = df1_col1,
+                                            `Measurement 2` = df1_col2,
+                                            row.names = per_measurement_df_row_names,
+                                            check.names = FALSE),
+                                 paste0("Summary statistics per measurement for group = ", group_names[[1]]))
   df2_col1 <- round(unlist(stats[paste0(across_measurements_df_row_names_keys, 1)]), 2)
   summary_stats_dfs[[2]] <- list(data.frame(Value = df2_col1,
                                             row.names = across_measurements_df_row_names),
-                                 paste0("Summary statistics across measurements of group a"))
+                                 paste0("Summary statistics across measurements for group = ", group_names[[1]]))
   df3_col1 <- round(unlist(stats[paste0(per_measurement_df_row_names_keys, 3)]), 2)
   df3_col2 <- round(unlist(stats[paste0(per_measurement_df_row_names_keys, 4)]), 2)
-  summary_stats_dfs[[3]] <- list(data.frame(Pretest = df3_col1,
-                                            Posttest = df3_col2,
-                                            row.names = per_measurement_df_row_names),
-                                 paste0("Summary statistics for pre- and posttest of group b"))
+  summary_stats_dfs[[3]] <- list(data.frame(`Measurement 1` = df3_col1,
+                                            `Measurement 2` = df3_col2,
+                                            row.names = per_measurement_df_row_names,
+                                            check.names = FALSE),
+                                 paste0("Summary statistics per measurement for group = ", group_names[[2]]))
   df4_col1 <- round(unlist(stats[paste0(across_measurements_df_row_names_keys, 2)]), 2)
   summary_stats_dfs[[4]] <- list(data.frame(Value = df4_col1,
                                             row.names = across_measurements_df_row_names),
-                                 paste0("Summary statistics across measurements of group b"))
+                                 paste0("Summary statistics across measurements for group = ", group_names[[2]]))
   return(summary_stats_dfs)
 }
 
@@ -1586,6 +1595,12 @@ koopman_nam_risk_ratio_ci <- function(n11, n21, n1., n2., alpha) {
     p2_MLE2 <- t2 - b1 / 3
     p2_MLE3 <- t3 - b1 / 3
     p2_MLE_bounds_candidates <- sort(c(p2_MLE1, p2_MLE2, p2_MLE3))
+    if (length(p2_MLE_bounds_candidates) == 0){
+      return(list(
+        lower_bound = 0,
+        upper_bound = Inf
+      ))
+    }
     p2_MLE_lower_bound <- p2_MLE_bounds_candidates[[2]]
     p2_MLE_upper_bound <- p2_MLE_bounds_candidates[[1]]
     if ((n21 == 0) && (n11 != 0)) {
@@ -1669,9 +1684,9 @@ koopman_nam_risk_ratio_ci <- function(n11, n21, n1., n2., alpha) {
       lower_bound <- nam_p2_MLE_to_phi(n11, n21, n1., n2., p2_MLE_lower_bound)
       upper_bound <- nam_p2_MLE_to_phi(n11, n21, n1., n2., p2_MLE_upper_bound)
     }
+  }
     return(list(lower_bound = lower_bound,
                 upper_bound = upper_bound))
-  }
 }
 
 nam_p2_MLE_to_phi <- function(n11, n21, n1., n2., p2_MLE_bound) {
@@ -3275,7 +3290,7 @@ non_parametric_tail_ratio_dependent_ci <- function(x, y, reference_group = c("gr
 
 # Mixed design parametric ----
 
-d_PPC_change <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, m2, s2, r1, sdiff1 = NULL, m3, s3, m4, s4, r2, sdiff2 = NULL) {
+d_PPC_change <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, m2, s2, r1, sdiff1 = NA, m3, s3, m4, s4, r2, sdiff2 = NA) {
 
   if (!is.null(x) && !is.null(y) && !is.null(INDEX)) {
     stats <- summary_stats(x = x, y = y, INDEX = INDEX)
@@ -3283,8 +3298,8 @@ d_PPC_change <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, m2, s2, r1, s
       assign(i, stats[[i]])
     }
   }
-  if (is.null(sdiff1)) sdiff1 <- sd_diff(s1, s2, r1)
-  if (is.null(sdiff2)) sdiff2 <- sd_diff(s3, s4, r2)
+  if (is.na(sdiff1)) sdiff1 <- sd_diff(s1, s2, r1)
+  if (is.na(sdiff2)) sdiff2 <- sd_diff(s3, s4, r2)
   cohens_dz_a <- cohens_dz(m1 = m1, m2 = m2, sdiff = sdiff1)
   cohens_dz_b <- cohens_dz(m1 = m3, m2 = m4, sdiff = sdiff2)
   res <- cohens_dz_a - cohens_dz_b
@@ -3297,7 +3312,7 @@ var_dz_large_sample_approx <- function(m1, m2, sdiff, n) {
   return(res)
 }
 
-d_PPC_change_ci <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, n1, m2, s2, r1, sdiff1 = NULL, m3, s3, n2, m4, s4, r2, sdiff2 = NULL, alpha = 0.05) {
+d_PPC_change_ci <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, n1, m2, s2, r1, sdiff1 = NA, m3, s3, n2, m4, s4, r2, sdiff2 = NA, alpha = 0.05) {
 
   if (!is.null(x) && !is.null(y) && !is.null(INDEX)) {
     stats <- summary_stats(x = x, y = y, INDEX = INDEX)
@@ -3305,8 +3320,8 @@ d_PPC_change_ci <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, n1, m2, s2
       assign(i, stats[[i]])
     }
   }
-  if (is.null(sdiff1)) sdiff1 <- sd_diff(s1, s2, r1)
-  if (is.null(sdiff2)) sdiff2 <- sd_diff(s3, s4, r2)
+  if (is.na(sdiff1)) sdiff1 <- sd_diff(s1, s2, r1)
+  if (is.na(sdiff2)) sdiff2 <- sd_diff(s3, s4, r2)
   d <- d_PPC_change(m1 = m1, m2 = m2, sdiff1 = sdiff1, m3 = m3, m4 = m4, sdiff2 = sdiff2)
   v <- var_dz_large_sample_approx(m1, m2, sdiff1, n1) + var_dz_large_sample_approx(m3, m4, sdiff2, n2)
   ci <- d + c(qnorm(alpha / 2), qnorm(1 - alpha / 2)) * sqrt(v)
@@ -3314,7 +3329,7 @@ d_PPC_change_ci <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, n1, m2, s2
               upper_bound = ci[[2]]))
 }
 
-g_PPC_change <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, m2, s2, n1, r1, sdiff1 = NULL, m3, s3, m4, s4, n2, r2, sdiff2 = NULL) {
+g_PPC_change <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, m2, s2, n1, r1, sdiff1 = NA, m3, s3, m4, s4, n2, r2, sdiff2 = NA) {
 
   if (!is.null(x) && !is.null(y) && !is.null(INDEX)) {
     stats <- summary_stats(x = x, y = y, INDEX = INDEX)
@@ -3322,15 +3337,15 @@ g_PPC_change <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, m2, s2, n1, r
       assign(i, stats[[i]])
     }
   }
-  if (is.null(sdiff1)) sdiff1 <- sd_diff(s1, s2, r1)
-  if (is.null(sdiff2)) sdiff2 <- sd_diff(s3, s4, r2)
+  if (is.na(sdiff1)) sdiff1 <- sd_diff(s1, s2, r1)
+  if (is.na(sdiff2)) sdiff2 <- sd_diff(s3, s4, r2)
   hedges_gz_a <- hedges_gz(m1 = m1, m2 = m2, sdiff = sdiff1, n = n1)
   hedges_gz_b <- hedges_gz(m1 = m3, m2 = m4, sdiff = sdiff2, n = n2)
   res <- hedges_gz_a - hedges_gz_b
   return(res)
 }
 
-g_PPC_change_ci <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, n1, m2, s2, r1, sdiff1 = NULL, m3, s3, n2, m4, s4, r2, sdiff2 = NULL, alpha = 0.05) {
+g_PPC_change_ci <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, n1, m2, s2, r1, sdiff1 = NA, m3, s3, n2, m4, s4, r2, sdiff2 = NA, alpha = 0.05) {
 
   if (!is.null(x) && !is.null(y) && !is.null(INDEX)) {
     stats <- summary_stats(x = x, y = y, INDEX = INDEX)
@@ -3338,8 +3353,8 @@ g_PPC_change_ci <- function(x = NULL, y = NULL, INDEX = NULL, m1, s1, n1, m2, s2
       assign(i, stats[[i]])
     }
   }
-  if (is.null(sdiff1)) sdiff1 <- sd_diff(s1, s2, r1)
-  if (is.null(sdiff2)) sdiff2 <- sd_diff(s3, s4, r2)
+  if (is.na(sdiff1)) sdiff1 <- sd_diff(s1, s2, r1)
+  if (is.na(sdiff2)) sdiff2 <- sd_diff(s3, s4, r2)
   g <- g_PPC_change(m1 = m1, m2 = m2, n1 = n1, sdiff1 = sdiff1, m3 = m3, m4 = m4, n2 = n2, sdiff2 = sdiff2)
   v <- hedges_bias_correction(df = n1 - 1)^2 * var_dz_large_sample_approx(m1, m2, sdiff1, n1) + hedges_bias_correction(df = n2 - 1)^2 * var_dz_large_sample_approx(m3, m4, sdiff2, n2)
   ci <- g + c(qnorm(alpha / 2), qnorm(1 - alpha / 2)) * sqrt(v)

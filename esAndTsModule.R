@@ -4,7 +4,9 @@ csvDownloadHandler <- function(filename, FUN) {
   downloadHandler(
     filename = filename,
     content = function(file) {
-      write.csv(FUN(), file, row.names = FALSE, quote = FALSE, fileEncoding = "UTF-8")
+      temp <- FUN()
+      temp[["Name"]] <- map_from_displayed_to_written_names(temp[["Name"]])
+      write.csv(temp, file, row.names = FALSE, quote = FALSE, fileEncoding = "UTF-8")
     }
   )
 }
@@ -124,7 +126,8 @@ createDownloadWidgetRaw <- function(namespace, design, selectedEs, inputValidato
     if (design == "mixed") req(isTruthy(x()) &&
                                  isTruthy(y()) &&
                                  isTruthy(INDEX()))
-    downloadButton(ns(name), class = "btn-primary")
+    downloadButton(ns(name), class = "btn-primary", style = "cursor: pointer, border-radius: 0.4rem; width: 11rem; 
+                                                             font-size: 1.6rem, padding: 0.6rem 1rem")
   })
 }
 
@@ -178,20 +181,23 @@ esAndTsUi <- function(id, esChoices, tsChoices) {
                )
              )),
            fluidRow(gt_output(ns("esTable")),
-                    column(width = 6,
-                           uiOutput(ns("downloadEsWidget"))
+                    div(style = "height: 0.5rem"),
+                    uiOutput(ns("downloadEsWidget"),
+                             container = div,
+                             style = "display: flex; justify-content: center; align-items: center;")
                     )
-           )
     ),
     if (length(tsChoices) > 0) {
       column(width = 4,
              checkboxGroupUi(ns("tsCheckboxGroup"), tsChoices, "Test Statistic"),
              fluidRow(gt_output(ns("tsTable")),
-                      fluidRow(column(width = 6,
-                                      uiOutput(ns("downloadTsWidget"))))
+                      div(style = "height: 0.5rem"),
+                      uiOutput(ns("downloadTsWidget"),
+                               container = div,
+                               style = "display: flex; justify-content: center; align-items: center;")
+                      )
              )
-      )
-    }
+      }
   )
 }
 
@@ -331,19 +337,25 @@ esAndTsRawDataServer <- function(id, design, assumption, INDEX, x, y) {
                  
                  output$esTable <- render_gt({
                    req(esTsModuleIv$is_valid())
-                   (getEsDataframe() %>%
-                       gt() %>%
-                       fmt_number(-1, decimals = 2)) %>%
-                     tab_footnote(footnote = "Confidence interval lower limit", locations = cells_column_labels("Ci Ll")) %>%
-                     tab_footnote(footnote = "Confidence interval upper limit", locations = cells_column_labels("Ci Ul")) %>%
-                     tab_footnote(footnote = "Bootstrap confidence interval lower limit", locations = cells_column_labels("Boot Ci Ll")) %>%
-                     tab_footnote(footnote = "Bootstrap confidence interval upper limit", locations = cells_column_labels("Boot Ci Ul")) %>%
-                     tab_style(style = cell_text(size = "small"), locations = cells_footnotes())
+                   temp <- getEsDataframe()
+                   temp[["Name"]] <- map_choice_names(temp[["Name"]])
+                   temp %>%
+                    gt() %>%
+                    tab_style(style = cell_text(align = "left"), locations = cells_body(columns = 1)) %>%
+                    fmt_number(-1, decimals = 2) %>%
+                    tab_footnote(footnote = "Confidence interval lower limit", locations = cells_column_labels("Ci Ll")) %>%
+                    tab_footnote(footnote = "Confidence interval upper limit", locations = cells_column_labels("Ci Ul")) %>%
+                    tab_footnote(footnote = "Bootstrap confidence interval lower limit", locations = cells_column_labels("Boot Ci Ll")) %>%
+                    tab_footnote(footnote = "Bootstrap confidence interval upper limit", locations = cells_column_labels("Boot Ci Ul")) %>%
+                    tab_style(style = cell_text(size = "small"), locations = cells_footnotes())
                  })
                  output$tsTable <- render_gt({
-                   (getTsDataframe() %>%
-                      gt() %>%
-                      fmt_number(-1, decimals = 2))
+                   temp <- getTsDataframe()
+                   temp[["Name"]] <- map_choice_names(temp[["Name"]])
+                   temp %>%
+                    gt() %>%
+                     tab_style(style = cell_text(align = "left"), locations = cells_body(columns = 1)) %>%
+                     fmt_number(-1, decimals = 2)
                  })
                  
                  output$downloadEsWidget <- createDownloadWidgetRaw(session$ns, design, selectedEs, esTsModuleIv, "downloadEs", INDEX, x, y)
@@ -382,17 +394,23 @@ esAndTsEducationalServer <- function(id, mean1, standardDeviation1, sampleSize1,
                  
                  output$esTable <- render_gt({
                    req(esTsModuleIv$is_valid())
-                   (getEsDataframe() %>%
-                       gt() %>%
-                       fmt_number(-1, decimals = 2)) %>%
-                     tab_footnote(footnote = "Confidence interval lower limit", locations = cells_column_labels("Ci Ll")) %>%
-                     tab_footnote(footnote = "Confidence interval upper limit", locations = cells_column_labels("Ci Ul")) %>%
-                     tab_style(style = cell_text(size = "small"), locations = cells_footnotes())
+                   temp <- getEsDataframe()
+                   temp[["Name"]] <- map_choice_names(temp[["Name"]])
+                   temp %>%
+                     gt() %>%
+                      tab_style(style = cell_text(align = "left"), locations = cells_body(columns = 1)) %>%
+                      fmt_number(-1, decimals = 2) %>%
+                      tab_footnote(footnote = "Confidence interval lower limit", locations = cells_column_labels("Ci Ll")) %>%
+                      tab_footnote(footnote = "Confidence interval upper limit", locations = cells_column_labels("Ci Ul")) %>%
+                      tab_style(style = cell_text(size = "small"), locations = cells_footnotes())
                  })
                  output$tsTable <- render_gt({
-                   (getTsDataframe() %>%
-                      gt() %>%
-                      fmt_number(-1, decimals = 2))
+                   temp <- getTsDataframe()
+                   temp[["Name"]] <- map_choice_names(temp[["Name"]])
+                   temp %>%
+                     gt() %>%
+                     tab_style(style = cell_text(align = "left"), locations = cells_body(columns = 1)) %>%
+                     fmt_number(-1, decimals = 2)
                  })
                  
                  output$downloadEsWidget <- renderUI({
@@ -423,9 +441,17 @@ esAndTsMultivariateRawDataServer <- function(id, data, INDEX, dataInputX) {
     })
     output$esTable <- render_gt({
       req(esTsModuleIv$is_valid())
-      (getEsDataframe() %>%
-          gt() %>%
-          fmt_number(-1, decimals = 2))
+      temp <- getEsDataframe()
+      temp[["Name"]] <- map_choice_names(temp[["Name"]])
+      temp %>%
+        gt() %>%
+        tab_style(style = cell_text(align = "left"), locations = cells_body(columns = 1)) %>%
+        fmt_number(-1, decimals = 2) %>%
+        tab_footnote(footnote = "Confidence interval lower limit", locations = cells_column_labels("Ci Ll")) %>%
+        tab_footnote(footnote = "Confidence interval upper limit", locations = cells_column_labels("Ci Ul")) %>%
+        tab_footnote(footnote = "Bootstrap confidence interval lower limit", locations = cells_column_labels("Boot Ci Ll")) %>%
+        tab_footnote(footnote = "Bootstrap confidence interval upper limit", locations = cells_column_labels("Boot Ci Ul")) %>%
+        tab_style(style = cell_text(size = "small"), locations = cells_footnotes())
     })
     
     output$downloadEsWidget <- renderUI({
@@ -449,9 +475,15 @@ esAndTsMultivariateEducationalServer <- function(id, means, covarianceMatrix, n1
     })
     output$esTable <- render_gt({
       req(esTsModuleIv$is_valid())
-      (getEsDataframe() %>%
-          gt() %>%
-          fmt_number(-1, decimals = 2))
+      temp <- getEsDataframe()
+      temp[["Name"]] <- map_choice_names(temp[["Name"]])
+      temp %>%
+        gt() %>%
+        tab_style(style = cell_text(align = "left"), locations = cells_body(columns = 1)) %>%
+        fmt_number(-1, decimals = 2) %>%
+        tab_footnote(footnote = "Confidence interval lower limit", locations = cells_column_labels("Ci Ll")) %>%
+        tab_footnote(footnote = "Confidence interval upper limit", locations = cells_column_labels("Ci Ul")) %>%
+        tab_style(style = cell_text(size = "small"), locations = cells_footnotes())
     })
     output$downloadEsWidget <- renderUI({
       ns <- session$ns

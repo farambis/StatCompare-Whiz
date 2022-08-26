@@ -14,4 +14,4 @@ mixedDesign <- menuItem(text = 'Mixed Design', tabName = 'mixedDesign',
 
 multivariateMeasures <- menuItem(text = 'Multivariate Measures', tabName = 'multivariate',
                                           menuItem(text = 'Raw Data', tabName = paste0('multivariate', 'RawData')),
-                                          menuItem(text = 'Educational', tabName = paste0('multivariate', 'Educational')))
+                                          menuItem(text = 'Aggregate Data', tabName = paste0('multivariate', 'Educational')))
