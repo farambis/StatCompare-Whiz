@@ -552,27 +552,6 @@ AKP_correction <- function(trim) {
   return(res)
 }
 
-
-## Handling of missing values (NAs - not availables) and NA notification message ----
-missing_values_handler <- function(x, INDEX = NULL, y = NULL) {
-  if (is.data.frame(x)) {
-    i_NA <- complete.cases(x, INDEX)
-    x <- x[i_NA,]
-    INDEX <- INDEX[i_NA]
-    return(list(x = x, INDEX = INDEX))
-  } else if (is.null(y)) {
-    i_NA <- complete.cases(x, INDEX)
-    x <- x[i_NA]
-    INDEX <- INDEX[i_NA]
-    return(list(x = x, INDEX = INDEX))
-  } else if (is.null(INDEX)) {
-    i_NA <- complete.cases(x, y)
-    x <- x[i_NA]
-    y <- y[i_NA]
-    return(list(x = x, y = y))
-  }
-}
-
 ## Summary statistics functions ----
 
 stats_per_group <- function(x, trim = trim, winvar = winvar) {

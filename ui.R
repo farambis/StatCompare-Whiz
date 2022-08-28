@@ -9,6 +9,7 @@ source('plot_function_ready.R')
 source('uiNavigationSidebar.R')
 source('uiBody.R')
 source('esServer.R')
+options(htmlwidgets.TOJSON_ARGS = list(na = 'string'))
 ui <- dashboardPage(dashboardHeader(),
                     sidebar = navigationSidebar,
                     body = body)

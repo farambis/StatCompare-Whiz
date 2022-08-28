@@ -42,9 +42,10 @@ multivariateInputServer <- function(id, mode) {
 
       data <- reactive({
         req(input$fileDat)
-        read.table(input$fileDat$datapath,
+        uploadedData <- read.table(input$fileDat$datapath,
                    sep = ",",
                    header = TRUE)
+        filterDataAndNotify(uploadedData, input)
       })
 
       dataMeans <- reactive({
@@ -65,7 +66,6 @@ multivariateInputServer <- function(id, mode) {
 
       inputData[["data"]] <- reactive({
         req(data())
-        req(multivariateIv$is_valid())
         data()
       })
 
@@ -108,17 +108,16 @@ multivariateInputServer <- function(id, mode) {
                        session,
                        "inputDataIndex",
                        choices = var_options(data()),
-                       selected = character()
+                       selected = input$inputDataIndex
                      )
-
-
                      updateSelectInput(
                        session,
                        "inputDataX",
                        choices = var_options(data(),
                                              type = is.numeric),
-                       selected = character(),
+                       selected = input$inputDataX
                      ) })
+
 
       multivariateIv <- InputValidator$new()
       multivariateIv$enable()
@@ -127,14 +126,18 @@ multivariateInputServer <- function(id, mode) {
         multivariateIv$add_rule("inputDataIndex", sv_required())
         multivariateIv$add_rule("inputDataX", sv_required())
         multivariateIv$add_rule("inputDataIndex", function(value) {
-            if (length(unique(data()[[value]])) != 2) {
+          if (!value %in% colnames(data())) {
+            paste0("Please update the input")
+          } else if (length(unique(na.omit(data()[[value]]))) != 2) {
               paste0("The group variable has to contain exactly two different values")
             }
         })
         multivariateIv$add_rule("inputDataX", function(value) {
-              if (contains(list1 = value, list2 = input$inputDataIndex)) {
-                paste0("You can't select the group variable as an outcome variable")
-              }
+          if (!all(value %in% colnames(data()))) {
+            paste0("Please update the input")
+          } else if (contains(list1 = value, list2 = input$inputDataIndex)) {
+            paste0("You can't select the group variable as an outcome variable")
+          }
         })
       } else if (mode == "educational") {
         multivariateIv$add_rule("fileMeans", sv_required())

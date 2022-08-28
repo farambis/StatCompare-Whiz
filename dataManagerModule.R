@@ -11,6 +11,43 @@ var_options <- function(data, type = NULL) {
   names(data)
 }
 
+missingDataNotification <- function(n) {
+  showNotification(
+    ui = paste0("Warning: ", n, " rows have been removed because of missing values"),
+    duration = 5,
+    type = "warning"
+  )
+}
+
+appendFilterIfPresent <- function(filterProperties, input, value) {
+  if (value %in% names(input)) {
+    filterProperties <- c(filterProperties, value)
+  }
+  return(filterProperties)
+}
+
+filterDataAndNotify <- function(data, input) {
+  selectedProperties <- list()
+  selectedProperties <- appendFilterIfPresent(selectedProperties, input, "inputDataIndex")
+  selectedProperties <- appendFilterIfPresent(selectedProperties, input, "inputDataX")
+  selectedProperties <- appendFilterIfPresent(selectedProperties, input, "inputDataY")
+  filterProperties <- list()
+  for(value in selectedProperties) {
+    filterProperty <- input[[value]]
+    if (is.null(filterProperty) || filterProperty == ''  || !filterProperty %in% colnames(data)){
+      return(data)
+    }
+    filterProperties <- c(filterProperties, filterProperty)
+  }
+  initial_rows <- nrow(data)
+  filtered_data <- data[rownames(na.omit(data[unlist(filterProperties)])), ]
+  n_removed <- initial_rows - nrow(filtered_data)
+  if (n_removed > 0) {
+    missingDataNotification(n_removed)
+  }
+  return (filtered_data)
+}
+
 
 dataManagerUI <-
   function(id,
@@ -69,27 +106,41 @@ dataManagerServer <-
 
         data <- reactive({
           req(input$file)
-          read.table(input$file$datapath,
+          uploadedData <- read.table(input$file$datapath,
                      sep = ",",
                      header = TRUE)
+
+          filterDataAndNotify(uploadedData, input)
         })
 
         dataManagerIv <- InputValidator$new()
         dataManagerIv$enable()
         dataManagerIv$add_rule("file", sv_required())
         dataManagerIv$add_rule("inputDataX", sv_required())
+        dataManagerIv$add_rule("inputDataX", function(value){
+          if (!value %in% colnames(data())) {
+            paste0("Please update the input")
+          }
+        })
 
         dependentIv <- InputValidator$new()
         dependentIv$add_rule("inputDataY", sv_required())
+        dependentIv$add_rule("inputDataY", function(value){
+          if (!value %in% colnames(data())) {
+            paste0("Please update the input")
+          }
+        })
         dependentIv$condition(~ design %in% c("depGrps", "mixed"))
         dataManagerIv$add_validator(dependentIv)
 
         independentIv <- InputValidator$new()
         independentIv$add_rule("inputDataIndex", sv_required())
         independentIv$add_rule("inputDataIndex", function(value){
-              if (length(unique(data()[value[[1]]][[1]]))!=2) {
+          if (!value %in% colnames(data())) {
+            paste0("Please update the input")
+          } else if (length(unique(na.omit(data()[[value]]))) != 2) {
                 paste0("The group variable has to contain exactly two different values")
-              }
+          }
           })
         independentIv$condition(~ design %in% c("indGrps", "mixed"))
         dataManagerIv$add_validator(independentIv)
@@ -102,7 +153,7 @@ dataManagerServer <-
                            session,
                            "inputDataIndex",
                            choices = var_options(data()),
-                           selected = character()
+                           selected = input$inputDataIndex
                          )
                        }
 
@@ -111,7 +162,7 @@ dataManagerServer <-
                          "inputDataX",
                          choices = var_options(data(),
                                                type = is.numeric),
-                         selected = character()
+                         selected = input$inputDataX
                        )
 
                        if (design %in% c("depGrps", "mixed")) {
@@ -120,7 +171,7 @@ dataManagerServer <-
                            "inputDataY",
                            choices = var_options(data(),
                                                  type = is.numeric),
-                           selected = character()
+                           selected = input$inputDataY
                          )
                        }
                      })
