@@ -497,6 +497,53 @@ However, Fagerland et al. (2014) emphasize that while the implemented intervals 
 
 Additionally, an $1 - \alpha$ percentile bootstrap CI is computed.
 
+## Measures of Nonoverlap
+
+
+If the populations being compared are normal and with equal variability it is possible to define measures of nonoverlap which are related with cohen's d and with themselves through the cumulative normal distribution. (Cohen, 1988).
+
+### Parametric Coefficient of Overlapping for dependent groups
+The coefficient of overlapping (OVL) is defined as the common area under two probability densities and is used as a measure of agreement of two distributions(Bradley, 2006). Under the assumption of normality and homoscedasticity it can be simply estimated by plugging Cohen's d into the normal cumulative distribution function (DelGiudice, 2019)::
+$$ OVL = 2 \phi (\frac{-|d|}{2})$$
+$OVL (X, Y)$ = 1 if and only if the distributions of X and Y are equal and OVL(X, Y) = 0 if and only if the supports of the distributions of X and Y have no interior points in common which is the reason why $OVL (X, Y)$ can be interpreted as a measure of agreement of the two distributions.
+Nonparametric estimations can be obtained by replacing the densities by appropriate kernel density estimators and the integrals by an appropriate quadrature formula or the sample mean(see documentation of the nonparametric coefficient of overlapping).
+We could not identify a closed form formula for the confidence interval of this effect size. Thus, a $1 - \alpha$ percentile bootstrap confidence interval is implemented exclusively.
+
+### Parametric Coefficient of Overlapping Two for dependent groups
+The overlapping coefficient two ($OVL_2$) is the proportion of overlap relative to the joint distribution and can estimated with the following formula under the assumption of normality and homoscedasticity (DelGiudice, 2019):
+$$ OVL_2 = \frac{OVL}{2-OVL}$$
+with OVL being calculated as described above.
+Grice and Barret(2014) argue that OVL is to be preferred over $OVL_2$ in most contexts, because $OVL_2$ gives information about overlap and nonoverlap with respect to the joint distribution or combined area of the two distributions, which is unitutitive. OVL, on the other hand, indicates what percentage of the area a distribution shares with the other distribution which is easier to interpret.    
+We could not identify a closed form formula for the confidence interval of this effect size. Thus, a $1 - \alpha$ percentile bootstrap confidence interval is implemented exclusively.
+
+
+### Cohen's U1
+
+
+$U_1$ can be interpreted as percentage of nonoverlap and is characterized by the following formula under the assumption of normality and homoscedasticity(Cohen, 1988):
+$$U_1 = \frac{2\Phi_{d/2}-1}{\Phi_{d/2}} = \frac{2U_2-1}{U_2}$$
+with $d_p$ being a deviate in the unit normal curve and  $\Phi$ being the percentage of the population of cases falling below a given normal deviate.
+We could not identify a closed form formula for the confidence interval of this effect size. Thus, a $1 - \alpha$ percentile bootstrap confidence interval is implemented exclusively.
+
+
+
+
+### Cohen's U2
+
+When examing two populations, Cohen's measure of nonoverlap$ U_2$ is the percentage of one population that exceeds the same percentage in the other population. It is described by the following formula under the assumption of normality and homoscedasticity (Cohen, 1988):
+$$U2 = \Phi_{d/2}$$
+with $d$ being a deviate in the unit normal curve and  $\Phi$ being the percentage of the population of cases falling below a given normal deviate.
+We could not identify a closed form formula for the confidence interval of this effect size. Thus, a $1 - \alpha$ percentile bootstrap confidence interval is implemented exclusively.
+
+
+
+
+### Cohen's U3
+
+When examining two populations, Cohen's measure of nonoverlap $U_3$ is the percentage of one population which the upper half of the cases of the other population exceeds (Cohen, 1988). Cohen's $U_3$ is described by the following formula under the assumption of normality and homoscedasticity:
+$$U_3 = \Phi_{d}$$
+with $d$ being a deviate in the unit normal curve and  $\Phi$ being the percentage of the population of cases falling below a given normal deviate.
+We could not identify a closed form formula for the confidence interval of this effect size. Thus, a $1 - \alpha$ percentile bootstrap confidence interval is implemented exclusively.
 
 
 
@@ -622,6 +669,7 @@ This CI formula is approximate because the distribution of $\frac{d_{Rp}}{c} \sq
 
 An $1 - \alpha$ percentile bootstrap CI is computed. The simulations conducted by Algina et al. (2005) resulted in appropriate non-rejection rate (again, within the range of $[0.925,0.975]$) for the vast majority of population distributions, popluation effect sizes, sample sizes and correlations studied. However, the bootstrap method yielded conservative non-rejection rates (i.e., higher than their upper bound of appropriate non-rejection rates: $0.975$) when sample sizes were low ($n = 20$), the population effect size was large ($\delta_{R} = 1.6$), correlations were $r \le 0.4$, and the data were obtained from a long-tailed skewed distribution. Overall, Algina et al. (2005) recommend the percentile bootstrap CI method for $d_{Rp}$.
 
+
 # Hypothesis tests
 
 ## The dependent Student's t-test
@@ -741,6 +789,8 @@ Bonett, D. G. (2008). Confidence intervals for standardized linear contrasts of 
 Bonett, D. G. (2015). Interval estimation of standardized mean differences in paired-samples designs. *Journal of Educational and Behavioral Statistics*, *40*(4), 366--376. <https://doi.org/10.3102/1076998615583904>  
 
 Borenstein, M., Hedges, L. V., Higgins, J. P. T., & Rothstein, H. R. (2009). *Introduction to meta-analysis*. John Wiley.   <https://doi.org/10.1002/9780470743386>
+
+Bradley, E. L. (2006) Overlapping coefficient. In S. Kotz, C. B. Read, N. Balakrishnan, B. Vidakovic, & N. L. Johnson (Eds.), *Encyclopedia of statistical sciences* (1900). New York: Wiley. <https://doi.org/10.1002/0471667196.ess1900.pub2>
 
 Cohen, J. (1988). *Statistical Power Analysis for the Behavioral Sciences* (2nd ed.). Routledge. <https://doi.org/10.4324/9780203771587>  
 

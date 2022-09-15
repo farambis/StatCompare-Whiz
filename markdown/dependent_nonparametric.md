@@ -140,7 +140,7 @@ We could not identify a closed form formula for the confidence interval of this 
 
 ## Nonparametric Coefficient of Overlapping Two for dependent groups
 The overlapping coefficient two ($OVL_2$) is the proportion of overlap relative to the joint distribution(DelGiudice, 2019). When X and Y denote two univariate random variables with corresponding absolutely continuous distribution functions F and G and densities f and g, the coefficient of overlapping two is estimated with the following formula:
-$$ OVL_2 (X, Y) = \frac{OVL(X, Y)}{\int_{-\infty}^\infty max\{f(x), g(x)\}dx}$$
+$$ OVL_2 (X, Y) = \frac{OVL(X, Y)}{\int_{-\infty}^\infty max\{f(x), g(x)\}}dx$$
 with OVL being calculated as described above, therefore not relying on assumptions about the data.
 Grice and Barret(2014) argue that OVL is to be preferred over $OVL_2$ in most contexts, because $OVL_2$ gives information about overlap and nonoverlap with respect to the joint distribution or combined area of the two distributions, which is unitutitive. OVL, on the other hand, indicates what percentage of the area a distribution shares with the other distribution which is easier to interpret.    
 We could not identify a closed form formula for the confidence interval of this nonparametric effect size. Thus, a $1 - \alpha$ percentile bootstrap confidence interval is implemented exclusively.

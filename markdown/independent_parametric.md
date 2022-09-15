@@ -282,49 +282,53 @@ Additionally, an $1 - \alpha$ percentile bootstrap CI is computed.
 
 
 
-## Measures of Nonoverlap  
+## Measures of Nonoverlap
 
 
-If the populations being compared are normal and with equal variability it is possible to define measures of nonoverlap which are related with cohen's d and with themselves through the cumulative normal distribution. (Cohen, 1988). 
+If the populations being compared are normal and with equal variability it is possible to define measures of nonoverlap which are related with cohen's d and with themselves through the cumulative normal distribution. (Cohen, 1988).
+
+### Parametric Coefficient of Overlapping for independent groups
+The coefficient of overlapping (OVL) is defined as the common area under two probability densities and is used as a measure of agreement of two distributions(Bradley, 2006). Under the assumption of normality and homoscedasticity it can be simply estimated by plugging Cohen's d into the normal cumulative distribution function (DelGiudice, 2019)::
+$$ OVL = 2 \phi (\frac{-|d|}{2})$$
+$OVL (X, Y)$ = 1 if and only if the distributions of X and Y are equal and OVL(X, Y) = 0 if and only if the supports of the distributions of X and Y have no interior points in common which is the reason why $OVL (X, Y)$ can be interpreted as a measure of agreement of the two distributions.
+Nonparametric estimations can be obtained by replacing the densities by appropriate kernel density estimators and the integrals by an appropriate quadrature formula or the sample mean(see documentation of the nonparametric coefficient of overlapping).
+We could not identify a closed form formula for the confidence interval of this effect size. Thus, a $1 - \alpha$ percentile bootstrap confidence interval is implemented exclusively.
+
+### Parametric Coefficient of Overlapping Two for independent groups
+The overlapping coefficient two ($OVL_2$) is the proportion of overlap relative to the joint distribution and can estimated with the following formula under the assumption of normality and homoscedasticity (DelGiudice, 2019):
+$$ OVL_2 = \frac{OVL}{2-OVL}$$
+with OVL being calculated as described above.
+Grice and Barret(2014) argue that OVL is to be preferred over $OVL_2$ in most contexts, because $OVL_2$ gives information about overlap and nonoverlap with respect to the joint distribution or combined area of the two distributions, which is unitutitive. OVL, on the other hand, indicates what percentage of the area a distribution shares with the other distribution which is easier to interpret.    
+We could not identify a closed form formula for the confidence interval of this effect size. Thus, a $1 - \alpha$ percentile bootstrap confidence interval is implemented exclusively.
 
 
-### Cohen's U1  
+### Cohen's U1
 
 
-$U_1$ can be interpreted as percentage of nonoverlap and is characterized by the following formula (Cohen, 1988):
-$$U_1 = \frac{2\Phi_{d_p/2}-1}{\Phi_{d_p/2}} = \frac{2U_2-1}{U_2}$$
-with $d_p$ being a deviate in the unit normal curve and  $\Phi$ being the percentage of the population of cases falling below a given normal deviate.
-The confidence interval is calculated by transforming the lower and upper confidence limits of Cohens'd ($d_p$) with the cumulative normal distribution:
-$$LL = \frac{2\Phi_{d_{p_{upper}}/2}-1}{\Phi_{d_{p_{upper/2}}}}$$
-$$UL = \frac{2\Phi_{d_{p_{lower}}/2}-1}{\Phi_{d_{p_{lower/2}}}}$$  
-
-
-
-### Cohen's U2  
-
-When examing two populations, Cohen's measure of nonoverlap$ U_2$ is the percentage of one population that exceeds the same percentage in the other population. It is described by the following formular (Cohen, 1988): 
-$$U2 = \Phi_{d_p/2}$$
-with $d_p$ being a deviate in the unit normal curve and  $\Phi$ being the percentage of the population of cases falling below a given normal deviate.
-The confidence interval is calculated by transforming the lower and upper confidence limits of Cohens'd ($d_p$)  with the cumulative normal distribution:
-$$LL =  \Phi_{d_{p_{lower}/2}}$$
-$$UL =  \Phi_{d_{p_{upper}/2}}$$  
-
-
-
-### Cohen's U3  
- 
-When examining two populations, Cohen's measure of nonoverlap $U_3$ is the percentage of one population which the upper half of the cases of the other population exceeds (Cohen, 1988). However, the interpretation of $U_3$ changes slightly when one is dealing with a multivariate distribution (Del Giudice, 2019). Cohen's $U_3$ is decribed by the following formular:
-$$U_3 = \Phi_{d_p}$$
-with $d_p$ being a deviate in the unit normal curve and  $\Phi$ being the percentage of the population of cases falling below a given normal deviate.
-
-The confidence interval is calculated by transforming the lower and upper confidence limits of Cohens'd ($d_p$)  with the cumulative normal distribution:
-$$LL = \Phi_{d_{p_{lower}}}$$
-$$UL = \Phi_{d_{p_{upper}}}$$
+$U_1$ can be interpreted as percentage of nonoverlap and is characterized by the following formula under the assumption of normality and homoscedasticity (Cohen, 1988):
+$$U_1 = \frac{2\Phi_{d/2}-1}{\Phi_{d/2}} = \frac{2U_2-1}{U_2}$$
+with $d$ being a deviate in the unit normal curve and  $\Phi$ being the percentage of the population of cases falling below a given normal deviate.
+We could not identify a closed form formula for the confidence interval of this effect size. Thus, a $1 - \alpha$ percentile bootstrap confidence interval is implemented exclusively.
 
 
 
 
+### Cohen's U2
 
+When examing two populations, Cohen's measure of nonoverlap$ U_2$ is the percentage of one population that exceeds the same percentage in the other population. It is described by the following formula under the assumption of normality and homoscedasticity(Cohen, 1988):
+$$U2 = \Phi_{d/2}$$
+with $d$ being a deviate in the unit normal curve and  $\Phi$ being the percentage of the population of cases falling below a given normal deviate.
+We could not identify a closed form formula for the confidence interval of this effect size. Thus, a $1 - \alpha$ percentile bootstrap confidence interval is implemented exclusively.
+
+
+
+
+### Cohen's U3
+
+When examining two populations, Cohen's measure of nonoverlap $U_3$ is the percentage of one population which the upper half of the cases of the other population exceeds (Cohen, 1988). Cohen's $U_3$ is described by the following formula under the assumption of normality and homoscedasticity:
+$$U_3 = \Phi_{d}$$
+with $d$ being a deviate in the unit normal curve and  $\Phi$ being the percentage of the population of cases falling below a given normal deviate.
+We could not identify a closed form formula for the confidence interval of this effect size. Thus, a $1 - \alpha$ percentile bootstrap confidence interval is implemented exclusively.
 
 
 
