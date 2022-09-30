@@ -1,0 +1,102 @@
+.home_page_title {
+  text-align: center;
+  font-family: "Arial", Sans-Serif;
+}
+
+.home_page_text {
+  text-align: justify;
+  text-justify: inter-word;
+  font-size: 16px;
+  font-family: "Arial", Sans-Serif;
+  line-height: 1.5em;
+}
+
+.home_page_tab_header {
+  text-align: center;
+  font-family: "Arial", Sans-Serif;
+  font-size: 1.5em;
+}
+
+table.home_page_table th, table.home_page_table td {
+  border: 0.06em solid #838b8b;
+  border-collapse: collapse;
+  padding-top: 0.5em;
+  padding-right: 1em;
+  padding-bottom: 0.5em;
+  padding-left: 1em;
+  text-align: center;
+  font-family: "Arial", Sans-Serif;
+}
+
+th.necessary_variable {
+  background-color: #7fffd4;
+}
+
+td.necessary_variable {
+  background-color: #BFFFE9;
+}
+
+.row_of_tables {
+  margin-left:-5px;
+  margin-right:-5px;
+}
+  
+.column_of_table {
+  float: left;
+  padding: 2em;
+}
+
+/* Clearfix (clear floats) */
+.row_of_tables::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.home_page_accordion hr {
+  margin: 0;
+  border: 0.05em solid grey;
+}
+
+.home_page_accordion .accordion_label {
+  color: black;
+  cursor: pointer;
+  margin: 0;
+  padding: 0.8em 0 0.4em 0.15em;
+}
+
+.home_page_accordion .accordion_label:hover {
+  background-color: white;
+}
+
+.home_page_accordion .accordion_label h2 {
+  margin: 0;
+}
+
+.home_page_accordion .accordion_content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+}
+
+
+.home_page_accordion .accordion_label:before {
+  content: '\00002B'; /* Unicode character for "plus" sign (+) */
+  font-size: 2.5em;
+  color: black;
+  float: right;
+  margin: 0.25em 0.15em 0 0;
+}
+
+
+.home_page_accordion .accordion_label.active_accordion:before {
+  content: "\002212"; /* Unicode character for "minus" sign (-) */
+}
+
+.accordion_label.active_accordion {
+    margin-bottom: 1.5rem;
+}
+
+.home_page_text p {
+  text-indent: 2em;
+}

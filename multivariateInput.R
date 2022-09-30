@@ -16,17 +16,17 @@ multivariateInputUI <- function(id, mode, acceptedFormats) {
       selectInput(
         inputId = ns("inputDataX"),
         label = paste0(
-          "Select input data"),
+          "Select outcome/dependent variables:"),
         choices = NULL,
         multiple = TRUE
       )
 
   } else {
     userInput[["means"]] <- fileInput(inputId = ns("fileMeans"),
-                                      label = "Upload a file containing the means of the values",
+                                      label = "Upload a file containing the means of the outcome/dependent variables",
                                       accept = acceptedFormats)
     userInput[["covarianceMatrix"]] <- fileInput(inputId = ns("fileCovarianceMatrix"),
-                                                 label = "Upload a file containing the covariance matrix",
+                                                 label = "Upload a file containing the pooled covariance matrix",
                                                  accept = acceptedFormats)
     userInput[["n1"]] <- numericInput(inputId = ns("n1"), label = "n1", value = 100)
     userInput[["n2"]] <- numericInput(inputId = ns("n2"), label = "n2", value = 100)
@@ -141,10 +141,19 @@ multivariateInputServer <- function(id, mode) {
         })
       } else if (mode == "educational") {
         multivariateIv$add_rule("fileMeans", sv_required())
+        multivariateIv$add_rule("fileMeans", function(value) {
+          if (ncol(dataMeans()) != 2)
+            paste0("This file should contain two columns.")
+        })
         multivariateIv$add_rule("fileCovarianceMatrix", sv_required())
         multivariateIv$add_rule("fileCovarianceMatrix", function(value) {
           if (nrow(dataCovarianceMatrix()) != ncol(dataCovarianceMatrix())) {
-            paste0("Number of rows and columns have to be the same")
+            paste0("Number of rows and columns have to be the same.")
+          }
+        })
+        multivariateIv$add_rule("fileCovarianceMatrix", function(value) {
+          if (nrow(dataCovarianceMatrix()) != nrow(dataMeans())) {
+            paste0("Number of rows (and columns) should equal the number of rows of the first file.")
           }
         })
         multivariateIv$add_rule("n1", sv_required())

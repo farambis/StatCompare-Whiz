@@ -76,7 +76,7 @@ dataManagerUI <-
         inputId = ns("inputDataX"),
         label = paste0(
           "Select ",
-          ifelse(design == "indGrps", "data vector:", "pretest measure:")
+          ifelse(design == "indGrps", "outcome/dependent variable:", "measurement 1:")
         ),
         choices = NULL
       )
@@ -86,7 +86,7 @@ dataManagerUI <-
       dataManagerIO[["selectInputPostdata"]] <-
         selectInput(
           inputId = ns("inputDataY"),
-          label = "Select posttest measure:",
+          label = "Select measurement 2:",
           choices = NULL
         )
 

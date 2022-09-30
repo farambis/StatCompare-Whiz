@@ -1,4 +1,5 @@
 source('uiTabItemGeneratingFunction.R')
+source('uiHomePage.R')
 
 # all_eff_sizes and all_test_statistics are defined in function_ready.R 
 
@@ -7,6 +8,12 @@ descriptions <- list(independent_parametric = "markdown/independent_parametric.m
                      dependent_nonparametric = "markdown/dependent_nonparametric.md", mixed_design_parametric = "markdown/mixed_design_parametric.md",
                      mixed_design_nonparametric = "markdown/mixed_design_nonparametric.md", multivariate_measures = "markdown/multivariate.md")
 
+# homePage ----------------------------------------------------------------
+homePageBody <- 
+  tabItem(
+    tabName = "homePage",
+    homePageContent
+  )
 # independentGroups -------------------------------------------------------
 independentGroupsParametricRawData <-
   tabItem(

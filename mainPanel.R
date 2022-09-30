@@ -10,7 +10,7 @@ esMainPanel <- function(id, esChoices, tsChoices, plotChoices, description, mode
     if (mode == "rawData")tabPanel(title = "Data", DT::DTOutput(ns("dataTable")), hr(), summaryStatisticsTableUI(ns("summaryStatisticsTable"), design = design)),
     tabPanel(title = "Effect Sizes & Test Statistics", esAndTsUi(ns("esAndTs"), esChoices, tsChoices)),
     if (length(plotChoices) != 0) tabPanel(title = "Plots", plotUi(ns("plotting"), plotChoices = plotChoices)),
-    tabPanel(title = icon("info-circle"), withMathJax(includeMarkdown(description)))
+    tabPanel(title = icon("circle-info"), withMathJax(includeMarkdown(description)))
   ))
 }
 

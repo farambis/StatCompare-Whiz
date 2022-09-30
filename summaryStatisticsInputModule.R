@@ -53,7 +53,7 @@ numericInputGroup <-
   }
 
 header <- function(design = c("indGrps", "depGrps", "mixed"),
-                   measurement = c("Pretest", "Posttest"),
+                   measurement = c("Measurement 1", "Measurement 2"),
                    group = c("a", "b"),
                    info = c("acrossGrps", "perGrp")) {
   ifelse(
@@ -128,7 +128,7 @@ summaryStatisticsInput <- function(id,
     width = 6,
     uiColumn(
       design = design,
-      measurement = "Pretest",
+      measurement = "Measurement 1",
       group = "a",
       info = "perGrp",
       firstInput = numericInputs$means$mean1,
@@ -142,7 +142,7 @@ summaryStatisticsInput <- function(id,
                                      width = 6,
                                      uiColumn(
                                        design = design,
-                                       measurement = "Posttest",
+                                       measurement = "Measurement 2",
                                        group = ifelse(design == "indGrps", "b", "a"),
                                        info = "perGrp",
                                        firstInput = numericInputs$means$mean2,
@@ -175,7 +175,7 @@ summaryStatisticsInput <- function(id,
       width = 6,
       uiColumn(
         design = design,
-        measurement = "Pretest",
+        measurement = "Measurement 1",
         group = "b",
         info = "perGrp",
         firstInput = numericInputs$means$mean3,
@@ -188,7 +188,7 @@ summaryStatisticsInput <- function(id,
                                        width = 6,
                                        uiColumn(
                                          design = design,
-                                         measurement = "Posttest",
+                                         measurement = "Measurement 2",
                                          group = "b",
                                          info = "perGrp",
                                          firstInput = numericInputs$means$mean4,

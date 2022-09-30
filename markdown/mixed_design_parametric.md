@@ -24,6 +24,7 @@
  </ul>
 </div>
 
+<article>
 <h2 id="PPC-intro">The Pretest-posttest-control design</h2>  
 
 The pretest-posttest-control (PPC) design, also know as the pretest-posttest control-group design or the independent groups pretest-posttest (IGPP) design amongst other synonyms entails the random/quasirandom assignement of research participants to one of two conditions(e.g., a treatment or a control condition; a novel treatment and a gold-standard treatment condition; etc.)  and the measurement of an outcome variable at two points in time (i.e., both prior to and after treatment) (Morris, 2008).  
@@ -407,3 +408,4 @@ Morris, S. B., & DeShon, R. P. (2002). Combining effect size estimates in meta-a
 Pustejovsky, J. E. (2016, June 3). Alternative formulas for the standardized mean difference. jepusto. <https://www.jepusto.com/alternative-formulas-for-the-smd/>  
 
 Viechtbauer, W. (2007). Approximate confidence intervals for standardized effect sizes in the two-independent and two-dependent samples design. *Journal of Educational and Behavioral Statistics*, *32*(1), 39--60. <https://doi.org/10.3102/1076998606298034>  
+</article>

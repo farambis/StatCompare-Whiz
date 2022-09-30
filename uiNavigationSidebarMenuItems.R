@@ -1,17 +1,45 @@
 source('uiNavigationSidebarSubitems.R')
 
-independentGroups <- menuItem(text = 'Independent Groups', tabName = 'independentGroups',
-                               parametricSidebarItem(tabName = 'independentGroupsParametric'),
-                               nonparametricSidebarItem('independentGroupsNonparametric'))
+homePage <- menuItem(
+  text = 'Home Page',
+  tabName = 'homePage',
+  icon = icon('home', lib = 'glyphicon')
+)
 
-dependentGroups <- menuItem(text = 'Dependent Groups', tabName = 'dependentGroups',
-                             parametricSidebarItem('dependentGroupsParametric'),
-                             nonparametricSidebarItem('dependentGroupsNonparametric'))
+independentGroups <-
+  menuItem(
+    text = 'Independent Groups',
+    tabName = 'independentGroups',
+    parametricSidebarItem(tabName = 'independentGroupsParametric'),
+    nonparametricSidebarItem('independentGroupsNonparametric')
+  )
 
-mixedDesign <- menuItem(text = 'Mixed Design', tabName = 'mixedDesign',
-                         parametricSidebarItem('mixedDesignParametric'),
-                         nonparametricSidebarItem('mixedDesignNonParametric'))
+dependentGroups <-
+  menuItem(
+    text = 'Dependent Groups',
+    tabName = 'dependentGroups',
+    parametricSidebarItem('dependentGroupsParametric'),
+    nonparametricSidebarItem('dependentGroupsNonparametric')
+  )
 
-multivariateMeasures <- menuItem(text = 'Multivariate Measures', tabName = 'multivariate',
-                                          menuItem(text = 'Raw Data', tabName = paste0('multivariate', 'RawData')),
-                                          menuItem(text = 'Aggregate Data', tabName = paste0('multivariate', 'Educational')))
+mixedDesign <-
+  menuItem(
+    text = 'Mixed Design',
+    tabName = 'mixedDesign',
+    parametricSidebarItem('mixedDesignParametric'),
+    nonparametricSidebarItem('mixedDesignNonParametric')
+  )
+
+multivariateMeasures <-
+  menuItem(
+    text = 'Multivariate Measures',
+    tabName = 'multivariate',
+    menuItem(
+      text = 'Raw Data',
+      tabName = paste0('multivariate', 'RawData')
+    ),
+    menuItem(
+      text = 'Aggregate Data',
+      tabName = paste0('multivariate', 'Educational')
+    )
+  )
