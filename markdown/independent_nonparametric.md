@@ -1,7 +1,7 @@
 # Nonparametric methods
 
-## Mann Whitney Based Probability of Superiority
-The Probability of Superiority (PS) measures the probability (Pr) that a randomly sampled member of Population a will have a score ($Y_a$) that is higher than the score ($Y_b$) attained by a randomly sampled member of population b and can be described by the formula(Grissom & Kim, 2005): 
+## Mann Whitney Based Probability of Superiority (PS)
+The PS measures the probability (Pr) that a randomly sampled member of Population a will have a score ($Y_a$) that is higher than the score ($Y_b$) attained by a randomly sampled member of population b and can be described by the formula(Grissom & Kim, 2005): 
 $$ PS = Pr(Y_a > Y_b) $$
 
 Therefore, the PS measures the probabilistic superiority of one group's scores over another group's scores. Since it is a probability, the result ranges from 0 to1. A PS of 0 means that every member of Population $a$ is outscored by every member of Population $b$. A PS of 1 means that every member of Population $a$ outscores every member of Population $b$.
@@ -9,11 +9,16 @@ The number of times that the scores from one specified sample are higher than th
 $$ \hat{P}_{a>b} = \frac{U}{n_a n_b} $$
 with $n_a n_b$ being the number of possible comparisons and $U$ being the number of wins for a specified sample. In the above case ties are counted as 0.5. However, there is also the option to ignore ties. Then ties are not added to U and the denominator of the formula above is subtracted by the number of ties.
 
+The PS is a nonparamatetric estimatior of the population effect estimated by the CL ES, which is described in the documentation tab of the page on parametric ES for the independent groups design.
+The means of the sampling distributions of the PS and the CL are typically very similar when $\mu_1 = \mu_2$ and the correlation between the two sets of estimates was found to be well over .9 in Monte-Carlo simulations (Grissom & Kim, 2001).
+However, as the difference between $\mu_1$ and $\mu_2$ increases, this correlation sometimes decreases to a value as low as approximately .2, and  the CL tends to show more sampling error than the PS as the difference increases.
+Therefore, researchers who are estimating Pr(X_a, > X_b) should think about reporting PS alongside, if not instead of, the CL ES, even when assuming normality and homoscedasticity (Grissom & Kim, 2001).
+
 The exact confidence interval is calculated based on Newcombe(2006):
 $$ UL = \hat{\theta} + z \sqrt{var(\hat{\theta})} $$
 $$ LL = \hat{\theta} - z \sqrt{var(\hat{\theta})} $$
 and $var(\theta)$ being 
-$$var(\theta) = \theta(1-\theta) \frac{1 + \frac{n * (1 - \theta)}{2 - \theta} + \frac{m * \theta}{1 + \theta}}{mn}\$$ 
+$$var(\theta) = \theta(1-\theta) \frac{1 + \frac{n * (1 - \theta)}{2 - \theta} + \frac{m * \theta}{1 + \theta}}{mn}\$$
 
 ## Generalized Odds Ratio
 The generalized odds ratio is the probability of superiority of group a compared to group b divided by the probability of superiority of group b compared to group a(Grissom & Kim, 2012):
@@ -300,6 +305,8 @@ Del Giudice, M. (2019). *Measuring sex differences and similarities*. Gender and
 Fagerland, M. W., Lydersen, S., & Laake, P. (2015). Recommended confidence intervals for two independent binomial proportions. *Statistical Methods in Medical Research*, *24*(2), 224--254. <https://doi.org/10.1177/0962280211415469>  
 
 Feng, D. (2007). *Robustness and power of ordinal d for paired data*. Real data analysis, 163-183.  
+
+Grissom, R. J., & Kim, J. J. (2001). Review of assumptions and problemns in the appropriate conceptualization of effect size. *Psychological Methods*, *6*(2), 135--146. <https://doi.org/10.1037//1082-989X.6.2.135>  
 
 Grissom, R. J., & Kim, J. J. (2005). *Effect sizes for research: Univariate and multivariate applications* (2nd ed.). Taylor and Francis Group.  
 

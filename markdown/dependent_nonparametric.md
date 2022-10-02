@@ -50,7 +50,7 @@ Hollander et al., 2014).
 
 # Effect Sizes 
 
-## Probability of Superiority
+## Probability of Superiority (PS)
 
 For dependent groups, when there are no ties, the probability of superiority (PS) can be defined as (Grissom & Kim, 2012)
 $$ PS_{dep} = Pr(Y_{ib} > Y_{ia})$$ where
@@ -71,6 +71,11 @@ $$I_{x_{post} > x_{pre}}(x_{post}) = \begin{cases}
 1 & \text{if} \qquad x_{post} \gt x_{pre}
 \end{cases}
 $$
+
+The PS is a nonparamatetric estimatior of the population effect estimated by the CL ES, which is described in the documentation tab of the page on parametric ES for the dependent groups design.
+For the independent groups design, the means of the sampling distributions of the PS and the CL are typically very similar when $\mu_1 = \mu_2$ and the correlation between the two sets of estimates was found to be well over .9 in Monte-Carlo simulations (Grissom & Kim, 2001).
+However, as the difference between $\mu_1$ and $\mu_2$ increases, this correlation sometimes decreases to a value as low as approximately .2, and  the CL tends to show more sampling error than the PS as the difference increases.
+Therefore, researchers who are estimating Pr(X_a, > X_b) should think about reporting PS alongside, if not instead of, the CL ES, even when assuming normality and homoscedasticity (Grissom & Kim, 2001).
 
 The exact 1 - $\alpha$ confidence interval is calculated with Pratt's method, adapted to PS for dependent groups by Wilcox(2011).
 Assuming that we observe w successes among n trials, to determine the upper limit UL of the confidence interval we compute 
@@ -317,6 +322,8 @@ designs. *The Quantitative Methods for Psychology*, *16*(4), 418--421. <https://
 Del Giudice, M. (2019). *Measuring sex differences and similarities*. Gender and sexuality development: Contemporary theory and research.  
 
 Cliff, N. (1993). *Dominance statistics: Ordinal analyses to answer ordinal questions.* Psychological bulletin, 114(3), 494--509. <https://doi.org/10.1037/0033-2909.114.3.494>  
+
+Grissom, R. J., & Kim, J. J. (2001). Review of assumptions and problemns in the appropriate conceptualization of effect size. *Psychological Methods*, *6*(2), 135--146. <https://doi.org/10.1037//1082-989X.6.2.135>  
 
 Grice, J. W., & Barrett, P. T. (2014). *A note on Cohen's overlapping proportions of normal distributions*. Psychological Reports, 115(3), 741-747.  
 

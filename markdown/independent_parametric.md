@@ -280,6 +280,26 @@ This confidence interval is exact only when the data stem from normal population
 
 Additionally, an $1 - \alpha$ percentile bootstrap CI is computed.  
 
+## The Common Language ES
+
+
+The population effect of interest is given by:
+
+$$ \mathbb{P}\(X_a > X_b\)$$
+
+that is, the probability that a randomly selected score from population *a* exceeds a randomly selected score from population *b*. As argued by Mastrich & Hernandez (2021), The CL es can be considered to provide a more intuitive way to understand statistical results and therefore aids practitioners in understanding research findings and making informed decisions. 
+
+The parametric estimator assuming normality and homogeneity of the two populations implemented in this application is given by (McGraw & Wong, 1992):
+
+$$CL = \Phi\(\frac{\bar{X}_a - \bar{X_b}}{\sqrt{s_a^2 + s_b^2}}\)$$
+
+One of many parametric approximate estimators (e.g., see Grissom, 1994) of the above population effect is:  
+
+$$CL_d = \Phi\(\frac{d_p}{sqrt(2)}\)$$
+
+No closed form formulas were identified for the computation of a ($1-\alpha$) CI for the CL ES. Mastrich & Hernandez (2021) recommends to transform the bounds of the CI of $d_p$ "to provide a sense of uncertainty around the reported CLES" (p.733). The user of this application can use the above formula on the CI limits given by the application for $d_p$ to transform these limits into $CL_d$ values, if they wish to do so. Otherwise, a $1 - \alpha$ percentile bootstrap CI is computed and can be used to communicate said uncertainty.  
+
+A nonparametric estimator of the above population effect that does not make the normality or homoscedasticity assumptions of the CL ES, called the probability of superiority (PS; Grissom, 1994), is described in the documentation tab of the page on nonparametric ES for the dependent groups design. As discussed by Grissom and Kim (2001) the PS ES is a better estimator of the above described population effect and if raw data is available the user is best advised to compute it alongside the CL ES.  
 
 
 ## Measures of Nonoverlap
@@ -295,7 +315,7 @@ Nonparametric estimations can be obtained by replacing the densities by appropri
 We could not identify a closed form formula for the confidence interval of this effect size. Thus, a $1 - \alpha$ percentile bootstrap confidence interval is implemented exclusively.
 
 ### Parametric Coefficient of Overlapping Two for independent groups
-The overlapping coefficient two ($OVL_2$) is the proportion of overlap relative to the joint distribution and can estimated with the following formula under the assumption of normality and homoscedasticity (DelGiudice, 2019):
+The overlapping coefficient two ($OVL_2$) is the proportion of overlap relative to the joint distribution and can be estimated with the following formula under the assumption of normality and homoscedasticity (DelGiudice, 2019):
 $$ OVL_2 = \frac{OVL}{2-OVL}$$
 with OVL being calculated as described above.
 Grice and Barret(2014) argue that OVL is to be preferred over $OVL_2$ in most contexts, because $OVL_2$ gives information about overlap and nonoverlap with respect to the joint distribution or combined area of the two distributions, which is unitutitive. OVL, on the other hand, indicates what percentage of the area a distribution shares with the other distribution which is easier to interpret.    
@@ -361,6 +381,10 @@ Glass, G. V. (1976). Primary, secondary, and meta-analysis of research. *Educati
 
 Goulet-Pelletier, J.-C., & Cousineau, D. (2018). A review of effect sizes and their confidence intervals, Part I: The Cohen's d family. *The Quantitative Methods for Psychology*, *14*, 242--265. <https://doi.org/10.20982/tqmp.14.4.p242>  
 
+Grissom, R. J. (1994). Probability of the superior outcome of one treatment over another. *Journal of Applied Psychology*, *79*(2), 314--316. <https://doi.org/10.1037/0021-9010.79.2.314>
+
+Grissom, R. J., & Kim, J. J. (2001). Review of assumptions and problemns in the appropriate conceptualization of effect size. *Psychological Methods*, *6*(2), 135--146. <https://doi.org/10.1037//1082-989X.6.2.135>
+
 Grissom, R. J., & Kim, J. J. (2012). *Effect sizes for research: Univariate and multivariate applications* (2nd ed.). Taylor and Francis Group.  
 
 Hedges, L. V. (1981). Distribution theory of glass’s Estimator of effect size and related estimators. *Journal of Educational and Behavioral Statistics*, *6*(2), 107--128. <https://doi.org/10.3102%2F10769986006002107>  
@@ -368,6 +392,10 @@ Hedges, L. V. (1981). Distribution theory of glass’s Estimator of effect size 
 Koopman, P. A. R. (1984). Confidence intervals for the ratio of two binomial proportions. *Biometrics*, *40*(2), 513--517. <https://doi.org/10.2307/2531405>  
 
 Layard, M. W. J. (1973). Robust large-sample tests for homogeneity of variances. *Journal of the American Statistical Association*, *68*(341), 195-198. <https://doi.org/10.1080/01621459.1973.10481363>  
+
+Mastrich, Z., & Hernandez, I. (2021). Results everyone can understand: A review of common language effect size indicators to bridge the research-practice gap. *Health Psychology*, *40*(10), 727.  
+
+McGraw, K. O., & Wong, S. P. (1992). A common language effect size statistic. *Psychological bulletin*, *111*(2), 361.  
 
 Nam, J. (1995). Confidence limits for the ratio of two binomial proportions based on likelihood scores: Non-iterative method. *Biometrical Journal*, *37*(3), 375--379. <https://doi.org/10.1002/bimj.4710370311>  
 

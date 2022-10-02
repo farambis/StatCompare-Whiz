@@ -177,7 +177,7 @@ generate_es_raw_data_dataframe <- function(es_list, INDEX = NULL, x, y, tail, re
                   "parametric_ovl" = c(parametric_ovl(x = x, INDEX = INDEX), parametric_ovl_ci(x = x, INDEX = INDEX, alpha = alpha), boot_general(x, INDEX, parametric_ovl, alpha)),
                   "non_parametric_ovl" = c(non_parametric_ovl(x, INDEX), NA_real_, NA_real_, boot_general(x, INDEX, non_parametric_ovl, alpha)),
                   "generalized_odds_ratio" = c(generalized_odds_ratio(x = x, INDEX = INDEX), NA_real_, NA_real_, boot_general(x, INDEX, generalized_odds_ratio, alpha)),
-                  "common_language" = c(common_language_es(x = x, INDEX = INDEX), common_language_es_ci(x = x, INDEX = INDEX, alpha = alpha), boot_general(x, INDEX, common_language_es, alpha)),
+                  "common_language" = c(common_language_es(x = x, INDEX = INDEX), NA_real_, NA_real_, boot_general(x, INDEX, common_language_es, alpha)),
                   "parametric_ovl_two" = c(parametric_ovl_two(x = x, INDEX = INDEX), parametric_ovl_two_ci(x = x, INDEX = INDEX, alpha = alpha), boot_general(x, INDEX, parametric_ovl_two, alpha)),
                   "non_parametric_ovl_two" = c(non_parametric_ovl_two(x = x, INDEX = INDEX), NA_real_, NA_real_, boot_general(x, INDEX, non_parametric_ovl_two, alpha)),
                   "parametric_cohens_u1" = c(parametric_cohens_u1(x = x, INDEX = INDEX), parametric_cohens_u1_ci(x = x, INDEX = INDEX, alpha = alpha), boot_general(x, INDEX, parametric_cohens_u1, alpha)),
@@ -204,7 +204,7 @@ generate_es_raw_data_dataframe <- function(es_list, INDEX = NULL, x, y, tail, re
                   "standardized_median_difference_mad_dependent" = c(standardized_median_difference_mad(x = x, y = y), NA_real_, NA_real_, boot_general_dependent_groups(x, y, standardized_median_difference_mad, alpha)),
                   "standardized_median_difference_riq_dependent" = c(standardized_median_difference_riq(x = x, y = y), NA_real_, NA_real_, boot_general_dependent_groups(x, y, standardized_median_difference_riq, alpha)),
                   "standardized_median_difference_biweight_dependent" = c(standardized_median_difference_biweight(x = x, y = y), NA_real_, NA_real_, boot_general_dependent_groups(x, y, standardized_median_difference_biweight, alpha)),
-                  "common_language_es_dependent" = c(common_language_es_dependent(x = x, y = y), common_language_es_dependent_ci(x = x, y = y, alpha = alpha), boot_general_dependent_groups(x, y, common_language_es_dependent, alpha)),
+                  "common_language_es_dependent" = c(common_language_es_dependent(x = x, y = y), NA_real_, NA_real_, boot_general_dependent_groups(x, y, common_language_es_dependent, alpha)),
                   "parametric_ovl_dependent" = c(parametric_ovl_dependent(x = x, y = y), parametric_ovl_dependent_ci(x = x, y = y, alpha = alpha), boot_general_dependent_groups(x, y, parametric_ovl_dependent, alpha)),
                   "parametric_ovl_two_dependent" = c(parametric_ovl_two_dependent(x = x, y = y), parametric_ovl_two_dependent_ci(x = x, y = y, alpha = alpha), boot_general_dependent_groups(x, y, parametric_ovl_two_dependent, alpha)),
                   "parametric_cohens_u1_dependent" = c(parametric_cohens_u1_dependent(x = x, y = y), parametric_cohens_u1_dependent_ci(x = x, y = y, alpha = alpha), boot_general_dependent_groups(x, y, parametric_cohens_u1_dependent, alpha)),
@@ -274,12 +274,12 @@ generate_es_educational_dataframe <- function(es_list, mean1, standardDeviation1
                   "glass_d_corr" = c(glass_d_corr(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, standardised_by_group_1 = TRUE, df = sampleSize1 - 1), glass_d_corr_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n1 = sampleSize1, n2 = sampleSize2, standardised_by_group_1 = TRUE, alpha = alpha)),
                   "bonett_d" = smd_ci(effsize = i, val = smd_uni(effsize = i, m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2), n1 = sampleSize1, n2 = sampleSize2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, alpha = alpha),
                   "bonett_d_corr" = smd_ci(effsize = i, val = smd_uni(effsize = i, m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2), n1 = sampleSize1, n2 = sampleSize2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, alpha = alpha),
-                  "common_language" = c(common_language_es(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2), common_language_es_ci(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2, alpha = alpha)),
-                  "parametric_ovl" = c(parametric_ovl(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2), parametric_ovl_ci(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2, alpha = alpha)),
-                  "parametric_ovl_two" = c(parametric_ovl_two(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2), parametric_ovl_two_ci(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2, alpha = alpha)),
-                  "parametric_cohens_u1" = c(parametric_cohens_u1(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2), parametric_cohens_u1_ci(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2, alpha = alpha)),
-                  "parametric_cohens_u2" = c(parametric_cohens_u2(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2), parametric_cohens_u2_ci(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2, alpha = alpha)),
-                  "parametric_cohens_u3" = c(parametric_cohens_u3(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2), parametric_cohens_u3_ci(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2, alpha = alpha)),
+                  "common_language" = c(common_language_es(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2), NA_real_, NA_real_),
+                  "parametric_ovl" = c(parametric_ovl(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2), NA_real_, NA_real_),
+                  "parametric_ovl_two" = c(parametric_ovl_two(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2), NA_real_, NA_real_),
+                  "parametric_cohens_u1" = c(parametric_cohens_u1(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2), NA_real_, NA_real_),
+                  "parametric_cohens_u2" = c(parametric_cohens_u2(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2), NA_real_, NA_real_),
+                  "parametric_cohens_u3" = c(parametric_cohens_u3(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2), NA_real_, NA_real_),
                   "variance_ratio" = c(variance_ratio(s1 = standardDeviation1, s2 = standardDeviation2), variance_ratio_independent_ci(s1 = standardDeviation1, s2 = standardDeviation2, n1 = sampleSize1, n2 = sampleSize2, alpha = alpha)),
                   "tail_ratio" = c(tail_ratio(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, reference_group = ref, tail = tail, cutoff = cutoff), tail_ratio_independent_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n1 = sampleSize1, n2 = sampleSize2, reference_group = ref, tail = tail, cutoff = cutoff, alpha = alpha)),
                   #Effect sizes for dependent groups:
@@ -292,12 +292,12 @@ generate_es_educational_dataframe <- function(es_list, mean1, standardDeviation1
                   "hedges_gz" = c(hedges_gz(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, sdiff = standardDeviationDiff1, n = sampleSize1, r = correlation1), hedges_gz_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, sdiff = standardDeviationDiff1, n = sampleSize1, r = correlation1, alpha = alpha)),
                   "glass_d_dependent" = c(glass_d(m1 = mean1, m2 = mean2, s1 = standardDeviation1, standardised_by_group_1 = TRUE), glass_d_dependent_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, sdiff = standardDeviationDiff1, n = sampleSize1, r = correlation1, standardised_by_group_1 = TRUE, alpha = alpha)),
                   "glass_d_corr_dependent" = c(glass_d_corr(m1 = mean1, m2 = mean2, s1 = standardDeviation1, standardised_by_group_1 = TRUE, df = sampleSize1 - 1), glass_d_corr_dependent_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, sdiff = standardDeviationDiff1, n = sampleSize1, r = correlation1, standardised_by_group_1 = TRUE, alpha = alpha)),
-                  "common_language_es_dependent" = c(common_language_es_dependent(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, sdiff = standardDeviationDiff1, r = correlation1), common_language_es_dependent_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, sdiff = standardDeviationDiff1, n = sampleSize1, r = correlation1, alpha = alpha)),
-                  "parametric_ovl_dependent" = c(parametric_ovl_dependent(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1), parametric_ovl_dependent_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1, r = correlation1, alpha = alpha)),
-                  "parametric_ovl_two_dependent" = c(parametric_ovl_two_dependent(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1), parametric_ovl_two_dependent_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1, r = correlation1)),
-                  "parametric_cohens_u1_dependent" = c(parametric_cohens_u1_dependent(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1), parametric_cohens_u1_dependent_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1, r = correlation1, alpha = alpha)),
-                  "parametric_cohens_u2_dependent" = c(parametric_cohens_u2_dependent(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1), parametric_cohens_u2_dependent_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1, r = correlation1, alpha = alpha)),
-                  "parametric_cohens_u3_dependent" = c(parametric_cohens_u3_dependent(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1), parametric_cohens_u3_dependent_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, sdiff = standardDeviationDiff1, n = sampleSize1, r = correlation1, var_equal = TRUE, alpha = alpha)),
+                  "common_language_es_dependent" = c(common_language_es_dependent(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, sdiff = standardDeviationDiff1, r = correlation1), NA_real_, NA_real_),
+                  "parametric_ovl_dependent" = c(parametric_ovl_dependent(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1), NA_real_, NA_real_),
+                  "parametric_ovl_two_dependent" = c(parametric_ovl_two_dependent(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1), NA_real_, NA_real_),
+                  "parametric_cohens_u1_dependent" = c(parametric_cohens_u1_dependent(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1), NA_real_, NA_real_),
+                  "parametric_cohens_u2_dependent" = c(parametric_cohens_u2_dependent(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1), NA_real_, NA_real_),
+                  "parametric_cohens_u3_dependent" = c(parametric_cohens_u3_dependent(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1), NA_real_, NA_real_),
                   "variance_ratio_dependent" = c(variance_ratio(s1 = standardDeviation1, s2 = standardDeviation2), variance_ratio_dependent_ci(s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1, r = correlation1, alpha = alpha)),
                   "tail_ratio_dependent" = c(tail_ratio(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, tail = tail, reference_group = ref, cutoff = cutoff), tail_ratio_dependent_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, r = correlation1, n = sampleSize1, tail = tail, reference_group = ref, cutoff = cutoff, alpha = alpha)),
                   # Effect sizes for the pretest-posttest-control design:
@@ -2049,31 +2049,29 @@ dominance_measure_ci <- function(x, INDEX, dependent = FALSE, alpha = 0.05) {
 }
 
 common_language_es <- function(x = NULL, INDEX = NULL, m1, m2, var1, var2, n1, n2) {
-  # common language effect size based on del guidice-----
   if (!is.null(x)) {
-    dataset <- split(x, INDEX)
-    if (length(dataset[[1]]) != length(dataset[[2]])) return(NA_real_)
-    d <- smd_uni(effsize = "cohen_d", x = x, INDEX = INDEX)[[1]]
+    stats <- summary_stats(x = x, INDEX = INDEX, trim = 0, winvar = FALSE)
+    for (i in names(stats)) {
+      assign(i, stats[[i]])
+    }
+    temp <- (m2 - m1)/sqrt(var1 + var2)
   } else {
     if (n1 != n2) return(NA_real_)
-    d <- smd_uni(effsize = "cohen_d", m1 = m1, m2 = m2, var1 = var1, var2 = var2, n1 = n1, n2 = n2)
+    temp <- (m2 - m1)/sqrt(var1 + var2)
   }
-  return(pnorm(abs(d) / sqrt(2)))
+  return(pnorm(temp))
 }
 
 common_language_es_ci <- function(x = NULL, INDEX = NULL, m1, m2, var1, var2, n1, n2, alpha = 0.05) {
   if (!is.null(x)) {
-    dataset <- split(x, INDEX)
-    if (length(dataset[[1]]) != length(dataset[[2]])) return(list(lower_bound = NA_real_, upper_bound = NA_real_))
     cohen_d <- smd_uni(effsize = "cohen_d", x = x, INDEX = INDEX)
     cis <- smd_ci(effsize = "cohen_d", val = cohen_d, x = x, INDEX = INDEX, alpha = alpha)[2:3]
   } else {
-    if (n1 != n2) return(list(lower_bound = NA_real_, upper_bound = NA_real_))
     cohen_d <- smd_uni(effsize = "cohen_d", m1 = m1, m2 = m2, var1 = var1, var2 = var2, n1 = n1, n2 = n2)
     cis <- smd_ci(effsize = "cohen_d", val = cohen_d, n1 = n1, n2 = n2, var1 = var1, var2 = var2, alpha = alpha)[2:3]
   }
-  lower_bound <- pnorm(abs(cis[[ifelse(cohen_d > 0, 1, 2)]]) / sqrt(2))
-  upper_bound <- pnorm(abs(cis[[ifelse(cohen_d > 0, 2, 1)]]) / sqrt(2))
+  lower_bound <- pnorm(abs(cis[[ifelse(cohen_d > 0, 1, 2)]]) / sqrt(var1 + var2))
+  upper_bound <- pnorm(abs(cis[[ifelse(cohen_d > 0, 2, 1)]]) / sqrt(var1 + var2))
   return(list(lower_bound = lower_bound, upper_bound = upper_bound))
 }
 
