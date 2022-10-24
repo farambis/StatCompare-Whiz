@@ -28,9 +28,9 @@ all_eff_sizes <- list(
   common_language = "common_language",
   non_parametric_ovl_two = "non_parametric_ovl_two",
   parametric_ovl_two = "parametric_ovl_two",
-  standardized_median_difference_mad = "standardized_median_difference_mad",
-  standardized_median_difference_riq = "standardized_median_difference_riq",
-  standardized_median_difference_biweight = "standardized_median_difference_biweight",
+  standardised_median_difference_mad = "standardised_median_difference_mad",
+  standardised_median_difference_riq = "standardised_median_difference_riq",
+  standardised_median_difference_biweight = "standardised_median_difference_biweight",
   parametric_cohens_u1 = "parametric_cohens_u1",
   parametric_cohens_u2 = "parametric_cohens_u2",
   parametric_cohens_u3 = "parametric_cohens_u3",
@@ -67,9 +67,9 @@ all_eff_sizes <- list(
   robust_cohens_d_dependent = "robust_cohens_d_dependent",
   robust_glass_d_dependent = "robust_glass_d_dependent",
   non_parametric_tail_ratio_dependent = "non_parametric_tail_ratio_dependent",
-  standardized_median_difference_biweight_dependent = "standardized_median_difference_biweight_dependent",
-  standardized_median_difference_mad_dependent = "standardized_median_difference_mad_dependent",
-  standardized_median_difference_riq_dependent = "standardized_median_difference_riq_dependent",
+  standardised_median_difference_biweight_dependent = "standardised_median_difference_biweight_dependent",
+  standardised_median_difference_mad_dependent = "standardised_median_difference_mad_dependent",
+  standardised_median_difference_riq_dependent = "standardised_median_difference_riq_dependent",
   non_parametric_ovl_dependent = "non_parametric_ovl_dependent",
   non_parametric_cohens_u1_dependent = "non_parametric_cohens_u1_dependent",
   non_parametric_cohens_u3_dependent = "non_parametric_cohens_u3_dependent",
@@ -148,6 +148,41 @@ tailRatioOptions <- c(all_eff_sizes$tail_ratio,
                       all_plots$tail_ratio_zoom,
                       all_plots$non_parametric_tail_ratio_zoom
 )
+es_names_to_be_mapped <- list("^glass_d$", "^glass_d_corr$", "^AKP_uneqvar$", 
+                              "^non_parametric_glass_d$", "^glass_d_dependent$", 
+                              "^glass_d_corr_dependent$", "^robust_glass_d_dependent$", 
+                              "^non_parametric_glass_d_dependent$", 
+                              "^standardised_median_difference_mad$",
+                              "^standardised_median_difference_mad_dependent$",
+                              "^standardised_median_difference_riq$",
+                              "^standardised_median_difference_riq_dependent$",
+                              "^standardised_median_difference_biweight$",
+                              "^standardised_median_difference_biweight_dependent$"
+                              )
+es_names_to_map <- list(c("glass_d1", "glass_d2"), 
+                        c("glass_d_corr1", "glass_d_corr2"), 
+                        c("AKP_uneqvar1", "AKP_uneqvar2"), 
+                        c("non_parametric_glass_d1", "non_parametric_glass_d2"), 
+                        c("glass_d_dependent1", "glass_d_dependent2"), 
+                        c("glass_d_corr_dependent1", "glass_d_corr_dependent2"), 
+                        c("robust_glass_d_dependent1", "robust_glass_d_dependent2"), 
+                        c("non_parametric_glass_d_dependent1", "non_parametric_glass_d_dependent2"),
+                        c("standardised_median_difference_mad1", "standardised_median_difference_mad2"),
+                        c("standardised_median_difference_mad_dependent1", "standardised_median_difference_mad_dependent2"),
+                        c("standardised_median_difference_riq1", "standardised_median_difference_riq2"),
+                        c("standardised_median_difference_riq_dependent1", "standardised_median_difference_riq_dependent2"),
+                        c("standardised_median_difference_biweight1", "standardised_median_difference_biweight2"),
+                        c("standardised_median_difference_biweight_dependent1", "standardised_median_difference_biweight_dependent2")
+                        )
+
+map_es_names_selected_to_presented <- function(selected, es_names_to_be_mapped, es_names_to_map) {
+  if (!is.list(selected)) selected <- as.list(selected)
+  for (i in seq_len(length(es_names_to_be_mapped))) {
+    j <- grep(pattern = es_names_to_be_mapped[[i]], x = selected)
+    if(length(j) != 0) selected[[j]] <- es_names_to_map[[i]]
+  }
+  return(unlist(selected))
+}
 
 ## ES for raw data ----
 generate_es_raw_data_dataframe <- function(es_list, INDEX = NULL, x, y, tail, ref, cutoff, alpha = 0.05) {
@@ -163,15 +198,15 @@ generate_es_raw_data_dataframe <- function(es_list, INDEX = NULL, x, y, tail, re
                   # Effect sizes for independent groups:
                   "cohen_d" = c(smd_ci(effsize = i, val = smd_uni(effsize = i, x = x, INDEX = INDEX), x = x, INDEX = INDEX, alpha = alpha), boot_general(x, INDEX, smd_uni, alpha, effsize = i)),
                   "hedges_g" = c(smd_ci(effsize = i, val = smd_uni(effsize = i, x = x, INDEX = INDEX), x = x, INDEX = INDEX, alpha = alpha), boot_general(x, INDEX, smd_uni, alpha, effsize = i)),
-                  "glass_d" = c(glass_d(x, INDEX, standardised_by_group_1 = TRUE), glass_d_ci(x, INDEX, standardised_by_group_1 = TRUE, alpha = alpha), boot_general(x, INDEX, glass_d, alpha, standardised_by_group_1 = TRUE)),
-                  "glass_d_corr" = c(glass_d_corr(x, INDEX, standardised_by_group_1 = TRUE), glass_d_corr_ci(x, INDEX, standardised_by_group_1 = TRUE), boot_general(x, INDEX, glass_d_corr, alpha, standardised_by_group_1 = TRUE)),
+                  "glass_d" = data.frame(rbind(c(glass_d(x, INDEX, standardised_by_group_1 = TRUE), unlist(glass_d_ci(x, INDEX, standardised_by_group_1 = TRUE, alpha = alpha)), unlist(boot_general(x, INDEX, glass_d, alpha, standardised_by_group_1 = TRUE))), c(glass_d(x, INDEX, standardised_by_group_1 = FALSE), unlist(glass_d_ci(x, INDEX, standardised_by_group_1 = FALSE)), unlist(boot_general(x, INDEX, glass_d, alpha, standardised_by_group_1 = FALSE))))),
+                  "glass_d_corr" = data.frame(rbind(c(glass_d_corr(x, INDEX, standardised_by_group_1 = TRUE), unlist(glass_d_corr_ci(x, INDEX, standardised_by_group_1 = TRUE)), unlist(boot_general(x, INDEX, glass_d_corr, alpha, standardised_by_group_1 = TRUE))), c(glass_d_corr(x, INDEX, standardised_by_group_1 = FALSE), unlist(glass_d_corr_ci(x, INDEX, standardised_by_group_1 = FALSE)), unlist(boot_general(x, INDEX, glass_d_corr, alpha, standardised_by_group_1 = FALSE))))),
                   "bonett_d" = c(smd_ci(effsize = i, val = smd_uni(effsize = i, x = x, INDEX = INDEX), x = x, INDEX = INDEX, alpha = alpha), boot_general(x, INDEX, smd_uni, alpha, effsize = i)),
                   "bonett_d_corr" = c(smd_ci(effsize = i, val = smd_uni(effsize = i, x = x, INDEX = INDEX), x = x, INDEX = INDEX, alpha = alpha), boot_general(x, INDEX, smd_uni, alpha, effsize = i)),
                   "AKP_eqvar" = c(smd_ci(effsize = i, val = smd_uni(effsize = i, x = x, INDEX = INDEX), x = x, INDEX = INDEX, alpha = alpha), boot_general(x, INDEX, smd_uni, alpha, effsize = i)),
-                  "AKP_uneqvar" = c(smd_ci(effsize = i, val = smd_uni(effsize = i, x = x, INDEX = INDEX), x = x, INDEX = INDEX, alpha = alpha), boot_general(x, INDEX, smd_uni, alpha, effsize = i)),
-                  "standardized_median_difference_mad" = c(standardized_median_difference_mad(x = x, INDEX = INDEX), NA_real_, NA_real_, boot_general(x, INDEX, standardized_median_difference_mad, alpha)),
-                  "standardized_median_difference_riq" = c(standardized_median_difference_riq(x = x, INDEX = INDEX), NA_real_, NA_real_, boot_general(x, INDEX, standardized_median_difference_riq, alpha)),
-                  "standardized_median_difference_biweight" = c(standardized_median_difference_biweight(x = x, INDEX = INDEX), NA_real_, NA_real_, boot_general(x, INDEX, standardized_median_difference_biweight, alpha)),
+                  "AKP_uneqvar" = data.frame(rbind(c(robust_glass_d(x, INDEX, standardised_by_group_1 = TRUE), unlist(robust_glass_d_ci(x, INDEX, standardised_by_group_1 = TRUE)), unlist(boot_general(x, INDEX, robust_glass_d, alpha, standardised_by_group_1 = TRUE))), c(robust_glass_d(x, INDEX, standardised_by_group_1 = FALSE), unlist(robust_glass_d_ci(x, INDEX, standardised_by_group_1 = FALSE)), unlist(boot_general(x, INDEX, robust_glass_d, standardised_by_group_1 = FALSE))))),
+                  "standardised_median_difference_mad" = data.frame(rbind(c(standardised_median_difference_mad(x = x, INDEX = INDEX, standardised_by_group_1 = TRUE), NA_real_, NA_real_, unlist(boot_general(x, INDEX, standardised_median_difference_mad, alpha, standardised_by_group_1 = TRUE))), c(standardised_median_difference_mad(x, INDEX, standardised_by_group_1 = FALSE), NA_real_, NA_real_, unlist(boot_general(x, INDEX, standardised_median_difference_mad, alpha, standardised_by_group_1 = FALSE))))),
+                  "standardised_median_difference_riq" = data.frame(rbind(c(standardised_median_difference_riq(x = x, INDEX = INDEX, standardised_by_group_1 = TRUE), NA_real_, NA_real_, unlist(boot_general(x, INDEX, standardised_median_difference_riq, alpha, standardised_by_group_1 = TRUE))), c(standardised_median_difference_riq(x = x, INDEX = INDEX, standardised_by_group_1 = FALSE), NA_real_, NA_real_, unlist(boot_general(x, INDEX, standardised_median_difference_riq, alpha, standardised_by_group_1 = FALSE))))),
+                  "standardised_median_difference_biweight" = data.frame(rbind(c(standardised_median_difference_biweight(x = x, INDEX = INDEX, standardised_by_group_1 = TRUE), NA_real_, NA_real_, unlist(boot_general(x, INDEX, standardised_median_difference_biweight, alpha, standardised_by_group_1 = TRUE))), c(standardised_median_difference_biweight(x = x, INDEX = INDEX, standardised_by_group_1 = FALSE), NA_real_, NA_real_, unlist(boot_general(x, INDEX, standardised_median_difference_biweight, alpha, standardised_by_group_1 = FALSE))))),
                   "mann_whitney_based_ps" = c(mann_whitney_based_ps(x = x, INDEX = INDEX), mann_whitney_based_ps_ci(x = x, INDEX = INDEX, alpha = alpha), boot_general(x, INDEX, mann_whitney_based_ps, alpha)),
                   "mann_whitney_based_ps_ignore_ties" = c(mann_whitney_based_ps(x = x, INDEX = INDEX, ignore_ties = TRUE), mann_whitney_based_ps_ci(x = x, INDEX = INDEX, ignore_ties = TRUE, alpha = alpha), boot_general(x, INDEX, mann_whitney_based_ps, alpha, ignore_ties = TRUE)),
                   "parametric_ovl" = c(parametric_ovl(x = x, INDEX = INDEX), parametric_ovl_ci(x = x, INDEX = INDEX, alpha = alpha), boot_general(x, INDEX, parametric_ovl, alpha)),
@@ -180,16 +215,16 @@ generate_es_raw_data_dataframe <- function(es_list, INDEX = NULL, x, y, tail, re
                   "common_language" = c(common_language_es(x = x, INDEX = INDEX), NA_real_, NA_real_, boot_general(x, INDEX, common_language_es, alpha)),
                   "parametric_ovl_two" = c(parametric_ovl_two(x = x, INDEX = INDEX), parametric_ovl_two_ci(x = x, INDEX = INDEX, alpha = alpha), boot_general(x, INDEX, parametric_ovl_two, alpha)),
                   "non_parametric_ovl_two" = c(non_parametric_ovl_two(x = x, INDEX = INDEX), NA_real_, NA_real_, boot_general(x, INDEX, non_parametric_ovl_two, alpha)),
-                  "parametric_cohens_u1" = c(parametric_cohens_u1(x = x, INDEX = INDEX), parametric_cohens_u1_ci(x = x, INDEX = INDEX, alpha = alpha), boot_general(x, INDEX, parametric_cohens_u1, alpha)),
-                  "parametric_cohens_u2" = c(parametric_cohens_u2(x = x, INDEX = INDEX), parametric_cohens_u2_ci(x = x, INDEX = INDEX, alpha = alpha), boot_general(x, INDEX, parametric_cohens_u2, alpha)),
+                  "parametric_cohens_u1" = c(parametric_cohens_u1(x = x, INDEX = INDEX), NA_real_, NA_real_, boot_general(x, INDEX, parametric_cohens_u1, alpha)),
+                  "parametric_cohens_u2" = c(parametric_cohens_u2(x = x, INDEX = INDEX), NA_real_, NA_real_, boot_general(x, INDEX, parametric_cohens_u2, alpha)),
                   "non_parametric_cohens_u1" = c(non_parametric_cohens_u1(x = x, INDEX = INDEX), NA_real_, NA_real_, boot_general(x, INDEX, non_parametric_cohens_u1, alpha)),
                   "non_parametric_cohens_u3" = c(non_parametric_cohens_u3(x = x, INDEX = INDEX), NA_real_, NA_real_, boot_general(x, INDEX, non_parametric_cohens_u3, alpha)),
                   "variance_ratio" = c(variance_ratio(x = x, INDEX = INDEX), variance_ratio_independent_ci(x = x, INDEX = INDEX, alpha = alpha), boot_general(x, INDEX, variance_ratio, alpha)),
                   "non_parametric_variance_ratio" = c(variance_ratio(x = x, INDEX = INDEX), non_parametric_variance_ratio_independent_ci(x = x, INDEX = INDEX, alpha = alpha), boot_general(x, INDEX, variance_ratio, alpha)),
                   "tail_ratio" = c(tail_ratio(x = x, INDEX = INDEX, reference_group = ref, tail = tail, cutoff = cutoff), tail_ratio_independent_ci(x = x, INDEX = INDEX, reference_group = ref, tail = tail, cutoff = cutoff, alpha = alpha), boot_general(x, INDEX, tail_ratio, alpha, reference_group = ref, tail = tail, cutoff = cutoff)),
                   "non_parametric_tail_ratio" = c(non_parametric_tail_ratio(x = x, INDEX = INDEX, reference_group = ref, tail = tail, cutoff = cutoff), non_parametric_tail_ratio_independent_ci(x = x, INDEX = INDEX, reference_group = ref, tail = tail, cutoff = cutoff, alpha = alpha), boot_general(x, INDEX, non_parametric_tail_ratio, alpha, reference_group = ref, tail = tail, cutoff = cutoff)),
-                  "parametric_cohens_u3" = c(parametric_cohens_u3(x = x, INDEX = INDEX), parametric_cohens_u3_ci(x, INDEX, alpha = alpha), boot_general(x, INDEX, parametric_cohens_u3, alpha)),
-                  "non_parametric_glass_d" = c(non_parametric_glass_d(x = x, INDEX = INDEX), NA_real_, NA_real_, boot_general(x, INDEX, non_parametric_glass_d, alpha)),
+                  "parametric_cohens_u3" = c(parametric_cohens_u3(x = x, INDEX = INDEX), NA_real_, NA_real_, boot_general(x, INDEX, parametric_cohens_u3, alpha)),
+                  "non_parametric_glass_d" = data.frame(rbind(c(non_parametric_glass_d(x = x, INDEX = INDEX, standardised_by_group_1 = TRUE), NA_real_, NA_real_, unlist(boot_general(x, INDEX, non_parametric_glass_d, alpha, standardised_by_group_1 = TRUE))), c(non_parametric_glass_d(x = x, INDEX = INDEX, standardised_by_group_1 = FALSE), NA_real_, NA_real_, unlist(boot_general(x, INDEX, non_parametric_glass_d, alpha, standardised_by_group_1 = FALSE))))),
                   "dominance_measure" = c(dominance_measure_based_es(x = x, INDEX = INDEX), dominance_measure_ci(x, INDEX, alpha = alpha), boot_general(x, INDEX, dominance_measure_based_es, alpha)),
                   #Effect sizes for dependent gorups:
                   "cohens_d_dependent" = c(cohens_d_dependent(x = x, y = y), cohens_d_dependent_ci(x = x, y = y, alpha = alpha), boot_general_dependent_groups(x, y, cohens_d_dependent, alpha)),
@@ -199,11 +234,11 @@ generate_es_raw_data_dataframe <- function(es_list, INDEX = NULL, x, y, tail, re
                   "bonett_d_dependent" = c(bonett_d_dependent(x = x, y = y), bonett_d_dependent_ci(x = x, y = y, alpha = alpha), boot_general_dependent_groups(x, y, bonett_d_dependent, alpha)),
                   "cohens_dz" = c(cohens_dz(x = x, y = y), cohens_dz_ci(x = x, y = y, alpha = alpha), boot_general_dependent_groups(x, y, cohens_dz, alpha)),
                   "hedges_gz" = c(hedges_gz(x = x, y = y), hedges_gz_ci(x = x, y = y, alpha = alpha), boot_general_dependent_groups(x, y, hedges_gz, alpha)),
-                  "glass_d_dependent" = c(glass_d(x = x, y = y, standardised_by_group_1 = TRUE), glass_d_dependent_ci(x = x, y = y, standardised_by_group_1 = TRUE, alpha = alpha), boot_general_dependent_groups(x, y, glass_d, alpha)),
-                  "glass_d_corr_dependent" = c(glass_d_corr(x = x, y = y, standardised_by_group_1 = TRUE), glass_d_corr_dependent_ci(x = x, y = y, standardised_by_group_1 = TRUE, alpha = alpha), boot_general_dependent_groups(x, y, glass_d_corr, alpha)),
-                  "standardized_median_difference_mad_dependent" = c(standardized_median_difference_mad(x = x, y = y), NA_real_, NA_real_, boot_general_dependent_groups(x, y, standardized_median_difference_mad, alpha)),
-                  "standardized_median_difference_riq_dependent" = c(standardized_median_difference_riq(x = x, y = y), NA_real_, NA_real_, boot_general_dependent_groups(x, y, standardized_median_difference_riq, alpha)),
-                  "standardized_median_difference_biweight_dependent" = c(standardized_median_difference_biweight(x = x, y = y), NA_real_, NA_real_, boot_general_dependent_groups(x, y, standardized_median_difference_biweight, alpha)),
+                  "glass_d_dependent" = data.frame(rbind(c(glass_d(x = x, y = y, standardised_by_group_1 = TRUE), unlist(glass_d_dependent_ci(x = x, y = y, standardised_by_group_1 = TRUE, alpha = alpha)), unlist(boot_general_dependent_groups(x, y, glass_d, alpha, standardised_by_group_1 = TRUE))), c(glass_d(x = x, y = y, standardised_by_group_1 = FALSE), unlist(glass_d_dependent_ci(x = x, y = y, standardised_by_group_1 = FALSE, alpha = alpha)), unlist(boot_general_dependent_groups(x, y, glass_d, alpha, standardised_by_group_1 = FALSE))))),
+                  "glass_d_corr_dependent" = data.frame(rbind(c(glass_d_corr(x = x, y = y, standardised_by_group_1 = TRUE), unlist(glass_d_corr_dependent_ci(x = x, y = y, standardised_by_group_1 = TRUE, alpha = alpha)), unlist(boot_general_dependent_groups(x, y, glass_d_corr, alpha, standardised_by_group_1 = FALSE))), c(glass_d_corr(x = x, y = y, standardised_by_group_1 = FALSE), unlist(glass_d_corr_dependent_ci(x = x, y = y, standardised_by_group_1 = FALSE, alpha = alpha)), unlist(boot_general_dependent_groups(x, y, glass_d_corr, alpha, standardised_by_group_1 = FALSE))))),
+                  "standardised_median_difference_mad_dependent" = data.frame(rbind(c(standardised_median_difference_mad(x = x, y = y, standardised_by_group_1 = TRUE), NA_real_, NA_real_, unlist(boot_general_dependent_groups(x, y, standardised_median_difference_mad, alpha, standardised_by_group_1 = TRUE))), c(standardised_median_difference_mad(x = x, y = y, standardised_by_group_1 = FALSE), NA_real_, NA_real_, unlist(boot_general_dependent_groups(x, y, standardised_median_difference_mad, alpha, standardised_by_group_1 = FALSE))))),
+                  "standardised_median_difference_riq_dependent" = data.frame(rbind(c(standardised_median_difference_riq(x = x, y = y, standardised_by_group_1 = TRUE), NA_real_, NA_real_, unlist(boot_general_dependent_groups(x, y, standardised_median_difference_riq, alpha, standardised_by_group_1 = TRUE))), c(standardised_median_difference_riq(x = x, y = y, standardised_by_group_1 = FALSE), NA_real_, NA_real_, unlist(boot_general_dependent_groups(x, y, standardised_median_difference_riq, alpha, standardised_by_group_1 = FALSE))))),
+                  "standardised_median_difference_biweight_dependent" = data.frame(rbind(c(standardised_median_difference_biweight(x = x, y = y, standardised_by_group_1 = TRUE), NA_real_, NA_real_, unlist(boot_general_dependent_groups(x, y, standardised_median_difference_biweight, alpha, standardised_by_group_1 = TRUE))), c(standardised_median_difference_biweight(x = x, y = y, standardised_by_group_1 = FALSE), NA_real_, NA_real_, unlist(boot_general_dependent_groups(x, y, standardised_median_difference_biweight, alpha, standardised_by_group_1 = FALSE))))),
                   "common_language_es_dependent" = c(common_language_es_dependent(x = x, y = y), NA_real_, NA_real_, boot_general_dependent_groups(x, y, common_language_es_dependent, alpha)),
                   "parametric_ovl_dependent" = c(parametric_ovl_dependent(x = x, y = y), parametric_ovl_dependent_ci(x = x, y = y, alpha = alpha), boot_general_dependent_groups(x, y, parametric_ovl_dependent, alpha)),
                   "parametric_ovl_two_dependent" = c(parametric_ovl_two_dependent(x = x, y = y), parametric_ovl_two_dependent_ci(x = x, y = y, alpha = alpha), boot_general_dependent_groups(x, y, parametric_ovl_two_dependent, alpha)),
@@ -215,13 +250,13 @@ generate_es_raw_data_dataframe <- function(es_list, INDEX = NULL, x, y, tail, re
                   "tail_ratio_dependent" = c(tail_ratio(x = x, y = y, tail = tail, reference_group = ref, cutoff = cutoff), tail_ratio_dependent_ci(x = x, y = y, tail = tail, reference_group = ref, cutoff = cutoff, alpha = alpha), boot_general_dependent_groups(x, y, tail_ratio, alpha, tail = tail, reference_group = ref, cutoff = cutoff)),
                   "robust_cohens_dz" = c(robust_cohens_dz(x = x, y = y), NA_real_, NA_real_, boot_general_dependent_groups(x, y, robust_cohens_dz, alpha)),
                   "robust_cohens_d_dependent" = c(robust_cohens_d(x = x, y = y), robust_cohens_d_dependent_ci(x = x, y = y, alpha = alpha), boot_general_dependent_groups(x, y, robust_cohens_d, alpha)),
-                  "robust_glass_d_dependent" = c(robust_glass_d(x = x, y = y), robust_glass_d_dependent_ci(x = x, y = y, alpha = alpha), boot_general_dependent_groups(x, y, robust_glass_d, alpha)),
+                  "robust_glass_d_dependent" = data.frame(rbind(c(robust_glass_d(x = x, y = y, standardised_by_group_1 = TRUE), unlist(robust_glass_d_dependent_ci(x = x, y = y, alpha = alpha, standardised_by_group_1 = TRUE)), unlist(boot_general_dependent_groups(x, y, robust_glass_d, alpha, standardised_by_group_1 = TRUE))), c(robust_glass_d(x = x, y = y, standardised_by_group_1 = FALSE), unlist(robust_glass_d_dependent_ci(x = x, y = y, alpha = alpha, standardised_by_group_1 = FALSE)), unlist(boot_general_dependent_groups(x, y, robust_glass_d, alpha, standardised_by_group_1 = FALSE))))),
                   "non_parametric_ovl_dependent" = c(non_parametric_ovl(x = x, y = y), NA_real_, NA_real_, boot_general_dependent_groups(x, y, non_parametric_ovl, alpha)),
                   "generalized_odds_ratio_dependent" = c(generalized_odds_ratio(x = x, y = y), NA_real_, NA_real_, boot_general_dependent_groups(x, y, generalized_odds_ratio, alpha)),
                   "non_parametric_cohens_u1_dependent" = c(non_parametric_cohens_u1(x = x, y = y), NA_real_, NA_real_, boot_general_dependent_groups(x, y, non_parametric_cohens_u1, alpha)),
                   "non_parametric_cohens_u3_dependent" = c(non_parametric_cohens_u3(x = x, y = y), NA_real_, NA_real_, boot_general_dependent_groups(x, y, non_parametric_cohens_u3, alpha)),
                   "non_parametric_tail_ratio_dependent" = c(non_parametric_tail_ratio_dependent(x = x, y = y, tail = tail, reference_group = ref, cutoff = cutoff), non_parametric_tail_ratio_dependent_ci(x = x, y = y, tail = tail, reference_group = ref, cutoff = cutoff, alpha = alpha), boot_general_dependent_groups(x, y, non_parametric_tail_ratio_dependent, alpha, tail = tail, reference_group = ref, cutoff = cutoff)),
-                  "non_parametric_glass_d_dependent" = c(non_parametric_glass_d(x = x, y = y), NA_real_, NA_real_, boot_general_dependent_groups(x, y, non_parametric_glass_d, alpha)),
+                  "non_parametric_glass_d_dependent" = data.frame(rbind(c(non_parametric_glass_d(x = x, y = y, standardised_by_group_1 = TRUE), NA_real_, NA_real_, unlist(boot_general_dependent_groups(x, y, non_parametric_glass_d, alpha, standardised_by_group_1 = TRUE))), c(non_parametric_glass_d(x = x, y = y, standardised_by_group_1 = FALSE), NA_real_, NA_real_, unlist(boot_general_dependent_groups(x, y, non_parametric_glass_d, alpha, standardised_by_group_1 = FALSE))))),
                   "dominance_measure_dependent" = c(dominance_measure_dependent(x = x, y = y), dominance_measure_dependent_ci(x, y, alpha = alpha), boot_general_dependent_groups(x, y, dominance_measure_dependent, alpha)),
                   "non_parametric_cohens_dz_dependent" = c(non_parametric_cohens_dz_dependent(x = x, y = y), NA_real_, NA_real_, boot_general_dependent_groups(x, y, non_parametric_cohens_dz_dependent, alpha)),
                   "non_parametric_ovl_two_dependent" = c(non_parametric_ovl_two(x = x, y = y), NA_real_, NA_real_, boot_general_dependent_groups(x, y, non_parametric_ovl_two, alpha)),
@@ -247,6 +282,7 @@ generate_es_raw_data_dataframe <- function(es_list, INDEX = NULL, x, y, tail, re
     es_boot_ci_lower <- c(es_boot_ci_lower, res[[4]])
     es_boot_ci_upper <- c(es_boot_ci_upper, res[[5]])
   }
+  es_list <- map_es_names_selected_to_presented(es_list, es_names_to_be_mapped, es_names_to_map)
   es_dataframe <- data.frame(
     es_list,
     es_result,
@@ -270,8 +306,8 @@ generate_es_educational_dataframe <- function(es_list, mean1, standardDeviation1
                   # Effect sizes for independent groups:
                   "cohen_d" = smd_ci(effsize = i, val = smd_uni(effsize = i, m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2), n1 = sampleSize1, n2 = sampleSize2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, alpha = alpha),
                   "hedges_g" = smd_ci(effsize = i, val = smd_uni(effsize = i, m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2), n1 = sampleSize1, n2 = sampleSize2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, alpha = alpha),
-                  "glass_d" = c(glass_d(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, standardised_by_group_1 = TRUE), glass_d_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n1 = sampleSize1, n2 = sampleSize2, standardised_by_group_1 = TRUE, alpha = alpha)),
-                  "glass_d_corr" = c(glass_d_corr(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, standardised_by_group_1 = TRUE, df = sampleSize1 - 1), glass_d_corr_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n1 = sampleSize1, n2 = sampleSize2, standardised_by_group_1 = TRUE, alpha = alpha)),
+                  "glass_d" = data.frame(rbind(c(glass_d(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, standardised_by_group_1 = TRUE), unlist(glass_d_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n1 = sampleSize1, n2 = sampleSize2, standardised_by_group_1 = TRUE, alpha = alpha))), c(glass_d(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, standardised_by_group_1 = FALSE), unlist(glass_d_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n1 = sampleSize1, n2 = sampleSize2, standardised_by_group_1 = FALSE, alpha = alpha))))),
+                  "glass_d_corr" = data.frame(rbind(c(glass_d_corr(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, standardised_by_group_1 = TRUE, df = sampleSize1 - 1), unlist(glass_d_corr_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n1 = sampleSize1, n2 = sampleSize2, standardised_by_group_1 = TRUE, alpha = alpha))), c(glass_d_corr(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, standardised_by_group_1 = FALSE, df = sampleSize1 - 1), unlist(glass_d_corr_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n1 = sampleSize1, n2 = sampleSize2, standardised_by_group_1 = FALSE, alpha = alpha))))),
                   "bonett_d" = smd_ci(effsize = i, val = smd_uni(effsize = i, m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2), n1 = sampleSize1, n2 = sampleSize2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, alpha = alpha),
                   "bonett_d_corr" = smd_ci(effsize = i, val = smd_uni(effsize = i, m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2), n1 = sampleSize1, n2 = sampleSize2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, alpha = alpha),
                   "common_language" = c(common_language_es(m1 = mean1, m2 = mean2, var1 = standardDeviation1^2, var2 = standardDeviation2^2, n1 = sampleSize1, n2 = sampleSize2), NA_real_, NA_real_),
@@ -290,8 +326,8 @@ generate_es_educational_dataframe <- function(es_list, mean1, standardDeviation1
                   "bonett_d_dependent" = c(bonett_d_dependent(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1), bonett_d_dependent_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1, r = correlation1, alpha = alpha)),
                   "cohens_dz" = c(cohens_dz(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, sdiff = standardDeviationDiff1, r = correlation1), cohens_dz_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, sdiff = standardDeviationDiff1, n = sampleSize1, r = correlation1, alpha = alpha)),
                   "hedges_gz" = c(hedges_gz(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, sdiff = standardDeviationDiff1, n = sampleSize1, r = correlation1), hedges_gz_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, sdiff = standardDeviationDiff1, n = sampleSize1, r = correlation1, alpha = alpha)),
-                  "glass_d_dependent" = c(glass_d(m1 = mean1, m2 = mean2, s1 = standardDeviation1, standardised_by_group_1 = TRUE), glass_d_dependent_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, sdiff = standardDeviationDiff1, n = sampleSize1, r = correlation1, standardised_by_group_1 = TRUE, alpha = alpha)),
-                  "glass_d_corr_dependent" = c(glass_d_corr(m1 = mean1, m2 = mean2, s1 = standardDeviation1, standardised_by_group_1 = TRUE, df = sampleSize1 - 1), glass_d_corr_dependent_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, sdiff = standardDeviationDiff1, n = sampleSize1, r = correlation1, standardised_by_group_1 = TRUE, alpha = alpha)),
+                  "glass_d_dependent" = data.frame(rbind(c(glass_d(m1 = mean1, m2 = mean2, s1 = standardDeviation1, standardised_by_group_1 = TRUE), unlist(glass_d_dependent_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, sdiff = standardDeviationDiff1, n = sampleSize1, r = correlation1, standardised_by_group_1 = TRUE, alpha = alpha))), c(glass_d(m1 = mean1, m2 = mean2, s2 = standardDeviation2, standardised_by_group_1 = FALSE), unlist(glass_d_dependent_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, sdiff = standardDeviationDiff1, n = sampleSize1, r = correlation1, standardised_by_group_1 = FALSE, alpha = alpha))))),
+                  "glass_d_corr_dependent" = data.frame(rbind(c(glass_d_corr(m1 = mean1, m2 = mean2, s1 = standardDeviation1, standardised_by_group_1 = TRUE, df = sampleSize1 - 1), unlist(glass_d_corr_dependent_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, sdiff = standardDeviationDiff1, n = sampleSize1, r = correlation1, standardised_by_group_1 = TRUE, alpha = alpha))), c(glass_d_corr(m1 = mean1, m2 = mean2, s2 = standardDeviation1, standardised_by_group_1 = FALSE, df = sampleSize1 - 1), unlist(glass_d_corr_dependent_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, sdiff = standardDeviationDiff1, n = sampleSize1, r = correlation1, standardised_by_group_1 = FALSE, alpha = alpha))))),
                   "common_language_es_dependent" = c(common_language_es_dependent(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, sdiff = standardDeviationDiff1, r = correlation1), NA_real_, NA_real_),
                   "parametric_ovl_dependent" = c(parametric_ovl_dependent(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1), NA_real_, NA_real_),
                   "parametric_ovl_two_dependent" = c(parametric_ovl_two_dependent(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1), NA_real_, NA_real_),
@@ -314,6 +350,7 @@ generate_es_educational_dataframe <- function(es_list, mean1, standardDeviation1
     es_ci_lower <- c(es_ci_lower, res[[2]])
     es_ci_upper <- c(es_ci_upper, res[[3]])
   }
+  es_list <- map_es_names_selected_to_presented(es_list, es_names_to_be_mapped, es_names_to_map)
   es_dataframe <- data.frame(
     es_list,
     es_result,
@@ -878,12 +915,14 @@ smd_uni <- function(effsize = c("cohen_d", "hedges_g", "glass_d", "glass_d_corr"
                 "bonett_d" = (m2 - m1) / sd_combined(var1 = var1, var2 = var2, type = "mean"),
                 "bonett_d_corr" = hedges_bias_correction(df = degrees_freedom(effsize, n1, n2)) * (m2 - m1) / sd_combined(var1 = var1, var2 = var2, type = "mean"),
                 "AKP_eqvar" = AKP_correction(trim = trim) * (trm2 - trm1) / sd_combined(winvar1 = winvar1, winvar2 = winvar2, n1 = n1, n2 = n2, type = "pooled", winsor = TRUE, trim = trim),
-                "AKP_uneqvar" = AKP_correction(trim = trim) * (trm2 - trm1) / sd_combined(winvar1 = winvar1, winvar2 = winvar2, type = "grp_1", winsor = TRUE, trim = trim))
+                "AKP_uneqvar" = AKP_correction(trim = trim) * (trm2 - trm1) / sd_combined(winvar1 = winvar1, winvar2 = winvar2, type = "grp_1", winsor = TRUE, trim = trim)
+                )
 
   names(res) <- effsize
   return(res)
 
 }
+
 
 # CIs for univariate SMDs  ----
 ## confidence intervals for noncentrality parameters ----
@@ -1249,8 +1288,8 @@ wilcoxon_signed_rank_test <- function(x, y) {
 
 }
 
-# standardized median differences
-standardized_median_difference_mad <- function(x, INDEX, y) {
+# standardised median differences
+standardised_median_difference_mad <- function(x, INDEX, y, standardised_by_group_1 = TRUE) {
   if (missing(y)) {
     dataset <- split(x, INDEX)
     dataset1 <- dataset[[1]]
@@ -1259,11 +1298,18 @@ standardized_median_difference_mad <- function(x, INDEX, y) {
     dataset1 <- x
     dataset2 <- y
   }
-  mad <- median(unlist(lapply(dataset1, function(x) { abs(x - median(dataset1)) })))
-  return((median(dataset2) - median(dataset1)) / mad)
+  median_grp1 <- median(dataset1)
+  median_grp2 <- median(dataset2)
+  if (standardised_by_group_1) {
+    mad <- median(abs(dataset1 - median_grp1))
+  } else {
+    mad <- median(abs(dataset2 - median_grp2))
+  }
+  return((median_grp2 - median_grp1) / mad)
 }
 
-standardized_median_difference_riq <- function(x, INDEX, y) {
+
+standardised_median_difference_riq <- function(x, INDEX, y, standardised_by_group_1 = TRUE) {
   if (missing(y)) {
     dataset <- split(x, INDEX)
     dataset1 <- dataset[[1]]
@@ -1272,11 +1318,15 @@ standardized_median_difference_riq <- function(x, INDEX, y) {
     dataset1 <- x
     dataset2 <- y
   }
-  riq <- quantile(dataset1)[['75%']] - quantile(dataset1)[['25%']]
+  if (standardised_by_group_1) {
+    riq <- IQR(dataset1)
+  } else {
+    riq <- IQR(dataset2)
+  }
   return((median(dataset2) - median(dataset1)) / (0.75 * riq))
 }
 
-standardized_median_difference_biweight <- function(x, INDEX, y) {
+standardised_median_difference_biweight <- function(x, INDEX, y, standardised_by_group_1 = TRUE) {
   if (missing(y)) {
     dataset <- split(x, INDEX)
     dataset1 <- dataset[[1]]
@@ -1285,7 +1335,12 @@ standardized_median_difference_biweight <- function(x, INDEX, y) {
     dataset1 <- x
     dataset2 <- y
   }
-  return((median(dataset2) - median(dataset1)) / sbwab(dataset1))
+  if (standardised_by_group_1) {
+    sbw <- sbwab(dataset1)
+  } else {
+    sbw <- sbwab(dataset2)
+  }
+  return((median(dataset2) - median(dataset1)) / sbw)
 }
 
 sbwab <- function(x) {
@@ -1313,7 +1368,7 @@ sbwab <- function(x) {
 # Effect Sizes that go beyond comparison of the mean  -------------------------------------------
 
 ## Variance ratio ----
-variance_ratio <- function(x = NULL, INDEX = NULL, y = NULL, s1, s2, group_1_reference = TRUE, log = FALSE) {
+variance_ratio <- function(x = NULL, INDEX = NULL, y = NULL, s1, s2, standardised_by_group_1 = TRUE, log = FALSE) {
   if (!is.null(x)) {
     if (!is.null(INDEX)) {
       sds <- tapply(x, INDEX, sd)
@@ -1325,32 +1380,32 @@ variance_ratio <- function(x = NULL, INDEX = NULL, y = NULL, s1, s2, group_1_ref
     }
   }
 
-  num <- ifelse(group_1_reference, s2^2, s1^2)
-  denom <- ifelse(group_1_reference, s1^2, s2^2)
+  num <- ifelse(standardised_by_group_1, s2^2, s1^2)
+  denom <- ifelse(standardised_by_group_1, s1^2, s2^2)
   vr <- ifelse(log, log(num / denom), num / denom)
   return(vr)
 }
 
-variance_ratio_independent_ci <- function(x = NULL, INDEX = NULL, s1, s2, n1, n2, group_1_reference = TRUE, alpha = 0.05){
+variance_ratio_independent_ci <- function(x = NULL, INDEX = NULL, s1, s2, n1, n2, standardised_by_group_1 = TRUE, alpha = 0.05){
   if(!is.null(x) && !is.null(INDEX)){
     sample_sizes <- tapply(x, INDEX, length)
     n1 <- sample_sizes[[1]]
     n2 <- sample_sizes[[2]]
-    vr <- variance_ratio(x = x, INDEX = INDEX, group_1_reference = group_1_reference)
+    vr <- variance_ratio(x = x, INDEX = INDEX, standardised_by_group_1 = standardised_by_group_1)
   } else{
-    vr <- variance_ratio(s1 = s1, s2 = s2, group_1_reference = group_1_reference, log = FALSE)
+    vr <- variance_ratio(s1 = s1, s2 = s2, standardised_by_group_1 = standardised_by_group_1, log = FALSE)
   }
-  lower_bound <- vr * ifelse(group_1_reference, qf(alpha/2, n1 - 1, n2 - 1), qf(alpha/2, n2 - 1, n1 - 1))
-  upper_bound <- vr * ifelse(group_1_reference, qf(1 - alpha/2, n1 - 1, n2 - 1), qf(1 - alpha/2, n2 - 1, n1 - 1))
+  lower_bound <- vr * ifelse(standardised_by_group_1, qf(alpha/2, n1 - 1, n2 - 1), qf(alpha/2, n2 - 1, n1 - 1))
+  upper_bound <- vr * ifelse(standardised_by_group_1, qf(1 - alpha/2, n1 - 1, n2 - 1), qf(1 - alpha/2, n2 - 1, n1 - 1))
 
   return(list(lower_bound = lower_bound,
               upper_bound = upper_bound))
 }
 
-non_parametric_variance_ratio_independent_ci <- function(x = NULL, INDEX = NULL, group_1_reference = TRUE, alpha = 0.05) {
+non_parametric_variance_ratio_independent_ci <- function(x = NULL, INDEX = NULL, standardised_by_group_1 = TRUE, alpha = 0.05) {
   dataset <- split(x, INDEX)
-  dataset1 <- dataset[[ifelse(group_1_reference, 2, 1)]]
-  dataset2 <- dataset[[ifelse(group_1_reference, 1, 2)]]
+  dataset1 <- dataset[[ifelse(standardised_by_group_1, 2, 1)]]
+  dataset2 <- dataset[[ifelse(standardised_by_group_1, 1, 2)]]
   var1 <- var(dataset1)
   var2 <- var(dataset2)
   n1 <- length(dataset1)
@@ -1387,10 +1442,10 @@ non_parametric_variance_ratio_independent_ci <- function(x = NULL, INDEX = NULL,
 }
 
 
-banga_fox_bonett_ci_error <- function(x, INDEX, group_1_reference = TRUE, alpha = 0.05) {
+banga_fox_bonett_ci_error <- function(x, INDEX, standardised_by_group_1 = TRUE, alpha = 0.05) {
   dataset <- split(x, INDEX)
-  dataset1 <- dataset[[ifelse(group_1_reference, 2, 1)]]
-  dataset2 <- dataset[[ifelse(group_1_reference, 1, 2)]]
+  dataset1 <- dataset[[ifelse(standardised_by_group_1, 2, 1)]]
+  dataset2 <- dataset[[ifelse(standardised_by_group_1, 1, 2)]]
   n1 <- length(dataset1)
   n2 <- length(dataset2)
   if ((n1 < 4) || (n2 < 4)) {
@@ -2095,16 +2150,16 @@ probability_of_correct_classification_ci <- function(x, INDEX, alpha = 0.05) {
   return(list(lower_bound = lower_bound, upper_bound = upper_bound))
 }
 
-correct_for_extreme_eff_sizes <- function(n1, p_a) {
+correct_for_extreme_eff_sizes <- function(n, p_a) {
   if (p_a == 0) {
-    p_a <- 1 / (n1 + 1)
+    p_a <- 1 / (n + 1)
   } else if (p_a == 1) {
-    p_a <- n1 / (n1 + 1)
+    p_a <- n / (n + 1)
   }
   return(p_a)
 }
 
-non_parametric_glass_d <- function(x = NULL, INDEX = NULL, y = NULL) {
+non_parametric_glass_d <- function(x = NULL, INDEX = NULL, y = NULL, standardised_by_group_1 = TRUE) {
   if (!is.null(x) && !is.null(INDEX)) {
     dataset1 <- split(x, INDEX)[[1]]
     dataset2 <- split(x, INDEX)[[2]]
@@ -2112,10 +2167,18 @@ non_parametric_glass_d <- function(x = NULL, INDEX = NULL, y = NULL) {
     dataset1 <- x
     dataset2 <- y
   }
-  median_grp2 <- median(dataset2)
-  n1 <- length(dataset1)
-  p_a <- mean(dataset1 < median_grp2)
-  p_a <- correct_for_extreme_eff_sizes(n1, p_a)
+  
+  if (standardised_by_group_1) {
+    median_grp2 <- median(dataset2)
+    n1 <- length(dataset1)
+    p_a <- mean(dataset1 < median_grp2)
+    p_a <- correct_for_extreme_eff_sizes(n1, p_a)
+  } else {
+    median_grp1 <- median(dataset1)
+    n2 <- length(dataset2)
+    p_a <- mean(dataset2 > median_grp1)
+    p_a <- correct_for_extreme_eff_sizes(n2, p_a)
+  }
   return(qnorm(p_a))
 }
 
@@ -2386,10 +2449,18 @@ parametric_cohens_u3_ci <- function(x, INDEX, m1, m2, var1, var2, n1, n2, var_eq
 
 # homogenity measures of variances ----
 
-are_variances_homogenous <- function(x, INDEX) {
-  p_value <- levenes_test(x, INDEX)
+are_variances_homogenous <- function(x, INDEX, s1, s2, n1, n2) {
+  if (!missing(x) && !missing(INDEX)) p_value <- levenes_test(x, INDEX)
+  else p_value <- var_test_aggregate(s1, s2, n1, n2)
   if (p_value < 0.05) return(FALSE)
-  return(TRUE)
+  else return(TRUE)
+}
+
+are_dependent_variances_homogenous <- function(x, y, s1, s2, n, r) {
+  if (!missing(x) && !missing(y)) ci <- variance_ratio_dependent_ci(x, y)
+  else ci <- variance_ratio_dependent_ci(s1 = s1, s2 = s2, n = n, r = r)
+  if (ci[["lower_bound"]] < 1 && ci[["upper_bound"]] > 1) return(TRUE)
+  else return(FALSE)
 }
 
 # equivalent to leven test from 'car' package
@@ -2426,6 +2497,15 @@ levenes_test <- function(x, INDEX) {
   pf(w, k - 1, n - k, lower.tail = FALSE)
 }
 
+# equivalent to var.test from stats package
+var_test_aggregate <- function(s1, s2, n1, n2) {
+  df1 <- n1 - 1
+  df2 <- n2 - 1
+  F_val <- s1^2/s2^2
+  p_val <- pf(F_val, df1, df2)
+  p_val <- 2 * min(p_val, 1 - p_val)
+  return(p_val)
+}
 
 # dependent groups parametric ----
 sd_pooled <- function(s1, s2, n1, n2) {
@@ -2881,14 +2961,14 @@ parametric_cohens_u3_dependent_ci <- function(x = NULL, y = NULL, m1, m2, s1, s2
 }
 
 
-variance_ratio_dependent_ci <- function(x = NULL, y = NULL, s1, s2, n, r, group_1_reference = TRUE, alpha = 0.05) {
+variance_ratio_dependent_ci <- function(x = NULL, y = NULL, s1, s2, n, r, standardised_by_group_1 = TRUE, alpha = 0.05) {
   if (!is.null(x) && !is.null(y)) {
     n <- length(x)
     s1 <- sd(x)
     s2 <- sd(y)
     r <- cor(x, y)
   }
-  vr <- variance_ratio(s1 = s1, s2 = s2, group_1_reference = group_1_reference, log = FALSE)
+  vr <- variance_ratio(s1 = s1, s2 = s2, standardised_by_group_1 = standardised_by_group_1, log = FALSE)
   t_crit <- qt(alpha / 2, df = n - 2)
   k <- 1 + (2 * (1 - r^2) * t_crit^2) / (n - 2)
   lower_bound <- vr * (k - sqrt(k^2 - 1))
@@ -2897,8 +2977,8 @@ variance_ratio_dependent_ci <- function(x = NULL, y = NULL, s1, s2, n, r, group_
               upper_bound = upper_bound))
 }
 
-non_parametric_variance_ratio_dependent_ci <- function(x = NULL, y = NULL, group_1_reference = TRUE, alpha = 0.05) {
-  if (group_1_reference) {
+non_parametric_variance_ratio_dependent_ci <- function(x = NULL, y = NULL, standardised_by_group_1 = TRUE, alpha = 0.05) {
+  if (standardised_by_group_1) {
     temp <- x
     x <- y
     y <- temp
@@ -3172,7 +3252,7 @@ robust_cohens_d_dependent_ci <- function(x, y, trim = 0.2, alpha = 0.05) {
 
 }
 
-robust_glass_d <- function(x = NULL, INDEX = NULL, y = NULL, trim = 0.2, standardised_by_group_1 = TRUE) {
+robust_glass_d <- function(x = NULL, INDEX = NULL, y = NULL, trim = 0.2, standardised_by_group_1 = TRUE, trm1, trm2, winvar1, winvar2) {
 
   if (!is.null(x)) {
     if (!is.null(INDEX)) {
@@ -3188,6 +3268,27 @@ robust_glass_d <- function(x = NULL, INDEX = NULL, y = NULL, trim = 0.2, standar
   standardiser <- ifelse(standardised_by_group_1, sqrt(winvar1), sqrt(winvar2))
   robust_glass_d <- c * ((trm2 - trm1) / standardiser)
   return(robust_glass_d)
+}
+
+robust_glass_d_ci <- function(x, INDEX, trim = 0.2, standardised_by_group_1 = TRUE) {
+  stats <- summary_stats(x = x, INDEX = INDEX, trim = trim, winvar = TRUE)
+  for (i in names(stats)) {
+    assign(i, stats[[i]])
+  }
+  var_tilde1 <- ((n1 - 1) * winvar1)/(ntr1 - 1)
+  var_tilde2 <- ((n2 - 1) * winvar2)/(ntr2 - 1)
+  c <- AKP_correction(trim)
+  df <- ifelse(standardised_by_group_1, ntr1 - 1, ntr2 - 1)
+  d <- robust_glass_d(trm1 = trm1, trm2 = trm2, winvar1 = winvar1, winvar2 = winvar2, standardised_by_group_1 = standardised_by_group_1)
+  non_centrality_parameter_transformation_factor <- ifelse(standardised_by_group_1,
+                                                           c * sqrt(((n1 - 1) / (ntr1 - 1)) * ((1 / ntr1) + (var_tilde2 / (ntr2 * var_tilde1)))),
+                                                           c * sqrt(((n2 - 1) / (ntr2 - 1)) * ((var_tilde1 / (ntr1 * var_tilde2)) + (1 / ntr2)))
+  )
+  non_centrality_parameter <- d / non_centrality_parameter_transformation_factor
+  ncp_ci <- non_centrality_parameter_ci(non_centrality_parameter, df, alpha)
+  ci <- ncp_ci * non_centrality_parameter_transformation_factor
+  return(list(lower_bound = ci[[1]],
+              upper_bound = ci[[2]]))
 }
 
 robust_glass_d_dependent_ci <- function(x, y, trim = 0.2, standardised_by_group_1 = TRUE, alpha = 0.05) {

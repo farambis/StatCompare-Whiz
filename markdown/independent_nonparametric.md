@@ -105,104 +105,41 @@ $$
 and $median_{pre}$ being the median of the prestest group.
 
 We could not identify a closed form formula for the confidence interval of this nonparametric effect size. Thus, a $1 - \alpha$ percentile bootstrap confidence interval is implemented exclusively.
-
-
-<h2 id="IG_NP_SMD> Standardized Median differences </h2>
-
-A Standardized Median difference can also provide valuable insights into differences between groups and is calculated as follows (Grissom & Kim, 2012): 
-
-$$\hat\delta =  \frac{Mdn_a - Mdn_b}{S_{a|b}}$$
-
-with $Mdn_a$ being the Median of group a, $Mdn_b$ being the median of group b and $S_{a|b}$ being the standardiser, which is some measure of variability of the baseline/control group (e.g., the median absolute  deviation of a gold standard treatment).
-
-For neither of the three standardised median differences described below were we able to identify a closed form formula for the confidence intervals associated with them. Thus, $1 - \alpha$ percentile bootstrap confidence intervals are implemented for these estimators exclusively.  
   
   
-  
-<h3 id="IG_NP_MAD"> Standardised by the \( MAD \) </h3>  
+<h2 id="IG_NP_dGb"> Nonparametric Glass \( d_{G,\,j}\)</h2>
 
-The difference in Medians can be standardized by the Median Absolute Deviation (MAD) of the baseline/control group. 
-Then the median difference is calculated with the following formula(Grissom & Kim, 2012):
+A nonparametric version of Glass' $d_{G,\,j}$ is described by Hedges and Olkin (1985):  
 
-$$\hat\delta =  \frac{Mdn_a - Mdn_b}{MAD_{a|b}}$$
+$$\hat\gamma_{j}^{\ast} = \Phi^{-1}(q_{j}^{\ast})$$
 
-with MAD being: 
-
-$$MAD = median(|X_i - median(X_i)|)$$
-
-The MAD is more robust to outliers than the standard deviation and has a lower sampling variance.  
-  
-  
-  
-  
-<h3 id="IG_NP_RIQ"> Standardised by \(.75 \cdot R_{IQ}\) </h3>  
-
-The difference in medians can also be standardized by $.75 \cdot R_{IQ}$ (Grissom & Kim, 2012):
-
-$$\hat\delta = \frac{Mdn_a - Mdn_b}{.75R_{IQ{a|b}}}$$
-
-which is more outlier resistant than the standard deviation and at the same time approximates the standard devation - under normality - very well(Grissom & Kim, 2005).  
-  
-  
-  
-  
-<h3 id="IG_NP_bw"> Standardised by the Biweight Standard Deviation </h3>
-
-Differences in medians can be standardized by the biweight standard deviation of the control or baseline group (Grissom & Kim, 2005):
-
-$$\hat\delta = \frac{Mdn_a - Mdn_b}{S_{bw_{a|b}}}$$
-
-with $s_{bw_{a|b}}$ being 
-
-$$s_{bw_{a|b}} = \frac{\sqrt{n}\sqrt{\sum{a_i(X_i - median(X_i))^2(1-Y_{i}^{2}}}}{|\sum{a_i(1-1-Y_{i}^{2}}(1-5Y_{i}^{2})}$$
-
-with $Y_i$ and $a_i$ being
-$$ Y_i = \frac{X_i-median(X_i)}{9MAD}$$
-$$a_i = \{_{1, \, if \, |Y_i| < 1}^{0, \, if \, |Y_i| \geq{1}}$$
-  
-  
-  
-  
-<h2 id="IG_NP_dGb"> Nonparametric Glass \( d_{G,\,b}\)</h2>
-
-A nonparametric version of Glass' $d_{G,\,b}$ is described by Hedges and Olkin (1985):  
-
-$$\hat\gamma_{b}^{\ast} = \Phi^{-1}(q_{b}^{\ast})$$
-
-where $q_{b}^{\ast}$ is given by:  
-
-$$ q_{b}^{\ast} = \frac{x_b < median(x_a)}{n_b} $$
-
-Thus, $q_{b}^{\ast}$ is the proportion of group b measurements that are lower than the median of the group a measurements. Consequently, $\hat\gamma_{b}^{\ast}$ is the $q_{b}^{\ast}$-quantile of the standard normal distribution.
-The reason $\hat\gamma_{b}^{\ast}$ can be considered a nonparametric version of Glass' $d_{G,\,b}$ is owed to the fact that When the observations are independenty normally distributed, $\hat\gamma_{b}^{\ast}$ is an estimator of the population effect size $\Delta_b = \frac{\mu_a - \mu_b}{\sigma_b}$. This is the same population effect estimated by $d_{G,\,b}$.  
-
-It should be noted that Hedges and Olkin (1985) denoted this estimator as $\hat\gamma_{1}^{\ast}$. The subscript has been changed from $1$ to $b$ in order to match the used subscript with those used for other effect sizes in this documentation.    
-
-When n is small $q_{b}^{\ast}$ might be equal to 0 or 1. To avoid consequently extreme effect sizes  $q_{b}^{\ast}$ is set to $\frac{1}{n_{b}+1}$  or  $\frac{n_{b}}{n_{b}+1}$ respectively in such cases.
-For further details, the reader is advised to consult Hedges and Olkin (1985).  
-
-We could not identify a closed form formula for the confidence interval of this nonparametric effect size. Thus, a $1 - \alpha$ percentile bootstrap confidence interval is implemented exclusively.  
-  
-  
-  
-  
-<h2 id="IG_NP_dGa"> Nonparametric Glass \( d_{G,\,a}\)</h2>
-  
-A nonparametric version of Glass' $d_{G,\,a}$ is described by Hedges and Olkin (1985):  
+with two groups this results in the estimators:
 
 $$\hat\gamma_{a}^{\ast} = \Phi^{-1}(q_{a}^{\ast})$$
+
+$$\hat\gamma_{b}^{\ast} = \Phi^{-1}(q_{b}^{\ast})$$
 
 where $q_{a}^{\ast}$ is given by:  
 
 $$ q_{a}^{\ast} = \frac{x_a > median(x_b)}{n_a} $$
 
-Thus, $q_{a}^{\ast}$ is the proportion of group a measurements that are larger than the median of the group b measurements. Consequently, $\hat\gamma_{a}^{\ast}$ is the $q_{a}^{\ast}$-quantile of the standard normal distribution.
+and $q_{b}^{\ast}$ is given by:  
+
+$$ q_{b}^{\ast} = \frac{x_b < median(x_a)}{n_b} $$
+
+If this effect size is chosen by the user, both estimators are provided denoted as nonparametric Glass' $d_{G, 1}$&mdash;$\hat\gamma_{b}^{\ast}$ is computed&mdash;and nonparametric Glass' $d_{G, 2}$&mdash;$\hat\gamma_{a}^{\ast}$ is computed.The user can choose which to report/interpret (see documentation for $d_{G,\,j}$). 
+
+$q_{a}^{\ast}$ is the proportion of group *a* measurements that are larger than the median of the group *b* measurements. Consequently, $\hat\gamma_{a}^{\ast}$ is the $q_{a}^{\ast}$-quantile of the standard normal distribution.
 The reason $\hat\gamma_{a}^{\ast}$ can be considered a nonparametric version of Glass' $d_{G,\,a}$ is owed to the fact that when the observations are independently normally distributed, $\hat\gamma_{a}^{\ast}$ is an estimator of the population effect size $\Delta_a = \frac{\mu_a - \mu_b}{\sigma_a}$. This is the same population effect estimated by $d_{G,\,a}$.  
-If the scores are normally distributed and the population a and population b variances are identical, much like Glass' $d_{G,\,b}$ and $d_{G,\,a}$, $\hat\gamma_{b}^{\ast}$ and $\hat\gamma_{a}^{\ast}$ estimate the same population effect $\delta = \frac{\mu_a - \mu_b}{\sigma}$ with $\sigma$ being the common populaiton standard deviation of groups a and b.  
 
-It should be noted that Hedges and Olkin (1985) denoted this estimator as $\hat\gamma_{2}^{\ast}$. The subscript has been changed from $2$ to $a$ in order to match the used subscript with those used for other effect sizes in this documentation.  
+$q_{b}^{\ast}$ is the proportion of group *b* measurements that are lower than the median of the group *a* measurements. Consequently, $\hat\gamma_{b}^{\ast}$ is the $q_{b}^{\ast}$-quantile of the standard normal distribution.
+The reason $\hat\gamma_{b}^{\ast}$ can be considered a nonparametric version of Glass' $d_{G,\,b}$ is owed to the fact that When the observations are independently normally distributed, $\hat\gamma_{b}^{\ast}$ is an estimator of the population effect size $\Delta_b = \frac{\mu_a - \mu_b}{\sigma_b}$. This is the same population effect estimated by $d_{G,\,b}$.  
 
-When n is small $q_{a}^{\ast}$ might be equal to 0 or 1. To avoid consequently extreme effect sizes  $q_{a}^{\ast}$ is set to $\frac{1}{n_{a}+1}$  or  $\frac{n_{a}}{n_{a}+1}$ respectively in such cases.
+If the scores are normally distributed and the population *a* and population *b* variances are identical, much like Glass' $d_{G,\,a}$ and $d_{G,\,b}$, $\hat\gamma_{a}^{\ast}$ and $\hat\gamma_{b}^{\ast}$ estimate the same population effect $\delta = \frac{\mu_a - \mu_b}{\sigma}$ with $\sigma$ being the common population standard deviation of groups a and b. 
+
+It should be noted that Hedges and Olkin (1985) denoted this estimator as $\hat\gamma_{1}^{\ast}$ and $\hat\gamma_{2}^{\ast}$, respectively. The subscripts have been changed from $1$ to $b$ and from $2$ to $a$ in order to match the used subscript with those used for other effect sizes in this documentation.    
+
+When n is small $q_{j}^{\ast}$ might be equal to 0 or 1. To avoid consequently extreme effect sizes  $q_{j}^{\ast}$ is set to $\frac{1}{n_{j}+1}$  or  $\frac{n_{j}}{n_{j}+1}$ respectively in such cases.
 For further details, the reader is advised to consult Hedges and Olkin (1985).  
 
 We could not identify a closed form formula for the confidence interval of this nonparametric effect size. Thus, a $1 - \alpha$ percentile bootstrap confidence interval is implemented exclusively.  
@@ -210,11 +147,11 @@ We could not identify a closed form formula for the confidence interval of this 
   
   
   
-<h2 id="IG_NP_TR"> Nonparametric Tail Ratio </h2>
+<h2 id="IG_NP_TR"> Nonparametric Tail Ratio (TR) </h2>
 
-For a detailed discussion of various possible use cases as well as of the interpretation of the tail ratio effect size please consult the documentation page of the "parametric mode" of the "independent samples design" menu item.  
+For a detailed discussion of various possible use cases as well as of the interpretation of the TR ES consult the documentation panel of the page on parametric ES for the independent groups design.   
 
-The tail ratio can be thought of as a risk ratio by considering scores below/above a cutoff value as "successes"/"hits" and scores above/below a cutoff as "failures"/"misses". The number of "hits" in group a is binomially distributed with parameters $n_a$ and $p_a$, where $p_a$ is the proportion of scores in population a below/above a cutoff. Conversely, the number of "hits" in group b is also binomially distributed with parameters $n_b$ and $p_b$, where $p_b$ is the proportion of scores in population b below/above a cutoff. The population tail ratio for a given cutoff value and region of interest is thus the ratio:  
+The TR can be thought of as a risk ratio by considering scores below/above a cutoff value as "successes"/"hits" and scores above/below a cutoff as "failures"/"misses". The number of "hits" in group a is binomially distributed with parameters $n_a$ and $p_a$, where $p_a$ is the proportion of scores in population a below/above a cutoff. Conversely, the number of "hits" in group b is also binomially distributed with parameters $n_b$ and $p_b$, where $p_b$ is the proportion of scores in population b below/above a cutoff. The population tail ratio for a given cutoff value and region of interest is thus the ratio:  
 
 $$\theta = \frac{p_{a|b}}{p_{b|a}}$$
 

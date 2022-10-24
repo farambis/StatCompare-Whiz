@@ -1,66 +1,94 @@
 # Assuming Normality but not Homoscedasticity
 
-## Glass' $d_G$  
+## Glass' $d_{G,\,j}$  
 
-The population effect size of interest is given by the formula:
+The population effect of interest is given by:
 
-$$\Delta = \frac{\mu_a - \mu_b}{\sigma_b} \quad \quad Eq.(1)$$
+$$\Delta_j = \frac{\mu_a - \mu_b}{\sigma_j} \qquad Eq.(DG)$$
 
-The mean difference of two populations of interest $\mu_a - \mu_b$ is standardised by the population standard deviation of population b $\sigma_b$.  
+with two groups this results in the effects:
 
-The populations of interest might be an experimental group (e.g., a group that receives some form of psychotherapy) and a control group (e.g., a group that does not receive any form of psychotherapy). In such a case $\mu_a$ could be thought of as $\mu_E$, i.e., as the population mean of the experimental group, and $\mu_a$ could be thought of as $mu_C$, i.e., the population mean of the control group. $\Delta$ tells us how many (population b) standard deviation units $\mu_b$ (e.g.,$\mu_E$) lies below or above $\mu_a$ (e.g.,$\mu_C$). As noted by Glass (1976) $\Delta$ is rather similar to a *Z* score. Consequently, if population b follows a normal distribution, $\Delta$ can be used to determine what proportion of population b the average member of population a outscores. Like with a *Z* score, this information can be derived from the cumulative distribution function of the standard normal distribution - See: ----what effect size was that again? ----  
+$$\Delta_a = \frac{\mu_a - \mu_b}{\sigma_a} \qquad Eq.(DG)$$
 
-The sample estimate of this population effect is given by the formula (e.g.,Glass (1976)):
+$$\Delta_b = \frac{\mu_a - \mu_b}{\sigma_b} \qquad Eq.(DG)$$
 
-$$d_g = \frac{\bar{X}_a - \bar{X}_b}{s_b} \quad \quad Eq.(1.1)$$
+The mean difference of two dependent populations of interest $\mu_a - \mu_b$ is standardised by the population standard deviation of population *a* or population *b* $\sigma_{(a|b)}$.  
 
-With $\bar{X}_a$ being the sample mean of group a, $\bar{X}_b$ being the sample mean of group b, and $s_b$ being the bias corrected sample standard deviation of group b. This estimator has a bias. It systematically overestimates the size of the true population standardized mean difference. This bias can be corrected - see Hedges' $g_G$.  
+The populations of interest might be an experimental group (e.g., a group that receives some form of psychotherapy) and a control group (e.g., a group that does not receive any form of psychotherapy). In such a case $\mu_a$ could be thought of as $\mu_E$, i.e., as the mean of the population receiving some form of treatment, and $\mu_b$ could be thought of as $mu_C$, i.e., the mean of the population not receiving said treatment. $\Delta_a$ tells us how many population *a* standard deviation units $\mu_a$ (e.g.,$\mu_E$) lies below or above $\mu_b$ (e.g.,$\mu_C$). $\Delta_b$ tells us how many population *b* standard deviation units $\mu_a$ (e.g., $\mu_E$) lies below or above $\mu_b$ (e.g., $\mu_c$).  
 
-CI was implemented according to Algina et al. (2006b) employing the method described by Steiger and Fouladi (1997) which uses the noncentral t distribution to construct a $1 - \alpha$ confidence interval.
+Treatments can increase the variance in an outcome of interest due to differential responsiveness of treatment subjects to the treatment (Grisson & Kim, 2012, pp. 17-20). Thus, the variance of the population receiving treatment might be higher than the variance of the population without said treatment. In such cases $\Delta_a$ and $\Delta_b$ provide distinct population effects. However, even when the contrasted populations are homoscedastic, the two estimators will yield different estimates due to sample standard deviation within each group being most likely different. In either case, it is up to the user to decide which estimate to interpret. A common recommendation is to consult the estimate using the standard deviation of a comparison (e.g., control) group (e.g., Grissom & Kim, 2001). Here, if this effect size is chosen by the user, both estimators are provided denoted as $d_{G, 1}$&mdash;using the first group's standard deviation in the denominator&mdash;and $d_{G, 2}$&mdash;using the second group's standard deviation in the denominator.    
 
-Firstly Glass' $d_G$ is transformed into an estimated non-centrality parameter $\widehat{\lambda_d}$: 
+More interestingly perhaps, $\Delta_j$ is rather similar to a *Z* score. Consequently, if the mean difference is standardised by the standard deviation of the population with the lower mean and if further that population follows a normal distribution, $\Delta_j$ can be used to determine what proportion of the population with the lower mean the average member of the population with the higher mean outscores. Like with a *Z* score, this information can be derived from the cumulative distribution function of the standard normal distribution. If scores are not normally distributed such convenient interpretations are no longer applicable. 
 
-$$\widehat{\lambda_d} = \frac{d_G}{\sqrt{\frac{1}{n_a} + \frac{s_a^2}{n_b*s_b^2}}} \quad \quad Eq.(1.2)$$ 
+The sample estimate of this population effect is given by the formula (e.g.,Grissom & Kim, 2001):
 
-Then the non-centrality parameter $\lambda_L$ of the noncentral t distribution (with $\nu = n_b - 1$ degrees of freedom) which has $\widehat{\lambda_d}$ as its $1 - \frac{\alpha}{2}$ quantile is iteratively searched for.
+$$d_{G,\,j} = \frac{\bar{X_a} - \bar{X_b}}{s_j} \qquad Eq.(DG)$$
 
-Next, the non-centrality parameter $\lambda_U$ of the noncentral t distribution (with $\nu = n_b - 1$ degrees of freedom) which has $\widehat{\lambda_d}$ as its $\frac{\alpha}{2}$ quantile is iteratively searched for. 
+with two groups this results in the estimators:
 
-The identified upper and lower confidence limits of $\lambda$ are then transformed back into $d_G$: 
+$$d_{G,\,a} = \frac{\bar{X}_a - \bar{X}_a}{s_b} \qquad Eq.(DG)$$
 
-$$LL = \lambda_L * \sqrt{\frac{1}{n_a} + \frac{s_a^2}{n_b*s_b^2}} \quad \quad Eq.(1.3)$$ 
+$$d_{G,\,b} = \frac{\bar{X}_a - \bar{X}_b}{s_b} \qquad Eq.(DG)$$
 
-$$UL = \lambda_U * \sqrt{\frac{1}{n_a} + \frac{s_a^2}{n_b*s_b^2}} \quad \quad Eq.(1.4)$$ 
+With $\bar{X_a}$ being the sample mean of group *a*, $\bar{X_b}$ being the sample mean of group *b*, and $s_{a|b}$ being the bias corrected sample standard deviation of group *a*/*b*. This estimator has a bias. It systematically overestimates the size of the true population standardised mean difference. This bias can be corrected - see Hedges' $g_{G,\,j}$.  
 
-This method yields a noncentral t based approximate CI, since the limits of the CI for $\lambda$ are multiplied by the random variable $\sqrt{\frac{1}{n_a} + \frac{s_a^2}{n_b*s_b^2}}$. This CI formula is derived under the assumption that both populations follow a normal distribution. Simulations by Algina et al. (2006b) found that when assumptions are met, this method showed close to nominal $1-\alpha$ coverage rates for various values of $\Delta$. However, under nonnormality the coverage rates dropped, especially for larger values of $\Delta$. 
+CI was implemented according to Algina et al. (2006b) employing the method described by Steiger and Fouladi (1997) which uses the noncentral t distribution to construct a $1 - \alpha$ confidence interval.  
 
-Additionally, an $1 - \alpha$ percentile bootstrap CI is computed. This method has been found to produce worse coverage rates than  approximate noncentral t CI under normality when sample sizes are small ($n_a$ = $n_b$ $\le$ 20) and $\Delta$ is large. Under nonnormality the percentile bootstrap CI performed comparably bad to the approximate CI method. Consequently, Algina et al. (2006b) recommend using a different effect size, $d_{R_G}$, and the percentile bootstrap method when nonnormality is the case.
+Firstly Glass' $d_{G,\,j}$ is transformed into an estimated non-centrality parameter $\widehat{\lambda}$: 
+
+$$\widehat{\lambda} = \frac{d_{G,\,j}}{\sqrt{\frac{1}{n_i} + \frac{s_i^2}{n_j \cdot s_j^2}}} \quad \quad Eq.(1.2)$$ 
+
+with $n_i$ and $s_i$ being the sample and the standard deviation of the group not being standardised by. Then the non-centrality parameter $\lambda_L$ of the noncentral t distribution (with $\nu = n_j - 1$ degrees of freedom) which has $\widehat{\lambda}$ as its $1 - \frac{\alpha}{2}$ quantile is iteratively searched for.
+
+Next, the non-centrality parameter $\lambda_U$ of the noncentral t distribution (with $\nu = n_j - 1$ degrees of freedom) which has $\widehat{\lambda}$ as its $\frac{\alpha}{2}$ quantile is iteratively searched for. 
+
+The identified upper and lower confidence limits of $\lambda$ are then transformed back into $d_{G,\,j}$: 
+
+$$LL = \lambda_L * \sqrt{\frac{1}{n_j} + \frac{s_i^2}{n_i \cdot s_j^2}} \quad \quad Eq.(1.3)$$ 
+
+$$UL = \lambda_U * \sqrt{\frac{1}{n_j} + \frac{s_i^2}{n_i \cdot s_j^2}} \quad \quad Eq.(1.4)$$ 
+
+This method yields a noncentral t based approximate CI, since the limits of the CI for $\lambda$ are multiplied by the random variable $\sqrt{\frac{1}{n_i} + \frac{s_i^2}{n_j*s_j^2}}$. This CI formula is derived under the assumption that both populations follow a normal distribution. Simulations by Algina et al. (2006b) found that when assumptions are met, this method showed close to nominal $1-\alpha$ coverage rates for various values of $\Delta$. However, under nonnormality the coverage rates dropped, especially for larger values of $\Delta$. 
+
+Additionally, an $1 - \alpha$ percentile bootstrap CI is computed. This method has been found to produce worse coverage rates than  approximate noncentral t CI under normality when sample sizes are small ($n_a$ = $n_b$ $\le$ 20) and $\Delta$ is large. Under nonnormality the percentile bootstrap CI performed comparably bad to the approximate CI method. Consequently, Algina et al. (2006b) recommend using a different effect size, $d_{R,\,j}$, and the percentile bootstrap method when nonnormality is the case.  
 
 
 
 ## Hedges' $g_G$  
 
-As mentioned above $d_G$ has a slight positive bias, which can be corrected. This alternative formula given by Hedges (1981) estimates the same population parameter as $d_G$ given in $Eq.(1)$:
+As mentioned above $d_{G,\,j}$ has a slight positive bias, which can be corrected. This alternative formula (e.g., Hedges, 1981 ) estimates the same population parameter as $d_{G,\,j}$ given in $Eq.(DG )$\$:
 
-$$g_G = \frac{\bar{X}_a - \bar{X}_b}{s_b} * J(\nu) \quad \quad Eq.(2.1)$$
+$$g_{G,\,j} = \frac{\bar{X_a} - \bar{X_b}}{s_j} * J(\nu) \qquad Eq.()$$
 
-with $\nu = n_a + n_b - 2$ denoting the degrees of freedom and $J(\nu)$ being given by 
+with two groups this results in the estimators:
+
+$$g_{G,\,a} = \frac{\bar{X_a} - \bar{X_b}}{s_a} * J(\nu) \qquad Eq.()$$
+
+$$g_{G,\,b} = \frac{\bar{X_a} - \bar{X_b}}{s_b} * J(\nu) \qquad Eq.()$$
+
+with $\nu = n_j - 1$ denoting the degrees of freedom and $J(\nu)$ being given by 
 
 $$J(\nu) = \frac{\Gamma(\frac{\nu}{2})}{\sqrt{\frac{\nu}{2}}\Gamma(\frac{\nu - 1}{2})} \quad \quad Eq.(2.2)$$
 
-CI implementation is the same as for $d_G$, employing the method described by Steiger and Fouladi (1997) which uses the noncentral t distribution to construct a $1 - \alpha$ CI.
+If this effect size is chosen by the user, both estimators are provided denoted as $g_{G, 1}$&mdash;using the first group's standard deviation in the denominator&mdash;and $g_{G, 2}$&mdash;using the second group's standard deviation in the denominator.The user can choose which to report/interpret (see documentation for $d_{G,\,j}$).  
 
-Firstly Glass' $g_G$ is transformed into an estimated non-centrality parameter $\widehat{\lambda_d}$: 
+CI implementation is the same as for $d_{G,\,j}$, employing the method described by Steiger and Fouladi (1997) which uses the noncentral t distribution to construct a $1 - \alpha$ CI.
 
-$$\widehat{\lambda_d} = \frac{g_G}{\sqrt{\frac{1}{n_a} + \frac{s_a^2}{n_b*s_b^2}}} \quad \quad Eq.(2.3)$$ 
+Firstly Glass' $g_{G,\,j}$ is transformed into an estimated non-centrality parameter $\widehat{\lambda}$: 
 
-Then the non-centrality parameter $\lambda_L$ of the noncentral t distribution (with $\nu = n_b - 1$ degrees of freedom) which has $\widehat{\lambda_d}$ as its $1 - \frac{\alpha}{2}$ quantile is iteratively searched for.
+$$\widehat{\lambda} = \frac{g_{G,\,j}}{\sqrt{\frac{1}{n_i} + \frac{s_i^2}{n_j*s_j^2}}} \quad \quad Eq.(2.3)$$ 
 
-Next, the non-centrality parameter $\lambda_U$ of the noncentral t distribution (with $\nu = n_b - 1$ degrees of freedom) which has $\widehat{\lambda_d}$ as its $\frac{\alpha}{2}$ quantile is iteratively searched for. 
+with $n_i$ and $s_i$ being the sample and the standard deviation of the group not being standardised by. Then the non-centrality parameter $\lambda_L$ of the noncentral t distribution (with $\nu = n_j - 1$ degrees of freedom) which has $\widehat{\lambda}$ as its $1 - \frac{\alpha}{2}$ quantile is iteratively searched for.  
 
-The identified upper and lower confidence limits of $\lambda$ are then transformed back into $g_G$ using equations $Eq.(1.3)$ and $Eq.(1.4)$  
+Next, the non-centrality parameter $\lambda_U$ of the noncentral t distribution (with $\nu = n_j - 1$ degrees of freedom) which has $\widehat{\lambda}$ as its $\frac{\alpha}{2}$ quantile is iteratively searched for.  
 
-Additionally, an $1 - \alpha$ percentile bootstrap CI is computed.
+The identified upper and lower confidence limits of $\lambda$ are then transformed back into $g_{G,\,j}$:  
+
+$$LL = \lambda_L * \sqrt{\frac{1}{n_j} + \frac{s_i^2}{n_i \cdot s_j^2}} \quad \quad Eq.(1.3)$$ 
+
+$$UL = \lambda_U * \sqrt{\frac{1}{n_j} + \frac{s_i^2}{n_i \cdot s_j^2}} \quad \quad Eq.(1.4)$$ 
+
+Additionally, an $1 - \alpha$ percentile bootstrap CI is computed.  
 
 
 
@@ -85,7 +113,7 @@ Thus, the most widely used sample estimate for $Eq.(3)$ is given by the formula 
 
 $$d_p = \frac{\bar{X}_a - \bar{X}_b}{s_p} \quad \quad Eq(3.1)$$ 
 
-This estimator has a bias. It systematically overestimates the size of the true population standardized mean difference. This bias can be corrected - see Hedges' $g_p$.  
+This estimator has a bias. It systematically overestimates the size of the true population standardised mean difference. This bias can be corrected - see Hedges' $g_p$.  
 
 CI implementation according to the method described by Steiger and Fouladi (1997) which uses the noncentral t distribution to construct a $1 - \alpha$ CI. 
 
@@ -162,7 +190,7 @@ $$d'= \frac{\bar{X}_a - \bar{X}_b}{s'} \quad \quad Eq.()$$
 
 With $$s' = \sqrt{\frac{s_a^2 + s_b^2}{2}}$$
 
-If $n_a = n_b$, then $s_p$ will be equal to $s'$ and thus $d_p$ will be equal to $d'$. This estimator has a bias. It systematically overestimates the size of the true population standardized mean difference. This bias can be corrected - see Hedges' $g_{d'}$.  
+If $n_a = n_b$, then $s_p$ will be equal to $s'$ and thus $d_p$ will be equal to $d'$. This estimator has a bias. It systematically overestimates the size of the true population standardised mean difference. This bias can be corrected - see Hedges' $g_{d'}$.  
 
 An approximate large-sample CI is implemented according to Bonett (2008):
 
@@ -177,6 +205,64 @@ Bonett (2008) reprted that this CI method produced coverage probabilities that w
 Additionally, an $1 - \alpha$ percentile bootstrap CI is computed.
 
 
+<h3 id = "IG_P_robust">ES robust to outliers</h3>
+<h3 id = "IG_NP_SMD"> standardised Median differences</h3>
+
+Hedges and Olkin (1984) argued that since outliers present in the data can violate the normality assumption, ES estimators insensitive to the presence of outliers ought to be developed. They suggested to replace sample means and standard deviations, which are influenced by outliers, with robust estimators. More concretely, they recommended to estimate group means with sample medians and standard deviations with some linear combination of order statistics.  
+Grissom and Kim (2001) reported on three such ES estimators that use robust estimators of location and scale. Each presented estimator computes the difference between medians and standardises it by some robust estimate of variability. Thus, the three estimators described are standardised median differences. These estimators have the following genreal structure:
+
+$$\hat\delta_{a|b} =  \frac{Mdn_a - Mdn_b}{S_{a|b}}$$
+
+with $Mdn_a$ being the Median of group a, $Mdn_b$ being the median of group b and $S_{a|b}$ being the standardiser, which is some robust measure of variability of the baseline/control group (e.g., the median absolute  deviation of a gold standard treatment). Here, if this estimator is chosen by the user, both estimators are provided denoted as $d_{MAD, 1}$/$d_{R_{IQ}, 1}$/$d_{bw, 1}$&mdash;using the first group's variability estimator in the denominator&mdash;and $d_{MAD, 2}$/$d_{R_{IQ}, 2}$/$d_{bw, 2}$&mdash;using the second group's variability estimator in the denominator.  
+<br>
+The sampling variance of these estimators are currently unknown and thus only $1 - \alpha$ percentile bootstrap CI are implemented for these estimators exclusively.  
+<br>
+Grissom and Kim (2001) note that other standardised median differences could be conceived by using yet another robust measure of variability in the denominator. However, we agree with the comment of Grissom and Kim (2012) that "the field should settle on the use of a reduced number of appropriate measures" (p.75) and that a alternate robust estimator which has a well-behaved confidence interval should be determined and consistently used when outliers threaten to violate assumptions.
+  
+<h4 id = "IG_P_d_MAD"> \(d_{MAD}\) </h4>  
+
+The difference in Medians can be standardised by the Median Absolute Deviation (MAD) of the baseline/control group. 
+Then the standardised median difference is calculated with the following formula (Grissom & Kim, 2001):
+
+$$d_{MAD} =  \frac{Mdn_a - Mdn_b}{MAD_{a|b}}$$
+
+with MAD being: 
+
+$$MAD = median(|X_i - median(X_i)|)$$
+
+The MAD is more robust to outliers than the standard deviation and has a lower sampling variance.  
+We follow the naming convention of Grissom and Kim (2005) who designated the median difference standardised by the biweight standard deviation as $d_{bw}$. Consequently, the subscript highlights the standardiser ($MAD$) of this estimator as well.  
+  
+  
+  
+<h4 id = "IG_P_d_RIQ"> \(d_{R_{IQ}}\) </h4>  
+
+The difference in medians can be standardised by the interquartile range $R_{IQ}$, the difference between the third quartile (0.75-quantile) and the first quartile (0.25-quantile), of the baseline/control group.  
+Then the standardised median difference is calculated with the following formula (Laird & Mosteller, 1990).
+
+$$d_{R_{IQ}} = \frac{Mdn_a - Mdn_b}{0.75 \cdot R_{IQ_{a|b}}}$$
+
+The interquartile range is more outlier resistant than the standard deviation. Multiplying $R_{IQ}$ with 0.75 results in an estimator that approximates the standard deviation under normality (Grissom & Kim, 2001).  
+Grissom and Kim (2001) point to Shoemaker (1999) for a discussion of other possibly more robust ranges of quantiles that may yield alternative robust estimators of variability.  
+We again follow the naming convention of Grissom and Kim (2005) who designated the median difference standardised by the biweight standard deviation as $d_{bw}$. Consequently, the subscript highlights the standardiser (R_{IQ}) of this estimator as well.   
+  
+  
+<h4 id="IG_P_d_bw"> \(d_{bw}\) </h4>
+
+The differences in medians can be standardised by the biweight standard deviation $s_bw$ of the baseline/control group (Grissom & Kim, 2001).  
+Then the standardised median difference is calculated with the following formula (Grissom & Kim, 2001):  
+
+$$d_{bw} = \frac{Mdn_a - Mdn_b}{S_{bw_{a|b}}}$$
+
+with $s_{bw_{a|b}}$ being 
+
+$$s_{bw_{a|b}} = \frac{\sqrt{n}\sqrt{\sum{a_i(X_i - median(X_i))^2(1 - Y_{i}^{2}}}}{|\sum{a_i(1 - 1 - Y_{i}^{2}}(1 - 5Y_{i}^{2})}$$
+
+with $Y_i$ and $a_i$ being
+$$ Y_i = \frac{X_i - median(X_i)}{9MAD}$$
+$$a_i = \{_{1, \, if \, |Y_i| < 1}^{0, \, if \, |Y_i| \geq{1}}$$
+
+Grissom and Kim (2001) note that compared to the $MAD$ $s_bw$ has a relatively small sampling variability. 
 
 
 ## Tail ratio (TR)  
@@ -383,13 +469,15 @@ Goulet-Pelletier, J.-C., & Cousineau, D. (2018). A review of effect sizes and th
 
 Grissom, R. J. (1994). Probability of the superior outcome of one treatment over another. *Journal of Applied Psychology*, *79*(2), 314--316. <https://doi.org/10.1037/0021-9010.79.2.314>
 
-Grissom, R. J., & Kim, J. J. (2001). Review of assumptions and problemns in the appropriate conceptualization of effect size. *Psychological Methods*, *6*(2), 135--146. <https://doi.org/10.1037//1082-989X.6.2.135>
+Grissom, R. J., & Kim, J. J. (2001). Review of assumptions and problemns in the appropriate conceptualization of effect size. *Psychological Methods*, *6*(2), 135--146. <https://doi.org/10.1037//1082-989X.6.2.135>  
 
 Grissom, R. J., & Kim, J. J. (2012). *Effect sizes for research: Univariate and multivariate applications* (2nd ed.). Taylor and Francis Group.  
 
 Hedges, L. V. (1981). Distribution theory of glass’s Estimator of effect size and related estimators. *Journal of Educational and Behavioral Statistics*, *6*(2), 107--128. <https://doi.org/10.3102%2F10769986006002107>  
 
 Koopman, P. A. R. (1984). Confidence intervals for the ratio of two binomial proportions. *Biometrics*, *40*(2), 513--517. <https://doi.org/10.2307/2531405>  
+
+Laird, N. M., & Mosteller, F. (1990). Some statistical methods for combining experimental results. *International Journal of Technology Assessment in Health Care*, *6*(1), 5--30. <https://doi.org/10.1017/s0266462300008916>  
 
 Layard, M. W. J. (1973). Robust large-sample tests for homogeneity of variances. *Journal of the American Statistical Association*, *68*(341), 195-198. <https://doi.org/10.1080/01621459.1973.10481363>  
 
@@ -398,6 +486,10 @@ Mastrich, Z., & Hernandez, I. (2021). Results everyone can understand: A review 
 McGraw, K. O., & Wong, S. P. (1992). A common language effect size statistic. *Psychological bulletin*, *111*(2), 361.  
 
 Nam, J. (1995). Confidence limits for the ratio of two binomial proportions based on likelihood scores: Non-iterative method. *Biometrical Journal*, *37*(3), 375--379. <https://doi.org/10.1002/bimj.4710370311>  
+
+Peng, C.-Y. J., & Chen, L.-T. (2014). Beyond Cohen's d: Alternative effect size measures for between-subject designs. *The Journal of Experimental Education*, *82*(1), 22--50. <https://doi.org/10.1080/00220973.2012.745471>  
+
+Shoemaker, L. H. (1999). Interquantile tests for dispersion in skewed distributions. *Communications in Statistics B: Simulation and Computation*, *28*(1), 189--205. <https://doi.org/10.1080/03610919908813543>  
 
 Shoemaker, L. H. (2003). Fixing the F test for equal Variances. *The American Statistician*, *57*(2), 105–114. <https://doi.org/10.1198/0003130031441>  
 

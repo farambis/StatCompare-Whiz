@@ -119,23 +119,26 @@ non_parametric_tail_ratio_cutoff_error <- function(value, min, max) {
   }
 }
 
-createDownloadWidgetRaw <- function(namespace, design, selectedEs, inputValidator, name, INDEX, x, y) {
+createDownloadWidgetRaw <- function(namespace, design, selectedEs, inputValidator, name, INDEX, x, y, input) {
   renderUI({
     ns <- namespace
     req(isTruthy(x()) && isTruthy(y()) || isTruthy(x()) && isTruthy(INDEX()), selectedEs(), inputValidator$is_valid())
-    if (design == "mixed") req(isTruthy(x()) &&
-                                 isTruthy(y()) &&
-                                 isTruthy(INDEX()))
+    if (design == "mixed") req(isTruthy(x()) && isTruthy(y()) && isTruthy(INDEX()))
+    if (grepl("Es", name)) req(input$calculateEs)
+    else req(input$calculateTs)
     downloadButton(ns(name), class = "btn-primary", style = "cursor: pointer, border-radius: 0.4rem; width: 11rem; 
                                                              font-size: 1.6rem, padding: 0.6rem 1rem")
   })
 }
 
-createDownloadWidgetEducational <- function(namespace, selectedEs, inputValidator, name) {
+createDownloadWidgetEducational <- function(namespace, selectedEs, inputValidator, name, input) {
   renderUI({
     ns <- namespace
     req(selectedEs(), inputValidator$is_valid())
-    downloadButton(ns(name), class = "btn-primary")
+    if (grepl("Es", name)) req(input$calculateEs)
+    else req(input$calculateTs)
+    downloadButton(ns(name), class = "btn-primary", style = "cursor: pointer, border-radius: 0.4rem; width: 11rem; 
+                                                             font-size: 1.6rem, padding: 0.6rem 1rem")
   })
 }
 
@@ -147,6 +150,9 @@ esAndTsUi <- function(id, esChoices, tsChoices) {
              column(
                width = 6,
                checkboxGroupUi(ns("esCheckboxGroup"), esChoices, "Effect Sizes"),
+               actionButton(ns("calculateEs"), "Calculate", icon = icon("calculator", lib = "font-awesome"),
+                            style = "cursor: pointer, border-radius: 0.4rem; width: 11rem; 
+                                     font-size: 1.6rem, padding: 0.6rem 1rem")
              ),
              column(
                width = 6,
@@ -180,6 +186,7 @@ esAndTsUi <- function(id, esChoices, tsChoices) {
                               nonparametricControls(ns = ns))
                )
              )),
+           div(style = "height: 0.5rem"),
            fluidRow(gt_output(ns("esTable")),
                     div(style = "height: 0.5rem"),
                     uiOutput(ns("downloadEsWidget"),
@@ -190,6 +197,10 @@ esAndTsUi <- function(id, esChoices, tsChoices) {
     if (length(tsChoices) > 0) {
       column(width = 4,
              checkboxGroupUi(ns("tsCheckboxGroup"), tsChoices, "Test Statistic"),
+             actionButton(ns("calculateTs"), "Calculate", icon("calculator", lib = "font-awesome"),
+                          style = "cursor: pointer, border-radius: 0.4rem; width: 11rem; 
+                                     font-size: 1.6rem, padding: 0.6rem 1rem"),
+             div(style = "height: 0.5rem"),
              fluidRow(gt_output(ns("tsTable")),
                       div(style = "height: 0.5rem"),
                       uiOutput(ns("downloadTsWidget"),
@@ -201,8 +212,7 @@ esAndTsUi <- function(id, esChoices, tsChoices) {
   )
 }
 
-sdiffNotification <- function(sdiff1, sdiff2){
-  
+sdiffNotification <- function(sdiff1, sdiff2) {
   observeEvent(
     req(!is.na(sdiff1()) || !is.na(sdiff2())),
     {
@@ -214,93 +224,83 @@ sdiffNotification <- function(sdiff1, sdiff2){
     })
 }
 
-
-bootstrapNotification <- function(selectedEs) observeEvent(
-  selectedEs(), {
-    showNotification(
-      ui = "Notice: New set of bootstrap samples drawn and bootstrap confidence intervals are recalculated",
-      duration = 3,
-      type = "message"
-    )
-  })
-
-
-inhomogenousVariancesNotification <- function(selectedEs, x, INDEX) observeEvent(
-  selectedEs(), {
-    if ("parametric_ovl" %in% selectedEs() && are_variances_homogenous(x, INDEX)) {
+bootstrapNotification <- function() {
       showNotification(
-        ui = "Warning: Assumption of homoscedasticity violated according to a Levene test. Consider computing a non-parametric measure of overlap",
+        ui = "Notice: New set of bootstrap samples drawn and bootstrap confidence intervals are recalculated",
         duration = 8,
+        type = "message"
+      )
+}
+
+inhomogenousVariancesNotificationRawData <- function(selectedEs, x, INDEX) {
+    if (contains(c("parametric_ovl", "parametric_ovl_two", "parametric_cohens_u1", "parametric_cohens_u2", "parametric_cohens_u3"), selectedEs()) 
+        && !are_variances_homogenous(x(), INDEX())) {
+      showNotification(
+        ui = "Warning: Assumption of homoscedasticity violated according to a Levene test (\U03B1 = 0.05). Consider computing a non-parametric measure of (non-)overlap",
+        duration = 10,
+        closeButton = TRUE,
         type = "warning"
       )
     }
+}
+
+inhomogenousVariancesNotificationAggregateData <- function(selectedEs, s1, s2, n1, n2) {
+  if (contains(c("parametric_ovl", "parametric_ovl_two", "parametric_cohens_u1", "parametric_cohens_u2", "parametric_cohens_u3"), selectedEs())
+      && !are_variances_homogenous(s1 = s1(), s2 = s2(), n1 = n1(), n2 = n2())) {
+    showNotification(
+      ui = "Warning: Assumption of homoscedasticity violated according to an F-test (\U03B1 = 0.05). Consider computing a non-parametric measure of (non-)overlap",
+      duration = 10,
+      closeButton = TRUE,
+      type = "warning"
+    )
   }
-)
-
-
-nonParametricVarianceRatioCiErrorNotification <- function(x, INDEX, selectedEs) {
-  
-  bangaFoxBonettCiError <- reactive({
-    req(x(), INDEX(), selectedEs())
-    if ("non_parametric_variance_ratio" %in% selectedEs()) {
-      banga_fox_bonett_ci_error(x(), INDEX(), alpha = 0.05)
-    } else {
-      FALSE
-    }
-  })
-  
-  observeEvent(
-    req(bangaFoxBonettCiError()),
-    {
-      if (bangaFoxBonettCiError()) {
-        showNotification("Note: Banga-Fox-Bonett confidence interval implementation for the variance ratio failed - Bonett confidence interval computed",
-                         duration = 8, closeButton = TRUE, type = "message")
-      }
-    }
-  )
 }
 
-dependentTailRatioCiRawDataErrorNotification <- function(selectedEs, assumption, x, y, reference_group, tail, cutoff, alpha = 0.05) {
-  
-  namBlackwelderCiError <- reactive({
-    req(x(), y(), selectedEs(), reference_group(), cutoff(), tail())
-    if (any(c(all_eff_sizes$tail_ratio_dependent, all_eff_sizes$non_parametric_tail_ratio_dependent) %in% selectedEs())) {
-      nam_blackwelder_ci_error(x = x(), y = y(), mode = "rawData", assumption = assumption, reference_group = reference_group(), cutoff = cutoff(), tail = tail(), alpha = alpha)
-    } else {
-      FALSE
-    }
-  })
-  
-  observeEvent(
-    req(namBlackwelderCiError()),
-    {
-      if (namBlackwelderCiError()) {
-        showNotification("Note: Nam-Blackwelder confidence interval implementation for the tail ratio failed - Bonett-Price confidence interval computed!",
-                         duration = 8, closeButton = TRUE, type = "message")
-      }
-    }
-  )
+inhomogenousDependentVariancesNotificationRawData <- function(selectedEs, x, y) {
+  if (contains(c("parametric_ovl_dependent", "parametric_ovl_two_dependent", "parametric_cohens_u1_dependent", "parametric_cohens_u2_dependent", "parametric_cohens_u3_dependent"), selectedEs()) 
+      && !are_dependent_variances_homogenous(x(), y())) {
+    showNotification(
+      ui = "Warning: Assumption of homoscedasticity violated according to the 0.95-CI for the variance ratio. Consider computing a non-parametric measure of (non-)overlap",
+      duration = 10,
+      closeButton = TRUE,
+      type = "warning"
+    )
+  }
 }
 
-dependentTailRatioCiEducationalModeErrorNotification <- function(selectedEs, m1, m2, s1, s2, n, r, reference_group, tail, cutoff, alpha = 0.05) {
-  
-  namBlackwelderCiError <- reactive({
-    req(m1(), m2(), s1(), s2(), n(), r(), selectedEs(), reference_group(), cutoff(), tail())
-    if (all_eff_sizes$tail_ratio_dependent %in% selectedEs()) {
-      nam_blackwelder_ci_error(m1 = m1(), m2 = m2(), s1 = s1(), s2 = s2(), r = r(), n = n(), mode = "educational", assumption = NULL, reference_group = reference_group(), tail = tail(), cutoff = cutoff(), alpha = alpha)
-    } else {
-      FALSE
-    }
-  })
-  observeEvent(
-    req(namBlackwelderCiError()),
-    {
-      if (namBlackwelderCiError()) {
-        showNotification("Note: Nam-Blackwelder confidence interval implementation for the tail ratio failed - Bonett-Price confidence interval computed!",
-                         duration = 8, closeButton = TRUE, type = "message")
-      }
-    }
-  )
+inhomogenousDependentVariancesNotificationAggregateData <- function(selectedEs, s1, s2, n, r) {
+  if (contains(c("parametric_ovl_dependent", "parametric_ovl_two_dependent", "parametric_cohens_u1_dependent", "parametric_cohens_u2_dependent", "parametric_cohens_u3_dependent"), selectedEs()) 
+      && !are_dependent_variances_homogenous(s1 = s1(), s2 = s2(), n = n(), r = r())) {
+    showNotification(
+      ui = "Warning: Assumption of homoscedasticity violated according to the 0.95-CI for the variance ratio. Consider computing a non-parametric measure of (non-)overlap",
+      duration = 10,
+      closeButton = TRUE,
+      type = "warning"
+    )
+  }
+}
+
+nonParametricVarianceRatioCiErrorNotification <- function(selectedEs, x, INDEX, alpha) {
+  if ("non_parametric_variance_ratio" %in% selectedEs() && banga_fox_bonett_ci_error(x(), INDEX(), alpha = alpha)){
+    showNotification("Note: Banga-Fox-Bonett confidence interval implementation for the variance ratio failed - Bonett confidence interval computed",
+                      duration = 10, closeButton = TRUE, type = "message")
+  }
+}
+
+dependentTailRatioCiRawDataErrorNotification <- function(selectedEs, assumption, x, y, reference_group, tail, cutoff, alpha = alpha) {
+  if (contains(c(all_eff_sizes$tail_ratio_dependent, all_eff_sizes$non_parametric_tail_ratio_dependent),selectedEs())
+      && nam_blackwelder_ci_error(x = x(), y = y(), mode = "rawdata", assumption = assumption, reference_group = reference_group(),  tail = tail(), cutoff = cutoff(), alpha = alpha)){
+    showNotification("Note: Nam-Blackwelder confidence interval implementation for the tail ratio failed - Bonett-Price confidence interval computed!",
+                     duration = 10, closeButton = TRUE, type = "message")
+  }
+}
+
+dependentTailRatioCiEducationalModeErrorNotification <- function(selectedEs, m1, m2, s1, s2, n, r, reference_group, tail, cutoff, alpha = alpha) {
+  if (all_eff_sizes$tail_ratio_dependent %in% selectedEs() 
+      && nam_blackwelder_ci_error(m1 = m1(), m2 = m2(), s1 = s1(), s2 = s2(), r = r(), n = n(), mode = "educational", assumption = NULL, reference_group = reference_group(), tail = tail(), cutoff = cutoff(), alpha = alpha)) {
+    showNotification("Note: Nam-Blackwelder confidence interval implementation for the tail ratio failed - Bonett-Price confidence interval computed!",
+                     duration = 10, closeButton = TRUE, type = "message")
+  }
 }
 
 contains <- function(list1, list2) {
@@ -328,48 +328,77 @@ esAndTsRawDataServer <- function(id, design, assumption, INDEX, x, y) {
                  
                  getEsDataframe <- reactive({
                    generate_es_raw_data_dataframe(es_list = selectedEs(), INDEX = INDEX(), x = x(), y = y(), tail = input$tail, ref = input$referenceGroup, cutoff = input$cutoff, alpha = input$alpha)
-                 })
+                 }) |> 
+                   bindEvent(input$calculateEs)
                  
                  getTsDataframe <- reactive({
                    if (assumption == "nonparametric") generate_non_parametric_ts_dataframe(ts_list = selectedTs(), INDEX = INDEX(), x = x(), y())
                    else generate_ts_dataframe(ts_list = selectedTs(), INDEX = INDEX(), x = x(), y = y())
-                 })
+                 }) |> 
+                   bindEvent(input$calculateTs)
                  
                  output$esTable <- render_gt({
-                   req(esTsModuleIv$is_valid())
-                   temp <- getEsDataframe()
-                   temp[["Name"]] <- map_choice_names(temp[["Name"]])
-                   temp %>%
-                    gt() %>%
-                    tab_style(style = cell_text(align = "left"), locations = cells_body(columns = 1)) %>%
-                    fmt_number(-1, decimals = 2) %>%
-                    tab_footnote(footnote = "Confidence interval lower limit", locations = cells_column_labels("Ci Ll")) %>%
-                    tab_footnote(footnote = "Confidence interval upper limit", locations = cells_column_labels("Ci Ul")) %>%
-                    tab_footnote(footnote = "Bootstrap confidence interval lower limit", locations = cells_column_labels("Boot Ci Ll")) %>%
-                    tab_footnote(footnote = "Bootstrap confidence interval upper limit", locations = cells_column_labels("Boot Ci Ul")) %>%
-                    tab_style(style = cell_text(size = "small"), locations = cells_footnotes())
-                 })
-                 output$tsTable <- render_gt({
-                   temp <- getTsDataframe()
-                   temp[["Name"]] <- map_choice_names(temp[["Name"]])
-                   temp %>%
-                    gt() %>%
-                     tab_style(style = cell_text(align = "left"), locations = cells_body(columns = 1)) %>%
-                     fmt_number(-1, decimals = 2)
-                 })
+                   withProgress({
+                     req(esTsModuleIv$is_valid())
+                     temp <- getEsDataframe()
+                     temp[["Name"]] <- map_choice_names(temp[["Name"]])
+                     temp %>%
+                       gt() %>%
+                       tab_style(style = cell_text(align = "left"), locations = cells_body(columns = 1)) %>%
+                       fmt_number(-1, decimals = 2) %>%
+                       tab_footnote(footnote = "Confidence interval lower limit", locations = cells_column_labels("Ci Ll")) %>%
+                       tab_footnote(footnote = "Confidence interval upper limit", locations = cells_column_labels("Ci Ul")) %>%
+                       tab_footnote(footnote = "Bootstrap confidence interval lower limit", locations = cells_column_labels("Boot Ci Ll")) %>%
+                       tab_footnote(footnote = "Bootstrap confidence interval upper limit", locations = cells_column_labels("Boot Ci Ul")) %>%
+                       tab_style(style = cell_text(size = "small"), locations = cells_footnotes())
+                   },
+                   value = 0.66,
+                   message = "Computing...")
+                 }) |>
+                   bindEvent(input$calculateEs)
                  
-                 output$downloadEsWidget <- createDownloadWidgetRaw(session$ns, design, selectedEs, esTsModuleIv, "downloadEs", INDEX, x, y)
+                 output$tsTable <- render_gt({
+                   withProgress({
+                      temp <- getTsDataframe()
+                      temp[["Name"]] <- map_choice_names(temp[["Name"]])
+                      temp %>%
+                        gt() %>%
+                        tab_style(style = cell_text(align = "left"), locations = cells_body(columns = 1)) %>%
+                        fmt_number(-1, decimals = 2)
+                      },
+                      value = 0.66,
+                      message = "Computing...")
+                 }) |>
+                   bindEvent(input$calculateTs)
+                 
+                 output$downloadEsWidget <- createDownloadWidgetRaw(session$ns, design, selectedEs, esTsModuleIv, "downloadEs", INDEX, x, y, input)
                  output$downloadEs <- csvDownloadHandler("effect_size.csv", getEsDataframe)
-                 output$downloadTsWidget <- createDownloadWidgetRaw(session$ns, design, selectedTs, esTsModuleIv, "downloadTs", INDEX, x, y)
+                 output$downloadTsWidget <- createDownloadWidgetRaw(session$ns, design, selectedTs, esTsModuleIv, "downloadTs", INDEX, x, y, input)
                  output$downloadTs <- csvDownloadHandler("test_statistic.csv", getTsDataframe)
                  
-                 bootstrapNotification(selectedEs)
-                 inhomogenousVariancesNotification(selectedEs, x(), INDEX())
-                 nonParametricVarianceRatioCiErrorNotification(x, INDEX, selectedEs)
+                 observe(bootstrapNotification()) |>
+                   bindEvent(input$calculateEs)
+                 
+                 if (design == "indGrps" && assumption != "nonparametric") {
+                   observe(inhomogenousVariancesNotificationRawData(selectedEs, x, INDEX)) |>
+                     bindEvent(input$calculateEs)
+                 } else if (design == "depGrps" && assumption != "nonparametric") {
+                   observe(inhomogenousDependentVariancesNotificationRawData(selectedEs, x, y)) |> 
+                     bindEvent(input$calculateEs)
+                 }
+                 
+                 if (design == "indGrps" && assumption == "nonparametric") {
+                   observe(nonParametricVarianceRatioCiErrorNotification(selectedEs, x, INDEX, input$alpha)) |> 
+                     bindEvent(input$calculateEs)
+                 }
+                
                  referenceGroup <- reactive(input$referenceGroup)
                  tail <- reactive(input$tail)
                  cutoff <- reactive(input$cutoff)
-                 dependentTailRatioCiRawDataErrorNotification(selectedEs, assumption, x, y, referenceGroup, tail, cutoff)
+                 if (design == "depGrps") {
+                   observe(dependentTailRatioCiRawDataErrorNotification(selectedEs, assumption, x, y, referenceGroup, tail, cutoff, input$alpha)) |>
+                     bindEvent(input$calculateEs)
+                 }
                })
 }
 
@@ -386,47 +415,62 @@ esAndTsEducationalServer <- function(id, mean1, standardDeviation1, sampleSize1,
                  
                  getEsDataframe <- reactive({
                    generate_es_educational_dataframe(selectedEs(), mean1(), standardDeviation1(), sampleSize1(), correlation1(), standardDeviationDiff1(), mean2(), standardDeviation2(), sampleSize2(), mean3(), standardDeviation3(), mean4(), standardDeviation4(), correlation2(), standardDeviationDiff2(), input$tail, input$referenceGroup, input$cutoff, alpha = input$alpha)
-                 })
+                 }) |>
+                   bindEvent(input$calculateEs)
                  
                  getTsDataframe <- reactive({
                    generate_ts_dataframe(ts_list = selectedTs(), m1 = mean1(), m2 = mean2(), standardDeviation1 = standardDeviation1(), standardDeviation2 = standardDeviation2(), r = correlation1(), n1 = sampleSize1(), n2 = sampleSize2(), sdiff = standardDeviationDiff1())
-                 })
+                 }) |>
+                   bindEvent(input$calculateTs)
                  
                  output$esTable <- render_gt({
-                   req(esTsModuleIv$is_valid())
-                   temp <- getEsDataframe()
-                   temp[["Name"]] <- map_choice_names(temp[["Name"]])
-                   temp %>%
-                     gt() %>%
-                      tab_style(style = cell_text(align = "left"), locations = cells_body(columns = 1)) %>%
-                      fmt_number(-1, decimals = 2) %>%
-                      tab_footnote(footnote = "Confidence interval lower limit", locations = cells_column_labels("Ci Ll")) %>%
-                      tab_footnote(footnote = "Confidence interval upper limit", locations = cells_column_labels("Ci Ul")) %>%
-                      tab_style(style = cell_text(size = "small"), locations = cells_footnotes())
-                 })
+                   withProgress({
+                     req(esTsModuleIv$is_valid())
+                     temp <- getEsDataframe()
+                     temp[["Name"]] <- map_choice_names(temp[["Name"]])
+                     temp %>%
+                       gt() %>%
+                       tab_style(style = cell_text(align = "left"), locations = cells_body(columns = 1)) %>%
+                       fmt_number(-1, decimals = 2) %>%
+                       tab_footnote(footnote = "Confidence interval lower limit", locations = cells_column_labels("Ci Ll")) %>%
+                       tab_footnote(footnote = "Confidence interval upper limit", locations = cells_column_labels("Ci Ul")) %>%
+                       tab_style(style = cell_text(size = "small"), locations = cells_footnotes())
+                   },
+                   value = 0.66,
+                   message = "Computing...")
+                 }) |>
+                   bindEvent(input$calculateEs)
+                 
                  output$tsTable <- render_gt({
-                   temp <- getTsDataframe()
-                   temp[["Name"]] <- map_choice_names(temp[["Name"]])
-                   temp %>%
-                     gt() %>%
-                     tab_style(style = cell_text(align = "left"), locations = cells_body(columns = 1)) %>%
-                     fmt_number(-1, decimals = 2)
-                 })
+                   withProgress({
+                     temp <- getTsDataframe()
+                     temp[["Name"]] <- map_choice_names(temp[["Name"]])
+                     temp %>%
+                       gt() %>%
+                       tab_style(style = cell_text(align = "left"), locations = cells_body(columns = 1)) %>%
+                       fmt_number(-1, decimals = 2)
+                   },
+                   value = 0.66,
+                   message = "Computing...")
+                 }) |>
+                   bindEvent(input$calculateTs)
                  
-                 output$downloadEsWidget <- renderUI({
-                   ns <- session$ns
-                   req(selectedEs())
-                   downloadButton(ns("downloadEs"), class = "btn-primary")
-                 })
-                 
-                 output$downloadEsWidget <- createDownloadWidgetEducational(session$ns, selectedEs, esTsModuleIv, "downloadEs")
+                 output$downloadEsWidget <- createDownloadWidgetEducational(session$ns, selectedEs, esTsModuleIv, "downloadEs", input)
                  output$downloadEs <- csvDownloadHandler("effect_size.csv", getEsDataframe)
-                 output$downloadTsWidget <- createDownloadWidgetEducational(session$ns, selectedTs, esTsModuleIv, "downloadTs")
+                 output$downloadTsWidget <- createDownloadWidgetEducational(session$ns, selectedTs, esTsModuleIv, "downloadTs", input)
                  output$downloadTs <- csvDownloadHandler("test_statistic.csv", getTsDataframe)
+                 
+                 
+                 observe(inhomogenousVariancesNotificationAggregateData(selectedEs, s1 = standardDeviation1, s2 = standardDeviation2, n1 = sampleSize1, n2 = sampleSize2)) |>
+                   bindEvent(input$calculateEs)
+                 
+                 observe(inhomogenousDependentVariancesNotificationAggregateData(selectedEs, s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1, r = correlation1)) |> 
+                   bindEvent(input$calculateEs)
                  referenceGroup <- reactive(input$referenceGroup)
                  tail <- reactive(input$tail)
                  cutoff <- reactive(input$cutoff)
-                 dependentTailRatioCiEducationalModeErrorNotification(selectedEs, mean1, mean2, standardDeviation1, standardDeviation2, sampleSize1, correlation1, referenceGroup, tail, cutoff)
+                 observe(dependentTailRatioCiEducationalModeErrorNotification(selectedEs, mean1, mean2, standardDeviation1, standardDeviation2, sampleSize1, correlation1, referenceGroup, tail, cutoff, input$alpha)) |> 
+                   bindEvent(input$calculateEs)
                  sdiffNotification(standardDeviationDiff1, standardDeviationDiff2)
                })
 }
@@ -439,28 +483,30 @@ esAndTsMultivariateRawDataServer <- function(id, data, INDEX, dataInputX) {
     getEsDataframe <- reactive({
       generate_multivariate_raw_data_dataframe(selectedEs(), data()[dataInputX()], INDEX(), input$alpha, input$z)
     })
+    
     output$esTable <- render_gt({
-      req(esTsModuleIv$is_valid())
-      temp <- getEsDataframe()
-      temp[["Name"]] <- map_choice_names(temp[["Name"]])
-      temp %>%
-        gt() %>%
-        tab_style(style = cell_text(align = "left"), locations = cells_body(columns = 1)) %>%
-        fmt_number(-1, decimals = 2) %>%
-        tab_footnote(footnote = "Confidence interval lower limit", locations = cells_column_labels("Ci Ll")) %>%
-        tab_footnote(footnote = "Confidence interval upper limit", locations = cells_column_labels("Ci Ul")) %>%
-        tab_footnote(footnote = "Bootstrap confidence interval lower limit", locations = cells_column_labels("Boot Ci Ll")) %>%
-        tab_footnote(footnote = "Bootstrap confidence interval upper limit", locations = cells_column_labels("Boot Ci Ul")) %>%
-        tab_style(style = cell_text(size = "small"), locations = cells_footnotes())
-    })
+      withProgress({
+        req(esTsModuleIv$is_valid())
+        temp <- getEsDataframe()
+        temp[["Name"]] <- map_choice_names(temp[["Name"]])
+        temp %>%
+          gt() %>%
+          tab_style(style = cell_text(align = "left"), locations = cells_body(columns = 1)) %>%
+          fmt_number(-1, decimals = 2) %>%
+          tab_footnote(footnote = "Confidence interval lower limit", locations = cells_column_labels("Ci Ll")) %>%
+          tab_footnote(footnote = "Confidence interval upper limit", locations = cells_column_labels("Ci Ul")) %>%
+          tab_footnote(footnote = "Bootstrap confidence interval lower limit", locations = cells_column_labels("Boot Ci Ll")) %>%
+          tab_footnote(footnote = "Bootstrap confidence interval upper limit", locations = cells_column_labels("Boot Ci Ul")) %>%
+          tab_style(style = cell_text(size = "small"), locations = cells_footnotes())
+      },
+      value = 0.66,
+      message = "Computing...")
+    }) |>
+      bindEvent(input$calculateEs)
     
-    output$downloadEsWidget <- renderUI({
-      ns <- session$ns
-      req(selectedEs())
-      downloadButton(ns("downloadEs"), class = "btn-primary")
-    })
-    
-    output$downloadEsWidget <- createDownloadWidgetEducational(session$ns, selectedEs, esTsModuleIv, "downloadEs")
+    observe(bootstrapNotification()) |>
+      bindEvent(input$calculateEs)
+    output$downloadEsWidget <- createDownloadWidgetRaw(session$ns, "multivariate", selectedEs, esTsModuleIv, "downloadEs", INDEX, dataInputX, y = reactive({NULL}), input)
     output$downloadEs <- csvDownloadHandler("effect_size.csv", getEsDataframe)
   })
 }
@@ -473,25 +519,26 @@ esAndTsMultivariateEducationalServer <- function(id, means, covarianceMatrix, n1
     getEsDataframe <- reactive({
       generate_multivariate_educational_dataframe(selectedEs(), means(), covarianceMatrix(), n1(), n2(), z = input$z, alpha = input$alpha)
     })
-    output$esTable <- render_gt({
-      req(esTsModuleIv$is_valid())
-      temp <- getEsDataframe()
-      temp[["Name"]] <- map_choice_names(temp[["Name"]])
-      temp %>%
-        gt() %>%
-        tab_style(style = cell_text(align = "left"), locations = cells_body(columns = 1)) %>%
-        fmt_number(-1, decimals = 2) %>%
-        tab_footnote(footnote = "Confidence interval lower limit", locations = cells_column_labels("Ci Ll")) %>%
-        tab_footnote(footnote = "Confidence interval upper limit", locations = cells_column_labels("Ci Ul")) %>%
-        tab_style(style = cell_text(size = "small"), locations = cells_footnotes())
-    })
-    output$downloadEsWidget <- renderUI({
-      ns <- session$ns
-      req(selectedEs())
-      downloadButton(ns("downloadEs"), class = "btn-primary")
-    })
     
-    output$downloadEsWidget <- createDownloadWidgetEducational(session$ns, selectedEs, esTsModuleIv, "downloadEs")
+    output$esTable <- render_gt({
+      withProgress({
+        req(esTsModuleIv$is_valid())
+        temp <- getEsDataframe()
+        temp[["Name"]] <- map_choice_names(temp[["Name"]])
+        temp %>%
+          gt() %>%
+          tab_style(style = cell_text(align = "left"), locations = cells_body(columns = 1)) %>%
+          fmt_number(-1, decimals = 2) %>%
+          tab_footnote(footnote = "Confidence interval lower limit", locations = cells_column_labels("Ci Ll")) %>%
+          tab_footnote(footnote = "Confidence interval upper limit", locations = cells_column_labels("Ci Ul")) %>%
+          tab_style(style = cell_text(size = "small"), locations = cells_footnotes())
+      },
+      value = 0.66,
+      message = "Computing...")
+    }) |>
+      bindEvent(input$calculateEs)
+    
+    output$downloadEsWidget <- createDownloadWidgetEducational(session$ns, selectedEs, esTsModuleIv, "downloadEs", input)
     output$downloadEs <- csvDownloadHandler("effect_size.csv", getEsDataframe)
   })
   

@@ -28,7 +28,7 @@ $$s_d = \sqrt{\frac{1}{(n - 1)}\sum_{i = 1}^n(d_i - \bar{d})^2} \qquad Eq.(DG )$
 
 with $d_i = X_{post_i} - X_{pre_i}$ and $\bar{d} = \frac{1}{n}\sum_{i = 1}^nd_i = \bar{X}_{post} - \bar{X}_{pre}$.
 
-This estimator has a bias. It systematically overestimates the size of the true population standardized mean difference. This bias can be corrected - see Hedges' $g_z$.
+This estimator has a bias. It systematically overestimates the size of the true population standardised mean difference. This bias can be corrected - see Hedges' $g_z$.
 
 $1 - \alpha$ CI is implemented according to the method described by Steiger and Fouladi (1997) which uses the noncentral t distribution.
 
@@ -66,7 +66,7 @@ Additionally, an $1 - \alpha$ percentile bootstrap CI is computed.
 
 <h3 id="DG_glass_d"> Glass' \(d_{G,\,j}\) </h3>
 
-The population effect size of interest is given by the same formula as for the independent groups case:
+The population effect of interest is given by:
 
 $$\Delta_j = \frac{\mu_a - \mu_b}{\sigma_j} \qquad Eq.(DG)$$
 
@@ -76,28 +76,29 @@ $$\Delta_a = \frac{\mu_a - \mu_b}{\sigma_a} \qquad Eq.(DG)$$
 
 $$\Delta_b = \frac{\mu_a - \mu_b}{\sigma_b} \qquad Eq.(DG)$$
 
-The mean difference of two dependent populations of interest $\mu_a - \mu_b$ is standardised by the population standard deviation of population a or population b $\sigma_{(a|b)}$. This population effect size is applicable in various design with dependent groups (Bonett, 2015):  
+The mean difference of two dependent populations of interest $\mu_a - \mu_b$ is standardised by the population standard deviation of population *a* or population *b* $\sigma_{(a|b)}$. This population effect size is applicable in various design with dependent groups (Bonett, 2015):  
 - a pretest-posttest design (e.g., $\mu_{post} - \mu_{pre}$)  
-- a within-subjects design where some score is measured under two treatment conditions (e.g., $\mu_{novel treatment} \mu_{gold standard treatment}$)  
-- a longitudinal design where some score is measured at two points in time without any intermediate intervention (e.g., $\mu_{timepoint 2} - \mu_{timepoint 1}$)  
+- a within-subjects design where some score is measured under two treatment conditions (e.g., $\mu_{novel\,treatment} - \mu_{gold\,standard\,treatment}$)  
+- a longitudinal design where some score is measured at two points in time without any intermediate intervention (e.g., $\mu_{timepoint\,2} - \mu_{timepoint\,1}$)  
 - or for a matched-pair design where subjects are paired based on covariates and randomly assigned to two conditions (e.g., $\mu_{experimental} - \mu_{control}$).  
 
+Treatments can increase the variance in an outcome of interest due to differential responsiveness of treatment subjects to the treatment (Grisson & Kim, 2012, pp. 17-20). Thus, the variance of the population receiving treatment might be higher than the variance of the population without said treatment. In such cases $\Delta_a$ and $\Delta_b$ provide distinct population effects. However, even when the contrasted populations are homoscedastic, the two estimators will yield different estimates due to sample standard deviation within each group being most likely different. In either case, it is up to the user to decide which estimate to interpret. A common recommendation is to consult the estimate using the standard deviation of a comparison (e.g., control) group (e.g., Grissom & Kim, 2001). Here, if this effect size is chosen by the user, both estimators are provided denoted as $d_{G, 1}$&mdash;using the first group's standard deviation in the denominator&mdash;and $d_{G, 2}$&mdash;using the second group's standard deviation in the denominator.  
 
-Treatments can increase the variance in an outcome of interest due to differential responsiveness of treatment subjects to the treatment (Grisson & Kim, 2012, pp. 17-20). Thus, the variance of post-treatment scores might be higher than the variance of pre-treatment scores. It might also be the case that the variance of a group treated with a novel treatment method might be larger than the variance of a group treated with a gold standard treatment (or vice versa). Under such instances of heteroscedasticity, it is recommended to use the standard deviation of some sort of baseline (e.g., pre-treatment group, gold standard treatment group) as the standardiser. Since under heteroscedasticity of populations a and b both the population effect sizes as well as the sample estimates will differ depending on the standard deviation chosen to standardise by, it is recommended to estimate and report both versions of $\Delta_j$ (e.g., Algina et al., 2005).
+$\Delta_b$ tells us how many population *b* standard deviation units ($\sigma_b$) $\mu_a$ (e.g., $\mu_{post}$) lies below or above $\mu_b$ (e.g., $\mu_{pre}$) and $\Delta_a$ tells us how many population *a* standard deviation units ($\sigma_a$) $\mu_a$ (e.g., $\mu_{post}$) lies below or above $\mu_b$ (e.g., $\mu_{pre}$).  
 
-$\Delta_b$ tells us how many population b standard deviation units ($\sigma_b$) $\mu_a$ (e.g., $\mu_{post}$) lies below or above $\mu_b$ (e.g., $\mu_{pre}$) and $\Delta_a$ tells us how many population a standard deviation units ($\sigma_a$) $\mu_a$ (e.g., $\mu_{post}$) lies below or above $\mu_b$ (e.g., $\mu_{pre}$).More interestingly perhaps, $\Delta_j$ is rather similar to a *Z* score. Consequently, if the mean difference is standardised by the standard deviation of the lower mean population and if further that population follows a normal distribution, $\Delta_j$ can be used to determine what proportion of the lower mean population the average member of the higher mean population outscores. Like with a *Z* score, this information can be derived from the cumulative distribution function of the standard normal distribution. If scores are not normally distributed such convenient interpretations are no longer applicable.
+More interestingly perhaps, $\Delta_j$ is rather similar to a *Z* score. Consequently, if the mean difference is standardised by the standard deviation of the population with the lower mean and if further that population follows a normal distribution, $\Delta_j$ can be used to determine what proportion of the population with the lower mean the average member of the population with the higher mean outscores. Like with a *Z* score, this information can be derived from the cumulative distribution function of the standard normal distribution. If scores are not normally distributed such convenient interpretations are no longer applicable.  
 
-The sample estimate of this population effect is given by the formula (e.g., Becker (1988)):
+The sample estimator of this population effect is given by the formula (e.g., Becker (1988)):
 
 $$d_{G,\,j} = \frac{\bar{X_a} - \bar{X_b}}{s_j} \qquad Eq.(DG)$$
 
-with two groups this reduces to:
+with two groups this results in the estimators:
 
 $$d_{G,\,a} = \frac{\bar{X}_a - \bar{X}_a}{s_b} \qquad Eq.(DG)$$
 
 $$d_{G,\,b} = \frac{\bar{X}_a - \bar{X}_b}{s_b} \qquad Eq.(DG)$$
 
-With $\bar{X_a}$ being the sample mean of group a, $\bar{X_b}$ being the sample mean of group b, and $s_{a|b}$ being the bias corrected sample standard deviation of group a/b. This estimator has a bias. It systematically overestimates the size of the true population standardized mean difference. This bias can be corrected - see Hedges' $g_{G,\,j}$.
+With $\bar{X_a}$ being the sample mean of group *a*, $\bar{X_b}$ being the sample mean of group *b*, and $s_{a|b}$ being the bias corrected sample standard deviation of group *a*/*b*. This estimator has a bias. It systematically overestimates the size of the true population standardised mean difference. This bias can be corrected - see Hedges' $g_{G,\,j}$.
 
 An approximate large-sample CI is implemented according to Bonett (2015):
 
@@ -111,23 +112,23 @@ This estimate of the variance of $d_{G,\,j}$ does assume normality but not homos
 
 Bonett (2015) examined this CI method under various conditions using simulations. The author reported non-rejection rates very close to the nominal $1 - \alpha$ rate (\~$\pm 1%$) under bivariate normality and low to relatively high levels of heteroscedasticity (with population variance ratios of up to $\sigma_a:\sigma_b = 16:1$ and $\sigma_a:\sigma_b = 1:16$). However, when the normality assumption is violated, the method fails to maintain a consistent non-rejection rate close to the nominal $1 - \alpha$ rate. The largest deviations from the nominal non-rejection rate (\~$\pm 5%$) were observed for rather large effect size ($\Delta \le 0.6$) and large correlations ($\rho \le 0.9$) under the conditions studied.
 
-Algina et al. (2005) proposed a noncentral t based approximate CI and examined its behaviour under nonnormality and heteroscedasticity. While this method performed identically well under normality, it did show lower non-rejection rates under the cases of nonnormality studied by the authors with non-rejection rates decreasing with increasing size of $\Delta$. In general the CI method performed worse than the one implemented here, however, this might be due to the fact that Bonett (2015) and Algina et al. (2005) considered differing cases of nonnormality. Consequently, Algina et al. (2005) recommend a different effect size alltogether, $d_{R,\,G,\,j}$, under nonnormality.
+Algina et al. (2005) proposed a noncentral t based approximate CI and examined its behaviour under nonnormality and heteroscedasticity. While this method performed identically well under normality, it did show lower non-rejection rates under the cases of nonnormality studied by the authors with non-rejection rates decreasing with increasing size of $\Delta$. In general the CI method performed worse than the one implemented here, however, this might be due to the fact that Bonett (2015) and Algina et al. (2005) considered differing cases of nonnormality. Consequently, Algina et al. (2005) recommend a different effect size alltogether, $d_{R,\,j}$, under nonnormality.
 
 Additionally, an $1 - \alpha$ percentile bootstrap CI is computed. Algina et al. (2005) studied this method under nonnormality and heteroscedasticity. Nonnormality caused non-rejection rates to consistently fall below the nominal rate, decreasing with an increasing value of $\delta$. This effect was especially strong, when the variance of the population whose standard deviation estimate was used as the standardiser (population b) was higher than the variance of the other population (population a). Such a ratio of population variances ($\sigma^2_b > \sigma^2_a$) resulted in low non-rejection rates even under normality, dipping below 0.9 for some combinations of effect size and sample size.
 
 ## Hedges' $g_{G,\,j}$
 
-As mentioned above $d_{G,\,j}$ has a slight positive bias, which can be corrected. This alternative formula (e.g., Becker (1988)) estimates the same population parameter as $d_{G,\,j}$ given in $Eq.(DG )$\$:
+As mentioned above $d_{G,\,j}$ has a slight positive bias, which can be corrected. This alternative formula (e.g., Becker, 1988) estimates the same population parameter as $d_{G,\,j}$ given in $Eq.(DG )$\$:
 
 $$g_{G,\,j} = \frac{\bar{X_a} - \bar{X_b}}{s_j} * J(\nu) \qquad Eq.(DG)$$
 
-with two groups this reduces to:
+with two groups this results in the estimators:
 
 $$g_{G,\,a} = \frac{\bar{X_a} - \bar{X_b}}{s_a} * J(\nu) \qquad Eq.(DG)$$
 
 $$g_{G,\,b} = \frac{\bar{X_a} - \bar{X_b}}{s_b} * J(\nu) \qquad Eq.(DG)$$
 
-with $\nu = n - 1$ denoting the degrees of freedom and $J(\nu)$ being given by $Eq.(DG)$.
+with $\nu = n - 1$ denoting the degrees of freedom and $J(\nu)$ being given by $Eq.(DG)$. If this effect size is chosen by the user, both estimators are provided denoted as $g_{G, 1}$&mdash;using the first group's standard deviation in the denominator&mdash;and $g_{G, 2}$&mdash;using the second group's standard deviation in the denominator.The user can choose which to report/interpret (see documentation for $d_{G,\,j}$).  
 
 A approximate large-sample $1 - \alpha$ CI is implemented similarly as the CI for $d_{G,\,j}$ with $\widehat{VAR}(d_{G,\,j})$ being multiplied by $J(\nu)^2$ in in $Eq (DG )$:
 
@@ -157,7 +158,7 @@ Thus, a more useful sample estimate for $Eq.(DG3)$ is given by the formula (e.g.
 
 $$d_p = \frac{\bar{X_a} - \bar{X_b}}{s_p} \qquad Eq(DG 3.1)$$
 
-This estimator has a bias. It systematically overestimates the size of the true population standardized mean difference. This bias can be corrected - see Hedges' $g_p$.
+This estimator has a bias. It systematically overestimates the size of the true population standardised mean difference. This bias can be corrected - see Hedges' $g_p$.
 
 CI implementation according to the method described by Steiger and Fouladi (1997) which uses the noncentral t distribution to construct a $1 - \alpha$ CI. The newly identified sampling distribution of $d_p$ for dependent samples is utilized (Cousineau, 2020) to create an approximate noncentral t based CI based on Cousineau and Goulet-Pelletier (2021).
 
@@ -191,7 +192,7 @@ $1 - \alpha$ CI is implemented the same way as for $d_p$ with $d_p$ simply being
 
 Additionally, an $1 - \alpha$ percentile bootstrap CI is computed.
 
-## Cohen's $d_{RM}$
+## $d_{RM}$
 
 The population effect size being estimated is given by the formula (e.g., Bonett, 2015):
 
@@ -209,7 +210,7 @@ $$d_{RM} = \frac{\bar{X}_{a} - \bar{X}_{b}}{s_d}\sqrt{2(1-r)}$$
 
 $d_{RM}$ will only equal $d_p$ when the sample standard deviation are equal $s_a = s_b = s$ and the sample correlation of group a and group b measurements is exactly $r = .5$. Due to the high variability of sample sizes, the sample ratio of variances can easily exceed the population ratio of variances even if that one is 1:1 (Grissom & Kim, 2012, p. 19). Additionally, pretest-posttest correlations for example often exceed .5 (Morris & DeShon, 2002). Therefore, it is unlikely that $d_p$ and $d_{RM}$ will be identical in any given sample.
 
-This estimator has a bias. It systematically overestimates the size of the true population standardized mean difference. This bias can be corrected - see Hedges' $g_{RM}$.
+This estimator has a bias. It systematically overestimates the size of the true population standardised mean difference. This bias can be corrected - see Hedges' $g_{RM}$.
 
 The aforementioned relationship between $\delta_{RM}$ and $\delta_p$ is the reason why this population effect size and its estimate $d_{RM}$ have been recommended for repeated measures designs. This effect size is supposed to transform $d_z$ into the metric of $d_p$ for independent groups. Meaning, that $d_{RM}$ is supposed to transform an effect size of changes in an individual's performance into an effect size quantifying group difference in performance (Morris & DeShon, 2002). This transformation could be motivated by meta-analysis, where effect sizes coming from studies with differing designs (e.g., independent groups and repeated measures) should have a common metric, i.e.,that they estimate the same population parameter (e.g., $\delta_p$) (Morris & DeShon, 2002). Transforming $d_z$ into $d_{RM}$ has been favoured over computing $d_p$ as described above mainly for two reasons: Firstly, because the likely unit of deviation used and reported in a dependent groups design is the standard deviation of difference scores, making the computation of $d_p$ from summary statistics impossible (since $s_a$ and $s_b$ might not be reported) (Borenstein et al., 2009, p. 29). Secondly, an exact estimate of the distribution of $d_p$ for dependent groups could not be obtained previously, since the degrees of freedom of a pooled standard deviation of dependent groups was not known (Morris & DeShon, 2002). As reported above Cosineau (2020) identified an approach to compute the degrees of freedom associated with $d_p$. While the approach is not perfect, since the degrees of freedom depend on the unknown population value of $\rho$, but the degrees of freedom can be estimated as described by Cousineau and Goulet-Pelletier (2021) to construct CI for $d_p$. To conclude, if the aim is to estimate $\delta_p$ for dependent groups, $d_p$ might be the better choice as of writing this description.
 
@@ -286,6 +287,69 @@ Notice: The CI formula by Bonett (2015) uses the unbiased effect size estimate. 
 Bonett (2015) examined this CI method under various conditions using simulations. The author reported non-rejection rates very close to the nominal $1 - \alpha$ rate (\~$\pm 1%$) under bivariate normality and low to relatively high levels of heteroscedasticity (with population variance ratios of up to $\sigma_a:\sigma_b = 16:1$ and $\sigma_a:\sigma_b = 1:16$). It should be noted though that the interpretability of the effect size gets increasingly more difficult with heteroscedasticity. When the normality assumption is violated, the method fails to maintain a consistent non-rejection rate close to the nominal $1 - \alpha$ rate. Though the largest deviations from the nominal non-rejection rate (\~$\pm 3%$) were observed for rather large effect size ($\delta' \le 0.6$) and large correlations ($\rho \le 0.9$) under the conditions studied. The noncentral t based approximate CI for $\delta'$ studied by Algina et al. (2005) performed worse under the nonnormal conditions considered by them. However, this might be attributable to the fact that Bonett (2015) and Algina et al. (2005) considered differing cases of nonnormality!
 
 Additionally, an $1 - \alpha$ percentile bootstrap CI is computed. The simulation conducted by Algina et al. (2005) resulted in rather poor non-rejection rates for bootstrap CI, even under normality (non-rejection rates varying between .90 and .94). An increase in sample size did lead to more accurate non-rejection rates (under normality) for all effect sizes studied. The bootstrap method performed significantly worse under nonnormality though.
+<br>
+
+<h3 id = "DG_P_robust">ES robust to outliers</h3>
+<h3 id = "DG_NP_SMD"> standardised Median differences</h3>
+
+Hedges and Olkin (1984) argued that since outliers present in the data can violate the normality assumption, ES estimators insensitive to the presence of outliers ought to be developed. They suggested to replace sample means and standard deviations, which are influenced by outliers, with robust estimators. More concretely, they recommended to estimate group means with sample medians and standard deviations with some linear combination of order statistics.  
+Grissom and Kim (2001) reported on three such ES estimators that use robust estimators of location and scale. Each presented estimator computes the difference between medians and standardises it by some robust estimate of variability. Thus, the three estimators described are standardised median differences. These estimators have the following genreal structure:
+
+$$\hat\delta_{a|b} =  \frac{Mdn_a - Mdn_b}{S_{a|b}}$$
+
+with $Mdn_a$ being the Median of group a/measurement 2, $Mdn_b$ being the median of group b/measurement 1 and $S_{a|b}$ being the standardiser, which is some robust measure of variability of the baseline/control measurement/group (e.g., the median absolute  deviation of pretreatment measurements). Here, if this estimator is chosen by the user, both estimators are provided denoted as $d_{MAD, 1}$/$d_{R_{IQ}, 1}$/$d_{bw, 1}$&mdash;using the first group's/measurement's variability estimator in the denominator&mdash;and $d_{MAD, 2}$/$d_{R_{IQ}, 2}$/$d_{bw, 2}$&mdash;using the second group's/measurement's variability estimator in the denominator.  
+<br>
+The sampling variance of these estimators are currently unknown and thus only $1 - \alpha$ percentile bootstrap CI are implemented for these estimators exclusively.  
+<br>
+Grissom and Kim (2001) note that other standardised median differences could be conceived by using yet another robust measure of variability in the denominator. However, we agree with the comment of Grissom and Kim (2012) that "the field should settle on the use of a reduced number of appropriate measures" (p.75) and that a alternate robust estimator which has a well-behaved confidence interval should be determined and consistently used when outliers threaten to violate assumptions.  
+<br>
+  
+<h4 id = "DG_P_d_MAD"> \(d_{MAD}\) </h4>  
+
+The difference in Medians can be standardised by the Median Absolute Deviation (MAD) of the baseline/control measurement/group.  
+Then the standardised median difference is calculated with the following formula (Grissom & Kim, 2001):
+
+$$d_{MAD} =  \frac{Mdn_a - Mdn_b}{MAD_{a|b}}$$
+
+with MAD being: 
+
+$$MAD = median(|X_i - median(X_i)|)$$
+
+The MAD is more robust to outliers than the standard deviation and has a lower sampling variance.  
+We follow the naming convention of Grissom and Kim (2005) who designated the median difference standardised by the biweight standard deviation as $d_{bw}$. Consequently, the subscript highlights the standardiser ($MAD$) of this estimator as well.  
+<br>
+  
+<h4 id = "DG_P_d_RIQ"> \(d_{R_{IQ}}\) </h4>  
+
+The difference in medians can be standardised by the interquartile range $R_{IQ}$, the difference between the third quartile (0.75-quantile) and the first quartile (0.25-quantile), of the baseline/control measurement/group.  
+Then the standardised median difference is calculated with the following formula (Laird & Mosteller, 1990).
+
+$$d_{R_{IQ}} = \frac{Mdn_a - Mdn_b}{0.75 \cdot R_{IQ_{a|b}}}$$
+
+The interquartile range is more outlier resistant than the standard deviation. Multiplying $R_{IQ}$ with 0.75 results in an estimator that approximates the standard deviation under normality (Grissom & Kim, 2001).  
+Grissom and Kim (2001) point to Shoemaker (1999) for a discussion of other possibly more robust ranges of quantiles that may yield alternative robust estimators of variability.  
+We again follow the naming convention of Grissom and Kim (2005) who designated the median difference standardised by the biweight standard deviation as $d_{bw}$. Consequently, the subscript highlights the standardiser ($R_{IQ}$) of this estimator as well.  
+<br>
+  
+<h4 id="DG_P_d_bw"> \(d_{bw}\) </h4>
+
+The differences in medians can be standardised by the biweight standard deviation $s_bw$ of the baseline/control measurement/group (Grissom & Kim, 2001).  
+Then the standardised median difference is calculated with the following formula (Grissom & Kim, 2001):  
+
+$$d_{bw} = \frac{Mdn_a - Mdn_b}{S_{bw_{a|b}}}$$
+
+with $s_{bw_{a|b}}$ being 
+
+$$s_{bw_{a|b}} = \frac{\sqrt{n}\sqrt{\sum{a_i(X_i - median(X_i))^2(1 - Y_{i}^{2}}}}{|\sum{a_i(1 - 1 - Y_{i}^{2}}(1 - 5Y_{i}^{2})}$$
+
+with $Y_i$ and $a_i$ being
+$$ Y_i = \frac{X_i - median(X_i)}{9MAD}$$
+$$a_i = \{_{1, \, if \, |Y_i| < 1}^{0, \, if \, |Y_i| \geq{1}}$$
+
+Grissom and Kim (2001) note that compared to the $MAD$ $s_bw$ has a relatively small sampling variability. 
+The naming convention of this estimtaor goes back to Grissom and Kim (2005).  
+<br>
+
 
 ## Variance ratio (VR)
 
@@ -543,7 +607,7 @@ $U_1$ can be interpreted as percentage of nonoverlap and is characterized by the
 $$U_1 = \frac{2\Phi_{d/2}-1}{\Phi_{d/2}} = \frac{2U_2-1}{U_2}$$
 with $d_p$ being a deviate in the unit normal curve and  $\Phi$ being the percentage of the population of cases falling below a given normal deviate.
 We could not identify a closed form formula for the confidence interval of this effect size. Thus, a $1 - \alpha$ percentile bootstrap confidence interval is implemented exclusively.
-
+<br>
 
 
 
@@ -553,7 +617,7 @@ When examing two populations, Cohen's measure of nonoverlap$ U_2$ is the percent
 $$U2 = \Phi_{d/2}$$
 with $d$ being a deviate in the unit normal curve and  $\Phi$ being the percentage of the population of cases falling below a given normal deviate.
 We could not identify a closed form formula for the confidence interval of this effect size. Thus, a $1 - \alpha$ percentile bootstrap confidence interval is implemented exclusively.
-
+<br>
 
 
 
@@ -562,13 +626,11 @@ We could not identify a closed form formula for the confidence interval of this 
 When examining two populations, Cohen's measure of nonoverlap $U_3$ is the percentage of one population which the upper half of the cases of the other population exceeds (Cohen, 1988). Cohen's $U_3$ is described by the following formula under the assumption of normality and homoscedasticity:
 $$U_3 = \Phi_{d}$$
 with $d$ being a deviate in the unit normal curve and  $\Phi$ being the percentage of the population of cases falling below a given normal deviate.
-We could not identify a closed form formula for the confidence interval of this effect size. Thus, a $1 - \alpha$ percentile bootstrap confidence interval is implemented exclusively.
+We could not identify a closed form formula for the confidence interval of this effect size. Thus, a $1 - \alpha$ percentile bootstrap confidence interval is implemented exclusively.  
+<br>
 
 
-
-# Standardized difference effect sizes that are somewhat outlier resistant
-
-## Robust Cohen's $d_z$
+## $d_{R, z} (robust Cohen's $d_z$)
 
 The population effect size of interest is given by the formula:
 
@@ -590,41 +652,41 @@ with $\bar{d}_t$ being the trimmed mean of the observed difference scores $d_i =
 
 A noncentral t based confidence interval is not implemented for this measure as no formula for its computation could be found in the sighted literature. However, in accordance with the recommendation of Wilcox (2017b) a $1 - \alpha$ percentile bootstrap confidence interval is implemented. Studies assessing the performance of such a procedure for other robust effect sizes, namely $d_{Rp}$ and $d_{RG}$, found that the percentile bootstrap method achieved non-rejection rates close to the nominal $1 - \alpha$ (i.e., within the range [0.925; 0.975] for $\alpha = 0.05$) for various nonnormal distributions of populations a and b (Algina et al., 2005).
 
-## Robust Glass' $d_{R,\,G,\,j}$
+## $d_{R,\,j}$ (robust Glass' $d_{G,\,j}$)
 
 The population effect size of interest is given by the formula:
 
-$$\Delta_{Rj} = c\frac{\mu_{t,\,a} - \mu_{t,\,b}}{\sigma_{w,\,j}} \qquad Eq.(DG)$$
+$$\Delta_{R,\,j} = c \cdot \frac{\mu_{t,\,a} - \mu_{t,\,b}}{\sigma_{w,\,j}} \qquad Eq.(DG)$$
 
 with two groups this reduces to:
 
-$$\Delta_{Ra} = \frac{\mu_{t,\,a} - \mu_{t,\,b}}{\sigma_{w,\,a}} \qquad Eq.(DG)$$
+$$\Delta_{R,\,a} = c \cdot \frac{\mu_{t,\,a} - \mu_{t,\,b}}{\sigma_{w,\,a}} \qquad Eq.(DG)$$
 
-$$\Delta_{Rb} = \frac{\mu_{t,\,a} - \mu_{t,\,b}}{\sigma_{w,\,b}} \qquad Eq.(DG)$$
+$$\Delta_{R,\,b} = c \cdot \frac{\mu_{t,\,a} - \mu_{t,\,b}}{\sigma_{w,\,b}} \qquad Eq.(DG)$$
 
-The difference of population trimmed means of populations a and b $\mu_{t,\,a} - \mu_{t,\,b}$ is standardised by the winsorised standard deviation of population a or b $\sigma_{w(a|b)}$ scaled by $c$.
+The difference of population trimmed means of populations *a* and *b* $\mu_{t,\,a} - \mu_{t,\,b}$ is standardised by the winsorised standard deviation of population *a*/*b* $\sigma_{w(a|b)}$ scaled by $c$.
 
-$\Delta_{Rj}$ tells us how many (population j) winsorised standard deviation units $\mu_{t,\,a}$ (e.g., $\mu_{tpost}$) lies below or above $\mu_{t,\,b}$ (e.g., $\mu_{tpre}$). This measure of effect is applicable in all contexts in which $\Delta$ is applicable (see above for some examples). As described above, it is recommended to use the standard deviation of some sort of baseline (e.g., pre-treatment group, gold standard treatment group) as the standardiser. Since under heteroscedasticity of populations a and b both the population effects and the sample estimates will differ depending on the group chosen to standardise by, it can be recommended to estimate and report both versions of $\Delta_{Rj}$ (e.g., Algina et al. 2005).
+$\Delta_{R,\,j}$ tells us how many population *j* winsorised standard deviation units $\mu_{t,\,a}$ (e.g., $\mu_{t,\,post}$) lies below or above $\mu_{t,\,b}$ (e.g., $\mu_{t,\,pre}$). This measure of effect is applicable in all contexts in which $\Delta_j$ is applicable (see above for some examples). As described above, under heteroscedasticity $\Delta_{R,\,a}$ and $\Delta_{R,\,b}$ are distinct population effects and even under homoscedasticity (when the two population effects are identical) the sample estimate will differ depending on which group's winsorised standard deviation is used as standardiser simply due to the fact that the sample winsorised standard deviation within the groups will most likely differ. It is up to the user to decide which estimate to interpret and report. If this effect size is chosen by the user, both estimators are provided denoted as $d_{R, 1}$&mdash;using the first group's winsorised standard deviation in the denominator&mdash;and $d_{R, 2}$&mdash;using the second group's winsorised standard deviation in the denominator.   
 
 The sample estimate of the population effect is given by (Algina et al., 2005):
 
-$$d_{R,\,G,\,j} = c\frac{\bar{X}_{t,\,a} - \bar{X}_{t,\,b}}{s_{w,\,j}} \qquad Eq.(DG)$$
+$$d_{R,\,j} = c \cdot \frac{\bar{X}_{t,\,a} - \bar{X}_{t,\,b}}{s_{w,\,j}} \qquad Eq.(DG)$$
 
-with two groups this reduces to:
+with two groups this results in the estiamtors:
 
-$$d_{R,\,G,\,a} = c\frac{\bar{X}_{t,\ma} - \bar{X}_{t,\,b}}{s_{w,\,a}} \qquad Eq.(DG)$$
+$$d_{R,\,a} = c \cdot \frac{\bar{X}_{t,\ma} - \bar{X}_{t,\,b}}{s_{w,\,a}} \qquad Eq.(DG)$$
 
-$$d_{R,\,G,\,b} = c\frac{\bar{X}_{t,\,a} - \bar{X}_{t,\,b}}{s_{w,\,b}} \qquad Eq.(DG)$$
+$$d_{R,\,b} = c \cdot \frac{\bar{X}_{t,\,a} - \bar{X}_{t,\,b}}{s_{w,\,b}} \qquad Eq.(DG)$$
 
-with $\bar{X}_{t,\,b}$ and $\bar{X}_{t,\,a}$ being the trimmed means of the dependent samples and $s_{w,\,a}$ being the sample winsorised standard deviation of group a and $s_{w,\,b}$ being the sample winsorised standard deviation of group b.
+with $\bar{X}_{t,\,b}$ and $\bar{X}_{t,\,a}$ being the trimmed means of the dependent samples and $s_{w,\,a}$ being the sample winsorised standard deviation of group *a* and $s_{w,\,b}$ being the sample winsorised standard deviation of group *b*.
 
-$c$ is a constant with a value depending on $\gamma$. Should populations a and b follow a normal distribution, then $\frac{s_{w,\,j}}{c}$ estimates $\sigma_j$ and $\bar{X}_{t,\,b}$ and $\bar{X}_{t,\,a}$ estimate $\mu_{b}$ and $\mu_{a}$ respectively. Consequently $d_{R,\,G,\,j}$ would estimate $\Delta_j$. This way the robust statistic $d_{R,\,G,\,j}$ estimates the same population effect as its non robust counterpart $d_{G,\,j}$ under normality.
+$c$ is a constant with a value depending on $\gamma$. Should populations *a* and *b* follow a normal distribution, then $\frac{s_{w,\,j}}{c}$ estimates $\sigma_j$ and $\bar{X}_{t,\,b}$ and $\bar{X}_{t,\,a}$ estimate $\mu_{b}$ and $\mu_{a}$ respectively. Consequently $d_{R,\,j}$ would estimate $\Delta_j$. This way the robust statistic $d_{R,\,j}$ estimates the same population effect as its non robust counterpart $d_{G,\,j}$ under normality.
 
 An approximate noncentral t based CI based on Algina et al. (2005) is implemented:
 
-Firstly, $d_{R,\,G,\,j}$ is transformed into an estimated noncentrality parameter $\widehat{\lambda_R}$:
+Firstly, $d_{R,\,j}$ is transformed into an estimated noncentrality parameter $\widehat{\lambda_R}$:
 
-$$\widehat{\lambda_R} = \frac{d_{R,\,G,\,j}}{c} \sqrt{\frac{h(h - 1)s^2_{w,\,j}}{(n - 1) (s^2_{w,\,a} + s^2_{w,\,b} - 2*Cov(X_{w,\,a}, X_{w,\,b})}} \qquad Eq.(DG )$$
+$$\widehat{\lambda_R} = \frac{d_{R,\,j}}{c} \sqrt{\frac{h(h - 1)s^2_{w,\,j}}{(n - 1) (s^2_{w,\,a} + s^2_{w,\,b} - 2*Cov(X_{w,\,a}, X_{w,\,b})}} \qquad Eq.(DG )$$
 
 with $X_{w,\,a}$ and $X_{w,\,b}$ being the winsorised sample data of the two dependent samples and $h$ being the number of observations left after trimming $h = n - 2(\gamma n)$
 
@@ -632,7 +694,7 @@ Then, the non-centrality parameter $\lambda_{RL}$ of the noncentral t distributi
 
 Next, the non-centrality parameter $\lambda_{RU}$ of the noncentral t distribution (with $\nu = h - 1$ degrees of freedom) which has $\widehat{\lambda_R}$ as its $\frac{\alpha}{2}$ quantile is iteratively searched for.
 
-The identified upper and lower confidence limits of $\lambda$ are then transformed back into $d_{R,\,G,\,j}$:
+The identified upper and lower confidence limits of $\lambda$ are then transformed back into $d_{R,\,j}$:
 
 $$LL = \lambda_{RL} * c * \sqrt{\frac{(n - 1) (s^2_{w,\,a} + s^2_{w,\,b} - 2Cov(X_{w,\,a}, X_{w,\,b})}{h(h - 1)s^2_{w,\,j}}} \qquad Eq.(DG )$$
 
@@ -640,7 +702,7 @@ $$UL = \lambda_{RU} * c * \sqrt{\frac{(n - 1) (s^2_{w,\,a} + s^2_{w,\,b} - 2Cov(
 
 This CI formula is approximate because the distribution of $\frac{d_{Rp}}{c} \sqrt{\frac{h(h - 1)s^2_{w,\,j}}{(n - 1) (s^2_{w,\,a} + s^2_{w,\,b} - 2Cov(X_{w,\,a}, X_{w,\,b})}}$ only approximately follows the t distribution. However, this formula is not based on homoscedasticity or normality of the investigated populations. Algina et al. (2005) examined the non-rejection rate of this CI procedure for various combinations of population effect size, population correlation, and sample size and found that it yielded non-rejection rates that were close to the nominal $1 - \alpha$ rate for normal and a wide range of nonnormal data (the authors criterion interval for appropriate non-rejection rates was $[0.925,0.975]$). However, when data were sampled from a distribution alike the exponential distribution the procedure was too liberal for large population effect size $\Delta_{RGj} > 1.2$ and the population correlation was medium $\rho = 0.4$. With low population correlation $\rho \le 0.2$ this tendency became worse and was also noticeable for a long-tailed skewed distribution. A large population correlation $\rho \ge 0.6$ ameliorated these tendencies of the CI method, resulting in non-rejection rates within the criterion interval.
 
-An $1 - \alpha$ percentile bootstrap CI is computed. The simulations conducted by Algina et al. (2005) resulted in appropriate non-rejection rates (i.e., within the range of $[0.925,0.975]$) for all investigated conditions. The estimated non-rejection rate tended to converge to the nominal level of 0.95 as the sample size increased. In general the non-rejection rate of the percentile bootstrap CI increased with increasing population effect size and population correlation. Overall, Algina et al. (2005) recommend the percentile bootstrap CI method for $d_{R,\,G,\,j}$.
+An $1 - \alpha$ percentile bootstrap CI is computed. The simulations conducted by Algina et al. (2005) resulted in appropriate non-rejection rates (i.e., within the range of $[0.925,0.975]$) for all investigated conditions. The estimated non-rejection rate tended to converge to the nominal level of 0.95 as the sample size increased. In general the non-rejection rate of the percentile bootstrap CI increased with increasing population effect size and population correlation. Overall, Algina et al. (2005) recommend the percentile bootstrap CI method for $d_{R,\,j}$.
 
 ## Robust Cohen's $d_p$
 
@@ -829,6 +891,8 @@ Mastrich, Z., & Hernandez, I. (2021). Results everyone can understand: A review 
 McGraw, K. O., & Wong, S. P. (1992). A common language effect size statistic. *Psychological bulletin*, *111*(2), 361.
 
 Nam, J., & Blackwelder, W. C. (2002). Analysis of the ratio of marginal probabilities in a matched-pair setting. *Statistics in Medicine*, *21*(5), 689--699. <https://doi.org/10.1002/sim.1017>  
+
+Peng, C.-Y. J., & Chen, L.-T. (2014). Beyond Cohen's d: Alternative effect size measures for between-subject designs. *The Journal of Experimental Education*, *82*(1), 22--50. <https://doi.org/10.1080/00220973.2012.745471>  
 
 Tukey, J. W., & McLaughlin, D. H. (1963). Less vulnerable confidence and significance procedures for location based on a single sample: Trimming/winsorization 1. *Sankhyā: The Indian Journal of Statistics, Series A (1961-2002)*, *25*(3), 331--352. <http://www.jstor.org/stable/25049278>  
 

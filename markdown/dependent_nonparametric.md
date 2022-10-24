@@ -168,122 +168,50 @@ $$I_{x > median_{pre}}(x) = \begin{cases}
 \end{cases}
 $$
 and $median_{pre}$ being the median of the prestest group.
-We could not identify a closed form formula for the confidence interval of this nonparametric effect size. Thus, a $1 - \alpha$ percentile bootstrap confidence interval is implemented exclusively.
-  
-  
-  
-<h2 id="DG_NP_SMD> Standardized Median differences </h2>
-
-A Standardized Median difference can also provide valuable insights into differences between two dependent groups (e.g., pretreatment measurements and posttreatment measurements) and is calculated as follows (Grissom & Kim, 2012): 
-
-$$\hat\delta =  \frac{Mdn_a - Mdn_b}{S_{a|b}}$$
-
-with $Mdn_a$ being the Median of group a, $Mdn_b$ being the median of group b and $S_{a|b}$ being the standardiser, which is some measure of variability of the baseline/control group (e.g., the median absolute deviation of pretreatment measurements).  
-Considering group b as measurements taken prior to a treatment and group a as measurements taken after said treatment, then the numerator of the above formula simply gives the difference of posttreatment and pretreatment medians, that is: $Mdn_a - Mdn_b = Mdn_{post} - Mdn_{pre}$.  
-
-For neither of the three standardised median differences described below were we able to identify a closed form formula for the confidence intervals associated with them. Thus, $1 - \alpha$ percentile bootstrap confidence intervals are implemented for these estimators exclusively.
-  
-<br>
-
-  
-<h3 id="DG_NP_MAD"> Standardised by the \( MAD \) </h3>  
-
-The difference in Medians can be standardized by the Median Absolute Deviation (MAD) of the baseline/control group (e.g., the pretreatment measurements). 
-Then the median difference is calculated with the following formula(Grissom & Kim, 2012):
-
-$$\hat\delta =  \frac{Mdn_a - Mdn_b}{MAD_{a|b}}$$
-
-with MAD being: 
-
-$$MAD = median(|X_i - median(X_i)|)$$
-
-The MAD is more robust to outliers than the standard deviation and has a lower sampling variance.  
-  
-<br>
-
-  
-<h3 id="DG_NP_RIQ"> Standardised by \(.75 \cdot R_{IQ}\) </h3>  
-
-The difference in medians can also be standardized by $.75 \cdot R_{IQ}$ (Grissom & Kim, 2012):
-
-$$\hat\delta = \frac{Mdn_a - Mdn_b}{.75R_{IQ{a|b}}}$$
-
-which is more outlier resistant than the standard deviation and at the same time approximates the standard devation - under normality - very well(Grissom & Kim, 2005).  
-  
-<br>
-
-  
-<h3 id="DG_NP_bw"> Standardised by the Biweight Standard Deviation </h3>
-
-Differences in medians can be standardized by the biweight standard deviation of the control or baseline group (e.g., pretreatment measurements) (Grissom & Kim, 2005):
-
-$$\hat\delta = \frac{Mdn_a - Mdn_b}{S_{bw_{a|b}}}$$
-
-with $s_{bw_{a|b}}$ being 
-
-$$s_{bw_{a|b}} = \frac{\sqrt{n}\sqrt{\sum{a_i(X_i - median(X_i))^2(1-Y_{i}^{2}}}}{|\sum{a_i(1-1-Y_{i}^{2}}(1-5Y_{i}^{2})}$$
-
-with $Y_i$ and $a_i$ being
-$$ Y_i = \frac{X_i-median(X_i)}{9MAD}$$
-$$a_i = \{_{1, \, if \, |Y_i| < 1}^{0, \, if \, |Y_i| \geq{1}}$$
-  
-<br>
-
-<br>
+We could not identify a closed form formula for the confidence interval of this nonparametric effect size. Thus, a $1 - \alpha$ percentile bootstrap confidence interval is implemented exclusively.  
 
 
   
-<h2 id="DG_NP_dGb"> Nonparametric Glass \( d_{G,\,b}\)</h2>
+<h2 id="DG_NP_dGb"> Nonparametric Glass \( d_{G,\,j}\)</h2>
 
 
 A nonparametric version of Glass' $d_{G,\,j}$ is described by Kraemer and Andrews (1982) as well as by Hedges and Olkin (1985). Both groups of authors discussed their suggested estimators in the context of a pre- posttest design as it will be done here as well, with group b denoting pretest measurements and group a denoting posttest measurements. However keep in mind, that the same arguments apply to other types of dependent groups: 
 
+$$ \hat{\delta}_j = \Phi^{-1}(\hat{p}_j)$$
+
+resulitng in the effects:
+
+$$ \hat{\delta}_a = \Phi^{-1}(\hat{p}_a)$$
+
 $$ \hat{\delta}_b = \Phi^{-1}(\hat{p}_b)$$
 
-where $\hat{p}_b$ is given by
+where $\hat{p}_a$ is given by
+
+$$ \hat{p}_a = \frac{x_a > median(x_b)}{n} $$
+
+and $\hat{p}_b$ is given by
 
 $$ \hat{p}_b = \frac{x_b < median(x_a)}{n} $$
 
-Thus, $p_{b}$ is the proportion of group b (e.g., pretest measurements) that are lower than the median of the group a (e.g., posttest measurements). Consequently, $\hat{\delta}_{b}$ is the $\hat{p}_b$-quantile of the standard normal distribution.  
+If this effect size is chosen by the user, both estimators are provided, denoted as nonparametric Glass' $d_{G, 1}$&mdash;$\hat{\delta}_b$ is computed&mdash;and nonparametric Glass' $d_{G, 2}$&mdash;$\hat{\delta}_a$ is computed.The user can choose which to report/interpret (see documentation for $d_{G,\,j}$).
 
-The reason $\hat{\delta}_b$ can be considered a nonparametric version of Glass' $d_{G,\,b}$ is owed to the fact that when populations b and a (e.g., pre- and posttest scores) are normally distributed, then $\hat{\delta}_b$ is an estimator of the population effect size given by $\Delta_b = \frac{\mu_a - \mu_b}{\sigma_b}$ (see the dependent groups parametric documentation page entry on Glass' $d_{G,\,j}$ for further details on this population effect).  
+$p_{a}$ is the proportion of group *a* (e.g., posttest measurements) that are larger than the median of the group *b* (e.g., pretreatment measurements). Consequently, $\hat{\delta}_{a}$ is the $\hat{p}_a$-quantile of the standard normal distribution.  
 
-Hedges and Olkin (1985) suggested this adaption of Kraemer's and Andrews' (1982) estimator $D$ and called it $\hat{\delta}_1$. The latter estimaot has been implemented here. The main difference between $\hat{\delta}_1$ and $D$ is their respective computation of the posttest median. While $\hat{\delta}_1$ computes the median of all posttest scores, $D$ computes the median of the posttest scores of individuals with a pretest score falling in a critical range. Said critical range is comprised of the median of pretest scores and two distinct values on either side of the median, i.e., the observed order statistics immediately preceding and following the median (Kraemer & Andrews, 1982). For further details, the reader is advised to consult Kraemer and Andrews (1982) as well as Hedges and Olkin (1985). 
+The reason $\hat{\delta}_a$ can be considered a nonparametric version of Glass' $d_{G,\,a}$ is owed to the fact that when populations *b* and *a* (e.g., pre- and posttest scores) are normally distributed, then $\hat{\delta}_a$ is an estimator of the population effect size given by $\Delta_a = \frac{\mu_a - \mu_b}{\sigma_a}$.
 
-As stated above Hedges and Olkin (1985) denoted this estimator as $\hat{\delta}_1$. The subscript has been changed from $1$ to $b$ in order to match the used subscript with those used for other effect sizes in this documentation.  
+$p_{b}$ is the proportion of group *b* (e.g., pretest measurements) that are lower than the median of the group *a* (e.g., posttest measurements). Consequently, $\hat{\delta}_{b}$ is the $\hat{p}_b$-quantile of the standard normal distribution.  
+
+The reason $\hat{\delta}_b$ can be considered a nonparametric version of Glass' $d_{G,\,b}$ is owed to the fact that when populations b and a (e.g., pre- and posttest scores) are normally distributed, then $\hat{\delta}_b$ is an estimator of the population effect size given by $\Delta_b = \frac{\mu_a - \mu_b}{\sigma_b}$.  
+
+Hedges and Olkin (1985) suggested this adaption of Kraemer's and Andrews' (1982) estimator $D$ and called it $\hat{\delta}_1$. The latter estimator has been implemented here. The main difference between $\hat{\delta}_1$ and $D$ is their respective computation of the posttest median. While $\hat{\delta}_1$ computes the median of all posttest scores, $D$ computes the median of theposttest scores of individuals with a pretest score falling in a critical range. Said critical range is comprised of the median of pretest scores and two distinct values on either side of the median, i.e., the observed order statistics immediately preceding and following the median (Kraemer & Andrews, 1982). For further details, the reader is advised to consult Kraemer and Andrews (1982) as well as Hedges and Olkin (1985). Kraemer and Andrews (1982) did not define an equivalent of Hedges and Olkin's (1985) estimator $\hat{\delta}_2$.  
+
+As stated above Hedges and Olkin (1985) denoted this estimator as $\hat{\delta}_a$ and $\hat{\delta}_b$, respectively. The subscripts have been changed from $1$ to $b$ and from $2$ to $a$ in order to match the used subscript with those used for other effect sizes in this documentation.  
 
 When *n* is small $\hat{p}_b$ might be equal to 0 or 1. To avoid consequently extreme effect sizes  $\hat{p}_b$ is set to $\frac{1}{n+1}$  or  $\frac{n}{n+1}$ respectively in such cases.  
 
 We could not identify a closed form formula for the confidence interval of this nonparametric effect size. Thus, a $1 - \alpha$ percentile bootstrap confidence interval is implemented exclusively.
 
 <br>
-  
-  
-  
-<h2 id="DG_NP_dGa"> Nonparametric Glass \( d_{G,\,a}\)</h2>
-  
-A nonparametric version of Glass' $d_{G,\,a}$ is described by Hedges and Olkin (1985):  
-
-$$ \hat{\delta}_a = \Phi^{-1}(\hat{p}_a)$$
-
-where $\hat{p}_a$ is given by
-
-$$ \hat{p}_a = \frac{x_a > median(x_b)}{n} $$
-
-Thus, $p_{b}$ is the proportion of group a (e.g., posttest measurements) that are larger than the median of the group b (e.g., pretreatment measurements). Consequently, $\hat{\delta}_{a}$ is the $\hat{p}_a$-quantile of the standard normal distribution.  
-
-The reason $\hat{\delta}_a$ can be considered a nonparametric version of Glass' $d_{G,\,a}$ is owed to the fact that when populations b and a (e.g., pre- and posttest scores) are normally distributed, then $\hat{\delta}_a$ is an estimator of the population effect size given by $\Delta_a = \frac{\mu_a - \mu_b}{\sigma_a}$ (see the dependent groups parametric documentation page entry on Glass' $d_{G,\,j}$ for further details on this population effect).  
-
-It should be noted that Hedges and Olkin (1985) denoted this estimator as $\hat{\delta}_2$. The subscript has been changed from $2$ to $a$ in order to match the used subscript with those used for other effect sizes in this documentation.  
-
-When *n* is small $\hat{p}_a$ might be equal to 0 or 1. To avoid consequently extreme effect sizes  $\hat{p}_a$ is set to $\frac{1}{n + 1}$  or  $\frac{n}{n + 1}$ respectively in such cases.  
-
-We could not identify a closed form formula for the confidence interval of this nonparametric effect size. Thus, a $1 - \alpha$ percentile bootstrap confidence interval is implemented exclusively.  
-
-<br>
-
-
-
 
 <h2 id="DG_NP_dz"> Nonparametric Cohen's \(d_z\) </h2> 
 
