@@ -1,6 +1,3 @@
-#TODO beim Upload prüfen, dass in der Gruppierungsvariable eh keine NAs vorhanden
-# sind - diese werden nämlich bei Funktionen wie tapply ohne Warnung ignoriert
-
 #TODO User sollen angeben wie die Faktoren zu rangreihen sind, damit in der server
 # funktion die Gruppierungsvariable richtig faktorisiert werden kann
 
@@ -157,7 +154,9 @@ es_names_to_be_mapped <- list("^glass_d$", "^glass_d_corr$", "^AKP_uneqvar$",
                               "^standardised_median_difference_riq$",
                               "^standardised_median_difference_riq_dependent$",
                               "^standardised_median_difference_biweight$",
-                              "^standardised_median_difference_biweight_dependent$"
+                              "^standardised_median_difference_biweight_dependent$",
+                              "^mann_whitney_based_ps$",
+                              "^ps_dependent$"
                               )
 es_names_to_map <- list(c("glass_d1", "glass_d2"), 
                         c("glass_d_corr1", "glass_d_corr2"), 
@@ -172,8 +171,9 @@ es_names_to_map <- list(c("glass_d1", "glass_d2"),
                         c("standardised_median_difference_riq1", "standardised_median_difference_riq2"),
                         c("standardised_median_difference_riq_dependent1", "standardised_median_difference_riq_dependent2"),
                         c("standardised_median_difference_biweight1", "standardised_median_difference_biweight2"),
-                        c("standardised_median_difference_biweight_dependent1", "standardised_median_difference_biweight_dependent2")
-                        )
+                        c("standardised_median_difference_biweight_dependent1", "standardised_median_difference_biweight_dependent2"),
+                        c("mann_whitney_based_ps1", "mann_whitney_based_ps2"),
+                        c("ps_dependent1", "ps_dependent2"))
 
 map_es_names_selected_to_presented <- function(selected, es_names_to_be_mapped, es_names_to_map) {
   if (!is.list(selected)) selected <- as.list(selected)
@@ -207,7 +207,7 @@ generate_es_raw_data_dataframe <- function(es_list, INDEX = NULL, x, y, tail, re
                   "standardised_median_difference_mad" = data.frame(rbind(c(standardised_median_difference_mad(x = x, INDEX = INDEX, standardised_by_group_1 = TRUE), NA_real_, NA_real_, unlist(boot_general(x, INDEX, standardised_median_difference_mad, alpha, standardised_by_group_1 = TRUE))), c(standardised_median_difference_mad(x, INDEX, standardised_by_group_1 = FALSE), NA_real_, NA_real_, unlist(boot_general(x, INDEX, standardised_median_difference_mad, alpha, standardised_by_group_1 = FALSE))))),
                   "standardised_median_difference_riq" = data.frame(rbind(c(standardised_median_difference_riq(x = x, INDEX = INDEX, standardised_by_group_1 = TRUE), NA_real_, NA_real_, unlist(boot_general(x, INDEX, standardised_median_difference_riq, alpha, standardised_by_group_1 = TRUE))), c(standardised_median_difference_riq(x = x, INDEX = INDEX, standardised_by_group_1 = FALSE), NA_real_, NA_real_, unlist(boot_general(x, INDEX, standardised_median_difference_riq, alpha, standardised_by_group_1 = FALSE))))),
                   "standardised_median_difference_biweight" = data.frame(rbind(c(standardised_median_difference_biweight(x = x, INDEX = INDEX, standardised_by_group_1 = TRUE), NA_real_, NA_real_, unlist(boot_general(x, INDEX, standardised_median_difference_biweight, alpha, standardised_by_group_1 = TRUE))), c(standardised_median_difference_biweight(x = x, INDEX = INDEX, standardised_by_group_1 = FALSE), NA_real_, NA_real_, unlist(boot_general(x, INDEX, standardised_median_difference_biweight, alpha, standardised_by_group_1 = FALSE))))),
-                  "mann_whitney_based_ps" = c(mann_whitney_based_ps(x = x, INDEX = INDEX), mann_whitney_based_ps_ci(x = x, INDEX = INDEX, alpha = alpha), boot_general(x, INDEX, mann_whitney_based_ps, alpha)),
+                  "mann_whitney_based_ps" = data.frame(rbind(c(mann_whitney_based_ps(x = x, INDEX = INDEX, pab = TRUE, ignore_ties = FALSE), unlist(mann_whitney_based_ps_ci(x = x, INDEX = INDEX, ignore_ties = FALSE, pab = TRUE, alpha = alpha)), unlist(boot_general(x, INDEX, mann_whitney_based_ps, pab = TRUE, ignore_ties = FALSE, alpha))),c(mann_whitney_based_ps(x = x, INDEX = INDEX, pab = FALSE, ignore_ties = FALSE), unlist(mann_whitney_based_ps_ci(x = x, INDEX = INDEX, ignore_ties = FALSE, pab = FALSE, alpha = alpha)), unlist(boot_general(x, INDEX, mann_whitney_based_ps, pab = FALSE, ignore_ties = FALSE, alpha))))),
                   "mann_whitney_based_ps_ignore_ties" = c(mann_whitney_based_ps(x = x, INDEX = INDEX, ignore_ties = TRUE), mann_whitney_based_ps_ci(x = x, INDEX = INDEX, ignore_ties = TRUE, alpha = alpha), boot_general(x, INDEX, mann_whitney_based_ps, alpha, ignore_ties = TRUE)),
                   "parametric_ovl" = c(parametric_ovl(x = x, INDEX = INDEX), parametric_ovl_ci(x = x, INDEX = INDEX, alpha = alpha), boot_general(x, INDEX, parametric_ovl, alpha)),
                   "non_parametric_ovl" = c(non_parametric_ovl(x, INDEX), NA_real_, NA_real_, boot_general(x, INDEX, non_parametric_ovl, alpha)),
@@ -260,8 +260,8 @@ generate_es_raw_data_dataframe <- function(es_list, INDEX = NULL, x, y, tail, re
                   "dominance_measure_dependent" = c(dominance_measure_dependent(x = x, y = y), dominance_measure_dependent_ci(x, y, alpha = alpha), boot_general_dependent_groups(x, y, dominance_measure_dependent, alpha)),
                   "non_parametric_cohens_dz_dependent" = c(non_parametric_cohens_dz_dependent(x = x, y = y), NA_real_, NA_real_, boot_general_dependent_groups(x, y, non_parametric_cohens_dz_dependent, alpha)),
                   "non_parametric_ovl_two_dependent" = c(non_parametric_ovl_two(x = x, y = y), NA_real_, NA_real_, boot_general_dependent_groups(x, y, non_parametric_ovl_two, alpha)),
-                  "ps_dependent" = c(ps_dependent_groups(x, y, FALSE), ps_dependent_groups_ci(x, y, FALSE, alpha = alpha), boot_general_dependent_groups(x, y, ps_dependent_groups, alpha, ignore_ties = FALSE)),
-                  "ps_dependent_ignore_ties" = c(ps_dependent_groups(x, y), ps_dependent_groups_ci(x, y, alpha = alpha), boot_general_dependent_groups(x, y, ps_dependent_groups, alpha)),
+                  "ps_dependent" = data.frame(rbind(c(ps_dependent_groups(x, y, pab = TRUE, ignore_ties = FALSE), unlist(ps_dependent_groups_ci(x, y, pab = TRUE, ignore_ties = FALSE, alpha = alpha)), unlist(boot_general_dependent_groups(x, y, ps_dependent_groups, alpha, pab = TRUE, ignore_ties = FALSE))), c(ps_dependent_groups(x, y, pab = FALSE, ignore_ties = FALSE), unlist(ps_dependent_groups_ci(x, y, pab = FALSE, ignore_ties = FALSE, alpha = alpha)), unlist(boot_general_dependent_groups(x, y, ps_dependent_groups, alpha, pab = FALSE, ignore_ties = FALSE))))),
+                  "ps_dependent_ignore_ties" = c(ps_dependent_groups(x, y, ignore_ties = TRUE), ps_dependent_groups_ci(x, y, ignore_ties = TRUE, alpha = alpha), boot_general_dependent_groups(x, y, ps_dependent_groups, alpha, ignore_ties = TRUE)),
                   # Effect sizes for the pretest-posttest-control design:
                   "d_PPC_change" = c(d_PPC_change(x = x, y = y, INDEX = INDEX), d_PPC_change_ci(x = x, y = y, INDEX = INDEX, alpha = alpha), boot_general_mixed_design(x = x, y = y, INDEX = INDEX, FUN = d_PPC_change, alpha = alpha)),
                   "g_PPC_change" = c(g_PPC_change(x = x, y = y, INDEX = INDEX), d_PPC_change_ci(x = x, y = y, INDEX = INDEX, alpha = alpha), boot_general_mixed_design(x = x, y = y, INDEX = INDEX, FUN = g_PPC_change, alpha = alpha)),
@@ -1762,11 +1762,17 @@ adjusted_katz_log_risk_ratio_ci <- function(n11, n21, n1., n2., alpha) {
 
 ## Mann Whitney ----
 
-mann_whitney_based_ps <- function(x, INDEX, ignore_ties = FALSE) {
+mann_whitney_based_ps <- function(x, INDEX, ignore_ties = FALSE, pab = TRUE) {
   # Mann Whitney u -----
   dataset <- split(x, INDEX)
-  dataset1 <- dataset[[1]]
-  dataset2 <- dataset[[2]]
+  if (pab) {
+    dataset1 <- dataset[[2]]
+    dataset2 <- dataset[[1]]
+  } else {
+    dataset1 <- dataset[[1]]
+    dataset2 <- dataset[[2]]
+  }
+
   if (!ignore_ties) {
     u <- calculate_u_with_ties(dataset1, dataset2)
     return(u / (length(dataset1) * length(dataset2)))
@@ -1823,18 +1829,18 @@ calculate_z_for_u_statistic <- function(dataset1, dataset2) {
   result
 }
 
-mann_whitney_based_ps_ci <- function(x, INDEX, ignore_ties = FALSE, alpha = 0.05) {
+mann_whitney_based_ps_ci <- function(x, INDEX, ignore_ties = FALSE, pab = TRUE, alpha = 0.05) {
   #second method from Newcombe (2005)
   dataset <- split(x, INDEX)
-  m <- length(dataset[[1]])
-  n <- length(dataset[[2]])
-  delta <- mann_whitney_based_ps(x, INDEX, ignore_ties)
+  m <- ifelse(pab, length(dataset[[2]]), length(dataset[[1]]))
+  n <- ifelse(pab, length(dataset[[1]]), length(dataset[[2]]))
+  delta <- mann_whitney_based_ps(x, INDEX, ignore_ties = ignore_ties, pab = pab)
   variance <- delta *
     (1 - delta) *
     (1 +
        (n - 1) * (1 - delta) / (2 - delta) +
        (m - 1) * delta / (1 + delta)) / (m * n)
-  z <- qnorm(1 - alpha)
+  z <- qnorm(1 - alpha / 2)
   lower_limit <- delta - z * sqrt(variance)
   if (lower_limit < 0) {
     lower_limit <- 0
@@ -1850,10 +1856,16 @@ mann_whitney_based_ps_ci <- function(x, INDEX, ignore_ties = FALSE, alpha = 0.05
 
 
 ps_dependent_groups <-
-  function(x, y, ignore_ties = TRUE) {
+  function(x, y, ignore_ties = TRUE, pab = TRUE) {
     # probability of superiority for dependent groups ----
-    dataset1 <- x
-    dataset2 <- y
+    if (pab) {
+      dataset1 <- y
+      dataset2 <- x
+    } else {
+      dataset1 <- x
+      dataset2 <- y
+    }
+    
     if (length(dataset1) != length(dataset2))
       stop("\n length of datasets for dependent groups has to be the same!")
     n <- length(dataset1)
@@ -1875,10 +1887,16 @@ ps_dependent_groups <-
   }
 
 
-ps_dependent_groups_ci <- function(x, y, ignore_ties = TRUE, alpha = 0.05) {
+ps_dependent_groups_ci <- function(x, y, ignore_ties = TRUE, pab = TRUE, alpha = 0.05) {
   #Pratt's confidence interval
-  dataset1 <- x
-  dataset2 <- y
+  if (pab) {
+    dataset1 <- y
+    dataset2 <- x
+  } else {
+    dataset1 <- x
+    dataset2 <- y
+  }
+  
   if (length(dataset1) != length(dataset2))
     stop("\n length of datasets for dependent groups has to be the same!")
   n <- length(dataset1)
@@ -1923,11 +1941,11 @@ dominance_measure_based_es <- function(x = NULL, INDEX = NULL, y = NULL) {
   # dominance measure ----
   if (!is.null(x) && !is.null(INDEX)) {
     dataset <- split(x, INDEX)
-    dataset1 <- dataset[[1]]
-    dataset2 <- dataset[[2]]
+    dataset1 <- dataset[[2]]
+    dataset2 <- dataset[[1]]
   } else {
-    dataset1 <- x
-    dataset2 <- y
+    dataset1 <- y
+    dataset2 <- x
   }
   if (!is.null(x))return(ps_without_counting_ties(dataset1, dataset2) - ps_without_counting_ties(dataset2, dataset1))
   return(ps_dependent_groups(x, y) - ps_dependent_groups(y, x))
@@ -1953,7 +1971,7 @@ dominance_measure_dependent <- function(x, y) {
   if (length(x) != length(y)) {
     return()
   }
-  d_w <- ps_dependent_groups(y, x, FALSE) - ps_dependent_groups(x, y, FALSE)
+  d_w <- ps_dependent_groups(x, y, pab = TRUE, ignore_ties =  FALSE) - ps_dependent_groups(x, y, pab = FALSE, ignore_ties =  FALSE)
   d_b <- get_db(x, y)
   return(d_w + d_b)
 }
@@ -2056,7 +2074,7 @@ get_cov_db_dw <- function(db, dw, x, y) {
 get_var_db_dw <- function(x, y) {
   n <- length(x)
   d_b <- get_db(x, y)
-  d_w <- ps_dependent_groups(y, x, FALSE) - ps_dependent_groups(x, y, FALSE)
+  d_w <- ps_dependent_groups(x, y, pab = TRUE, ignore_ties = FALSE) - ps_dependent_groups(x, y, pab = FALSE, ignore_ties =  FALSE)
   sum_di. <- get_sum_di._star(d_b, x, y)
   sum_d.i <- get_sum_di._star(d_b, y, x)
   sum_di_squared_di. <- get_sum_di_squared(d_b, x, y)
@@ -2096,7 +2114,7 @@ ps_without_counting_ties <- function(dataset1, dataset2) {
 }
 
 dominance_measure_ci <- function(x, INDEX, dependent = FALSE, alpha = 0.05) {
-  if (!dependent) cis <- mann_whitney_based_ps_ci(x, INDEX, alpha = alpha)
+  if (!dependent) cis <- mann_whitney_based_ps_ci(x, INDEX, pab = TRUE, alpha = alpha)
   else cis <- ps_dependent_groups_ci(x, INDEX, alpha = alpha)
   lower_bound <- 2 * cis[[1]] - 1
   upper_bound <- 2 * cis[[2]] - 1
@@ -3833,7 +3851,7 @@ mahalanobis_d_ci <- function(mahalanobis_d, p, n1, n2, alpha = 0.05) {
         else { ncp_est_min <- ncp_est
           ncp_est <- ncp_est_min + (ncp_est_max - ncp_est_min) / 2
         }
-        est_p <- pf(f_cal, p, (n1 + n2 - p - 1), lower.tail = TRUE, ncp = ncp_est);
+        est_p <- pf(f_cal, p, (n1 + n2 - p - 1), lower.tail = TRUE, ncp = ncp_est)
       }
       lower_bound <- sqrt(ncp_est * (1 / n1 + 1 / n2))
     }
@@ -3858,7 +3876,7 @@ mahalanobis_d_ci <- function(mahalanobis_d, p, n1, n2, alpha = 0.05) {
           ncp_est_min <- ncp_est
           ncp_est <- ncp_est_min + (ncp_est_max - ncp_est_min) / 2
         }
-        est_p <- pf(f_cal, p, (n1 + n2 - p - 1), lower.tail = TRUE, ncp = ncp_est);
+        est_p <- pf(f_cal, p, (n1 + n2 - p - 1), lower.tail = TRUE, ncp = ncp_est)
       }
       upper_bound <- sqrt(ncp_est * (1 / n1 + 1 / n2))
     }

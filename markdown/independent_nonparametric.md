@@ -1,33 +1,94 @@
 # Nonparametric methods
 
-## Mann Whitney Based Probability of Superiority (PS)
-The PS measures the probability (Pr) that a randomly sampled member of Population a will have a score ($Y_a$) that is higher than the score ($Y_b$) attained by a randomly sampled member of population b and can be described by the formula(Grissom & Kim, 2005): 
-$$ PS = Pr(Y_a > Y_b) $$
+<h3 id = "ID_NP_PS"> Probability of Superiority (<i>PS</i>) </h3>
 
-Therefore, the PS measures the probabilistic superiority of one group's scores over another group's scores. Since it is a probability, the result ranges from 0 to1. A PS of 0 means that every member of Population $a$ is outscored by every member of Population $b$. A PS of 1 means that every member of Population $a$ outscores every member of Population $b$.
-The number of times that the scores from one specified sample are higher than the scores from the other sample with which they are paired is called the _U statistic_. Therefore, we can define(Grissom & Kim, 2005): 
-$$ \hat{P}_{a>b} = \frac{U}{n_a n_b} $$
-with $n_a n_b$ being the number of possible comparisons and $U$ being the number of wins for a specified sample. In the above case ties are counted as 0.5. However, there is also the option to ignore ties. Then ties are not added to U and the denominator of the formula above is subtracted by the number of ties.
+The population effect of interest is given by:  
 
-The PS is a nonparamatetric estimatior of the population effect estimated by the CL ES, which is described in the documentation tab of the page on parametric ES for the independent groups design.
-The means of the sampling distributions of the PS and the CL are typically very similar when $\mu_1 = \mu_2$ and the correlation between the two sets of estimates was found to be well over .9 in Monte-Carlo simulations (Grissom & Kim, 2001).
-However, as the difference between $\mu_1$ and $\mu_2$ increases, this correlation sometimes decreases to a value as low as approximately .2, and  the CL tends to show more sampling error than the PS as the difference increases.
-Therefore, researchers who are estimating Pr(X_a, > X_b) should think about reporting PS alongside, if not instead of, the CL ES, even when assuming normality and homoscedasticity (Grissom & Kim, 2001).
+$$PS = \mathbb{P}(X_a > X_b) $$
 
-The exact confidence interval is calculated based on Newcombe(2006):
-$$ UL = \hat{\theta} + z \sqrt{var(\hat{\theta})} $$
-$$ LL = \hat{\theta} - z \sqrt{var(\hat{\theta})} $$
-and $var(\theta)$ being 
-$$var(\theta) = \theta(1-\theta) \frac{1 + \frac{n * (1 - \theta)}{2 - \theta} + \frac{m * \theta}{1 + \theta}}{mn}\$$
+that is, the probability that a randomly sampled member of population *a* will have a score ($X_a$) that is higher than the score ($X_b$) attained by a randomly sampled member of population *b* (Grissom, 1994a). This is the same population effect estimated by the parametric Common Language (*CL*) ES statistic (see the documentation tab of the page on parametric ES for the independent groups design).
 
-## Generalized Odds Ratio
-The generalized odds ratio is the probability of superiority of group a compared to group b divided by the probability of superiority of group b compared to group a(Grissom & Kim, 2012):
-$$ OR_g = \frac{ \hat{P}_{a>b}}{\hat{P_{b>a}}}$$
+Therefore, the *PS* measures the probabilistic superiority of one group's scores over another group's scores. Since it is a probability, its value ranges from 0 to 1. A *PS* of 0 means that every member of population *a* is outscored by every member of population *b*. A *PS* of 1 means that every member of population *a* outscores every member of population *b*.  
+
+A nonparametric estimator of this population effect is given by (Grissom, 1994a):
+
+$$ \hat{p}_{a>b} = \frac{U}{(n_an_b) - n_{ties}} $$
+
+with *U* being the *U*-statistic---the number of times that the scores from one specified sample are higher than the scores from the other sample with which they are paired (with ties being ignored)---and $(n_an_b) - n_{ties}$ being the total number of possibles pairings minus the number of pairings resulting in a tie (which should optimally be 0 if this estimator is chosen). Thus, $\hat{p}_{a>b}$ is the proportion of times a group *a* score was higher than a group *b* score in the sample (with ties being ignored). This definition assumes no ties or equal allocations of ties (Grissom, 1994a). This assumption should hold for continuous dependent variables. However, in practice continuous variables can often only be measured coarsely, which might result in tied values. Additionally, psychological research also employs measures on an ordinal scale, which too likely yield ties. Grissom (1994b) recommended count ties as half a "win". It can be argued that this leads to a slightly different definition of the population effect and thus it can be considered its own distinct ES - see the *A* measure of stochastic superiority below (Vargha & Delaney, 2000).  
+
+$\hat{p}_{a>b}$ is a nonparamatetric estimator of the population effect also estimated by the *CL* ES statistic , in the sense that the former estimator's definition does not rely on the normality and homoscedasticity assumption of the latter estimator's.  
+
+The means of the sampling distributions of $\hat{p}_{a>b}$  and the *CL* statistic are typically very similar when the population means are equal ($\mu_a = \mu_b$) with the correlation between the two sets of estimates found to be well over .9 in Monte-Carlo simulations (Grissom & Kim, 2001).  
+However, as the difference between $\mu_a$ and $\mu_b$ increases, this correlation sometimes decreases to a value as low as approximately .2, and  the *CL* statistic tended to show more sampling error than the *PS* estimator as the difference increased.  
+Therefore, researchers who are estimating $\mathbb{P}(X_a > X_b)$ should think about reporting *PS* alongside, if not instead of, the *CL* ES, even when assuming normality and homoscedasticity (Grissom & Kim, 2001).
+
+The exact confidence interval is calculated based on Newcombe (2006):
+
+$$ UL = \hat{p}_{a>b} + z \sqrt{var(\hat{p}_{a>b})} $$
+$$ LL = \hat{p}_{a>b} - z \sqrt{var(\hat{p}_{a>b})} $$
+
+with *z* being:
+
+$$z = \Phi(1 - \frac{\alpha}{2})$$
+
+and $var(\hat{p}_{a>b})$ being: 
+
+$$var(\hat{p}_{a>b}) = \hat{p}_{a>b}(1 - \hat{p}_{a>b}) \frac{1 + \frac{n (1 - \hat{p}_{a>b})}{2 - \hat{p}_{a>b}} + \frac{m \hat{p}_{a>b}}{1 + \hat{p}_{a>b}}}{nm}\$$ 
+
+Additionally, a $1 - \alpha$ percentile bootstrap CI is computed.  
+
+<br> 
+
+<h3 id = "IG_NP_A_measure"> The <i>A</i> measure of stochastic Superiority </h3>
+
+The population effect of interest is given by:
+
+$$A_{a|b} = \mathbb{P}(X_{a|b} > X_{b|a}) + .5 \mathbb{P}(X_a = X_b)$$
+
+yielding the two distinct population effects:
+
+$$A_{a} = \mathbb{P}(X_{a} > X_{b}) + .5 \mathbb{P}(X_a = X_b)$$
+
+$$A_{b} = \mathbb{P}(X_{b} > X_{a}) + .5 \mathbb{P}(X_a = X_b)$$
+
+these are, the probability that a randomly sampled score $X_a$ from population *a* will be greater than or equal to an independently drawn score $X_b$ from population *b* and vice versa (Vargha & Delaney, 2000). This quantity is identical to the population effect estimated by the parametric *CL* ES statistic and the nonparametric *PS* statistic for continuous measures where ties are not possible. However, this definition is also applicable to any measure at least ordinally scaled, where ties are quasi unavoidable and have to be explicitly accounted for. For a thorough discussion of the subtle yet important differences between these ES definitions as well as the relations between Cliff's $\delta$, the *CL* ES and $A_{a|b}$ consult Vargha and Delaney (2000).  
+
+If the dependent variable of interest is continuous and ties are not possible, then, much like with the *PS* and the *CL* ES definition, a value of $A_a$ > 0.5 indicates that population *a* is "stochastically"/"probabilistically" greater than population *b*. However, whenever ties are possible both $A_a$ and $A_b$ have to be inspected in order to determine which group is "stochastically"/"probabilistically" superior. Consider a case where $\mathbb{P}(X_a > X_b)$ = 0.1, $\mathbb{P}(X_b > X_a)$ = 0.3 and $\mathbb{P}(X_a = X_b)$ = 0.6. In this case $A_a = \mathbb{P}(X_a > X_b) + .5 \mathbb{P}(X_a = X_b)$ = 0.7 > 0.5. However, $A_b = \mathbb{P}(X_b > X_a) + .5 \mathbb{P}(X_a = X_b)$ = 0.9 > 0.7 = $A_a$. Thus, population *b* is "stochastically"" superior even though $A_a$ > 0.5. Therefore, whenever the user selects this effect size, both population effects are estimated.  
+
+A nonparametric estimators of these population effects are given by (Vargha & Delaney, 2000):
+
+$$ \hat{A}_a = \frac{U'_a}{n_an_b} $$
+$$ \hat{A}_b = \frac{U'_b}{n_an_b} $$
+
+with *U'* being the *U*-statistic accounting for ties---the number of times that the scores from one specified sample are higher than or equal to the scores from the other sample with which they are paired---and $n_an_b$ being the total number of possibles pairings. Thus, $\hat{A}_a$ is the proportion of times a group *a* score was higher than or equal to a group *b* score in the sample (and vice versa).  
+If this effect size is chosen by the user, both estimators are provided denoted as $\hat{A}_1$---estimating the second groups superioirty over the first (= $\hat{A}_a$ in the notation above)---and $\hat{A}_2$---estimating the first groups superiority over the first (= $\hat{A}_b$ in the notation above).  
+
+The exact confidence interval is calculated based on Newcombe (2006):  
+
+$$ UL = \hat{A}_{a|b} + z \sqrt{var(\hat{A}_{a|b})} $$
+$$ LL = \hat{A}_{a|b} - z \sqrt{var(\hat{A}_{a|b})} $$
+
+with *z* being:
+
+$$z = \Phi(1 - \frac{\alpha}{2})$$
+
+and $var(\hat{A}_{a|b})$ being
+
+$$var(\hat{A}_{a|b}) = \hat{A}_{a|b} (1 - \hat{A}_{a|b}) \frac{1 + \frac{n (1 - \hat{A}_{a|b})}{2 - \hat{A}_{a|b}} + \frac{m \hat{A}_{a|b}}{1 + \hat{A}_{a|b}}}{mn}\$$
+
+Additionally, a $1 - \alpha$ percentile bootstrap CI is computed.  
+
+<br>
+
+<h3 id = "IG_NP_GOR"> Generalized Odds Ratio (<i>OR</i><sub>g</sub>) </h3>
+
+The generalized odds ratio *OR*~g~ is the probability of superiority of group *a* compared to group *b* divided by the probability of superiority of group *b* compared to group *a* (Grissom & Kim, 2012):
+$$ OR_g = \frac{\hat{p}_{a>b}}{\hat{p}_{b>a}}$$
 
 the current estimated parameter (also known as Agresti's alpha) is:
-$$ OR_{g_pop} = \frac{Pr(Y_a > Y_b}{Pr(Y_b > Y_a} $$
+$$ OR_{gpop} = \frac{\mathbb{P}(X_a > X_b)}{\mathbb{P}(X_b > X_a)} $$
 
-The OR_gpop measures the odds that a randomly drawn outcome from one population will be superior to a randomly drawn outcome from the other population. 
+The *OR*~gpop~ measures the odds that a randomly drawn outcome from population *a* will be superior to a randomly drawn outcome from population *b*. 
 
 The exact Confidence Intervals can be found using the method described by Brown(2010) assuming that the data is retrieved from two independent normal distributions:
 $$ \varphi_L = \frac{W_L}{1-W}$$
@@ -47,21 +108,26 @@ $$ T_{(n+m -2, \lambda)}(T_{n + m - 2, 0}^{-1}(1 - \frac{p}{2})) = 0.975$$
 and $\lambda_U$ being the value of $\lambda$  satisfying
 $$ T_{(n+m -2, \lambda)}(T_{n + m - 2, 0}^{-1}(1 - \frac{p}{2})) = 0.025$$
 
-Additionally, an $1 - \alpha$ percentile bootstrap confidence interval is implemented.
+Additionally, an $1 - \alpha$ percentile bootstrap confidence interval is implemented.  
 
-## Dominance measure
-A variation of the probability of superiority was discussed by Cliff(1993) and is called Dominance Measure(DM): 
-$$ DM = Pr(Y_a > Y_b) - Pr(Y_b - Y_a) $$
+<br>
+
+<h3 id = "IG_NP_DM"> Dominance measure </h3>
+
+A variation of the probability of superiority was discussed by Cliff(1993) and is called Dominance Measure (*DM*): 
+$$ DM = \mathbb{P}(X_a > X_b) - \mathbb{P}(X_b - X_a) $$
 Its estimator is consequently given by 
 $$ ds = \hat{p}_{a>b} - \hat{p}_{b>a} $$
-Because as probabilities, both Pr (probability) values can range from 0 to 1, the DM ranges from -1 to 1. When calculating the Pr values, ties are ignored. 
-The DM is a linear function of the PS and if there are no ties: 
+Because as probabilities, both $\hat{p}_{a>b}$ and $\hat{p}_{b>a}$ can range from 0 to 1, the *DM* ranges from -1 to 1. When calculating the probability values, ties are ignored. 
+The *DM* is a linear function of the PS and if there are no ties: 
 $$DM = 2PS -1$$
-The confidence limits for the DM are calculated as follows(Grissom & Kim, 2012): 
+The confidence limits for the DM are calculated as follows (Grissom & Kim, 2012): 
 $$ UL = PS_{UL} * 2 -1$$
 $$ UL = PS_{LL} * 2 -1 $$
 with $PS_{UL}$ and $PS_{LL}$ being calculated as described above for the probability of superiority measure.
 Additionally, an $1 - \alpha$ bootstrap confidence interval is implemented.
+
+<br>
 
 ## Nonparametric Coefficient of Overlapping
 The coefficient of overlapping (OVL) is defined as the common area under two probability densities and is used as a measure of agreement of two income distributions. When X and Y denote two univariate random variables with corresponding absolutely continuous distribution functions F and G and densities f and g, the coefficient of overlapping is definded as (Weitzman, 1970):
@@ -221,9 +287,11 @@ If the sample of either group a or that of group b consists of less than 4 obser
 
 Additionally, an $1 - \alpha$ percentile bootstrap CI is computed.  
   
+<br>
+
+<br>
   
-  
-<hr></hr>
+<hr>
 
 <h1 id="IG_NP_refs"> References </h1>  
   
@@ -243,6 +311,10 @@ Fagerland, M. W., Lydersen, S., & Laake, P. (2015). Recommended confidence inter
 
 Feng, D. (2007). *Robustness and power of ordinal d for paired data*. Real data analysis, 163-183.  
 
+Grissom, R. J. (1994a). Probability of the superior outcome of one treatment over another. *Journal of Applied Psychology*, *79*(2), 314--316. <https://doi.org/10.1037/0021-9010.79.2.314>  
+
+Grissom, R. J. (1994b). Statistical analysis of ordinal categorical status after therapies. *Journal of Consulting and Clinical Psychology*, *62*(2), 281--284. <https://doi.org/10.1037/0022-006x.62.2.281>  
+
 Grissom, R. J., & Kim, J. J. (2001). Review of assumptions and problemns in the appropriate conceptualization of effect size. *Psychological Methods*, *6*(2), 135--146. <https://doi.org/10.1037//1082-989X.6.2.135>  
 
 Grissom, R. J., & Kim, J. J. (2005). *Effect sizes for research: Univariate and multivariate applications* (2nd ed.). Taylor and Francis Group.  
@@ -253,4 +325,8 @@ Hedges, L. V., & Olkin, I. (1985). *Statistical methods for meta-analysis*. Acad
 
 Kraemer, H. C., & Andrews, G. (1982). *A nonparametric technique for meta-analysis effect size calculation*. Psychological bulletin, 91(2), 404. <https://psycnet.apa.org/doi/10.1037/0033-2909.91.2.404>  
 
+Newcombe, R. G. (2006). *Confidence intervals for an effect size measure based on the Mann–Whitney statistic. Part 1: general issues and tail‐area‐based methods*. Statistics in medicine, 25(4), 543-557.
+
 Schmid, F., & Schmidt, A. (2006). *Nonparametric estimation of the coefficient of overlapping—theory and empirical application*. Computational statistics & data analysis, 50(6), 1583-1596. <https://doi.org/10.1016/j.csda.2005.01.014>  
+
+Vargha, A., & Delaney, H. D. (2000). A critique and improvement of the CL common language sffect size statistic of McGraw and Wong. *Journal of Educational and Behavioural Statistics*, *25*(2), 101--132. <https://doi.org/10.3102/10769986025002101>

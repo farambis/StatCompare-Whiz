@@ -366,16 +366,17 @@ This confidence interval is exact only when the data stem from normal population
 
 Additionally, an $1 - \alpha$ percentile bootstrap CI is computed.  
 
-## The Common Language ES
+<br>
 
+<h3 id = "IG_P_CLES"> The Common Language ES </h3>
 
 The population effect of interest is given by:
 
 $$ \mathbb{P}\(X_a > X_b\)$$
 
-that is, the probability that a randomly selected score from population *a* exceeds a randomly selected score from population *b*. As argued by Mastrich & Hernandez (2021), The CL es can be considered to provide a more intuitive way to understand statistical results and therefore aids practitioners in understanding research findings and making informed decisions. 
+that is, the probability that a randomly selected score from population *a* exceeds a randomly selected score from population *b*. As argued by Mastrich & Hernandez (2021), The *CL* ES can be considered to provide an intuitive way to understand statistical results and therefore aids practitioners in understanding research findings and making informed decisions.  
 
-The parametric estimator assuming normality and homogeneity of the two populations implemented in this application is given by (McGraw & Wong, 1992):
+The parametric estimator, which assumes normality and homoscedasticity of the two populations, implemented in this application is given by (McGraw & Wong, 1992):
 
 $$CL = \Phi\(\frac{\bar{X}_a - \bar{X_b}}{\sqrt{s_a^2 + s_b^2}}\)$$
 
@@ -383,9 +384,9 @@ One of many parametric approximate estimators (e.g., see Grissom, 1994) of the a
 
 $$CL_d = \Phi\(\frac{d_p}{sqrt(2)}\)$$
 
-No closed form formulas were identified for the computation of a ($1-\alpha$) CI for the CL ES. Mastrich & Hernandez (2021) recommends to transform the bounds of the CI of $d_p$ "to provide a sense of uncertainty around the reported CLES" (p.733). The user of this application can use the above formula on the CI limits given by the application for $d_p$ to transform these limits into $CL_d$ values, if they wish to do so. Otherwise, a $1 - \alpha$ percentile bootstrap CI is computed and can be used to communicate said uncertainty.  
+No closed form formulas were identified for the computation of a ($1-\alpha$) CI for the *CL* ES. Mastrich & Hernandez (2021) recommends to transform the bounds of the CI of $d_p$ "to provide a sense of uncertainty around the reported CLES" (p. 733). The user of this application can use the above formula on the CI limits given by the application for $d_p$ to transform these limits into $CL_d$ values, if they wish to do so. Otherwise, a $1 - \alpha$ percentile bootstrap CI is computed and can be used to communicate said uncertainty.  
 
-A nonparametric estimator of the above population effect that does not make the normality or homoscedasticity assumptions of the CL ES, called the probability of superiority (PS; Grissom, 1994), is described in the documentation tab of the page on nonparametric ES for the dependent groups design. As discussed by Grissom and Kim (2001) the PS ES is a better estimator of the above described population effect and if raw data is available the user is best advised to compute it alongside the CL ES.  
+Two nonparametric estimators of the above population effect that do not make the normality or homoscedasticity assumptions of the *CL* ES, are called the probability of superiority (*PS*; Grissom, 1994) and the *A* measure of stochastic superiority (Vargha & Delaney, 2000) (see the documentation tab of the page on nonparametric ES for the independent groups design). As discussed by Grissom and Kim (2001) and Vargha and Delaney (2000) these estimators can be considered preferable to the  parametric estimator and if raw data is available the user is best advised to compute one of them alongside the *CL* ES.  
 
 
 ## Measures of Nonoverlap

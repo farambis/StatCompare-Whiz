@@ -14,14 +14,18 @@ all_eff_sizes_displayed <- list(
   AKP_uneqvar = html("<em>d</em><sub>R, G</sub> (robust Glass' <em>d<sub>G</sub></em>)"),
   AKP_uneqvar1 = html("<em>d</em><sub>R, 1</sub> (robust Glass' <em>d<sub>G, 1</sub></em>)"),
   AKP_uneqvar2 = html("<em>d</em><sub>R, 2</sub> (robust Glass' <em>d<sub>G, 2</sub></em>)"),
-  mann_whitney_based_ps = html("Probability of Superiority (<em>PS</em>)"),
-  mann_whitney_based_ps_ignore_ties = html("Probability of Superiority (<em>PS</em>) (ties ignored)"),
+  mann_whitney_based_ps = html("The <i>A</i> measure of stochastic Superiority (<em>\U00C2</em>)"),
+  mann_whitney_based_ps1 = html("<i>A</i><sub>1</sub>"),
+  mann_whitney_based_ps2 = html("<i>A</i><sub>2</sub>"),
+  mann_whitney_based_ps_ignore_ties = html("Probability of Superiority (<em>PS</em>)"),
   parametric_ovl = html("<em>OVL</em>"),
-  ps_dependent = html("Probability of Superioirty (<em>PS</em>)"),
-  ps_dependent_ignore_ties = html("Probability of Superiority (<em>PS</em>) (ties ignored)"),
+  ps_dependent = html("The <i>A</i> measure of stochastic Superiority (<em>\U00C2</em>)"),
+  ps_dependent1 = html("<i>A</i><sub>1</sub>"),
+  ps_dependent2 = html("<i>A</i><sub>2</sub>"),
+  ps_dependent_ignore_ties = html("Probability of Superiority (<em>PS</em>)"),
   non_parametric_ovl = html("non-parametric <em>OVL</em>"),
-  generalized_odds_ratio = html("Generalized <em>OR</em>"),
-  generalized_odds_ratio_dependent = html("Generalized <em>OR</em>"),
+  generalized_odds_ratio = html("Generalised <em>OR</em><sub>g</sub>"),
+  generalized_odds_ratio_dependent = html("Generalised <em>OR</em><sub>g</sub>"),
   common_language = html("Common Language ES (<em>CL</em>)"),
   non_parametric_ovl_two = html("non-parametric <em>OVL<sub>2</sub></em>"),
   parametric_ovl_two = html("<em>OVL<sub>2</sub></em>"),
@@ -39,9 +43,9 @@ all_eff_sizes_displayed <- list(
   parametric_cohens_u3 = html("Cohen's <em>U3</em>"),
   non_parametric_cohens_u1 = html("non-parametric Cohen's <em>U1</em>"),
   variance_ratio = html("Variance Ratio (<em>VR</em>)"),
-  non_parametric_variance_ratio = html("non-parametric Variance Ratio"),
+  non_parametric_variance_ratio = html("non-parametric Variance Ratio (<em>VR</em>)"),
   tail_ratio = html("Tail Ratio (<em>TR</em>)"),
-  non_parametric_tail_ratio = html("non-parametric Tail Ratio"),
+  non_parametric_tail_ratio = html("non-parametric Tail Ratio (<em>TR</em>)"),
   non_parametric_cohens_u3 = html("non-parametric Cohen's <em>U3</em>"),
   non_parametric_glass_d = html("non-parametric Glass' <em>d<sub>G</sub></em>"),
   non_parametric_glass_d1 = html("non-parametric Glass' <em>d<sub>G, 1</sub></em>"),
@@ -68,7 +72,7 @@ all_eff_sizes_displayed <- list(
   parametric_cohens_u2_dependent = html("Cohen's <em>U2</em>"),
   parametric_cohens_u3_dependent = html("Cohen's <em>U3</em>"),
   variance_ratio_dependent = html("Variance Ratio (<em>VR</em>)"),
-  non_parametric_variance_ratio_dependent = html("non-parametric Variance Ratio"),
+  non_parametric_variance_ratio_dependent = html("non-parametric Variance Ratio (<em>VR</em>)"),
   tail_ratio_dependent = html("Tail Ratio (<em>TR</em>)"),
   robust_cohens_dz = html("<em>d</em><sub>R, z</sub> (robust Cohen's <em>d</em><sub>z</sub>)"),
   robust_cohens_d_dependent = html("<em>d</em><sub>R</sub> (robust Cohen's <em>d</em>)"),
@@ -137,7 +141,7 @@ map_choice_names <- function(choices) {
 }
 
 map_from_displayed_to_written_names <- function(choices) {
-  written_names <- gsub(pattern = "(</?em>)|(</sub>)", replacement = "", x = unname(unlist(map_choice_names(choices))))
+  written_names <- gsub(pattern = "(</?em>)|(</sub>)|(</?i>)", replacement = "", x = unname(unlist(map_choice_names(choices))))
   written_names <- gsub(pattern = ", ", replacement = "-", x = written_names)
   written_names <- gsub(pattern = "<sub>", replacement = "_", x = written_names)
   return(written_names)

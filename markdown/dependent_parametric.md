@@ -561,15 +561,15 @@ However, Fagerland et al. (2014) emphasize that while the implemented intervals 
 
 Additionally, an $1 - \alpha$ percentile bootstrap CI is computed.
 
-## The Common Language ES
+<h3 id = "DG_P_CLES"> The Common Language ES <h3>
 
 The population effect of interest is given by:
 
 $$ \mathbb{P}\(D > 0\) = \mathbb{X_{i,\,post} > X_{i,\,pre}}$$
 
-that is, the probability that a randomly selected score from the population of difference scores ($D = X_{post} - X_{pre}$) is greater than 0 (McGraw & Wong, 1992). This probability corresponds to the probability of someone's score from  measurement 2 (e.g., post treatment) exceeding the person's score from measurement 1 (e.g., pre treatment). The latter quantity can be interpreted as the probability of a subject improving themselves in the studied variable&mdash;if higher scores reflect betterment in the said variable&mdach; or the probability of someone ameliorating in the studied variable&mdash;if higher scores reflect amelioration in said variable. As argued by Mastrich & Hernandez (2021), The CL es can be considered to provide a more intuitive way to understand statistical results and therefore aids practitioners in understanding research findings and making informed decisions. 
+that is, the probability that a randomly selected score from the population of difference scores ($D = X_{post} - X_{pre}$) is greater than 0 (McGraw & Wong, 1992). This probability corresponds to the probability of someone's score from  measurement 2 (e.g., post treatment) exceeding the person's score from measurement 1 (e.g., pre treatment). The latter quantity can be interpreted as the probability of a subject improving themselves in the studied variable&mdash;if higher scores reflect betterment in the said variable&mdach; or the probability of someone ameliorating in the studied variable&mdash;if higher scores reflect amelioration in said variable. As argued by Mastrich & Hernandez (2021), The CL es can be considered to provide an intuitive way to understand statistical results and therefore aids practitioners in understanding research findings and making informed decisions. 
 
-A parametric estimator assuming normality and homogeneity of the two measurement distribution is given by (McGraw & Wong, 1992):
+A parametric estimator assuming normality the distribution of difference scores *D* is given by (McGraw & Wong, 1992):
 
 $$CL = \Phi\(d_z\)$$
 
@@ -577,8 +577,7 @@ with $d_z$ being the ES discussed above.
 
 No closed form formulas were identified for the computation of a ($1-\alpha$) CI for the CL ES. Mastrich & Hernandez (2021) recommends to transform the bounds of the CI of $d_z$ "to provide a sense of uncertainty around the reported CLES" (p.733). The user of this application can transform the CI limits given by the application for $d_z$ using the above formula if they wish to do so. Otherwise, a $1 - \alpha$ percentile bootstrap CI is computed and can be used to communicate said uncertainty.
 
-A nonparametric estimator of the above population effect that does not make the normality or homoscedasticity assumptions of the CL ES, called the probability of superiority (PS; Grissom, 1994), is described in the documentation tab of the page on nonparametric ES for the dependent groups design.
-
+Two nonparametric estimators of the above population effect that do not make the normality assumption of the *CL* ES, are called the probability of superiority (*PS*; Grissom, 1994) and the *A* measure of stochastic superiority (Vargha & Delaney, 2000) (see the documentation tab of the page on nonparametric ES for the dependent groups design). As discussed by Grissom and Kim (2001) and Vargha and Delaney (2000) these estimators can be considered preferable to the  parametric estimator and if raw data is available the user is best advised to compute one of them alongside the *CL* ES. 
 
 ## Measures of Nonoverlap
 
