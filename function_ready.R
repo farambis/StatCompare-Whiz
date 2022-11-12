@@ -1930,11 +1930,13 @@ ps_dependent_groups_ci <- function(x, y, ignore_ties = TRUE, pab = TRUE, alpha =
   return(list(lower_bound = lower_bound, upper_bound = upper_bound))
 }
 
-generalized_odds_ratio <- function(x, INDEX = NULL, y = NULL, ignore_ties = FALSE) {
-  if (is.null(y)) ps <- mann_whitney_based_ps(x, INDEX, ignore_ties = ignore_ties)
-  else {
-    ps <- ps_dependent_groups(x, y, ignore_ties = ignore_ties) }
-  return(ps / (1 - ps))
+generalized_odds_ratio <- function(x, INDEX = NULL, y = NULL, ignore_ties = TRUE) {
+  if (is.null(y)) {
+    ps <- mann_whitney_based_ps(x, INDEX, pab = TRUE, ignore_ties = ignore_ties)
+  } else {
+    ps <- ps_dependent_groups(x, y, pab = TRUE, ignore_ties = ignore_ties) 
+  }
+  return(ps/(1 - ps))
 }
 
 dominance_measure_based_es <- function(x = NULL, INDEX = NULL, y = NULL) {

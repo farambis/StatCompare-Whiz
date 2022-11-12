@@ -64,7 +64,7 @@ Thus, the *PS* for dependent groups can then be defined as the probability that 
 
 A nonparametric estimator of this population effect is given by (Grissom & Kim, 2005):
 
-$$ \hat{p}_{dep} = \frac{\sum_{i = 1}^{n}I_{\{x_{ia} > x_{ib}\}}(x_i)}{n - n_{ties}} $$
+$$ \hat{p}_{a>b} = \frac{\sum_{i = 1}^{n}I_{\{x_{ia} > x_{ib}\}}(x_i)}{n - n_{ties}} $$
 
 with
 $$I_{\{x_{ia} > x_{ib}\}}(x_i) = \begin{cases} 
@@ -165,6 +165,31 @@ in which case
 $$LL = \frac{1}{E}$$
 
 Additionally, an $1 - \alpha$ percentile bootstrap confidence interval is implemented.
+
+<br>
+
+<h3 id = "DG_NP_GOR"> Generalized Odds Ratio (<i>OR</i><sub>g</sub>) </h3>
+
+the population effect of interest is given by:
+
+$$ OR_{gpop} = \frac{\mathbb{P}(X_{ia} > X_{ib})}{\mathbb{P}(X_{ib} > X_{ia})} $$
+
+- $X_{ia}$ is the score of an individual under condition *a*
+- $X_{ib}$ is the score of that same (or related or matched) individual under condition *b*.
+
+The $OR_{gpop}$---also known as Agresti's alpha---measures the odds that within a randomly sampled pair of dependent scores (e.g., pre- and posttest measurements), the score under condition *a* (e.g., posttest) is superior to the score under condition *b* (e.g., pretest).
+
+A nonparametric estimator that does not make assumptions about the shape of the two population distributions given by (Grissom & Kim, 2012):
+
+$$ OR_g = \frac{\hat{p}_{a>b}}{\hat{p}_{b>a}}$$
+
+Thus, the generalized odds ratio ($OR_g$) is the probability of superiority of condition *a* compared to condition *b* divided by the probability of superiority of condition *b* compared to condition *a*.  When there are no ties present/when ties are ignored, the above estimator can be rewritten as:
+
+$$OR_g = \frac{\hat{p}_{a>b}}{1 - \hat{p}_{a>b}}$$
+
+and can be considered a function of the Probability of Superiority ES measure $\hat{p}_{a>b}$ described above.
+
+We could not identify a closed form formula for the confidence interval of this nonparametric effect size. Thus, a $1 - \alpha$ percentile bootstrap confidence interval is implemented exclusively.
 
 <br>
 

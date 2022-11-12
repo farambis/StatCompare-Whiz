@@ -14,6 +14,17 @@ A nonparametric estimator of this population effect is given by (Grissom, 1994a)
 
 $$ \hat{p}_{a>b} = \frac{U}{(n_an_b) - n_{ties}} $$
 
+where *U* is 
+
+$$U = \sum_{i = 1}^{n_a}\sum_{j = 1}^{n_b}I_{\{x_{ia} \gt x_{jb}\}}(x_{ia}, x_{jb})$$
+
+and 
+
+$$I_{\{x_{ia} \gt x_{ib}\}}(x_{ia}, x_{jb} = \begin{cases} 
+  1 & \text{if} \qquad x_{ia} \gt x_{jb}\\
+  0 & \text{if} \qquad x_{ia} \leq x_{jb}
+\end{cases}$$
+
 with *U* being the *U*-statistic---the number of times that the scores from one specified sample are higher than the scores from the other sample with which they are paired (with ties being ignored)---and $(n_an_b) - n_{ties}$ being the total number of possibles pairings minus the number of pairings resulting in a tie (which should optimally be 0 if this estimator is chosen). Thus, $\hat{p}_{a>b}$ is the proportion of times a group *a* score was higher than a group *b* score in the sample (with ties being ignored). This definition assumes no ties or equal allocations of ties (Grissom, 1994a). This assumption should hold for continuous dependent variables. However, in practice continuous variables can often only be measured coarsely, which might result in tied values. Additionally, psychological research also employs measures on an ordinal scale, which too likely yield ties. Grissom (1994b) recommended count ties as half a "win". It can be argued that this leads to a slightly different definition of the population effect and thus it can be considered its own distinct ES - see the *A* measure of stochastic superiority below (Vargha & Delaney, 2000).  
 
 $\hat{p}_{a>b}$ is a nonparamatetric estimator of the population effect also estimated by the *CL* ES statistic , in the sense that the former estimator's definition does not rely on the normality and homoscedasticity assumption of the latter estimator's.  
@@ -29,7 +40,7 @@ $$ LL = \hat{p}_{a>b} - z \sqrt{var(\hat{p}_{a>b})} $$
 
 with *z* being:
 
-$$z = \Phi(1 - \frac{\alpha}{2})$$
+$$z = \Phi^{-1}(1 - \frac{\alpha}{2})$$
 
 and $var(\hat{p}_{a>b})$ being: 
 
@@ -58,7 +69,32 @@ If the dependent variable of interest is continuous and ties are not possible, t
 A nonparametric estimators of these population effects are given by (Vargha & Delaney, 2000):
 
 $$ \hat{A}_a = \frac{U'_a}{n_an_b} $$
+
 $$ \hat{A}_b = \frac{U'_b}{n_an_b} $$
+
+where $U'_a$ is 
+
+$$U'_a = \sum_{i = 1}^{n_a}\sum_{j = 1}^{n_b}I_{\{x_{ia} \geq x_{jb}\}}(x_{ia}, x_{jb})$$
+
+with
+
+$$I_{\{x_{ia} \geq x_{ib}\}}(x_{ia}, x_{jb} = \begin{cases} 
+  1 & \text{if} \qquad x_{ia} \gt x_{jb}\\
+  0.5 & \text{if} \qquad x_{ia} = x_{jb}\\
+  0 & \text{if} \qquad x_{ia} \lt x_{jb}
+\end{cases}$$  
+
+and $U'_b$ being: 
+
+$$U'_a = \sum_{i = 1}^{n_a}\sum_{j = 1}^{n_b}I_{\{x_{ia} \leq x_{jb}\}}(x_{ia}, x_{jb})$$
+
+with
+
+$$I_{\{x_{ia} \leq x_{ib}\}}(x_{ia}, x_{jb} = \begin{cases} 
+  1 & \text{if} \qquad x_{ia} \lt x_{jb}\\
+  0.5 & \text{if} \qquad x_{ia} = x_{jb}\\
+  0 & \text{if} \qquad x_{ia} \gt x_{jb}
+\end{cases}$$  
 
 with *U'* being the *U*-statistic accounting for ties---the number of times that the scores from one specified sample are higher than or equal to the scores from the other sample with which they are paired---and $n_an_b$ being the total number of possibles pairings. Thus, $\hat{A}_a$ is the proportion of times a group *a* score was higher than or equal to a group *b* score in the sample (and vice versa).  
 If this effect size is chosen by the user, both estimators are provided denoted as $\hat{A}_1$---estimating the second groups superioirty over the first (= $\hat{A}_a$ in the notation above)---and $\hat{A}_2$---estimating the first groups superiority over the first (= $\hat{A}_b$ in the notation above).  
@@ -70,7 +106,7 @@ $$ LL = \hat{A}_{a|b} - z \sqrt{var(\hat{A}_{a|b})} $$
 
 with *z* being:
 
-$$z = \Phi(1 - \frac{\alpha}{2})$$
+$$z = \Phi^{-1}(1 - \frac{\alpha}{2})$$
 
 and $var(\hat{A}_{a|b})$ being
 
@@ -82,50 +118,56 @@ Additionally, a $1 - \alpha$ percentile bootstrap CI is computed.
 
 <h3 id = "IG_NP_GOR"> Generalized Odds Ratio (<i>OR</i><sub>g</sub>) </h3>
 
-The generalized odds ratio *OR*~g~ is the probability of superiority of group *a* compared to group *b* divided by the probability of superiority of group *b* compared to group *a* (Grissom & Kim, 2012):
-$$ OR_g = \frac{\hat{p}_{a>b}}{\hat{p}_{b>a}}$$
+the population effect of interest is given by:  
 
-the current estimated parameter (also known as Agresti's alpha) is:
 $$ OR_{gpop} = \frac{\mathbb{P}(X_a > X_b)}{\mathbb{P}(X_b > X_a)} $$
 
-The *OR*~gpop~ measures the odds that a randomly drawn outcome from population *a* will be superior to a randomly drawn outcome from population *b*. 
+The $OR_{gpop}$---also known as Agresti's alpha---measures the odds that a randomly drawn score from population *a* will be superior to a randomly drawn score from population *b*.  
 
-The exact Confidence Intervals can be found using the method described by Brown(2010) assuming that the data is retrieved from two independent normal distributions:
-$$ \varphi_L = \frac{W_L}{1-W}$$
-$$ \varphi_U = \frac{W_U}{1-U}$$
+A nonparametric estimator that does not make assumptions about the shape of the two population distributions given by (Grissom & Kim, 2012):  
 
-with  $\varphi_L$ being the lower border and $\varphi_U$ being the upper confidence interval and $W_L$ and $W_U$ being
-$$W_L = \Phi(\frac{\delta_L}{\sqrt{2}})$$
-$$W_U = \Phi(\frac{\delta_U}{\sqrt{2}})$$
+$$ OR_g = \frac{\hat{p}_{a>b}}{\hat{p}_{b>a}}$$
 
-with $\delta_L$ and $\delta_L$ being 
-$$ \delta_L = \lambda_L\sqrt{\frac{1}{n} + \frac{1}{m}} $$
-$$ \delta_U = \lambda_U\sqrt{\frac{1}{n} + \frac{1}{m}} $$
+Thus, the generalized odds ratio ($OR_g$) is the probability of superiority of group *a* compared to group *b* divided by the probability of superiority of group *b* compared to group *a*.  When there are not ties present/when ties are ignored, the above estimator can be rewritten as:  
 
-with $\lambda_L$ being the value of $\lambda$  satisfying 
-$$ T_{(n+m -2, \lambda)}(T_{n + m - 2, 0}^{-1}(1 - \frac{p}{2})) = 0.975$$
+$$OR_g = \frac{\hat{p}_{a>b}}{1 - \hat{p}_{a>b}}$$
 
-and $\lambda_U$ being the value of $\lambda$  satisfying
-$$ T_{(n+m -2, \lambda)}(T_{n + m - 2, 0}^{-1}(1 - \frac{p}{2})) = 0.025$$
+and can be considered a function of the Probability of Superiority ES measure $\hat{p}_{a>b}$ described above.  
 
-Additionally, an $1 - \alpha$ percentile bootstrap confidence interval is implemented.  
+We could not identify a closed form formula for the confidence interval of this nonparametric effect size. Thus, a $1 - \alpha$ percentile bootstrap confidence interval is implemented exclusively.  
 
 <br>
 
 <h3 id = "IG_NP_DM"> Dominance measure </h3>
 
 A variation of the probability of superiority was discussed by Cliff(1993) and is called Dominance Measure (*DM*): 
+
 $$ DM = \mathbb{P}(X_a > X_b) - \mathbb{P}(X_b - X_a) $$
-Its estimator is consequently given by 
-$$ ds = \hat{p}_{a>b} - \hat{p}_{b>a} $$
-Because as probabilities, both $\hat{p}_{a>b}$ and $\hat{p}_{b>a}$ can range from 0 to 1, the *DM* ranges from -1 to 1. When calculating the probability values, ties are ignored. 
-The *DM* is a linear function of the PS and if there are no ties: 
+
+Its estimator is consequently given by: 
+
+$$ ds = \tilde{p}_{a>b} - \tilde{p}_{b>a} $$
+
+with 
+
+$$ \tilde{p} = \frac{U}{n_a n_b}$$
+
+with *U* being defined as above (see documentation for the Probability of Superiority, *PS*). 
+
+When there are no ties present---i.e., $x_{ia} \neq x_{jb} \quad \text{for any} \ i \in \{1, \ldots, n_a\}, \ \text{and} \ j \in \{1,\ldots,n_b\}$---both $\hat{p}_{a>b}$ and $\hat{p}_{b>a}$ can range from 0 to 1. In this case, the *DM* ranges from -1 to 1. However, when ties are present then the *DM* ranges from -*g* to *g* with *g* being the proportion of comparisons where $x_{ia} \neq x_{jb}$.  
+
+Additionally, when there are not ties present the *DM* is a linear function of the *PS*: 
+
 $$DM = 2PS -1$$
-The confidence limits for the DM are calculated as follows (Grissom & Kim, 2012): 
-$$ UL = PS_{UL} * 2 -1$$
-$$ UL = PS_{LL} * 2 -1 $$
-with $PS_{UL}$ and $PS_{LL}$ being calculated as described above for the probability of superiority measure.
-Additionally, an $1 - \alpha$ bootstrap confidence interval is implemented.
+
+and as a result, the confidence limits for the DM can be calculated by transforming the confidence limits on the *PS* statistic as follows (Grissom & Kim, 2012): 
+
+$$ UL = 2PS_{UL} - 1$$
+$$ UL = 2PS_{LL} - 1 $$
+
+with $PS_{UL}$ and $PS_{LL}$ being calculated as described above (see documentation for the *PS*).
+
+Additionally, an $1 - \alpha$ bootstrap confidence interval is implemented. This CI should be reported whenever ties are present.
 
 <br>
 
