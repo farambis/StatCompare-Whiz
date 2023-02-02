@@ -1,3 +1,67 @@
+<div class="toc_container">
+<h2 class="toc_title">Table of contents</h2>
+ <ul>
+  <li><a href="#IG_P_intro"><h3>1. The independent groups design</h3></a>
+  <li><a href="#"><h3>2. </h3></a>
+    <ul>
+      <li><a href="#"><h4>2.1. </h4></a></li>
+      <li><a href="#"><h4>2.2. </h4></a></li>
+    </ul>
+  </li>
+  <li><a href="#"><h3>3. </h3></a>
+    <ul>
+     <li><a href="#"><h4>3.1. </h4></a></li>
+     <li><a href="#"><h4>3.2. </h4></a></li>
+     <li><a href="#"><h4>3.4. </h4></a></li>
+     <li><a href="#"><h4>3.3. </h4></a></li>
+     <li><a href="#"><h4>3.5. </h4></a></li>
+     <li><a href="#"><h4>3.6. </h4></a></li>
+    </ul>
+  </li>
+  <li><a href="#IG-D-refs"><h3>. References</h3></a></li>
+ </ul>
+</div>
+<h2 id = "DG_P_intro"> The independent groups design </h2>
+
+<h2 id = "DG_P_normality_homoscedasticity"> Measures assuming normally distributed and homoscedastic populations </h3>
+<h3 id = "DG_P_normality_homoscedasticity_SLD"> Measures of standardised location difference </h3>
+<h4 id = "DG_P_cohens_d"> Cohen's \(d\) </h4>
+<h4 id = "DG_P_hedges_g"> Hedges' \(g\) </h4>
+<h4 id = "DG_P_bonett_d"> Cohen's \(d'\) </h4>
+<h4 id = "DG_P_cohens_drm"> Cohen's \(d_RM\) </h4>
+<h4 id = "DG_P_hedges_grm"> Hedges' \(g_RM\) </h4>
+
+
+<h3 id = "DG_P_normality_homoscedasticity_OM"> Measures of (non-)overlap </h3>
+<h4 id = "DG_P_OVL"> The Coefficient of Overlapping (\(OVL\)) </h4>
+<h4 id = "DG_P_OVL2"> The Coefficient of Overlapping Two (\(OVL_2\)) </h4>
+<h4 id = "DG_P_u1"> Cohen's \(U_1\) </h4>
+<h4 id = "DG_P_u2"> Cohen's \(U_2\) </h4>
+<h4 id = "DG_P_u3"> Cohen's \(U_3\) </h4>
+
+<h3 id = "DG_P_normality_homoscedasticity_PM"> Probabilistic measures of effect </h3>
+<h4 id = "DG_P_CLES"> The Common Language ES \(CLES\) <h3>
+
+<h2 id = "DG_P_normality"> Measures assuming normally distributed population(s) </h2>
+<h3 id = "DG_P_normality_SLD"> Measures of standardised location difference </h3>
+<h4 id = "DG_glass_d"> Glass' \(d_{G,\,j}\) </h4>
+<h4 id = "DG_hedges_g"> Hedges' \(g_{G,\,j}\) </h4>
+<h4 id = "DG_cohens_d_z"> Cohen's \(d_z\) </h4>
+<h4 id = "DG_hedges_g_z"> Hedges' \(g_z\) </h4>
+
+<h3 id = "DG_P_normality_spread_tails"> Measures of difference in group spread and tails  </h3>
+<h4 id = "DG_P_TR"> Tail ratio \(TR\) </h4>
+<h4 id = "DG_P_VR"> Variance ratio \(VR\) </h4>
+
+<h2 id = "DG_P_outlier_resistent"></h2>
+<h3 id = "DG_P_outlier_resistent_SLD"> Measures of standardised location difference </h3>
+<h4 id = "DG_P_dR"> \(d_R\) (robust Cohen's \(d\)) </h4>
+<h4 id = "DG_P_dGR"> \(d_{R,\,j}\) (robust Glass' \(d_{G,\,j}\)) </h4>
+<h4 id = "DG_P_dRz"> \(d_{Rz}\) (robust Cohen's \(d_z\))</h4>
+<h4 id = "DG_P_SMD"> Standardised median differences </h4>
+<h5 id = "DG_P_d_MAD"> \(d_{MAD}\) </h5>  
+<h5 id = "DG_P_d_RIQ"> \(d_{R_{IQ}}\) </h5>  
+<h5 id = "DG_P_d_bw"> \(d_{bw}\) </h5>
 <h1> Dependent groups design  </h1>
 
 <h2 id="DG_normality_homoscedasticity"> Assuming Normality but not Homoscedasticity </h2>
@@ -50,6 +114,8 @@ This CI formula is derived under the assumption that the population of differenc
 
 Additionally, an $1 - \alpha$ percentile bootstrap CI is computed.
 
+<br>
+
 <h3 id="DG_hedges_g_z"> Hedges' \(g_z\) </h3>
 
 As mentioned above $d_z$ has a slight positive bias, which can be corrected. This alternative formula (e.g., Gibbons et al. (1993)) estimates the same population parameter as $d_z$ given in $Eq.(DG )$\$:
@@ -63,6 +129,8 @@ $$J(\nu) = \frac{\Gamma(\frac{\nu}{2})}{\sqrt{\frac{\nu}{2}}\Gamma(\frac{\nu - 1
 $1 - \alpha$ CI is implemented the same way as for $d_z$ with $d_z$ simply being replaced by $g_z$ in $Eq (DG )$. The properties of this CI method should be comparable to the ones described for the noncentral t based method described for $d_z$!
 
 Additionally, an $1 - \alpha$ percentile bootstrap CI is computed.
+
+<br>
 
 <h3 id="DG_glass_d"> Glass' \(d_{G,\,j}\) </h3>
 
@@ -115,6 +183,8 @@ Bonett (2015) examined this CI method under various conditions using simulations
 Algina et al. (2005) proposed a noncentral t based approximate CI and examined its behaviour under nonnormality and heteroscedasticity. While this method performed identically well under normality, it did show lower non-rejection rates under the cases of nonnormality studied by the authors with non-rejection rates decreasing with increasing size of $\Delta$. In general the CI method performed worse than the one implemented here, however, this might be due to the fact that Bonett (2015) and Algina et al. (2005) considered differing cases of nonnormality. Consequently, Algina et al. (2005) recommend a different effect size alltogether, $d_{R,\,j}$, under nonnormality.
 
 Additionally, an $1 - \alpha$ percentile bootstrap CI is computed. Algina et al. (2005) studied this method under nonnormality and heteroscedasticity. Nonnormality caused non-rejection rates to consistently fall below the nominal rate, decreasing with an increasing value of $\delta$. This effect was especially strong, when the variance of the population whose standard deviation estimate was used as the standardiser (population b) was higher than the variance of the other population (population a). Such a ratio of population variances ($\sigma^2_b > \sigma^2_a$) resulted in low non-rejection rates even under normality, dipping below 0.9 for some combinations of effect size and sample size.
+
+<br>
 
 ## Hedges' $g_{G,\,j}$
 
@@ -561,7 +631,7 @@ However, Fagerland et al. (2014) emphasize that while the implemented intervals 
 
 Additionally, an $1 - \alpha$ percentile bootstrap CI is computed.
 
-<h3 id = "DG_P_CLES"> The Common Language ES <h3>
+<h3 id = "DG_P_CLES"> The Common Language ES </h3>
 
 The population effect of interest is given by:
 
@@ -579,53 +649,137 @@ No closed form formulas were identified for the computation of a ($1-\alpha$) CI
 
 Two nonparametric estimators of the above population effect that do not make the normality assumption of the *CL* ES, are called the probability of superiority (*PS*; Grissom, 1994) and the *A* measure of stochastic superiority (Vargha & Delaney, 2000) (see the documentation tab of the page on nonparametric ES for the dependent groups design). As discussed by Grissom and Kim (2001) and Vargha and Delaney (2000) these estimators can be considered preferable to the  parametric estimator and if raw data is available the user is best advised to compute one of them alongside the *CL* ES. 
 
-## Measures of Nonoverlap
-
-
-If the populations being compared are normal and with equal variability it is possible to define measures of nonoverlap which are related with cohen's d and with themselves through the cumulative normal distribution. (Cohen, 1988).
-
-### Parametric Coefficient of Overlapping for dependent groups
-The coefficient of overlapping (OVL) is defined as the common area under two probability densities and is used as a measure of agreement of two distributions(Bradley, 2006). Under the assumption of normality and homoscedasticity it can be simply estimated by plugging Cohen's d into the normal cumulative distribution function (DelGiudice, 2019)::
-$$ OVL = 2 \phi (\frac{-|d|}{2})$$
-$OVL (X, Y)$ = 1 if and only if the distributions of X and Y are equal and OVL(X, Y) = 0 if and only if the supports of the distributions of X and Y have no interior points in common which is the reason why $OVL (X, Y)$ can be interpreted as a measure of agreement of the two distributions.
-Nonparametric estimations can be obtained by replacing the densities by appropriate kernel density estimators and the integrals by an appropriate quadrature formula or the sample mean(see documentation of the nonparametric coefficient of overlapping).
-We could not identify a closed form formula for the confidence interval of this effect size. Thus, a $1 - \alpha$ percentile bootstrap confidence interval is implemented exclusively.
-
-### Parametric Coefficient of Overlapping Two for dependent groups
-The overlapping coefficient two ($OVL_2$) is the proportion of overlap relative to the joint distribution and can be estimated with the following formula under the assumption of normality and homoscedasticity (DelGiudice, 2019):
-$$ OVL_2 = \frac{OVL}{2-OVL}$$
-with OVL being calculated as described above.
-Grice and Barret(2014) argue that OVL is to be preferred over $OVL_2$ in most contexts, because $OVL_2$ gives information about overlap and nonoverlap with respect to the joint distribution or combined area of the two distributions, which is unitutitive. OVL, on the other hand, indicates what percentage of the area a distribution shares with the other distribution which is easier to interpret.    
-We could not identify a closed form formula for the confidence interval of this effect size. Thus, a $1 - \alpha$ percentile bootstrap confidence interval is implemented exclusively.
-
-
-### Cohen's U1
-
-
-$U_1$ can be interpreted as percentage of nonoverlap and is characterized by the following formula under the assumption of normality and homoscedasticity(Cohen, 1988):
-$$U_1 = \frac{2\Phi_{d/2}-1}{\Phi_{d/2}} = \frac{2U_2-1}{U_2}$$
-with $d_p$ being a deviate in the unit normal curve and  $\Phi$ being the percentage of the population of cases falling below a given normal deviate.
-We could not identify a closed form formula for the confidence interval of this effect size. Thus, a $1 - \alpha$ percentile bootstrap confidence interval is implemented exclusively.
 <br>
 
+<h3 id="IG_P_overlap_measures"> Measures of (Non-)overlap </h3>
 
+If the measurements being compared are normal and with equal variability it is possible to define measures of (non-)overlap which are related with cohen's $d$ and with themselves through the cumulative normal distribution (Cohen, 1988).
 
-### Cohen's U2
+For the documentation of these measures the following notation will be use:  
+Let $X_a$ denote the random variable 'score of a random member of measurement *a* and $X_b$ denote the random variable 'score of a random measurement of population *b*. Further, let $F_a$ and $F_b$ denote the corresponding absolutely continuous distribution functions and $f_a$ and $f_b$ the corresponding probability density functions respectively.
 
-When examing two populations, Cohen's measure of nonoverlap$ U_2$ is the percentage of one population that exceeds the same percentage in the other population. It is described by the following formula under the assumption of normality and homoscedasticity (Cohen, 1988):
-$$U2 = \Phi_{d/2}$$
-with $d$ being a deviate in the unit normal curve and  $\Phi$ being the percentage of the population of cases falling below a given normal deviate.
-We could not identify a closed form formula for the confidence interval of this effect size. Thus, a $1 - \alpha$ percentile bootstrap confidence interval is implemented exclusively.
+<br> 
+
+<h4 id = "IG_D_P_OVL"> The Coefficient of Overlapping (\(OVL\)) </h4>
+
+The population effect of interest is given by (e.g., Reiser & Faraggi, 1999):
+
+$$ OVL = \int_{-\infty}^{\infty} \min \left \{f_a(x), f_b(x) \right \} dx $$
+
+The coefficient of overlapping ($OVL$) is defined as the common area under two probability densities---i.e., the proportion of overlap between the two distributions/measurements---and is used as a measure of agreement of two distributions (Bradley, 2006).  Under the assumption of normality and homoscedasticity the above quantity can be expressed by simply plugging Cohen's $\delta$ into the normal cumulative distribution function, giving the formula:
+
+$$ OVL = 2 \Phi \left( \frac{-|\delta|}{2} \right) $$
+
+$OVL$ = 1 if and only if the two measurement distributions are identical (i.e., in the case of normal distributions: have the same expectation and variance) and $OVL$ = 0 if and only if the supports of the distributions have no interior points in common (i.e., when the distributions do not overlap at all) which is the reason why $OVL$ can for example be interpreted as a measure of agreement of the two distributions.
+
+A parametric estimator of the above quantity is given by:
+
+$$ \hat{OVL} = 2 \Phi \left( \frac{-|d|}{2} \right) $$
+
+this estimator is a monotonic function of the absolute value of Cohen's $d$ (see above).
+
+A nonparametric estimator of the population effect can be obtained by using appropriate kernel density estimators and an appropriate quadrature formula (documentation tab of the page on nonparametric ES for the independent groups design).
+
+A $1 - \alpha$ CI based on the noncentral F distribution is implemented as recommended by Reiser and Faraggi (1999).
+
+Firstly $d$ is transformed into an estimated non-centrality parameter (ncp) $\hat{\eta^2}$:
+
+$$ \hat{\eta^2} = \left( \frac{d}{\nu} \right)^2 = t^2 \quad \quad Eq.(1.2)$$
+
+with $$ \nu = \sqrt{\frac{n_a + n_b}{n_a \cdot n_b}} $$
+
+with $n_{a|b}$  being the sample size of group *a* and *b* respectively and $t$ being the student's *t*-statistic. Then the ncp $\eta^2_L$ of the noncentral *F* distribution (with $df_1 = 1$ and $df_2 = n_a + n_b - 2$ degrees of freedom) which has $\hat{\eta^2}$ as its $1 - \frac{\alpha}{2}$ quantile is iteratively searched for. If $\mathbb{P} \left( F_{1, n_a + n_b - 2}(ncp = 0) \leq \hat{\eta^2} \right) \leq 1 - \frac{\alpha}{2}$ then $\eta^2_L$ is set to 0.
+
+Next, the non-centrality parameter $\eta^2_U$ of the noncentral *F* distribution (with $df_1 = 1$ and $df_2 = n_a + n_b - 2$ degrees of freedom) which has $\hat{\eta^2}$ as its $\frac{\alpha}{2}$ quantile is iteratively searched for. If $\mathbb{P}\left(F_{1, n_a + n_b - 2}(ncp = 0) \leq \hat{\eta^2} \right) \leq \frac{\alpha}{2}$ then $\eta^2_U$ is set to 0.
+
+The identified upper and lower confidence limits of $\eta^2$ are then transformed back into $\hat{OVL}$:
+
+$$LL = 2 \Phi \left( \frac{-(\eta^2_U \cdot \nu)}{2} \right) \quad \quad Eq.(1.3)$$
+
+$$UL = 2 \Phi \left( \frac{-(\eta^2_L \cdot \nu)}{2} \right) \quad \quad Eq.(1.4)$$
+
+This method yields a noncentral *F* based approximate CI. This CI formula, just as the formula for the estimator, is derived under the assumption that both populations follow normal distributions with equal variances. Simulations by Reiser and Faraggi (1999) found that when assumptions are met, this method showed close to nominal $1 - \alpha$ coverage rates for various values of $\delta$ and outperformed alternative CI procedures when the value of $\delta$ and/or sample sizes are small.
+
+Additionally, a $1 - \alpha$ percentile bootstrap CI is implemented.
+
 <br>
 
+<h4 id = "IG_D_P_OVL2"> The Coefficient of Overlapping Two (\(OVL_2\))</h4>
 
+The population effect of interest is given by:
 
-### Cohen's U3
+$$ OVL_2 = \frac{\int_{-\infty}^{\infty} \min \{ f_a(x), f_b(x) \} dx}{\int_{-\infty}^{\infty} \max \{ f_a(x), f_b(x) \} dx} = \frac{OVL}{\int_{-\infty}^{\infty} \max \{ f_a(x), f_b(x) \} dx} $$
 
-When examining two populations, Cohen's measure of nonoverlap $U_3$ is the percentage of one population which the upper half of the cases of the other population exceeds (Cohen, 1988). Cohen's $U_3$ is described by the following formula under the assumption of normality and homoscedasticity:
-$$U_3 = \Phi_{d}$$
+The coefficient of overlapping 2 ($OVL_2$) is the proportion of overlap relative to the joint distribution of two contrasted populations (DelGiudice, 2019), which in the dependent case is the amount of combined area shared by the two measurements. Under the assumption of normality and homoscedasticity the above quantity can be expressed by as a function of $OVL$ (DelGiudice, 2019):
+
+$$ OVL_2 = \frac{OVL}{2 - OVL} $$
+
+and thus the estimator is given by:
+
+$$ \hat{OVL}_2 = \frac{\hat{OVL}}{2 - \hat{OVL}} $$
+
+Grice and Barret(2014) argue that the $OVL$ is to be preferred over $OVL_2$ in most contexts, because $OVL_2$ gives information about overlap and nonoverlap with respect to the joint distribution or combined area of the two distributions, which is unitutitive. $OVL$, on the other hand, indicates what percentage of the area a distribution shares with the other distribution which is easier to interpret.
+
+We could not identify a closed form formula for the CI of this ES. Thus, a $1 - \alpha$ percentile bootstrap CI is implemented exclusively.
+
+<br>
+
+<h4 id="IG_D_P_u1"> Cohen's \(U_1\) </h4>
+
+The population effect of interest is given by:
+
+$$ U_1 = \frac{\int_{-\infty}^{\infty} \max \{ f_a(x), f_b(x) \} dx  - \int_{-\infty}^{\infty} \min \{ f_a(x), f_b(x) \} dx}{\int_{-\infty}^{\infty} \max \{ f_a(x), f_b(x) \} dx} = 1 - \frac{\int_{-\infty}^{\infty} \min \{ f_a(x), f_b(x) \} dx}{\int_{-\infty}^{\infty} \max \{ f_a(x), f_b(x) \} dx} = 1 - OVL_2 $$
+
+Cohen's $U_1$ can be interpreted as percentage of nonoverlap relative to the joint distribution of two populations (DelGiudice, 2019), which in the dependent case, is the amount of combined area not shared by the two measurements (Cohen, 1988). It is characterized by the following formula under the assumption of normality and homoscedasticity (Cohen, 1988):
+
+$$ U_1 = \frac{2 \Phi \left( \frac{|\delta|}{2} \right) - 1}{\Phi \left( \frac{  |\delta|}{2} \right)} = \frac{2 \left(1 - \Phi \left(\frac{-|\delta|}{2}\right)\right) - 1}{1 - \Phi \left(\frac{-|\delta|}{2}\right)} = \frac{1 - 2 \Phi\left(\frac{-|\delta|}{2}\right)}{\frac{1}{2}\left(2 - OVL\right)} = \frac{2(1 - OVL)}{2 - OVL} = \frac{(2 - OVL) - OVL}{2 - OVL} = 1 - \frac{OVL}{2 - OVL} = 1 - OVL_2 $$
+
+with $\delta$ being Cohen's $\delta$---which is effectively a deviate in the unit normal curve---and  $\Phi \left( . \right)$ being the normal cumulative distribution function which gives the percentage of the area falling below a given normal deviate; and $OVL$ and $OVL_2$ being the ES described above.
+
+A parametric estimator of the above quantity is given by:
+
+$$ \hat{U_1} = \frac{2 \Phi \left( \frac{|d|}{2} \right) - 1}{\Phi \left( \frac{|d|}{2} \right)} = 1 - \frac{\hat{OVL}}{2 - \hat{OVL}} = 1 - \hat{OVL}_2 $$
+
+with $d$ being Cohen's $d$ and $\hat{OVL}$ and $\hat{OVL}_2$ being defined as above.
+
+Any critique of $OVL_2$ discussed above is equally applicable to Cohen's $U_1$ since both ES quantify overlap/nonoverlap relative to the joint distribution of the contrasted populations.
+
+We could not identify a closed form formula for the CI of this ES. Thus, a $1 - \alpha$ percentile bootstrap CI is implemented exclusively.
+
+<br>
+
+<h4 id="IG_D_P_U2"> Cohen's (\(U_2\)) </h4>
+
+The population effect on interest is the percentage of measurement *a* that exceeds the same percentage in measurment *b*. Thus a value of 0.7 means that the top 70% of measurement *a* exceed the bottom 70% of measurement *b*. It is described by the following formula under the assumption of normality and homoscedasticity (Cohen, 1988):
+
+$$ U2 = \Phi \left( \frac{\delta}{2} \right) $$
+
+with $\delta$ being Cohen's $\delta$ (as defined above)---which is effectively a deviate in the unit normal curve---and  $\Phi \left( . \right)$ being the normal cumulative distribution function which gives the percentage of the area falling below a given normal deviate.
+
+A parametric estimator of the above quantity is given by:
+
+$$ \hat{U}_2 = \Phi \left( \frac{d}{2} \right) $$
+
+with $d$ being Cohen's $d$---which again is effectively a deviate in the unit normal curve.
+
+We could not identify a closed form formula for the confidence interval of this effect size. Thus, a $1 - \alpha$ percentile bootstrap confidence interval is implemented exclusively.
+
+<br>
+
+<h4 id="IG_P_3">Cohen's U3</h4>
+
+When examining two populations, Cohen's measure of nonoverlap $U_3$ is the percentage of one measurement which the upper half of the cases of the other measurement exceeds (Cohen, 1988). Cohen's $U_3$ is described by the following formula under the assumption of normality and homoscedasticity:
+
+$$ U_3 = \Phi \left( |\delta| \right) $$
+
+A parametric estimator of the above quantity is given by:
+
+$$ \hat{U}_3 = \Phi \left( |d| \right) $$
+
 with $d$ being a deviate in the unit normal curve and  $\Phi$ being the percentage of the population of cases falling below a given normal deviate.
-We could not identify a closed form formula for the confidence interval of this effect size. Thus, a $1 - \alpha$ percentile bootstrap confidence interval is implemented exclusively.  
+
+We could not identify a closed form formula for the CI for this ES. Thus, a $1 - \alpha$ percentile bootstrap CI is implemented exclusively.
+
 <br>
 
 
@@ -853,8 +1007,7 @@ Wilcox (2017b, p. 357) lists among the potential benefits of hypothesis tests ba
 The value of the test statistics, the degrees of freedom and the p-value are reported.
 
 
-
-# References
+<h2 id="IG-D-refs">References</h2>
 
 Algina, J., Keselman, H. J., & Penfield, R. D. (2005). Effect sizes and their intervals: The two-level repeated measures case. *Educational and Psychological Measurement*, *65*(2), 241--258. <https://doi.org/10.1177/0013164404268675>  
 

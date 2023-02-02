@@ -95,7 +95,7 @@ reference_group <- "group2"
 
 
 # variance ratio independent ci ----
-fun_val <- unlist(variance_ratio_independent_ci(x = X, INDEX = INDEX, group_1_reference = FALSE), use.names = FALSE)
+fun_val <- unlist(variance_ratio_independent_ci(x = X, INDEX = INDEX, standardised_by_group_1 = FALSE), use.names = FALSE)
 test_fun_val <- stats::var.test(x = X[INDEX == "a"], y = X[INDEX == "b"])$conf.int
 attributes(test_fun_val) <- NULL
 all.equal(fun_val, test_fun_val)

@@ -1,3 +1,47 @@
+<div class="toc_container">
+<h2 class="toc_title">Table of contents</h2>
+ <ul>
+  <li><a href="#IG_P_intro"><h3>1. The independent groups design</h3></a>
+  <li><a href="#"><h3>2. </h3></a>
+    <ul>
+      <li><a href="#"><h4>2.1. </h4></a></li>
+      <li><a href="#"><h4>2.2. </h4></a></li>
+    </ul>
+  </li>
+  <li><a href="#"><h3>3. </h3></a>
+    <ul>
+     <li><a href="#"><h4>3.1. </h4></a></li>
+     <li><a href="#"><h4>3.2. </h4></a></li>
+     <li><a href="#"><h4>3.4. </h4></a></li>
+     <li><a href="#"><h4>3.3. </h4></a></li>
+     <li><a href="#"><h4>3.5. </h4></a></li>
+     <li><a href="#"><h4>3.6. </h4></a></li>
+    </ul>
+  </li>
+  <li><a href="#IG-D-NP-refs"><h3>. References</h3></a></li>
+ </ul>
+</div>
+
+<h2 id = "DG_NP_SLD"> Nonparametric estimators of measures of standardised location difference </h2>
+<h3 id = "DG_NP_dG"> Nonparametric Glass \( d_{G,\,j}\) </h3>
+<h3 id = "DG_NP_dz"> Nonparametric Cohen's \(d_z\) </h3>
+
+<h2 id = "DG_NP_tails"> Nonparametric estimators of measures of difference in group tails </h2>
+<h3 id = "DG_NP_TR"> Nonparametric Tail Ratio (\(TR\)) </h3> # muss noch von mir aus der parametric documentation rüberkopiert werden!
+
+<h2 id = "DG_NP_OM"> Nonparametric estimators of measures of (non-)overlap </h2>
+<h3 id = "DG_NP_OVL"> The Nonparametric Coefficient of Overlapping (\(OVL\)) </h3>
+<h3 id = "DG_NP_OVL2"> The Nonparametric Measure of Overlapping Coefficient Two (\(OVL_2\)) </h3>
+<h3 id = "DG_NP_U1"> Nonparametric Cohen's (\(U_1\)) </h3>
+<h3 id = "DG_NP_U2"> Nonparametric Cohen's (\(U_2\)) </h3>
+<h3 id = "DG_NP_U3"> Nonparametric Cohen's (\(U_3\)) </h3>
+
+<h2 id = "DG_NP_PM"> Nonparametric estimators of probabilistic measures of effect </h2>
+<h3 id = "DG_NP_PS"> Probability of Superiority (\(PS\)) </h3>
+<h3 id = "DG_NP_A_measure"> The \(A\) measure of stochastic Superiority </h3>
+<h3 id = "DG_NP_GOR"> Generalized Odds Ratio (\(OR_g\)) </h3>
+<h3 id = "DG_NP_DM"> Dominance measure (\(DM\))</h3>
+
 <h2 id = "DG_NP_HT"> Hypothesis tests </h2>
 
 <h3 id = "DG_P_WSRT"> The Wilcoxon signed-rank test </h3>
@@ -234,45 +278,137 @@ Additionally, a $1 - \alpha$ percentile bootstrap confidence interval is impleme
 
 <br>
 
-<h3 id = "DG_NP_OVL"> Nonparametric Coefficient of Overlapping for dependent groups (<i>OVL</i></h3>
+<h3 id = "IG_D_NP_overlap_measures"> Measures of (Non-)overlap </h3>
 
-The coefficient of overlapping (OVL) is defined as the common area under two probability densities and is used as a measure of agreement of two income distributions. When X and Y denote two univariate random variables with corresponding absolutely continuous distribution functions F and G and densities f and g, the coefficient of overlapping is definded as (Weitzman, 1970):
-$$ OVL (X, Y) = \int_{-\infty}^\infty min\{f(x), g(x)\}dx$$
-$OVL (X, Y)$ = 1 if and only if the distributions of X and Y are equal and OVL(X, Y) = 0 if and only if the supports of the distributions of X and Y have no interior points in common which is the reason why $OVL (X, Y)$ can be interpreted as a measure of agreement of the two distributions.
-Nonparametric estimations can be obtained by replacing the densities by appropriate kernel density estimators and the integrals by an appropriate quadrature formula or the sample mean.
+For the documentation of these measures the following notation will be used:  
+Let $X_a$ denote the random variable 'score of a random member of measurement *a*' and $X_b$ denote the random variable 'score of a random member of measurement *b*. Further, let $F_a$ and $F_b$ denote the corresponding absolutely continuous distribution functions and $f_a$ and $f_b$ the corresponding probability density functions respectively.
+
+<br>
+
+<h4 id = "IG_NP_OVL"> The Nonparametric Coefficient of Overlapping (\(OVL\)) </h4>
+
+The population effect of interest is given by (e.g., Schmid & Schmidt, 2006):
+
+$$ OVL = \int_{-\infty}^{\infty} \min \{ f_a(x), f_b(x) \} dx $$
+
+The coefficient of overlapping ($OVL$) is thus defined as the common area under two probability densities---i.e., the proportion of overlap between the two measurements---and can for example be used as a measure of agreement of two distributions (Bradley, 2006).
+
+Nonparametric estimators of the above quantity can be obtained by replacing the densities by appropriate kernel density estimators and the integrals by an appropriate quadrature formula.
+Assuming $x_{a_1}$, ..., $x_{a_{n_a}}$ denote observations of random variable $X_a$, a density estimator for *f* is obtained by (Schmid & Schmidt, 2006):
+
+$$ \hat{f_{n_a}}(x) = \hat{f_{n_a}}(x|x_{a_i},\, i =1\ldots n) = \frac{1}{n_a}  \sum_{i = 1}^{n_a} \frac{1}{b} K \left( \frac{x - x_{a_i}}{b} \right)$$
+
+where kernel *K* and bandwidth *b* are to be determined. $\hat{f}_{n_b}$ can be defined analogously. To derive estimators for the $OVL$, $x_{a_i}$ can be transformed into the unit interval by an appropriate affine transformation. The integrals over the unit interval can now be approximated by a trapezoidal rule, resulting in (Schmid & Schmidt, 2005):
+
+$$ \hat{OVL} = \frac{1}{k} \sum_{i = 1}^k \frac{1}{2} \left( \min \left\{ \hat{f_{n_a}}  \left( \frac{i}{k} \right), \hat{f_{n_b}} \left( \frac{i}{k} \right) \right\} + \min \left\{ \hat{f_{n_a}} \left( \frac{i-1}{k} \right), \hat{f_{n_b}} \left( \frac{i-1}{k} \right) \right\} \right) $$
+
+where *k* denotes the number of equidistant subintervals of the unit interval.
+
+Anderson et al. (2012) describes the asymptotic properties of various nonparametric estimators of $OVL$ which could be used to construct an approximate CI procedure. A $1 - \alpha$ percentile bootstrap confidence interval is implemented here exclusively.
+
+<br>
+<h4 id = "IG_D_NP_OVL2"> The Nonparametric Measure of Overlapping Coefficient Two (\(OVL_2\)) </h4>
+
+The population effect of interest is given by:
+
+$$ OVL_2 = \frac{\int_{-\infty}^{\infty} \min \{ f_a(x), f_b(x) \} dx}{\int_{-\infty}^{\infty} \max \{ f_a(x), f_b(x) \} dx} = \frac{OVL}{\int_{-\infty}^{\infty} \max \{ f_a(x), f_b(x) \} dx} $$
+
+The coefficient of overlapping 2 ($OVL_2$) is the proportion of overlap relative to the joint distribution of two contrasted populations (DelGiudice, 2019), which for dependent groups is the amount of combined area shared by the two measurements.
+
+A nonparametric estimator of the above quantity may be obtained by estimating the numerator and denominator separately and dividing the two quantities. The numerator can be estimated as described in detail above (see $\hat{OVL}$). The denominator can be estimated in a similar fashion:
+
+$$ \hat{\theta} = \frac{1}{k} \sum_{i = 1}^k \frac{1}{2} \left( \max \left\{  \hat{f}_{n_a} \left( \frac{i}{k} \right), \hat{f}_{n_b} \left( \frac{i}{k} \right) \right\} + \max \left\{ \hat{f}_{n_a} \left( \frac{i - 1}{k} \right), \hat{f}_{n_b} \left( \frac{i - 1}{k} \right) \right\} \right) $$
+
+giving the estimator:
+
+$$ \hat{OVL}_2 = \frac{\hat{OVL}}{\hat{\theta}} $$
+
+Grice and Barret(2014) argue that $OVL$ is to be preferred over $OVL_2$ in most contexts, because $OVL_2$ gives information about overlap and nonoverlap with respect to the joint distribution or combined area of the two distributions, which is unitutitive. $OVL$, on the other hand, indicates what percentage of the area a distribution shares with the other distribution which is easier to interpret.
+
 We could not identify a closed form formula for the confidence interval of this nonparametric effect size. Thus, a $1 - \alpha$ percentile bootstrap confidence interval is implemented exclusively.
 
-<h3 id = "DG_NP_OVL2"> Nonparametric Coefficient of Overlapping Two for dependent groups (<i>OVL<sub>2</sub></i>) </h3>
+<br>
+<h4 id = "IG_NP_U1"> Nonparametric Cohen's (\(U_1\)) </h4>
 
-The overlapping coefficient two ($OVL_2$) is the proportion of overlap relative to the joint distribution(DelGiudice, 2019). When X and Y denote two univariate random variables with corresponding absolutely continuous distribution functions F and G and densities f and g, the coefficient of overlapping two is estimated with the following formula:
-$$ OVL_2 (X, Y) = \frac{OVL(X, Y)}{\int_{-\infty}^\infty max\{f(x), g(x)\}dx}$$
-with OVL being calculated as described above, therefore not relying on assumptions about the data.
-Grice and Barret(2014) argue that OVL is to be preferred over $OVL_2$ in most contexts, because $OVL_2$ gives information about overlap and nonoverlap with respect to the joint distribution or combined area of the two distributions, which is unitutitive. OVL, on the other hand, indicates what percentage of the area a distribution shares with the other distribution which is easier to interpret.    
-We could not identify a closed form formula for the confidence interval of this nonparametric effect size. Thus, a $1 - \alpha$ percentile bootstrap confidence interval is implemented exclusively.
+The population effect of interest is given by:
 
-<h3 id = "DG_NP_U1"> Nonparametric Cohen's <i>U<sub>1</sub></i> </h3>
+$$ U_1 = \frac{\int_{-\infty}^{\infty} \max \{ f_a(x), f_b(x) \} dx  - \int_{-\infty}^{\infty} \min \{ f_a(x), f_b(x) \} dx}{\int_{-\infty}^{\infty} \max \{ f_a(x), f_b(x) \} dx} = 1 - \frac{\int_{-\infty}^{\infty} \min \{ f_a(x), f_b(x) \} dx}{\int_{-\infty}^{\infty} \max \{ f_a(x), f_b(x) \} dx} = 1 - OVL_2 $$
 
-$U_1$ can be interpreted as a percentage of nonoverlap (DelGuidice, 2019). It is the amount of combined area not shared by the two populations (Cohen, 1988).
-A nonparametric version of $U_1$ was implemented making use of the relation between $U_1$ and $OVL_2$. Since $OVL_2$ is a measure of the percentage of overlap of the combined area of the two distributions and $U_1$ is a measure of the percentage of nonoverlap of the same area, $U_1$ can be expressed as a function of $OVL_2$:
-$$ U_1 = 1 - OVL_2$$
-with $OVL_2$ being calculated as described above, therefore not relying on assumptions about the data.
-Grice and Barret(2014) argue that OVL is to be preferred over $U_1$ in most contexts, because $U_1$ gives information about overlap and nonoverlap with respect to the joint distribution or combined area of the two distributions, which is unitutitive. OVL, on the other hand, indicates what percentage of the area a distribution shares with the other distribution which is easier to interpret.    
-We could not identify a closed form formula for the confidence interval of this nonparametric effect size. Thus, a $1 - \alpha$ percentile bootstrap confidence interval is implemented exclusively.
+Cohen's $U_1$ can be interpreted as percentage of nonoverlap relative to the joint distribution of two measurements (DelGiudice, 2019), which is the amount of combined area not shared by the two measurements (Cohen, 1988).
 
-<h3 id = "DG_NP_U3"> Nonparametric Cohen's <i>U<sub>3</sub></i> </h3>
+A nonparametric estimator of $U_1$ was implemented by making use of the relation between $U_1$ and $OVL_2$. Since $OVL_2$ is a measure of the percentage of overlap of the combined area of the two distributions and $U_1$ is a measure of the percentage of nonoverlap of the same area, $U_1$ can be expressed as a function of $OVL_2$ ($U_1 = 1 - OVL_2$) and consequently the estimator is given by:
 
-When examining two populations, Cohen's measure of nonoverlap $U_3$ is the percentage of one population which the upper half of the cases of the other population exceeds (Cohen, 1988). A nonparametric pendant of Cohen's $U_3$ was implemented by calculating the median of the dataset of pretest measurements and determining the percentage of values in posttest measurements that exceed the median of pretest measurements: 
-$$U_3 = \frac{\sum_{i=1}^n I_{\{x > median_{pre}\}}(x_{i_{post}})}{n}$$
-with 
-$$I_{\{x > median_{pre}\}(x) = \begin{cases}
-1 & \text{if} \qquad x \leq median_{pre}\\
-0 & \text{if} \qquad x \gt median_{pre}
+$$ \hat{U}_1 = 1 - \hat{OVL}_2$$
+
+with $\hat{OVL}_2$ being calculated as described above.
+
+Any critique of $OVL_2$ discussed above is equally applicable to Cohen's $U_1$ since both ES quantify overlap/nonoverlap relative to the joint distribution of the constrasted measurements.
+
+We could not identify a closed form formula for the CI of this ES. Thus, a $1 - \alpha$ percentile bootstrap confidence interval is implemented exclusively.
+
+<br>
+
+<h4 id = "IG_NP_U2"> Nonparametric Cohen's (\(U_2\)) </h4>
+
+The population effect on interest is the percentage of measurement *a* that exceeds the same percentage of measurement *b*. Thus a value of 0.7 means that the top 70% of measurement *a* exceed the bottom 70% of measurement *b*.
+
+We propose the following non-parametric estimator for the above population effect:
+
+$$ \hat{U}_2 = \hat{F}_b(x_{a_{(t)}}) $$
+
+for a value of *t* that satisfies
+$$
+t \in \{ x_{a_{(1)}}, \ldots, x_{a_{(n_a)}} \} :
+\begin{cases}
+1 - \hat{F}_a( x_{a_{(t)}} ) > \hat{F}_b( x_{a_{(t)}} ) \cr
+1 - \hat{F}_a( x_{a_{(t - 1)}} ) < \hat{F}_b( x_{a_{(t -1)}} )
+\end{cases}
+$$
+
+where $x_{a_{(1)}, \ldots, x_{a_{(n_a)}}}$ are the order statistics of the group *a* observations and $\hat{F}_{a|b}$ is the empirical distribution function of group *a*/*b* given by:
+
+$$ \hat{F}_{a|b}(t) = \frac{1}{n_{a|b}} \sum_{i = 1}^{n_{a|b}} I_{\{x_{{a|b}_i} \leq t\}}(x_{{a|b}_i}) $$
+
+with
+$$
+I_{\{x_{{a|b}_i} \leq t\}} (x_{{a|b}_i}) =
+\begin{cases}
+1 & \text{if } x_{{a|b}_i} \leq t \cr
+0 & \text{if } x_{{a|b}_i} \gt t
+\end{cases}
+$$
+
+The above estimator of $U_2$ can also be thought of as the value of $\hat{F}_b$ at the intersection point of $1 - \hat{F}_a$ and $\hat{F}_b$---which has to be determined by an iterative search algorithm since empirical distribtuion functions are always discrete.
+
+It should be noted that if
+
+$$ \max \{ x_{a_1}, \ldots, x_{a_{n_a}} \} < \min \{ x_{b_1}, \ldots, x_{n_{b}} \} $$
+
+then $\hat{U}_2$ is set to 0 and conversely, if
+
+$$ \min \{ x_{a_1}, \ldots, x_{a_{n_a}} \} > \max \{ x_{b_1}, \ldots, x_{n_{b}} \} $$
+
+$\hat{U}_2$ is set to 1.
+
+An $1 - \alpha$ percentile bootstrap CI is implemented exclusively.
+
+<br>
+
+<h4 id = "IG_NP_U3"> Nonparametric Cohen's (\(U_3\)) </h4>
+
+When examining two measurements, Cohen's measure of nonoverlap $U_3$ is the percentage of one measurements which the upper half of the cases of the other measurements exceeds (Cohen, 1988). A nonparametric pendant of Cohen's $U_3$ was implemented by calculating the median of the dataset of group a and determining the percentage of values in dataset b that exceed the median of group a.
+$$ \hat{U}_3 = \frac{1}{n} \sum_{i = 1}^n I_{x > Mdn_a} \left( x_{i_b} \right)$$
+with
+$$ I_{x > Mdn_a}(x) = \begin{cases}
+1 & \text{if } x \leq Mdn_a \cr
+0 & \text{if } x \gt Mdn_a
 \end{cases}
 $$
 and $median_{pre}$ being the median of the prestest group.
-We could not identify a closed form formula for the confidence interval of this nonparametric effect size. Thus, a $1 - \alpha$ percentile bootstrap confidence interval is implemented exclusively.  
 
+We could not identify a closed form formula for the confidence interval of this nonparametric effect size. Thus, a $1 - \alpha$ percentile bootstrap confidence interval is implemented exclusively.
 
+<br>
   
 <h2 id="DG_NP_dGb"> Nonparametric Glass \( d_{G,\,j}\)</h2>
 
@@ -344,7 +480,7 @@ We could not identify a closed form formula for the confidence interval of this 
 
 <hr>
 
-<h1 id="DG_NP_refs"> References </h1>
+<h2 id="IG-D-NP-refs">References</h2>
 
 Conover, W. J. (1999). *Practival nonparametric statistics* (3rd ed.). John Wiley & Sons. Cousineau, D. (2020). Approximating the distribution of Cohen's $d_p$ in within--subject
 designs. *The Quantitative Methods for Psychology*, *16*(4), 418--421. <https://doi.org/10.20982/tqmp.16.4.p418>  

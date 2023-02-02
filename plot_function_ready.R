@@ -103,11 +103,11 @@ plot_parametric_overlap <- function(x = NULL, INDEX = NULL, y = NULL,
                             round(
                               ifelse(
                                 is.null(n),
-                                smd_uni(effsize = "cohen_d", m1 = m1, m2 = m2, var1 = s1^2, var2 = s2^2, n1 = n1, n2 = n2),
-                                cohens_d_dependent(m1 = m1, m2 = m2, s1 = s1, s2 = s2, n = n)),
+                                cohens_d(m1 = m1, m2 = m2, s1 = s1, s2 = s2, n1 = n1, n2 = n2),
+                                cohens_d(m1 = m1, m2 = m2, s1 = s1, s2 = s2, n1 = n, n2 = n)),
                               2)),
                      paste0("VR==~", 
-                            round(variance_ratio(s1 = s1, s2 = s2, group_1_reference = TRUE), 2)
+                            round(variance_ratio(s1 = s1, s2 = s2, standardised_by_group_1 = TRUE), 2)
                      ),
                      paste0(
                        "OVL==~",
@@ -211,11 +211,11 @@ plot_cohens_u1 <- function(x = NULL, INDEX = NULL, y = NULL,
                             round(
                               ifelse(
                                 is.null(n),
-                                smd_uni(effsize = "cohen_d", m1 = m1, m2 = m2, var1 = s1^2, var2 = s2^2, n1 = n1, n2 = n2),
-                                cohens_d_dependent(m1 = m1, m2 = m2, s1 = s1, s2 = s2, n = n)),
+                                cohens_d(m1 = m1, m2 = m2, s1 = s1, s2 = s2, n1 = n1, n2 = n2),
+                                cohens_d(m1 = m1, m2 = m2, s1 = s1, s2 = s2, n1 = n, n2 = n)),
                               2)),
                      paste0("VR==~", 
-                            round(variance_ratio(s1 = s1, s2 = s2, group_1_reference = TRUE), 2)
+                            round(variance_ratio(s1 = s1, s2 = s2, standardised_by_group_1 = TRUE), 2)
                      ),
                      paste0(
                        "U1==~",
@@ -290,11 +290,11 @@ plot_cohens_u3 <- function(x = NULL, INDEX = NULL, y = NULL,
                             round(
                               ifelse(
                                 is.null(n),
-                                smd_uni(effsize = "cohen_d", m1 = m1, m2 = m2, var1 = s1^2, var2 = s2^2, n1 = n1, n2 = n2),
-                                cohens_d_dependent(m1 = m1, m2 = m2, s1 = s1, s2 = s2, n = n)),
+                                cohens_d(m1 = m1, m2 = m2, s1 = s1, s2 = s2, n1 = n1, n2 = n2),
+                                cohens_d(m1 = m1, m2 = m2, s1 = s1, s2 = s2, n1 = n, n2 =n)),
                               2)),
                      paste0("VR==~", 
-                            round(variance_ratio(s1 = s1, s2 = s2, group_1_reference = TRUE), 2)
+                            round(variance_ratio(s1 = s1, s2 = s2, standardised_by_group_1 = TRUE), 2)
                      ),
                      paste0(
                        "U3==~",
@@ -457,7 +457,7 @@ plot_tail_ratio <- function(x = NULL, INDEX = NULL, y = NULL,
                               glass_d(m1 = m1, m2 = m2, s1 = s1, s2 = s2, standardised_by_group_1 = ifelse(reference_group == "group1", TRUE, FALSE)),
                               2)),
                      paste0("VR==~", 
-                            round(variance_ratio(s1 = s1, s2 = s2, group_1_reference = ifelse(reference_group == "group1", TRUE, FALSE)), 2)
+                            round(variance_ratio(s1 = s1, s2 = s2, standardised_by_group_1 = ifelse(reference_group == "group1", TRUE, FALSE)), 2)
                      ),
                      paste0(
                        "TR==~",
@@ -551,7 +551,7 @@ plot_tail_ratio_zoom <- function(x = NULL, INDEX = NULL, y = NULL,
                               glass_d(m1 = m1, m2 = m2, s1 = s1, s2 = s2, standardised_by_group_1 = ifelse(reference_group == "group1", TRUE, FALSE)),
                               2)),
                      paste0("VR==~", 
-                            round(variance_ratio(s1 = s1, s2 = s2, group_1_reference = ifelse(reference_group == "group1", TRUE, FALSE)), 2)
+                            round(variance_ratio(s1 = s1, s2 = s2, standardised_by_group_1 = ifelse(reference_group == "group1", TRUE, FALSE)), 2)
                      ),
                      paste0(
                        "TR==~",
@@ -657,7 +657,7 @@ plot_non_parametric_tail_ratio <- function(x = NULL, INDEX = NULL, y = NULL,
   graphics::box()
   
   eff_size_labs <- c(paste0("VR==~", 
-                            round(variance_ratio(s1 = s1, s2 = s2, group_1_reference = ifelse(reference_group == "group1", TRUE, FALSE)), 2)
+                            round(variance_ratio(s1 = s1, s2 = s2, standardised_by_group_1 = ifelse(reference_group == "group1", TRUE, FALSE)), 2)
   ),
   paste0(
     "TR==~",
@@ -755,7 +755,7 @@ plot_non_parametric_tail_ratio_zoom <- function(x = NULL, INDEX = NULL, y = NULL
   graphics::box()
   
   eff_size_labs <- c(paste0("VR==~", 
-                            round(variance_ratio(s1 = s1, s2 = s2, group_1_reference = ifelse(reference_group == "group1", TRUE, FALSE)), 2)
+                            round(variance_ratio(s1 = s1, s2 = s2, standardised_by_group_1 = ifelse(reference_group == "group1", TRUE, FALSE)), 2)
   ),
   paste0(
     "TR==~",

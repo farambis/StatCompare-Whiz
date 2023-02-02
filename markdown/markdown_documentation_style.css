@@ -1,3 +1,10 @@
+table.TR_table th, table.TR_table td {
+  border: 1px solid black;
+  border-collapse: collapse;
+  padding: 5px;
+  text-align: center;
+}
+
 .toc_container {
 background: #f8f8ff none repeat scroll 0 0;
   border: 1px solid #aaa;

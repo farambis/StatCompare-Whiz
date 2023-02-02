@@ -393,7 +393,7 @@ The discussion regarding the precision of $d_{PPC,\,pooled-pre-post}$ as well as
 
 
 
-<h2 id="PPC-refs">References</h1>
+<h2 id="PPC-refs">References</h2>
 
 Dunlap, W. P., Cortina, J. M., Vaslow, J. B., & Burke, M. J. (1996). Meta-analysis of experiments with matched groups or repeated measures designs. *Psychological Methods*, *1*(2), 170--177. <https://doi.org/10.1037/1082-989X.1.2.170>  
 

@@ -9,7 +9,7 @@ descriptions <- list(independent_parametric = "markdown/independent_parametric.m
                      mixed_design_nonparametric = "markdown/mixed_design_nonparametric.md", multivariate_measures = "markdown/multivariate.md")
 
 # homePage ----------------------------------------------------------------
-homePageBody <- 
+homePageBody <-
   tabItem(
     tabName = "homePage",
     homePageContent
@@ -29,11 +29,13 @@ independentGroupsParametricRawData <-
            all_eff_sizes$glass_d_corr,
            all_eff_sizes$bonett_d,
            all_eff_sizes$bonett_d_corr,
+           all_eff_sizes$kulinskaya_staudte,
            all_eff_sizes$standardised_median_difference_mad,
            all_eff_sizes$standardised_median_difference_riq,
            all_eff_sizes$standardised_median_difference_biweight,
-           all_eff_sizes$AKP_eqvar,
-           all_eff_sizes$AKP_uneqvar,
+           all_eff_sizes$robust_cohens_d,
+           all_eff_sizes$robust_glass_d,
+           all_eff_sizes$robust_bonett_d,
            all_eff_sizes$parametric_ovl,
            all_eff_sizes$parametric_ovl_two,
            all_eff_sizes$parametric_cohens_u1,
@@ -41,7 +43,9 @@ independentGroupsParametricRawData <-
            all_eff_sizes$parametric_cohens_u3,
            all_eff_sizes$common_language,
            all_eff_sizes$variance_ratio,
-           all_eff_sizes$tail_ratio),
+           all_eff_sizes$tail_ratio,
+           all_eff_sizes$probability_of_correct_classification
+      ),
       list(all_test_statistics$student_t_test,
            all_test_statistics$welch_t_test,
            all_test_statistics$yuen_t_test),
@@ -68,6 +72,7 @@ independentGroupsParametricEducational <-
                  all_eff_sizes$glass_d_corr,
                  all_eff_sizes$bonett_d,
                  all_eff_sizes$bonett_d_corr,
+                 all_eff_sizes$kulinskaya_staudte,
                  all_eff_sizes$parametric_ovl,
                  all_eff_sizes$parametric_ovl_two,
                  all_eff_sizes$parametric_cohens_u1,
@@ -75,7 +80,9 @@ independentGroupsParametricEducational <-
                  all_eff_sizes$parametric_cohens_u3,
                  all_eff_sizes$common_language,
                  all_eff_sizes$variance_ratio,
-                 all_eff_sizes$tail_ratio),
+                 all_eff_sizes$tail_ratio,
+                 all_eff_sizes$probability_of_correct_classification
+            ),
             list(all_test_statistics$student_t_test,
                  all_test_statistics$welch_t_test),
             list(all_plots$parametric_ovl,
@@ -84,7 +91,8 @@ independentGroupsParametricEducational <-
                  all_plots$tail_ratio,
                  all_plots$tail_ratio_zoom),
             descriptions$independent_parametric
-          ))
+          )
+  )
 
 independentGroupsNonparametric <-
   tabItem(tabName = 'independentGroupsNonparametric',
@@ -97,6 +105,7 @@ independentGroupsNonparametric <-
                  all_eff_sizes$non_parametric_ovl,
                  all_eff_sizes$non_parametric_ovl_two,
                  all_eff_sizes$non_parametric_cohens_u1,
+                 all_eff_sizes$non_parametric_cohens_u2,
                  all_eff_sizes$non_parametric_cohens_u3,
                  all_eff_sizes$mann_whitney_based_ps,
                  all_eff_sizes$mann_whitney_based_ps_ignore_ties,
@@ -112,9 +121,10 @@ independentGroupsNonparametric <-
                  all_plots$non_parametric_tail_ratio,
                  all_plots$non_parametric_tail_ratio_zoom,
                  all_plots$boxplot_pairwise_difference_scores
-              ),
+            ),
             descriptions$independent_nonparametric
-          ))
+          )
+  )
 
 
 # dependent Groups --------------------------------------------------------
@@ -206,6 +216,7 @@ dependentGroupsNonparametric <-
                  all_eff_sizes$non_parametric_ovl_dependent,
                  all_eff_sizes$non_parametric_ovl_two_dependent,
                  all_eff_sizes$non_parametric_cohens_u1_dependent,
+                 all_eff_sizes$non_parametric_cohens_u2_dependent,
                  all_eff_sizes$non_parametric_cohens_u3_dependent,
                  all_eff_sizes$ps_dependent,
                  all_eff_sizes$ps_dependent_ignore_ties,
@@ -290,7 +301,7 @@ mixedDesignNonParametric <-
                    all_eff_sizes$non_parametric_d_PPC_pre,
                    all_eff_sizes$non_parametric_d_PPC_pre_alternative,
                    all_eff_sizes$non_parametric_dominance_measure_mixed),
-            tsChoices = 
+            tsChoices =
               list(),
             plotChoices =
               list(),
