@@ -1,75 +1,86 @@
 <div class="toc_container" xmlns="http://www.w3.org/1999/html">
 <h2 class="toc_title">Table of contents</h2>
-  <a href="#IG_P_intro"><h3>1. The independent groups design</h3></a>
-  <a href="#IG_P_normality_homoscedasticity"><h3>2. Measures assuming normally distributed and homoscedastic populations</h3></a>
-      <ul>
-        <li><a href="#IG_P_normality_SLD"><h4>2.1 Measures of standardised location difference </h4></a>
-        <ul>
-          <li><a href="#IG_P_cohens_d"><h5>2.1.1 Cohen's \(d\) </h5></a></li>
-          <li><a href="#IG_P_hedges_g"><h5>2.2.2 Hedges' \(g\) </h5></a></li>
-        </ul>
-        </li>
-      </ul>
-      <ul>
-        <li><a href="#IG_P_overlap_measures"><h4>2.2 Measures of (non-)overlap </h4></a>
-            <ul>
-              <li><a href="#IG_P_OVL"><h5>2.2.1 The Coefficient of Overlapping (\(OVL\))</h5></a></li>
-              <li><a href="#IG_P_OVL2"><h5>2.2.2 The Coefficient of Overlapping Two (\(OVL_2\)) </h5></a></li>
-              <li><a href="#IG_P_U1"><h5>2.2.3 Cohen's \(U_1\) </h5></a></li>
-              <li><a href="#IG_P_U2"><h5>2.2.4 Cohen's \(U_2\)</h5></a></li>
-              <li><a href="#IG_P_U3"><h5>2.2.5 Cohen's \(U_3\)</h5></a></li>
-            </ul>
-        </li>
-      </ul>
-      <ul>
-        <li><a href="#IG_P_normality_EF"><h4>2.3.1. Probabilistic measures of effect </h4></a>
-          <ul>
-           <li><a href="#IG_P_CLES"><h5>2.3.1 Common language ES</h5></a></li>
-           <li><a href="#IG_P_PCC"><h5>2.3.2 Probability of correct classification</h5></a></li>
-          </ul>
-        </li>
-      <li>
-      </ul>
- 
-<a href = "#IG_P_normality_dist_pop"><h3> 3. Measures assuming normally distributed population</h3></a>
   <ul>
-    <li><a href="#IG_P_normality_homoscedasticity_SLD"><h4>3.1 Measures of standardised location difference </h4></a>
+    <li><a href="#IG_P_intro"><h3>1. The independent groups design</h3></a></li>
+    <li><a href="#IG_P_normality_homoscedasticity"><h3>2. Measures assuming normally distributed and homoscedastic populations</h3></a>
         <ul>
-          <li><a href="#IG_P_glass_dg"><h5>3.1.1 Glass dG</h5></a></li>
-          <li><a href="#IG_P_hedges_g_G"><h5>3.1.2 Glass' \(d_G\)</h5></a></li>
-          <li><a href="#IG_P_bonet_d"><h5>3.1.3 Cohen's \(d'\)</h5></a></li>
-          <li><a href="#IG_P_hedges_g_"><h5>3.1.4 Hedges' \(g'\)</h5></a></li>
-          <li><a href="#IG_P_d2_KS"><h5>3.1.5 Kulinskaya-Staudte's \(d^2_{KS}\)</h5></a></li>
+          <li><a href="#IG_P_normality_SLD"><h4>2.1 Measures of standardised location difference </h4></a>
+          <ul>
+            <li><a href="#IG_P_cohens_d"><h5>2.1.1 Cohen's \(d\) </h5></a></li>
+            <li><a href="#IG_P_hedges_g"><h5>2.1.2 Hedges' \(g\) </h5></a></li>
+          </ul>
+          </li>
+        </ul>
+        <ul>
+          <li><a href="#IG_P_overlap_measures"><h4>2.2 Measures of (non-)overlap </h4></a>
+              <ul>
+                <li><a href="#IG_P_OVL"><h5>2.2.1 The Coefficient of Overlapping (\(OVL\))</h5></a></li>
+                <li><a href="#IG_P_OVL2"><h5>2.2.2 The Coefficient of Overlapping Two (\(OVL_2\)) </h5></a></li>
+                <li><a href="#IG_P_U1"><h5>2.2.3 Cohen's \(U_1\) </h5></a></li>
+                <li><a href="#IG_P_U2"><h5>2.2.4 Cohen's \(U_2\)</h5></a></li>
+                <li><a href="#IG_P_U3"><h5>2.2.5 Cohen's \(U_3\)</h5></a></li>
+              </ul>
+          </li>
+        </ul>
+        <ul>
+          <li><a href="#IG_P_normality_EF"><h4>2.3.1. Probabilistic measures of effect size </h4></a>
+            <ul>
+             <li><a href="#IG_P_CLES"><h5>2.3.1 Common language ES \(CLES\)</h5></a></li>
+             <li><a href="#IG_P_PCC"><h5>2.3.2 Probability of correct classification \(PCC\)</h5></a></li>
+            </ul>
+          </li>
+        <li>
         </ul>
     </li>
-  </ul>
+    <li><a href = "#IG_P_normality_dist_pop"><h3> 3. Measures assuming normally distributed population</h3></a>
     <ul>
-      <li><a href="#IG_P_normality_homoscedasticity_tail"><h3>3.2 Measures of difference in group spread and tails </h3></a>
-        <ul>
-          <li><a href="#IG_P_TR"><h4>3.2.1 Tail ratio (TR)</h4></a></li>
-          <li><a href="#IG_P_VR"><h4>3.2.2 Variance ratio (VR)</h4></a></li>
-        </ul>
+      <li><a href="#IG_P_normality_homoscedasticity_SLD"><h4>3.1 Measures of standardised location difference </h4></a>
+          <ul>
+            <li><a href="#IG_P_glass_dg"><h5>3.1.1 Glass \(d_G\)</h5></a></li>
+            <li><a href="#IG_P_hedges_g_G"><h5>3.1.2 Glass' \(g_G\)</h5></a></li>
+            <li><a href="#IG_P_bonet_d"><h5>3.1.3 Cohen's \(d'\)</h5></a></li>
+            <li><a href="#IG_P_bonett_g"><h5>3.1.4 Hedges' \(g'\)</h5></a></li>
+            <li><a href="#IG_P_d2_KS"><h5>3.1.5 Kulinskaya-Staudte's \(d^2_{KS}\)</h5></a></li>
+          </ul>
       </li>
     </ul>
-<a href="#IG_P_robust"><h3>4. Outlier resistent </h3></a>
-  <ul><li><a href="#IG_P_normality_homoscedasticity_SLD"><h4>4.1 Measures of standardised location difference </h4></a>
-    <ul>
-      <li><a href="#IG_P_d_R"><h5>4.1.1 \(d_R\) (robust Cohen's \(d\))</h5></a></li>
-      <li><a href="#IG_P_d_GR"><h5>4.1.2 \(d_{R,\,j}\) (robust Glass\(d_{G,\,j}\))</h5></a></li>
-      <li><a href="#IG_P_bonett_d_R"><h5>4.1.3 \(d'_{R}\) (robust Cohen's \(d'\))</h5></a></li>
-      <li><a href="#IG_NP_SMD"><h4>4.1.4 Standardized Median Differences'</h4></a></li>
-    </ul>
-  </li>
+      <ul>
+        <li><a href="#IG_P_normality_homoscedasticity_tail"><h4>3.2 Measures of difference in group spread and tails </h4></a>
+          <ul>
+            <li><a href="#IG_P_TR"><h5>3.2.1 Tail ratio (\(TR\))</h5></a></li>
+            <li><a href="#IG_P_VR"><h5>3.2.2 Variance ratio (\(VR\))</h5></a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#IG_P_robust"><h3>4. Measures resistant to outliers </h3></a>
+     <ul>
+      <li><a href="#IG_P_normality_homoscedasticity_SLD"><h4>4.1 Measures of standardised location difference </h4></a>
+       <ul>
+        <li><a href="#IG_P_d_R"><h5>4.1.1 \(d_R\) (robust Cohen's \(d\))</h5></a></li>
+        <li><a href="#IG_P_d_GR"><h5>4.1.2 \(d_{R,\,j}\) (robust Glass\(d_{G,\,j}\))</h5></a></li>
+        <li><a href="#IG_P_bonett_d_R"><h5>4.1.3 \(d'_{R}\) (robust Cohen's \(d'\))</h5></a></li>
+        <li><a href="#IG_NP_SMD"><h5>4.1.4 Standardized Median Differences</h5></a>
+          <ul>
+            <li><a href="#IG_P_d_MAD"><h6> 4.1.4.1 \(d_{MAD}\) </h6></a></li>
+            <li><a href="#IG_P_d_RIQ"><h6> 4.1.4.2 \(d_{R_{IQ}}\) </h6></a></li>
+            <li><a href="#IG_P_d_bw"><h6> 4.1.4.3 \(d_{bw}\) </h6></a></li>
+          </ul>
+        </li>
+       </ul>
+      </li>
+     </ul>
+    </li>
+    <li><h3><a href = "#IG_P_refs"> 5. References</a></h3></li>
   </ul>
-  <li><a href = "#IG-refs"><h3>References</h3></a></li>
-
 </div>
 
 <h2 id="IG_P_intro">The independent groups design</h2>
 
-An exemplary scenario for a design with two independent groups is described:  
+The independent groups design---also often referred to as the between-subjects design or the between-group design--is characterised by different groups being exposed to different levels of an independent variable (e.g., experimental conditions). Importantly each test subject can only be a member of one group. Thus, the ES described here are applicable to multiple types of studies comparing distinct groups:  
+- comparing a group receiving a treatment/intervention (the experimental group) with a different group not receiving any treatment/intervention (the control group). 
+- comparing a group receiving a novel treatment/intervention with a different group receiving a gold standard treatment/intervention.  
 
-Two independent populations of interest might be an experimental group (e.g., a group that receives some form of psychotherapy) and a control group (e.g., a group that does not receive any form of psychotherapy) in an intervention study. In such a case $\mu_a$ could be thought of as $\mu_E$, i.e., the mean of the population receiving some form of treatment, and $\mu_b$ could be thought of as $mu_C$, i.e., the mean of the control population not receiving said treatment.
 
 <br>
 
@@ -83,11 +94,11 @@ The population effect size of interest is given by the formula:
 
 $$ \delta = \frac{\mu_a - \mu_b}{\sigma} $$
 
-The mean difference of two populations of interest $\mu_a - \mu_b$ is standardised by their common population standard deviation $\sigma$. The populations of interest might again be an experimental group (e.g., a group that receives some form of psychotherapy) and a control group (e.g., a group that does not receive any form of psychotherapy). In such a case $\mu_a$ could again be thought of as $\mu_E$, i.e., as the population mean of the experimental group, and $\mu_b$ could be thought of as $mu_C$, i.e., the population mean of the control group.
+The mean difference of two populations of interest $\mu_a - \mu_b$ is standardised by their common population standard deviation $\sigma$. The populations of interest might be an experimental group (e.g., a group that receives some form of psychotherapy) and a control group (e.g., a group that does not receive any form of psychotherapy). In such a case $\mu_a$ could be thought of as $\mu_E$, i.e., as the population mean of the experimental group, and $\mu_b$ could be thought of as $mu_C$, i.e., the population mean of the control group.  
 
-$\delta$ tells us how many standard deviation units $\mu_a$ (e.g.,$\mu_E$) lies below or above $\mu_b$ (e.g.,$\mu_C$). Once again, $\delta$ can also be thought of as a *Z* score and can be used to determine what proportion of the population with the lower mean the average/median member of the population with the higher mean outscores---see Cohen's $U_3$:
+$\delta$ tells us how many standard deviation units $\mu_a$ (e.g.,$\mu_E$) lies below or above $\mu_b$ (e.g.,$\mu_C$). Under the assumption that the populations follow normal distributions with equal variances $\delta$ can also be thought of as a *Z* score and can be used to determine what proportion of the population with the lower mean the average/median member of the population with the higher mean outscores---see Cohen's $U_3$.  
 
-This ES assumes homoscedasticity, i.e., $\sigma^2_a = \sigma^2_b = \sigma^2$. Under this assumption $Eq.(IG)$ and $Eq.(IG)$ are identical. However, heteroscedasticity is likely throughout various fields of research and it appears plausible that treatment increases variance in the outcome of interest due to differential responsiveness of subjects to the treatment (Grisson & KIm, 2012, pp. 17-20). Unfortunately, traditional tests of homoscedasticity often fail to produce accurate *p*-values, which makes it difficult to detect heteroscedasticity of population variances (Grissom & Kim, 2012, p. 20). If heteroscedasticity is plausible $\Delta_j$ should be estimated instead.
+This ES assumes homoscedasticity, i.e., $\sigma^2_a = \sigma^2_b = \sigma^2$. Under this assumption $\delta$ and $\Delta$ are identical. However, heteroscedasticity is likely throughout various fields of research and it appears plausible that treatment increases variance in the outcome of interest due to differential responsiveness of subjects to the treatment (Grisson & KIm, 2012, pp. 17-20). Unfortunately, traditional tests of homoscedasticity often fail to produce accurate *p*-values, which makes it difficult to detect heteroscedasticity of population variances (Grissom & Kim, 2012, p. 20). If heteroscedasticity is plausible $\Delta_j$ should be estimated instead (see below).  
 
 The above population effect can be estimated by $d_{G,\,j}$ if homoscedasticity can be assumed. However, in case of homoscedasticity the pooled standard deviation $s_p = \sqrt{\frac{(n_a - 1) s_a^2 + (n_b - 1) s_b^2}{n_a + n_b - 2}}$ is a better estimator of $\sigma$ since it uses more data and thus has a lower sampling variance than $s_a$ or $s_b$.
 
@@ -99,13 +110,13 @@ This estimator has a bias. It systematically overestimates the size of the true 
 
 A $1 - \alpha$ noncentral *t* CI is implemented according to the method described by Steiger and Fouladi (1997) for constructing CI based on the noncentral *t* distribution.
 
-Firstly, Cohen's $d$ is transformed into an estimated noncentrality parameter $\widehat{\lambda_d}$:
+Firstly, Cohen's $d$ is transformed into an estimated noncentrality parameter $\hat{\lambda}_d$:
 
-$$ \widehat{\lambda_d} = \frac{d}{\sqrt{\frac{1}{n_a} + \frac{1}{n_b}}} $$
+$$ \hat{\lambda}_d = \frac{d}{\sqrt{\frac{1}{n_a} + \frac{1}{n_b}}} $$
 
-Then the non-centrality parameter $\lambda_L$ of the noncentral *t* distribution with $\nu = n_a + n_b - 1$ degrees of freedom which has $\widehat{\lambda_d}$ as its $1 - \frac{\alpha}{2}$ quantile is iteratively searched for.
+Then the non-centrality parameter $\lambda_L$ of the noncentral *t* distribution with $\nu = n_a + n_b - 1$ degrees of freedom which has $\hat{\lambda}_d$ as its $1 - \frac{\alpha}{2}$ quantile is iteratively searched for.
 
-Next, the non-centrality parameter $\lambda_U$ of the noncentral *t* distribution with $\nu = n_a + n_b - 1$ degrees of freedom which has $\widehat{\lambda_d}$ as its $\frac{\alpha}{2}$ quantile is iteratively searched for.
+Next, the non-centrality parameter $\lambda_U$ of the noncentral *t* distribution with $\nu = n_a + n_b - 1$ degrees of freedom which has $\hat{\lambda}_d$ as its $\frac{\alpha}{2}$ quantile is iteratively searched for.
 
 The identified upper and lower confidence limits of $\lambda$ are then transformed back into $d$ :
 
@@ -125,35 +136,41 @@ Additionally, an $1 - \alpha$ percentile bootstrap CI is computed. Under the cas
 
 <h4 id = "IG_P_hedges_g"> Hedges' \(g\) </h4> 
 
-As mentioned above $d$ has a slight positive bias, which can be corrected. This alternative formula given by Hedges (1981) estimates the same population parameter as $d$ given in $Eq.(3)$$:
+As mentioned above $d$ has a slight positive bias, which can be corrected. This alternative formula given by Hedges (1981) estimates $\delta$ and is given by:  
 
 $$ g = \frac{\bar{X}_a - \bar{X}_b}{s_p} * J(\nu) $$
 
-with $\nu = n_a + n_b - 2$ denoting the degrees of freedom and $J(\nu)$ being given by $Eq.(2.2)$.
+with $\nu = n_a + n_b - 2$ denoting the degrees of freedom and $J(\nu)$ being given by:
+
+$$ J(\nu) = \frac{\Gamma(\frac{\nu}{2})}{\sqrt{\frac{\nu}{2}}\Gamma(\frac{\nu - 1}{2})} $$
 
 CI implementation according to the method described by Hedges and Olkin (1985) which uses the noncentral t distribution to construct a $1 - \alpha$ CI.
 
-Firstly, hedges' $g$ is transformed into an estimated noncentrality parameter $\widehat{\lambda_d}$:
+Firstly, hedges' $g$ is transformed into an estimated noncentrality parameter $\hat{\lambda}_d$:
 
-$$ \widehat{\lambda_d} = \frac{g_p}{\sqrt{\frac{1}{n_a} + \frac{1}{n_b}}} $$
+$$ \hat{\lambda}_d = \frac{g_p}{\sqrt{\frac{1}{n_a} + \frac{1}{n_b}}} $$
 
-Next the $\frac{\alpha}{2}$ and the  $1 - \frac{\alpha}{2}$ quantiles of the noncentral t distribution with non-centrality parameter $\widehat{\lambda_d}$ are identified.
+Next the $\frac{\alpha}{2}$ and the  $1 - \frac{\alpha}{2}$ quantiles of the noncentral t distribution with non-centrality parameter $\hat{\lambda}_d$ are identified.
 Lastly these quantiles are transformed back into $g$:
 
-$$ LL = t_{df = \nu, \frac{\alpha}{2},ncp = \widehat{\lambda_d}} * \sqrt{\frac{1}{n_a} + \frac{1}{n_b}} $$
+$$ LL = t_{df = \nu, \frac{\alpha}{2},ncp = \hat{\lambda}_d} * \sqrt{\frac{1}{n_a} + \frac{1}{n_b}} $$
 
-$$ UL = t_{df = \nu, 1 - \frac{\alpha}{2},ncp = \widehat{\lambda_d}} * \sqrt{\frac{1}{n_a} + \frac{1}{n_b}} $$
+$$ UL = t_{df = \nu, 1 - \frac{\alpha}{2},ncp = \hat{\lambda}_d} * \sqrt{\frac{1}{n_a} + \frac{1}{n_b}} $$
 
 Fitts (2021) found that the above procedure yields the most consistent coverage rates for $g_p$ close to the nominal $1 - \alpha$ level among the noncentral t based confidence intervals he compared - when assumptions are met (normality, independence and homogeneity of variances).
 
 Additionally, an $1 - \alpha$ percentile bootstrap CI is computed.
 
+<br>
+
 <h3 id="IG_P_overlap_measures"> Measures of (Non-)overlap </h3>
 
-If the populations being compared are normal and with equal variability it is possible to define measures of (non-)overlap which are related with cohen's $d$ and with themselves through the cumulative normal distribution (Cohen, 1988).
+Under the assumption that the populations being compared follow normal distributions with equal variances it is possible to define measures of (non-)overlap which are related to Cohen's $d$ and to each other through the cumulative normal distribution function $\Phi(\cdot)$ (Cohen, 1988).
 
 For the documentation of these measures the following notation will be use:  
-Let $X_a$ denote the random variable 'score of a random member of population *a* and $X_b$ denote the random variable 'score of a random member of population *b*. Further, let $F_a$ and $F_b$ denote the corresponding absolutely continuous distribution functions and $f_a$ and $f_b$ the corresponding probability density functions respectively.
+Let $X_a$ denote the random variable '*score of a random member of population a*' and $X_b$ denote the random variable '*score of a random member of population b**. Further, let $F_a$ and $F_b$ denote the corresponding absolutely continuous distribution functions and $f_a$ and $f_b$ the corresponding probability density functions respectively.
+
+<br>
 
 <h4 id = "IG_P_OVL"> The Coefficient of Overlapping (\(OVL\)) </h4>
 
@@ -173,17 +190,17 @@ $$ \hat{OVL} = 2 \Phi \left( \frac{-|d|}{2} \right) $$
 
 this estimator is a monotonic function of the absolute value of Cohen's $d$ (see above).
 
-A nonparametric estimator of the population effect can be obtained by using appropriate kernel density estimators and an appropriate quadrature formula (documentation tab of the page on nonparametric ES for the independent groups design).
+A nonparametric estimator of the population effect can be obtained by using appropriate kernel density estimators and an appropriate quadrature formula (see the documentation tab of the page on nonparametric ES for the independent groups design).
 
-A $1 - \alpha$ CI based on the noncentral F distribution is implemented as recommended by Reiser and Faraggi (1999).
+A $1 - \alpha$ CI based on the noncentral *F* distribution is implemented as recommended by Reiser and Faraggi (1999).
 
 Firstly $d$ is transformed into an estimated non-centrality parameter (ncp) $\hat{\eta^2}$:
 
-$$ \hat{\eta^2} = \left( \frac{d}{\nu} \right)^2 = t^2 \quad \quad Eq.(1.2)$$
+$$ \hat{\eta^2} = \left( \frac{d}{\nu} \right)^2 = t^2 $$
 
 with $$ \nu = \sqrt{\frac{n_a + n_b}{n_a \cdot n_b}} $$
 
-with $n_{a|b}$  being the sample size of group *a* and *b* respectively and $t$ being the student's *t*-statistic. Then the ncp $\eta^2_L$ of the noncentral *F* distribution (with $df_1 = 1$ and $df_2 = n_a + n_b - 2$ degrees of freedom) which has $\hat{\eta^2}$ as its $1 - \frac{\alpha}{2}$ quantile is iteratively searched for. If $\mathbb{P} \left( F_{1, n_a + n_b - 2}(ncp = 0) \leq \hat{\eta^2} \right) \leq 1 - \frac{\alpha}{2}$ then $\eta^2_L$ is set to 0.
+with $n_{a|b}$  being the sample size of group ***a*** and ***b*** respectively and $t$ being the student's *t*-statistic. Then the ncp $\eta^2_L$ of the noncentral *F* distribution (with $df_1 = 1$ and $df_2 = n_a + n_b - 2$ degrees of freedom) which has $\hat{\eta^2}$ as its $1 - \frac{\alpha}{2}$ quantile is iteratively searched for. If $\mathbb{P} \left( F_{1, n_a + n_b - 2}(ncp = 0) \leq \hat{\eta^2} \right) \leq 1 - \frac{\alpha}{2}$ then $\eta^2_L$ is set to 0.
 
 Next, the non-centrality parameter $\eta^2_U$ of the noncentral *F* distribution (with $df_1 = 1$ and $df_2 = n_a + n_b - 2$ degrees of freedom) which has $\hat{\eta^2}$ as its $\frac{\alpha}{2}$ quantile is iteratively searched for. If $\mathbb{P}\left(F_{1, n_a + n_b - 2}(ncp = 0) \leq \hat{\eta^2} \right) \leq \frac{\alpha}{2}$ then $\eta^2_U$ is set to 0.
 
@@ -213,7 +230,7 @@ and thus the estimator is given by:
 
 $$ \hat{OVL}_2 = \frac{\hat{OVL}}{2 - \hat{OVL}} $$
 
-Grice and Barret(2014) argue that the $OVL$ is to be preferred over $OVL_2$ in most contexts, because $OVL_2$ gives information about overlap and nonoverlap with respect to the joint distribution or combined area of the two distributions, which is unitutitive. $OVL$, on the other hand, indicates what percentage of the area a distribution shares with the other distribution which is easier to interpret.
+Grice and Barret(2014) argue that the $OVL$ is to be preferred over $OVL_2$ in most contexts, because $OVL_2$ gives information about overlap and nonoverlap with respect to the joint distribution or combined area of the two distributions, which is unintuitive. $OVL$, on the other hand, indicates what percentage of the area a distribution shares with the other distribution which is easier to interpret.
 
 We could not identify a closed form formula for the CI of this ES. Thus, a $1 - \alpha$ percentile bootstrap CI is implemented exclusively.
 
@@ -245,7 +262,7 @@ We could not identify a closed form formula for the CI of this ES. Thus, a $1 - 
 
 <h4 id="IG_P_U2"> Cohen's (\(U_2\)) </h4>
 
-The population effect on interest is is the percentage of population *a* that exceeds the same percentage in population *b*. Thus, a value of 0.7 for example means that the top 70% of population *a* exceed the bottom 70% of population *b*. Under the assumption of normality and homoscedasticity this quantity can be expressed by simply plugging Cohen's $\delta$ into the normal cumulative distribution function, giving the formula:
+The population effect on interest is is the percentage of population ***a*** that exceeds the same percentage in population ***b***. Thus, a value of 0.7 for example means that the top 70% of population ***a*** exceed the bottom 70% of population ***b***. Under the assumption of normality and homoscedasticity this quantity can be expressed by simply plugging Cohen's $\delta$ into the normal cumulative distribution function, giving the formula:
 
 $$ U2 = \Phi \left( \frac{\delta}{2} \right) $$
 
@@ -263,13 +280,13 @@ We could not identify a closed form formula for the confidence interval of this 
 
 <h4 id="IG_P_U3">Cohen's \(U_3\)</h4>
 
-For the following description we assume that group *a* has a higher mean than group *b*.
+For the following description we assume that group ***a*** has a higher mean than group ***b***.
 
 The population effect of interest is given by:
 
 $$ U_3 = F_b(Q_a(0.5)) $$
 
-with $F_b(\cdot)$ being the cumulative distribution function of population *b* and $Q_a(\cdot)$ being the quantile function of population *a*. Consequently, Cohen's measure of nonoverlap $U_3$ is the percentage of the population with the lower mean (*b*) which the upper half of the cases (the top 50%) of the population with the lower (*a*) mean exceeds (Cohen, 1988). Thus, a value of 0.7 for example means that the top 50% of population *a* exceed 70% of population *b*. Alternatively, one could conclude that the median member of population *a* exceeds 70% of the members of population *b*. Under the assumption of normality and homoscedasticity this quantity can be expressed by simply plugging Cohen's $\delta$ into the normal cumulative distribution function, giving the formula:
+with $F_b(\cdot)$ being the cumulative distribution function of population ***b*** and $Q_a(\cdot)$ being the quantile function of population ***a***. Consequently, Cohen's measure of nonoverlap $U_3$ is the percentage of the population with the lower mean (***b***) which the upper half of the cases (the top 50%) of the population with the higher mean (***a***) exceeds (Cohen, 1988). Thus, a value of 0.7 for example means that the top 50% of population ***a*** exceed 70% of population ***b***. Alternatively, one could conclude that the median member of population ***a*** exceeds 70% of the members of population ***b***. Under the assumption of normality and homoscedasticity this quantity can be expressed by simply plugging Cohen's $\delta$ into the normal cumulative distribution function, giving the formula:
 
 $$ U_3 = \Phi \left( |\delta| \right) $$
 
@@ -285,15 +302,15 @@ We could not identify a closed form formula for the CI for this ES. Thus, a $1 -
 
 <br>
 
-<h3 id="IG_P_normality_EF"> Probabilistic measures of effect </h3>
+<h3 id="IG_P_normality_EF"> Probabilistic measures of effect size </h3>
 
-<h4 id = "IG_P_CLES"> The Common Language ES </h4>
+<h4 id = "IG_P_CLES"> The Common Language ES (\(CLES\)) </h4>
 
 The population effect of interest is given by:
 
 $$ \mathbb{P} \left( X_a > X_b \right) $$
 
-that is, the probability that a randomly selected score from population *a* exceeds a randomly selected score from population *b*. As argued by Mastrich & Hernandez (2021), The *CL* ES can be considered to provide an intuitive way to understand statistical results and therefore aids practitioners in understanding research findings and making informed decisions.
+that is, the probability that a randomly selected score from population ***a*** exceeds a randomly selected score from population ***b***. As argued by Mastrich & Hernandez (2021), The *CL* ES can be considered to provide an intuitive way to understand statistical results and therefore aids practitioners in understanding research findings and making informed decisions.
 
 The parametric estimator, which assumes normality and homoscedasticity of the two populations, implemented in this application is given by (McGraw & Wong, 1992):
 
@@ -358,13 +375,13 @@ With $\bar{X}_{a|b}$ being the sample mean of group ***a***/***b***, and $s_{a|b
 
 A $1 - \alpha$ noncentral *t* CI was implemented according to Algina et al. (2006b) employing the method described by Steiger and Fouladi (1997) for constructing CIs based on the noncentral *t*.  
 
-Firstly Glass' $d_{G,\,j}$ is transformed into an estimated non-centrality parameter $\widehat{\lambda}$: 
+Firstly Glass' $d_{G,\,j}$ is transformed into an estimated non-centrality parameter $\hat{\lambda}$: 
 
-$$ \widehat{\lambda} = \frac{d_{G,\,j}}{\sqrt{\frac{1}{n_i} + \frac{s_i^2}{n_j \cdot s_j^2}}} $$ 
+$$ \hat{\lambda} = \frac{d_{G,\,j}}{\sqrt{\frac{1}{n_i} + \frac{s_i^2}{n_j \cdot s_j^2}}} $$ 
 
-with $n_i$ and $s_i$ being the sample size and the standard deviation of the group **not** being standardised by. Then the non-centrality parameter $\lambda_L$ of the noncentral *t* distribution with $\nu = n_j - 1$ degrees of freedom which has $\widehat{\lambda}$ as its $1 - \frac{\alpha}{2}$ quantile is iteratively searched for.
+with $n_i$ and $s_i$ being the sample size and the standard deviation of the group **not** being standardised by. Then the non-centrality parameter $\lambda_L$ of the noncentral *t* distribution with $\nu = n_j - 1$ degrees of freedom which has $\hat{\lambda}$ as its $1 - \frac{\alpha}{2}$ quantile is iteratively searched for.
 
-Next, the non-centrality parameter $\lambda_U$ of the noncentral *t* distribution with $\nu = n_j - 1$ degrees of freedom which has $\widehat{\lambda}$ as its $\frac{\alpha}{2}$ quantile is iteratively searched for. 
+Next, the non-centrality parameter $\lambda_U$ of the noncentral *t* distribution with $\nu = n_j - 1$ degrees of freedom which has $\hat{\lambda}$ as its $\frac{\alpha}{2}$ quantile is iteratively searched for. 
 
 The identified upper and lower confidence limits of $\lambda$ are then transformed back into $d_{G,\,j}$: 
 
@@ -390,21 +407,21 @@ $$ g_{G,\,a} = \frac{\bar{X_a} - \bar{X_b}}{s_a} * J(\nu) $$
 
 $$ g_{G,\,b} = \frac{\bar{X_a} - \bar{X_b}}{s_b} * J(\nu) $$
 
-with $\nu = n_j - 1$ denoting the degrees of freedom and $J(\nu)$ being given by 
+with $\nu = n_j - 1$ denoting the degrees of freedom and $J(\nu)$ being defined above (see documentation of Hedges' $g$)
 
-$$ J(\nu) = \frac{\Gamma(\frac{\nu}{2})}{\sqrt{\frac{\nu}{2}}\Gamma(\frac{\nu - 1}{2})} $$
+
 
 If this effect size is chosen by the user, both estimators are provided denoted as $g_{G, 1}$&mdash;using the first group's standard deviation in the denominator&mdash;and $g_{G, 2}$&mdash;using the second group's standard deviation in the denominator.The user can choose which to report/interpret (see documentation for $d_{G,\,j}$).  
 
 CI implementation is the same as for $d_{G,\,j}$, employing the method described by Steiger and Fouladi (1997) which uses the noncentral t distribution to construct a $1 - \alpha$ CI.
 
-Firstly Glass' $g_{G,\,j}$ is transformed into an estimated non-centrality parameter $\widehat{\lambda}$: 
+Firstly Glass' $g_{G,\,j}$ is transformed into an estimated non-centrality parameter $\hat{\lambda}$: 
 
-$$\widehat{\lambda} = \frac{g_{G,\,j}}{\sqrt{\frac{1}{n_i} + \frac{s_i^2}{n_j*s_j^2}}} \quad \quad Eq.(2.3)$$ 
+$$\hat{\lambda} = \frac{g_{G,\,j}}{\sqrt{\frac{1}{n_i} + \frac{s_i^2}{n_j*s_j^2}}} $$ 
 
-with $n_i$ and $s_i$ being the sample and the standard deviation of the group not being standardised by. Then the non-centrality parameter $\lambda_L$ of the noncentral t distribution (with $\nu = n_j - 1$ degrees of freedom) which has $\widehat{\lambda}$ as its $1 - \frac{\alpha}{2}$ quantile is iteratively searched for.  
+with $n_i$ and $s_i$ being the sample and the standard deviation of the group not being standardised by. Then the non-centrality parameter $\lambda_L$ of the noncentral t distribution (with $\nu = n_j - 1$ degrees of freedom) which has $\hat{\lambda}$ as its $1 - \frac{\alpha}{2}$ quantile is iteratively searched for.  
 
-Next, the non-centrality parameter $\lambda_U$ of the noncentral t distribution (with $\nu = n_j - 1$ degrees of freedom) which has $\widehat{\lambda}$ as its $\frac{\alpha}{2}$ quantile is iteratively searched for.  
+Next, the non-centrality parameter $\lambda_U$ of the noncentral t distribution (with $\nu = n_j - 1$ degrees of freedom) which has $\hat{\lambda}$ as its $\frac{\alpha}{2}$ quantile is iteratively searched for.  
 
 The identified upper and lower confidence limits of $\lambda$ are then transformed back into $g_{G,\,j}$:  
 
@@ -443,11 +460,11 @@ If $n_a = n_b$, then $s_p$ will be equal to $s'$ and thus $d$ will be equal to $
 
 An approximate large-sample CI is implemented according to Bonett (2008):
 
-$$ CI = d' \pm \Phi^{-1} \left( \frac{\alpha}{2} \right) \sqrt{\hat{Var}(d')} $$
+$$ CI = d' \pm \Phi^{-1} \left( \frac{\alpha}{2} \right) \sqrt{\widehat{Var}(d')} $$
 
 with
 
-$$ \hat{Var}(d') = \frac{d'^2(\frac{s^4_a}{n_a - 1} + \frac{s^4_b}{n_b - 1})}{8s'^4} + \frac{s_a^2}{(n_a-1)s'^2} + \frac{s_b^2}{(n_b-1)s'^2} $$
+$$ \widehat{Var}(d') = \frac{d'^2(\frac{s^4_a}{n_a - 1} + \frac{s^4_b}{n_b - 1})}{8s'^4} + \frac{s_a^2}{(n_a-1)s'^2} + \frac{s_b^2}{(n_b-1)s'^2} $$
 
 Bonett (2008) reported that this CI method produced coverage probabilities that were consistent and close to the nominal $1 - \alpha$ level under homoscedasticity as well as under mild heteroscedasticity combined with unequal sample sizes. Under the latter condition Bonett (2008) found that approximate large-sample CIs for Cohen's $d$ failed to maintain consistent coverage probabilities close to the nominal level.
 
@@ -455,7 +472,7 @@ Additionally, an $1 - \alpha$ percentile bootstrap CI is computed.
 
 <br>
 
-<h4 id = "IG_P_hedges_g_"> Hedges' \(g'\) </h4> 
+<h4 id = "IG_P_bonett_g'"> Hedges' \(g'\) </h4> 
 
 As mentioned above $d'$ has a slight positive bias, which can be corrected. This alternative statistic estimates the same population parameter as $d'$. The bias-corrected estimator is given by (Bonett, 2009):
 
@@ -467,11 +484,11 @@ If $n_a = n_b$, then $s_p$ will be equal to $s'$ and thus $g$ will be equal to $
 
 An approximate large-sample CI is implemented according to Bonett (2009):
 
-$$ CI = g' \pm \Phi^{-1} \left( \frac{\alpha}{2} \right) \sqrt{J(\nu)^2\hat{Var}(d')} $$
+$$ CI = g' \pm \Phi^{-1} \left( \frac{\alpha}{2} \right) \sqrt{J(\nu)^2\widehat{Var}(d')} $$
 
 with
 
-$$ \hat{Var}(d') = \frac{d'^2(\frac{s^4_a}{n_a - 1} + \frac{s^4_b}{n_b - 1})}{8s'^4} + \frac{s_a^2}{(n_a-1)s'^2} + \frac{s_b^2}{(n_b-1)s'^2} $$
+$$ \widehat{Var}(d') = \frac{d'^2(\frac{s^4_a}{n_a - 1} + \frac{s^4_b}{n_b - 1})}{8s'^4} + \frac{s_a^2}{(n_a-1)s'^2} + \frac{s_b^2}{(n_b-1)s'^2} $$
 
 Additionally, an $1 - \alpha$ percentile bootstrap CI is computed.
 
@@ -515,12 +532,12 @@ If group differences in the tails of distribution is of interest then the ratio 
 
 Consequently, an assessment of tail ratios can be of importance for any two-group research design regardless of the absence of differences between means and/or variances.  
 
-The user of this application can compute tail ratios for a chosen cutoff value, a chosen tail region (i.e., the lower/left or the upper/right tail), and a chosen reference group (i.e. the proportion used as the denominator - either the proportion of group a or group b).  
+The user of this application can compute tail ratios for a chosen cutoff value, a chosen tail region (i.e., the lower/left or the upper/right tail), and a chosen reference group (i.e. the proportion used as the denominator - either the proportion of group ***a*** or group ***b*** ).  
 
 For a discussion of the history of the tail ratio, a proposal for a consensus regarding a naming and reporting convention, as well as for proposed benchmarks meant to aid the interpretation of tail ratios the reader is advised to turn to the article by Voracek et al. (2013).  
 
 The tail ratio effect size measure is implemented as follows:  
-The tail ratio can be thought of as a risk ratio by considering scores below/above a cutoff value as "successes"/"hits" and scores above/below a cutoff as "failures"/"misses". The number of "hits" in group a is binomially distributed with parameters $n_a$ and $p_a$, where $p_a$ is the proportion of scores in population a below/above a cutoff. Conversely, the number of "hits" in group b is also binomially distributed with parameters $n_b$ and $p_b$, where $p_b$ is the proportion of scores in population b below/above a cutoff. The population tail ratio for a given cutoff value and region of interest is thus the ratio:  
+The tail ratio can be thought of as a risk ratio by considering scores below/above a cutoff value as "successes"/"hits" and scores above/below a cutoff as "failures"/"misses". The number of "hits" in group ***a*** is binomially distributed with parameters $n_a$ and $p_a$, where $p_a$ is the proportion of scores in population ***a*** below/above a cutoff. Conversely, the number of "hits" in group ***b*** is also binomially distributed with parameters $n_b$ and $p_b$, where $p_b$ is the proportion of scores in population ***b*** below/above a cutoff. The population tail ratio for a given cutoff value and region of interest is thus the ratio:  
 
 $$ \theta = \frac{p_{a|b}}{p_{b|a}} $$
 
@@ -572,13 +589,13 @@ Additionally, an $1 - \alpha$ percentile bootstrap CI is computed.
 
 <br>
 
-<h4 id="IG_P_VR">Variance ratio (VR)</h4>
+<h4 id="IG_P_VR">Variance ratio (\(VR\))</h4>
 
 The population effect size of interest is given by:  
 
-$$ \theta = \frac{\sigma_{a|b}^2}{\sigma_{a|b}^2} $$
+$$ VR = \frac{\sigma_{a|b}^2}{\sigma_{a|b}^2} $$
 
-It is simply the ratio of population variances with either population a being the reference group $\frac{\sigma_{b}^2}{\sigma_{a}^2}$ or population b being the reference group $\frac{\sigma_{a}^2}{\sigma_{b}^2}$.
+It is simply the ratio of population variances with either population ***a*** being the reference group $\frac{\sigma_{b}^2}{\sigma_{a}^2}$ or population ***b*** being the reference group $\frac{\sigma_{a}^2}{\sigma_{b}^2}$.
 Among various contexts, the variance ratio can be of particular interest:  
 
 - in psychometric studies assessing the variability of scores of a measurement tool (Bonett, 2006);  
@@ -587,9 +604,9 @@ Among various contexts, the variance ratio can be of particular interest:
 
 Thus, it is advisable to compute and inspect variance ratios and their confidence intervals.  
 
-The sample estimate of $Eq.(IG)$ is given by the ratio of sample variances:
+The sample estimatoris given by the ratio of sample variances:
 
-$$ \hat{\theta} = \frac{s_{a|b}^2}{s_{a|b}^2} $$
+$$ \hat{VR} = \frac{s_{a|b}^2}{s_{a|b}^2} $$
 
 The general approach to assess homogeneity of variances is to conduct an appropriate hypothesis test, like the traditional F-test. However, a hypothesis test at best can only inform about the presence of homogeneity of variances, but does not inform about the magnitude of the ratio of variances. Additionally, traditional hypothesis tests have non-nominal Type-I error probabilities when data are sampled from non-normal populations or simply when sample sizes are unequal and/or small (Grissom & Kim, 2012). Therefore, it is more informative to consult the point estimate as well as a confidence interval that is robust to common violations of assumptions.   
 
@@ -613,13 +630,15 @@ This confidence interval is exact only when the data stem from normal population
 
 Additionally, an $1 - \alpha$ percentile bootstrap CI is computed.  
 
-<br><h3 id = "IG_P_CLES"> The Common Language ES </h3>
+<br>
+
+<h3 id = "IG_P_CLES"> The Common Language ES </h3>
 
 The population effect of interest is given by:
 
 $$ \mathbb{P} \left( X_a > X_b \right) $$
 
-that is, the probability that a randomly selected score from population *a* exceeds a randomly selected score from population *b*. As argued by Mastrich & Hernandez (2021), The *CL* ES can be considered to provide an intuitive way to understand statistical results and therefore aids practitioners in understanding research findings and making informed decisions.
+that is, the probability that a randomly selected score from population ***a*** exceeds a randomly selected score from population ***b***. As argued by Mastrich & Hernandez (2021), The *CL* ES can be considered to provide an intuitive way to understand statistical results and therefore aids practitioners in understanding research findings and making informed decisions.
 
 The parametric estimator, which assumes normality and homoscedasticity of the two populations, implemented in this application is given by (McGraw & Wong, 1992):
 
@@ -631,7 +650,7 @@ $$ CL_d = \Phi \left( \frac{d}{\sqrt2} \right) $$
 
 No closed form formulas were identified for the computation of a ($1 - \alpha$) CI for the *CL* ES. Mastrich & Hernandez (2021) recommends to transform the bounds of the CI of $d$ "to provide a sense of uncertainty around the reported CLES" (p. 733). The user of this application can use the above formula on the CI limits given by the application for $d$ to transform these limits into $CL_d$ values, if they wish to do so. Otherwise, a $1 - \alpha$ percentile bootstrap CI is computed and can be used to communicate said uncertainty.
 
-Two nonparametric estimators of the above population effect that do not make the normality or homoscedasticity assumptions of the *CL* ES, are called the probability of superiority (*PS*; Grissom, 1994) and the *A* measure of stochastic superiority (Vargha & Delaney, 2000) (see the documentation tab of the page on nonparametric ES for the independent groups design). As discussed by Grissom and Kim (2001) and Vargha and Delaney (2000) these estimators can be considered preferable to the  parametric estimator and if raw data is available the user is best advised to compute one of them alongside the *CL* ES.
+Two nonparametric estimators of the above population effect that do not make the normality or homoscedasticity assumptions of the *CL* ES, are called the probability of superiority (*PS*; Grissom, 1994) and the ***a*** measure of stochastic superiority (Vargha & Delaney, 2000) (see the documentation tab of the page on nonparametric ES for the independent groups design). As discussed by Grissom and Kim (2001) and Vargha and Delaney (2000) these estimators can be considered preferable to the  parametric estimator and if raw data is available the user is best advised to compute one of them alongside the *CL* ES.
 
 <br>
 
@@ -813,7 +832,7 @@ Grissom and Kim (2001) reported on three such ES estimators that use robust esti
 
 $$ \hat\delta_{a|b} =  \frac{Mdn_a - Mdn_b}{S_{a|b}} $$
 
-with $Mdn_a$ being the Median of group a, $Mdn_b$ being the median of group b and $S_{a|b}$ being the standardiser, which is some robust measure of variability of the baseline/control group (e.g., the median absolute  deviation of a gold standard treatment). Here, if this estimator is chosen by the user, both estimators are provided denoted as $d_{MAD, 1}$/$d_{R_{IQ}, 1}$/$d_{bw, 1}$&mdash;using the first group's variability estimator in the denominator&mdash;and $d_{MAD, 2}$/$d_{R_{IQ}, 2}$/$d_{bw, 2}$&mdash;using the second group's variability estimator in the denominator.
+with $Mdn_a$ being the Median of group a, $Mdn_b$ being the median of group ***b*** and $S_{a|b}$ being the standardiser, which is some robust measure of variability of the baseline/control group (e.g., the median absolute  deviation of a gold standard treatment). Here, if this estimator is chosen by the user, both estimators are provided denoted as $d_{MAD, 1}$/$d_{R_{IQ}, 1}$/$d_{bw, 1}$&mdash;using the first group's variability estimator in the denominator&mdash;and $d_{MAD, 2}$/$d_{R_{IQ}, 2}$/$d_{bw, 2}$&mdash;using the second group's variability estimator in the denominator.
 
 <br>
 
@@ -848,7 +867,7 @@ $$ d_{R_{IQ}} = \frac{Mdn_a - Mdn_b}{0.75 \cdot R_{IQ_{a|b}}} $$
 
 The interquartile range is more outlier resistant than the standard deviation. Multiplying $R_{IQ}$ with 0.75 results in an estimator that approximates the standard deviation under normality (Grissom & Kim, 2001).  
 Grissom and Kim (2001) point to Shoemaker (1999) for a discussion of other possibly more robust ranges of quantiles that may yield alternative robust estimators of variability.  
-We again follow the naming convention of Grissom and Kim (2005) who designated the median difference standardised by the biweight standard deviation as $d_{bw}$. Consequently, the subscript highlights the standardiser (R_{IQ}) of this estimator as well.
+We again follow the naming convention of Grissom and Kim (2005) who designated the median difference standardised by the biweight standard deviation as $d_{bw}$. Consequently, the subscript highlights the standardiser ($R_{IQ}$) of this estimator as well.
 
 <br>
 
@@ -870,9 +889,10 @@ $$ a_i = \{_{1, \, if \, |Y_i| < 1}^{0, \, if \, |Y_i| \geq{1}} $$
 Grissom and Kim (2001) note that compared to the $MAD$ $s_bw$ has a relatively small sampling variability.
 
 <br>
+
 <hr>
 
-<h2 id="IG-refs">References</h2>
+<h2 id="IG_P_refs">References</h2>
 
 Algina, J., Keselman, H. J., & Penfield, R. D. (2006a). Confidence interval coverage for Cohen’s effect size statistic. *Educational and Psychological Measurement*, *66*(6), 945--960. <https://doi.org/10.1177/0013164406288161>  
 

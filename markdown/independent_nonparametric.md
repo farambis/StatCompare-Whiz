@@ -45,9 +45,9 @@ The population effect of interest is given by:
 
 $$PS = \mathbb{P}(X_a > X_b) $$
 
-that is, the probability that a randomly sampled member of population *a* will have a score ($X_a$) that is higher than the score ($X_b$) attained by a randomly sampled member of population *b* (Grissom, 1994a). This is the same population effect estimated by the parametric Common Language (*CL*) ES statistic (see the documentation tab of the page on parametric ES for the independent groups design).
+that is, the probability that a randomly sampled member of population ***a*** will have a score ($X_a$) that is higher than the score ($X_b$) attained by a randomly sampled member of population ***b*** (Grissom, 1994a). This is the same population effect estimated by the parametric Common Language (*CL*) ES statistic (see the documentation tab of the page on parametric ES for the independent groups design).
 
-Therefore, the *PS* measures the probabilistic superiority of one group's scores over another group's scores. Since it is a probability, its value ranges from 0 to 1. A *PS* of 0 means that every member of population *a* is outscored by every member of population *b*. A *PS* of 1 means that every member of population *a* outscores every member of population *b*.  
+Therefore, the *PS* measures the probabilistic superiority of one group's scores over another group's scores. Since it is a probability, its value ranges from 0 to 1. A *PS* of 0 means that every member of population ***a*** is outscored by every member of population ***b***. A *PS* of 1 means that every member of population ***a*** outscores every member of population ***b***.  
 
 A nonparametric estimator of this population effect is given by (Grissom, 1994a):
 
@@ -64,7 +64,7 @@ $$I_{ \{ x_{ia} \gt x_{ib} \} }(x_{ia}, x_{jb}) = \begin{cases}
   0 & \text{if }  x_{ia} \leq x_{jb} 
 \end{cases}$$
 
-with *U* being the *U*-statistic---the number of times that the scores from one specified sample are higher than the scores from the other sample with which they are paired (with ties being ignored)---and $(n_an_b) - n_{ties}$ being the total number of possibles pairings minus the number of pairings resulting in a tie (which should optimally be 0 if this estimator is chosen). Thus, $\hat{p}_{a>b}$ is the proportion of times a group *a* score was higher than a group *b* score in the sample (with ties being ignored). This definition assumes no ties or equal allocations of ties (Grissom, 1994a). This assumption should hold for continuous dependent variables. However, in practice continuous variables can often only be measured coarsely, which might result in tied values. Additionally, psychological research also employs measures on an ordinal scale, which too likely yield ties. Grissom (1994b) recommended count ties as half a "win". It can be argued that this leads to a slightly different definition of the population effect and thus it can be considered its own distinct ES - see the *A* measure of stochastic superiority below (Vargha & Delaney, 2000).  
+with *U* being the *U*-statistic---the number of times that the scores from one specified sample are higher than the scores from the other sample with which they are paired (with ties being ignored)---and $(n_an_b) - n_{ties}$ being the total number of possibles pairings minus the number of pairings resulting in a tie (which should optimally be 0 if this estimator is chosen). Thus, $\hat{p}_{a>b}$ is the proportion of times a group ***a*** score was higher than a group ***b*** score in the sample (with ties being ignored). This definition assumes no ties or equal allocations of ties (Grissom, 1994a). This assumption should hold for continuous dependent variables. However, in practice continuous variables can often only be measured coarsely, which might result in tied values. Additionally, psychological research also employs measures on an ordinal scale, which too likely yield ties. Grissom (1994b) recommended count ties as half a "win". It can be argued that this leads to a slightly different definition of the population effect and thus it can be considered its own distinct ES - see the *A* measure of stochastic superiority below (Vargha & Delaney, 2000).  
 
 $\hat{p}_{a>b}$ is a nonparamatetric estimator of the population effect also estimated by the *CL* ES statistic , in the sense that the former estimator's definition does not rely on the normality and homoscedasticity assumption of the latter estimator's.  
 
@@ -101,9 +101,9 @@ $$A_{a} = \mathbb{P}(X_{a} > X_{b}) + .5 \mathbb{P}(X_a = X_b)$$
 
 $$A_{b} = \mathbb{P}(X_{b} > X_{a}) + .5 \mathbb{P}(X_a = X_b)$$
 
-these are, the probability that a randomly sampled score $X_a$ from population *a* will be greater than or equal to an independently drawn score $X_b$ from population *b* and vice versa (Vargha & Delaney, 2000). This quantity is identical to the population effect estimated by the parametric *CL* ES statistic and the nonparametric *PS* statistic for continuous measures where ties are not possible. However, this definition is also applicable to any measure at least ordinally scaled, where ties are quasi unavoidable and have to be explicitly accounted for. For a thorough discussion of the subtle yet important differences between these ES definitions as well as the relations between Cliff's $\delta$, the *CL* ES and $A_{a|b}$ consult Vargha and Delaney (2000).  
+these are, the probability that a randomly sampled score $X_a$ from population ***a*** will be greater than or equal to an independently drawn score $X_b$ from population ***b*** and vice versa (Vargha & Delaney, 2000). This quantity is identical to the population effect estimated by the parametric *CL* ES statistic and the nonparametric *PS* statistic for continuous measures where ties are not possible. However, this definition is also applicable to any measure at least ordinally scaled, where ties are quasi unavoidable and have to be explicitly accounted for. For a thorough discussion of the subtle yet important differences between these ES definitions as well as the relations between Cliff's $\delta$, the *CL* ES and $A_{a|b}$ consult Vargha and Delaney (2000).  
 
-If the dependent variable of interest is continuous and ties are not possible, then, much like with the *PS* and the *CL* ES definition, a value of $A_a$ > 0.5 indicates that population *a* is "stochastically"/"probabilistically" greater than population *b*. However, whenever ties are possible both $A_a$ and $A_b$ have to be inspected in order to determine which group is "stochastically"/"probabilistically" superior. Consider a case where $\mathbb{P}(X_a > X_b)$ = 0.1, $\mathbb{P}(X_b > X_a)$ = 0.3 and $\mathbb{P}(X_a = X_b)$ = 0.6. In this case $A_a = \mathbb{P}(X_a > X_b) + .5 \mathbb{P}(X_a = X_b)$ = 0.7 > 0.5. However, $A_b = \mathbb{P}(X_b > X_a) + .5 \mathbb{P}(X_a = X_b)$ = 0.9 > 0.7 = $A_a$. Thus, population *b* is "stochastically"" superior even though $A_a$ > 0.5. Therefore, whenever the user selects this effect size, both population effects are estimated.  
+If the dependent variable of interest is continuous and ties are not possible, then, much like with the *PS* and the *CL* ES definition, a value of $A_a$ > 0.5 indicates that population ***a*** is "stochastically"/"probabilistically" greater than population ***b***. However, whenever ties are possible both $A_a$ and $A_b$ have to be inspected in order to determine which group is "stochastically"/"probabilistically" superior. Consider a case where $\mathbb{P}(X_a > X_b)$ = 0.1, $\mathbb{P}(X_b > X_a)$ = 0.3 and $\mathbb{P}(X_a = X_b)$ = 0.6. In this case $A_a = \mathbb{P}(X_a > X_b) + .5 \mathbb{P}(X_a = X_b)$ = 0.7 > 0.5. However, $A_b = \mathbb{P}(X_b > X_a) + .5 \mathbb{P}(X_a = X_b)$ = 0.9 > 0.7 = $A_a$. Thus, population ***b*** is "stochastically"" superior even though $A_a$ > 0.5. Therefore, whenever the user selects this effect size, both population effects are estimated.  
 
 A nonparametric estimators of these population effects are given by (Vargha & Delaney, 2000):
 
@@ -135,7 +135,7 @@ $$I_{\{x_{ia} \leq x_{ib}\}}(x_{ia}, x_{jb}) = \begin{cases}
   0 & \text{if } x_{ia} \gt x_{jb}
 \end{cases}$$  
 
-with *U'* being the *U*-statistic accounting for ties---the number of times that the scores from one specified sample are higher than or equal to the scores from the other sample with which they are paired---and $n_an_b$ being the total number of possibles pairings. Thus, $\hat{A}_a$ is the proportion of times a group *a* score was higher than or equal to a group *b* score in the sample (and vice versa).  
+with *U'* being the *U*-statistic accounting for ties---the number of times that the scores from one specified sample are higher than or equal to the scores from the other sample with which they are paired---and $n_an_b$ being the total number of possibles pairings. Thus, $\hat{A}_a$ is the proportion of times a group ***a*** score was higher than or equal to a group ***b*** score in the sample (and vice versa).  
 If this effect size is chosen by the user, both estimators are provided denoted as $\hat{A}_1$---estimating the second groups superioirty over the first (= $\hat{A}_a$ in the notation above)---and $\hat{A}_2$---estimating the first groups superiority over the first (= $\hat{A}_b$ in the notation above).  
 
 The exact confidence interval is calculated based on Newcombe (2006):  
@@ -161,13 +161,13 @@ the population effect of interest is given by:
 
 $$ OR_{gpop} = \frac{\mathbb{P}(X_a > X_b)}{\mathbb{P}(X_b > X_a)} $$
 
-The $OR_{gpop}$---also known as Agresti's alpha---measures the odds that a randomly drawn score from population *a* will be superior to a randomly drawn score from population *b*.  
+The $OR_{gpop}$---also known as Agresti's alpha---measures the odds that a randomly drawn score from population ***a*** will be superior to a randomly drawn score from population ***b***.  
 
 A nonparametric estimator that does not make assumptions about the shape of the two population distributions given by (Grissom & Kim, 2012):  
 
 $$ OR_g = \frac{\hat{p}_{a>b}}{\hat{p}_{b>a}}$$
 
-Thus, the generalized odds ratio ($OR_g$) is the probability of superiority of group *a* compared to group *b* divided by the probability of superiority of group *b* compared to group *a*.  When there are not ties present/when ties are ignored, the above estimator can be rewritten as:  
+Thus, the generalized odds ratio ($OR_g$) is the probability of superiority of group ***a*** compared to group ***b*** divided by the probability of superiority of group ***b*** compared to group ***a***.  When there are not ties present/when ties are ignored, the above estimator can be rewritten as:  
 
 $$OR_g = \frac{\hat{p}_{a>b}}{1 - \hat{p}_{a>b}}$$
 
@@ -213,7 +213,7 @@ Additionally, an $1 - \alpha$ bootstrap confidence interval is implemented. This
 <h3 id = "IG_NP_overlap_measures"> Measures of (Non-)overlap </h3>
 
 For the documentation of these measures the following notation will be used:  
-Let $X_a$ denote the random variable 'score of a random member of population *a*' and $X_b$ denote the random variable 'score of a random member of population *b*. Further, let $F_a$ and $F_b$ denote the corresponding absolutely continuous distribution functions and $f_a$ and $f_b$ the corresponding probability density functions respectively. 
+Let $X_a$ denote the random variable 'score of a random member of population ***a***' and $X_b$ denote the random variable 'score of a random member of population ***b***. Further, let $F_a$ and $F_b$ denote the corresponding absolutely continuous distribution functions and $f_a$ and $f_b$ the corresponding probability density functions respectively. 
 
 <br>
 
@@ -226,11 +226,11 @@ $$ OVL = \int_{-\infty}^{\infty} \min \{ f_a(x), f_b(x) \} dx $$
 The coefficient of overlapping ($OVL$) is thus defined as the common area under two probability densities---i.e., the proportion of overlap between the two distributions/populations---and can for example be used as a measure of agreement of two distributions (Bradley, 2006). 
 
 Nonparametric estimators of the above quantity can be obtained by replacing the densities by appropriate kernel density estimators and the integrals by an appropriate quadrature formula.
-Assuming $x_{a_1}$, ..., $x_{a_{n_a}}$ denote observations of random variable $X_a$, a density estimator for *f* is obtained by (Schmid & Schmidt, 2006):  
+Assuming $x_{a_1}, \ldots x_{a_{n_a}}$ denote observations of random variable $X_a$, a density estimator for $f_a$ is obtained by (Schmid & Schmidt, 2006):  
 
-$$ \hat{f_{n_a}}(x) = \hat{f_{n_a}}(x|x_{a_i},\, i =1\ldots n) = \frac{1}{n_a}  \sum_{i = 1}^{n_a} \frac{1}{b} K \left( \frac{x - x_{a_i}}{b} \right)$$
+$$ \hat{f_{n_a}}(x) = \hat{f_{n_a}}(x|x_{a_i},\, i = 1 \ldots n) = \frac{1}{n_a}  \sum_{i = 1}^{n_a} \frac{1}{b} K \left( \frac{x - x_{a_i}}{b} \right)$$
 
-where kernel *K* and bandwidth *b* are to be determined. $\hat{f}_{n_b}$ can be defined analogously. To derive estimators for the $OVL$, $x_{a_i}$ can be transformed into the unit interval by an appropriate affine transformation. The integrals over the unit interval can now be approximated by a trapezoidal rule, resulting in (Schmid & Schmidt, 2005): 
+where kernel *K* and bandwidth ***b*** are to be determined. $\hat{f}_{n_b}$ (the estimator for $f_b$) can be defined analogously. To derive estimators for the $OVL$, $x_{a_i}$ can be transformed into the unit interval by an appropriate affine transformation. The integrals over the unit interval can now be approximated by a trapezoidal rule, resulting in (Schmid & Schmidt, 2005): 
 
 $$ \hat{OVL} = \frac{1}{k} \sum_{i = 1}^k \frac{1}{2} \left( \min \left\{ \hat{f_{n_a}}  \left( \frac{i}{k} \right), \hat{f_{n_b}} \left( \frac{i}{k} \right) \right\} + \min \left\{ \hat{f_{n_a}} \left( \frac{i-1}{k} \right), \hat{f_{n_b}} \left( \frac{i-1}{k} \right) \right\} \right) $$
 
@@ -256,7 +256,7 @@ giving the estimator:
 
 $$ \hat{OVL}_2 = \frac{\hat{OVL}}{\hat{\theta}} $$
 
-Grice and Barret(2014) argue that $OVL$ is to be preferred over $OVL_2$ in most contexts, because $OVL_2$ gives information about overlap and nonoverlap with respect to the joint distribution or combined area of the two distributions, which is unitutitive. $OVL$, on the other hand, indicates what percentage of the area a distribution shares with the other distribution which is easier to interpret.   
+Grice and Barret(2014) argue that $OVL$ is to be preferred over $OVL_2$ in most contexts, because $OVL_2$ gives information about overlap and nonoverlap with respect to the joint distribution or combined area of the two distributions, which is unintuitive. $OVL$, on the other hand, indicates what percentage of the area a distribution shares with the other distribution which is easier to interpret.   
 
 We could not identify a closed form formula for the confidence interval of this nonparametric effect size. Thus, a $1 - \alpha$ percentile bootstrap confidence interval is implemented exclusively.  
 
@@ -284,7 +284,7 @@ We could not identify a closed form formula for the CI of this ES. Thus, a $1 - 
 
 <h4 id = "IG_NP_U2"> Nonparametric Cohen's (\(U_2\)) </h4>
 
-The population effect on interest is is the percentage of population *a* that exceeds the same percentage in population *b*. Thus a value of 0.7 means that the top 70% of population *a* exceed the bottom 70% of population *b*.
+The population effect on interest is the percentage of population ***a*** that exceeds the same percentage in population ***b***. Thus a value of 0.7 means that the top 70% of population ***a*** exceed the bottom 70% of population ***b***.
 
 We propose the following non-parametric estimator for the above population effect:
 
@@ -299,7 +299,7 @@ t \in \{ x_{a_{(1)}}, \ldots, x_{a_{(n_a)}} \} :
 \end{cases}
 $$
 
-where $x_{a_{(1)}, \ldots, x_{a_{(n_a)}}}$ are the order statistics of the group *a* observations and $\hat{F}_{a|b}$ is the empirical distribution function of group *a*/*b* given by:
+where $x_{a_{(1)}, \ldots, x_{a_{(n_a)}}}$ are the order statistics of the group ***a*** observations and $\hat{F}_{a|b}$ is the empirical distribution function of group ***a***/***b*** given by:
 
 $$ \hat{F}_{a|b}(t) = \frac{1}{n_{a|b}} \sum_{i = 1}^{n_{a|b}} I_{\{x_{{a|b}_i} \leq t\}}(x_{{a|b}_i}) $$
 
@@ -312,7 +312,7 @@ I_{\{x_{{a|b}_i} \leq t\}} (x_{{a|b}_i}) =
 \end{cases}
 $$
 
-The above estimator of $U_2$ can also be thought of as the value of $\hat{F}_b$ at the intersection point of $1 - \hat{F}_a$ and $\hat{F}_b$---which has to be determined by an iterative search algorithm since empirical distribtuion functions are always discrete.  
+The above estimator of $U_2$ can also be thought of as the value of $\hat{F}_b$ at the intersection point of $1 - \hat{F}_a$ and $\hat{F}_b$---which has to be determined by an iterative search algorithm since empirical distribution functions are always discrete.  
 
 It should be noted that if 
 
@@ -324,25 +324,25 @@ $$ \min \{ x_{a_1}, \ldots, x_{a_{n_a}} \} > \max \{ x_{b_1}, \ldots, x_{n_{b}} 
 
 $\hat{U}_2$ is set to 1. 
 
-An $1 - \alpha$ percentile bootstrap CI is implemented exclusively.  
+A $1 - \alpha$ percentile bootstrap CI is implemented exclusively.  
 
 <br>
 
 <h4 id = "IG_NP_U3"> Nonparametric Cohen's (\(U_3\)) </h4>
  
-For the following description we assume that group *a* has a higher mean than group *b*.
+For the following description we assume that group ***a*** has a higher mean than group ***b***.
 
 The population effect of interest is given by:  
 
 $$ U_3 = F_b(Q_a(0.5)) $$
 
-with $F_b(\cdot)$ being the cumulative distribution function of population *b* and $Q_a(\cdot)$ being the quantile function of population *a*. Consequently, Cohen's measure of nonoverlap $U_3$ is the percentage of the population with the lower mean (*b*) which the upper half of the cases (the top 50%) of the population with the lower (*a*) mean exceeds (Cohen, 1988). Thus, a value of 0.7 for example means that the top 50% of population *a* exceed 70% of population *b*. Alternatively, one could conclude that the median member of population *a* exceeds 70% of the members of population *b*.
+with $F_b(\cdot)$ being the cumulative distribution function of population ***b*** and $Q_a(\cdot)$ being the quantile function of population ***a***. Consequently, Cohen's measure of nonoverlap $U_3$ is the percentage of the population with the lower mean (***b***) which the upper half of the cases (the top 50%) of the population with the lower (***a***) mean exceeds (Cohen, 1988). Thus, a value of 0.7 for example means that the top 50% of population ***a*** exceed 70% of population ***b***. Alternatively, one could conclude that the median member of population ***a*** exceeds 70% of the members of population ***b***.
 
 A non-parametric estimator of the above quantity is given by:
 
 $$ \hat{U}_3 = \hat{F}_b(\hat{Q}_a(0.5))  $$
 
-with $\hat{F}_b(\cdot)$ being the empirical distribution function of group *b* and $\hat{Q}_a(\cdot)$ being the empirical quantile function of group *a*. The above formula can be written as:
+with $\hat{F}_b(\cdot)$ being the empirical distribution function of group ***b*** and $\hat{Q}_a(\cdot)$ being the empirical quantile function of group ***a***. The above formula can be written as:
 
 $$ \hat{U}_3 = \frac{1}{n} \sum_{i = 1}^{n_b} I_{ \{ x < \hat{Mdn}_a \} } \left( x_{b_i} \right)$$
 with
@@ -351,7 +351,7 @@ $$ I_{ \{ x < \hat{Mdn}_a \} }(x) = \begin{cases}
 0 & \text{if } x \gt \hat{Mdn}_a
 \end{cases}
 $$
-and $\hat{Mdn}_a$ being the median (=$\hat{Q}_a(0.5)$) of group *a*, i.e., the group with the higher mean.
+and $\hat{Mdn}_a$ being the median (=$\hat{Q}_a(0.5)$) of group ***a***, i.e., the group with the higher mean.
 
 Thus, the estimator of $U_3$ is the percentage of values of the group with the lower mean that gets exceeded by the median of the group with the higher mean.
 
@@ -381,13 +381,13 @@ $$ q_{b}^{\ast} = \frac{x_b < median(x_a)}{n_b} $$
 
 If this effect size is chosen by the user, both estimators are provided denoted as nonparametric Glass' $d_{G, 1}$&mdash;$\hat\gamma_{b}^{\ast}$ is computed&mdash;and nonparametric Glass' $d_{G, 2}$&mdash;$\hat\gamma_{a}^{\ast}$ is computed.The user can choose which to report/interpret (see documentation for $d_{G,\,j}$). 
 
-$q_{a}^{\ast}$ is the proportion of group *a* measurements that are larger than the median of the group *b* measurements. Consequently, $\hat\gamma_{a}^{\ast}$ is the $q_{a}^{\ast}$-quantile of the standard normal distribution.
+$q_{a}^{\ast}$ is the proportion of group ***a*** measurements that are larger than the median of the group ***b*** measurements. Consequently, $\hat\gamma_{a}^{\ast}$ is the $q_{a}^{\ast}$-quantile of the standard normal distribution.
 The reason $\hat\gamma_{a}^{\ast}$ can be considered a nonparametric version of Glass' $d_{G,\,a}$ is owed to the fact that when the observations are independently normally distributed, $\hat\gamma_{a}^{\ast}$ is an estimator of the population effect size $\Delta_a = \frac{\mu_a - \mu_b}{\sigma_a}$. This is the same population effect estimated by $d_{G,\,a}$.  
 
-$q_{b}^{\ast}$ is the proportion of group *b* measurements that are lower than the median of the group *a* measurements. Consequently, $\hat\gamma_{b}^{\ast}$ is the $q_{b}^{\ast}$-quantile of the standard normal distribution.
+$q_{b}^{\ast}$ is the proportion of group ***b*** measurements that are lower than the median of the group ***a*** measurements. Consequently, $\hat\gamma_{b}^{\ast}$ is the $q_{b}^{\ast}$-quantile of the standard normal distribution.
 The reason $\hat\gamma_{b}^{\ast}$ can be considered a nonparametric version of Glass' $d_{G,\,b}$ is owed to the fact that When the observations are independently normally distributed, $\hat\gamma_{b}^{\ast}$ is an estimator of the population effect size $\Delta_b = \frac{\mu_a - \mu_b}{\sigma_b}$. This is the same population effect estimated by $d_{G,\,b}$.  
 
-If the scores are normally distributed and the population *a* and population *b* variances are identical, much like Glass' $d_{G,\,a}$ and $d_{G,\,b}$, $\hat\gamma_{a}^{\ast}$ and $\hat\gamma_{b}^{\ast}$ estimate the same population effect $\delta = \frac{\mu_a - \mu_b}{\sigma}$ with $\sigma$ being the common population standard deviation of groups a and b. 
+If the scores are normally distributed and the population ***a*** and population ***b*** variances are identical, much like Glass' $d_{G,\,a}$ and $d_{G,\,b}$, $\hat\gamma_{a}^{\ast}$ and $\hat\gamma_{b}^{\ast}$ estimate the same population effect $\delta = \frac{\mu_a - \mu_b}{\sigma}$ with $\sigma$ being the common population standard deviation of groups a and b. 
 
 It should be noted that Hedges and Olkin (1985) denoted this estimator as $\hat\gamma_{1}^{\ast}$ and $\hat\gamma_{2}^{\ast}$, respectively. The subscripts have been changed from $1$ to $b$ and from $2$ to $a$ in order to match the used subscript with those used for other effect sizes in this documentation.    
 
