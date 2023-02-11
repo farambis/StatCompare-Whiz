@@ -77,7 +77,7 @@
 
 <h2 id="IG_P_intro">The independent groups design</h2>
 
-The independent groups design---also often referred to as the between-subjects design or the between-group design--is characterised by different groups being exposed to different levels of an independent variable (e.g., experimental conditions). Importantly each test subject can only be a member of one group. Thus, the ES described here are applicable to multiple types of studies comparing distinct groups:  
+The independent groups design---also often referred to as the between-subjects design or the between---group design–is characterised by different groups being exposed to different levels of an independent variable (e.g., experimental conditions). Each test subject can only be a member of one group. Importantly,  no individual's score in one group may be related to or predictable from any individual's score in another group. Thus, the ES described here are applicable to multiple types of studies comparing distinct groups:  
 - comparing a group receiving a treatment/intervention (the experimental group) with a different group not receiving any treatment/intervention (the control group). 
 - comparing a group receiving a novel treatment/intervention with a different group receiving a gold standard treatment/intervention.  
 
