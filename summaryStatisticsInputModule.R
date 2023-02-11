@@ -54,7 +54,7 @@ numericInputGroup <-
 
 header <- function(design = c("indGrps", "depGrps", "mixed"),
                    measurement = c("Measurement 1", "Measurement 2"),
-                   group = c("a", "b"),
+                   group = c("1", "2"),
                    info = c("acrossGrps", "perGrp")) {
   ifelse(
     info == "acrossGrps",
@@ -129,7 +129,7 @@ summaryStatisticsInput <- function(id,
     uiColumn(
       design = design,
       measurement = "Measurement 1",
-      group = "a",
+      group = "1",
       info = "perGrp",
       firstInput = numericInputs$means$mean1,
       secondInput = numericInputs$
@@ -143,7 +143,7 @@ summaryStatisticsInput <- function(id,
                                      uiColumn(
                                        design = design,
                                        measurement = "Measurement 2",
-                                       group = ifelse(design == "indGrps", "b", "a"),
+                                       group = ifelse(design == "indGrps", "2", "1"),
                                        info = "perGrp",
                                        firstInput = numericInputs$means$mean2,
                                        secondInput = numericInputs$
@@ -159,7 +159,7 @@ summaryStatisticsInput <- function(id,
       uiColumn(
         design = design,
         measurement = NULL,
-        group = "a",
+        group = "1",
         info = "acrossGrps",
         firstInput = numericInputs$sampleSizes$sampleSize1,
         secondInput = numericInputs$correlations$correlation1,
@@ -168,7 +168,7 @@ summaryStatisticsInput <- function(id,
           standardDeviationDiff1
       )
     ),
-                                      tags$hr())
+    tags$hr())
   }
   if (design == "mixed") {
     generatedUi$thirdRow <- fluidRow(column(
@@ -176,7 +176,7 @@ summaryStatisticsInput <- function(id,
       uiColumn(
         design = design,
         measurement = "Measurement 1",
-        group = "b",
+        group = "2",
         info = "perGrp",
         firstInput = numericInputs$means$mean3,
         secondInput = numericInputs$
@@ -184,26 +184,24 @@ summaryStatisticsInput <- function(id,
           standardDeviation3
       )
     ),
-                                     column(
-                                       width = 6,
-                                       uiColumn(
-                                         design = design,
-                                         measurement = "Measurement 2",
-                                         group = "b",
-                                         info = "perGrp",
-                                         firstInput = numericInputs$means$mean4,
-                                         secondInput = numericInputs$
-                                           standardDeviations$
-                                           standardDeviation4
-                                       )
-                                     ))
+    column(
+      width = 6,
+      uiColumn(
+        design = design,
+        measurement = "Measurement 2",
+        group = "2",
+        info = "perGrp",
+        firstInput = numericInputs$means$mean4,
+        secondInput = numericInputs$standardDeviations$standardDeviation4
+        )
+      ))
     generatedUi$fourthRow <- fluidRow(column(
       width = 6,
       offset = 3,
       uiColumn(
         design = design,
         measurement = NULL,
-        group = "b",
+        group = "2",
         info = "acrossGrps",
         firstInput = numericInputs$sampleSizes$sampleSize2,
         secondInput = numericInputs$correlations$correlation2,

@@ -123,7 +123,9 @@ plotUi <- function(id, plotChoices) {
     fluidRow(
       column(width = 4,
              selectizeInput(
-               ns("plotChoice"), "Select plot:", c(list(""), displayedPlotChoices)
+               inputId = ns("plotChoice"), 
+               label = "Select plot:", 
+               choices = displayedPlotChoices
              )),
       column(
         width = 4,
@@ -154,7 +156,6 @@ plotUi <- function(id, plotChoices) {
                       "downloadWidget"
                     )),
                     offset = 6))
-
   )
 }
 
@@ -211,7 +212,7 @@ plotServer <- function(id, x, INDEX, y, m1, m2, m3, m4, s1, s2, s3, s4, n1, n2, 
                        paste0("This option is only available for n < 200")
                      }
                    }
-                 } )
+                 })
 
                  # validate tail ratio input controls
                  tail_ratio_iv <- InputValidator$new()
@@ -257,8 +258,7 @@ plotServer <- function(id, x, INDEX, y, m1, m2, m3, m4, s1, s2, s3, s4, n1, n2, 
                             educational = generate_data_plot(es = map_from_displayed_plots(input$plotChoice), m1 = m1(), m2 = m2(), m3 = m3(), m4 = m4(), s1 = s1(), s2 = s2(), s3 = s3(), s4 = s4(), sdiff1 = sdiff1(), sdiff2 = sdiff2(), n1 = n1(), n2 = n2(), r1 = r1(), r2 = r2(), n = n(), kernel = input$kernel, reference_group = input$referenceGroup, tail = input$tail, cutoff = input$cutoff)
                      )
                      dev.off()
-                   }
-                 )
+                   })
                })
 }
 

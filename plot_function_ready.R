@@ -23,7 +23,7 @@ dashed_line <- 2
 # Parametric plots ----
 ## Plot for parametric overlapping coefficient ----
 
-generate_data_plot <- function(es_plot, x = NULL, INDEX = NULL, y = NULL, m1, m2, m3, m4, s1, s2, s3, s4, sdiff1, sdiff2, n1, n2, r1, r2, n = NULL, kernel, reference_group, tail, cutoff) {
+generate_data_plot <- function(es_plot, x = NULL, INDEX = NULL, y = NULL, m1, m2, m3, m4, s1, s2, s3, s4, sdiff1 = NA, sdiff2 = NA, n1, n2, r1, r2, n, kernel, reference_group, tail, cutoff) {
   if (!es_plot %in% all_plots) stop("this is not an offered plot!\n")
   res <- switch(es_plot,
                 "parametric_ovl" = plot_parametric_overlap(x, INDEX, y = y, m1 = m1, m2 = m2, s1 = s1, s2 = s2, n1 = n1, n2 = n2, n = n),
@@ -45,10 +45,10 @@ generate_data_plot <- function(es_plot, x = NULL, INDEX = NULL, y = NULL, m1, m2
 
 #generate_raw_data_plot("parametric_ovl", m1 = m1, m2 = m2, s1 = s1, s2 = s2, n1 = n1, n2 = n2)
 plot_parametric_overlap <- function(x = NULL, INDEX = NULL, y = NULL,
-                                    m1, m2, s1, s2, n1, n2, n = NULL) {
+                                    m1, m2, s1, s2, n1, n2, n) {
   
-  group_names <- c("Group a", "Group b")
-  measurement_names <- c("Measurement a", "Measurement b")
+  group_names <- c("Group 1", "Group 2")
+  measurement_names <- c("Measurement 1", "Measurement 2")
   if(!is.null(x)){
     if(!is.null(INDEX)){
       stats <- summary_stats(x = x, INDEX = INDEX)
@@ -62,7 +62,7 @@ plot_parametric_overlap <- function(x = NULL, INDEX = NULL, y = NULL,
     }
   }
   
-  pooled_sd <- ifelse(is.null(n), sd_pooled(s1 = s1, s2 = s2, n1 = n1, n2 = n2), sd_pooled(s1 = s1, s2 = s2, n1 = n, n2 = n))
+  pooled_sd <- ifelse(!is.null(n2), sd_pooled(s1 = s1, s2 = s2, n1 = n1, n2 = n2), sd_pooled(s1 = s1, s2 = s2, n1 = n, n2 = n))
   x_from <- min(m1, m2) - 3.5 * pooled_sd
   x_to <- max(m1, m2) + 3.5 * pooled_sd
   x_length <- max(((x_to - x_from) * 2), 201)
@@ -102,7 +102,7 @@ plot_parametric_overlap <- function(x = NULL, INDEX = NULL, y = NULL,
   eff_size_labs <- c(paste0("d==~", 
                             round(
                               ifelse(
-                                is.null(n),
+                                !is.null(n2),
                                 cohens_d(m1 = m1, m2 = m2, s1 = s1, s2 = s2, n1 = n1, n2 = n2),
                                 cohens_d(m1 = m1, m2 = m2, s1 = s1, s2 = s2, n1 = n, n2 = n)),
                               2)),
@@ -113,8 +113,8 @@ plot_parametric_overlap <- function(x = NULL, INDEX = NULL, y = NULL,
                        "OVL==~",
                        round(
                          ifelse(
-                           is.null(n),
-                           parametric_ovl(m1 = m1, m2 = m2, var1 = s1^2, var2 = s2^2, n1 = n1, n2 = n2),
+                           !is.null(n2),
+                           parametric_ovl(m1 = m1, m2 = m2, s1 = s1, s2 = s2, n1 = n1, n2 = n2),
                            parametric_ovl_dependent(m1 = m1, m2 = m2, s1 = s1, s2 = s2, n = n)),
                          2)
                      )
@@ -131,9 +131,9 @@ plot_parametric_overlap <- function(x = NULL, INDEX = NULL, y = NULL,
        y = c(1, 0.95, 0.85, 0.8, 0.7, 0.65, 0.6), 
        adj = c(0, 0.5),
        labels = c(
-         ifelse(is.null(n), group_names[[1]], measurement_names[[1]]),
+         ifelse(!is.null(n2), group_names[[1]], measurement_names[[1]]),
          str2expression(text = paste0("bar(x)==~", round(m1, 2))),
-         ifelse(is.null(n), group_names[[2]], measurement_names[[2]]),
+         ifelse(!is.null(n2), group_names[[2]], measurement_names[[2]]),
          str2expression(text = paste0("bar(x)==~", round(m2, 2))),
          str2expression(text = eff_size_labs[[3]]),
          str2expression(text = eff_size_labs[[2]]),
@@ -147,9 +147,9 @@ plot_parametric_overlap <- function(x = NULL, INDEX = NULL, y = NULL,
 ## Plot for parametric Cohen's U1 effect measure ----
 
 plot_cohens_u1 <- function(x = NULL, INDEX = NULL, y = NULL,
-                           m1, m2, s1, s2, n1, n2, n = NULL) {
-  group_names <- c("Group a", "Group b")
-  measurement_names <- c("Measurement a", "Measurement b")
+                           m1, m2, s1, s2, n1, n2, n) {
+  group_names <- c("Group 1", "Group 2")
+  measurement_names <- c("Measurement 1", "Measurement 2")
   if(!is.null(x)){
     if(!is.null(INDEX)){
       stats <- summary_stats(x = x, INDEX = INDEX)
@@ -164,7 +164,7 @@ plot_cohens_u1 <- function(x = NULL, INDEX = NULL, y = NULL,
     
   }
   
-  pooled_sd <- ifelse(is.null(n), sd_pooled(s1 = s1, s2 = s2, n1 = n1, n2 = n2), sd_pooled(s1 = s1, s2 = s2, n1 = n, n2 = n))
+  pooled_sd <- ifelse(!is.null(n2), sd_pooled(s1 = s1, s2 = s2, n1 = n1, n2 = n2), sd_pooled(s1 = s1, s2 = s2, n1 = n, n2 = n))
   x_from <- min(m1, m2) - 3.5 * pooled_sd
   x_to <- max(m1, m2) + 3.5 * pooled_sd
   x_length <- max(((x_to - x_from) * 2), 201)
@@ -210,7 +210,7 @@ plot_cohens_u1 <- function(x = NULL, INDEX = NULL, y = NULL,
   eff_size_labs <- c(paste0("d==~", 
                             round(
                               ifelse(
-                                is.null(n),
+                                !is.null(n2),
                                 cohens_d(m1 = m1, m2 = m2, s1 = s1, s2 = s2, n1 = n1, n2 = n2),
                                 cohens_d(m1 = m1, m2 = m2, s1 = s1, s2 = s2, n1 = n, n2 = n)),
                               2)),
@@ -221,8 +221,8 @@ plot_cohens_u1 <- function(x = NULL, INDEX = NULL, y = NULL,
                        "U1==~",
                        round(
                          ifelse(
-                           is.null(n),
-                           parametric_cohens_u1(m1 = m1, m2 = m2, var1 = s1^2, var2 = s2^2, n1 = n1, n2 = n2),
+                           !is.null(n2),
+                           parametric_cohens_u1(m1 = m1, m2 = m2, s1 = s1, s2 = s2, n1 = n1, n2 = n2),
                            parametric_cohens_u1_dependent(m1 = m1, m2 = m2, s1 = s1, s2 = s2, n = n)),
                          2)
                      ),
@@ -230,8 +230,8 @@ plot_cohens_u1 <- function(x = NULL, INDEX = NULL, y = NULL,
                        "OVL2==~",
                        round(
                          ifelse(
-                           is.null(n),
-                           parametric_ovl_two(m1 = m1, m2 = m2, var1 = s1^2, var2 = s2^2, n1 = n1, n2 = n2),
+                           !is.null(n2),
+                           parametric_ovl_two(m1 = m1, m2 = m2, s1 = s1, s2 = s2, n1 = n1, n2 = n2),
                            parametric_ovl_two_dependent(m1 = m1, m2 = m2, s1 = s1, s2 = s2, n = n)
                          ),
                          2)
@@ -252,9 +252,9 @@ plot_cohens_u1 <- function(x = NULL, INDEX = NULL, y = NULL,
        y = c(1, 0.95, 0.85, 0.8, 0.7, 0.65, 0.6, 0.55), 
        adj = c(0, 0.5),
        labels = c(
-         ifelse(is.null(n), group_names[[1]], measurement_names[[1]]),
+         ifelse(!is.null(n2), group_names[[1]], measurement_names[[1]]),
          str2expression(text = paste0("bar(x)==~", round(m1, 2))),
-         ifelse(is.null(n), group_names[[2]], measurement_names[[2]]),
+         ifelse(!is.null(n2), group_names[[2]], measurement_names[[2]]),
          str2expression(text = paste0("bar(x)==~", round(m2, 2))),
          str2expression(text = eff_size_labs[[3]]),
          str2expression(text = eff_size_labs[[4]]),
@@ -269,10 +269,10 @@ plot_cohens_u1 <- function(x = NULL, INDEX = NULL, y = NULL,
 ## Plot for parametric Cohen's U3 effect measure  ----
 
 plot_cohens_u3 <- function(x = NULL, INDEX = NULL, y = NULL,
-                           m1, m2, s1, s2, n1, n2, n = NULL) {
+                           m1, m2, s1, s2, n1, n2, n) {
   
-  group_names <- c("Group a", "Group b")
-  measurement_names <- c("Measurement a", "Measurement b")
+  group_names <- c("Group 1", "Group 2")
+  measurement_names <- c("Measurement 1", "Measurement 2")
   if(!is.null(x)){
     if(!is.null(INDEX)){
       stats <- summary_stats(x = x, INDEX = INDEX)
@@ -289,7 +289,7 @@ plot_cohens_u3 <- function(x = NULL, INDEX = NULL, y = NULL,
   eff_size_labs <- c(paste0("d==~", 
                             round(
                               ifelse(
-                                is.null(n),
+                                !is.null(n2),
                                 cohens_d(m1 = m1, m2 = m2, s1 = s1, s2 = s2, n1 = n1, n2 = n2),
                                 cohens_d(m1 = m1, m2 = m2, s1 = s1, s2 = s2, n1 = n, n2 =n)),
                               2)),
@@ -300,8 +300,8 @@ plot_cohens_u3 <- function(x = NULL, INDEX = NULL, y = NULL,
                        "U3==~",
                        round(
                          ifelse(
-                           is.null(n),
-                           parametric_cohens_u3(m1 = m1, m2 = m2, var1 = s1^2, var2 = s2^2, n1 = n1, n2 = n2),
+                           !is.null(n2),
+                           parametric_cohens_u3(m1 = m1, m2 = m2, s1 = s1, s2 = s2, n1 = n1, n2 = n2),
                            parametric_cohens_u3_dependent(m1 = m1, m2 = m2, s1 = s1, s2 = s2, n = n)),
                          2)
                      )
@@ -325,7 +325,7 @@ plot_cohens_u3 <- function(x = NULL, INDEX = NULL, y = NULL,
   m1 <- temp[ifelse(bool, 2, 1)]
   m2 <- temp[ifelse(bool, 1, 2)]
   
-  pooled_sd <- ifelse(is.null(n), sd_pooled(s1 = s1, s2 = s2, n1 = n1, n2 = n2), sd_pooled(s1 = s1, s2 = s2, n1 = n, n2 = n))
+  pooled_sd <- ifelse(!is.null(n2), sd_pooled(s1 = s1, s2 = s2, n1 = n1, n2 = n2), sd_pooled(s1 = s1, s2 = s2, n1 = n, n2 = n))
   x_from <- m2 - 3.5 * pooled_sd
   x_to <- m1 + 3.5 * pooled_sd
   x_length <- max(((x_to - x_from) * 2), 201)
@@ -376,9 +376,9 @@ plot_cohens_u3 <- function(x = NULL, INDEX = NULL, y = NULL,
        y = c(1, 0.95, 0.85, 0.8, 0.7, 0.65, 0.6), 
        adj = c(0, 0.5),
        labels = c(
-         ifelse(is.null(n), group_names[[1]], measurement_names[[1]]),
+         ifelse(!is.null(n2), group_names[[1]], measurement_names[[1]]),
          str2expression(text = paste0("bar(x)==~", round(m1, 2))),
-         ifelse(is.null(n), group_names[[2]], measurement_names[[2]]),
+         ifelse(!is.null(n2), group_names[[2]], measurement_names[[2]]),
          str2expression(text = paste0("bar(x)==~", round(m2, 2))),
          str2expression(text = eff_size_labs[[3]]),
          str2expression(text = eff_size_labs[[2]]),
@@ -396,8 +396,8 @@ plot_tail_ratio <- function(x = NULL, INDEX = NULL, y = NULL,
                             tail = c("lower", "upper"), 
                             cutoff) {
   
-  group_names <- c("Group a", "Group b")
-  measurement_names <- c("Measurement a", "Measurement b")
+  group_names <- c("Group 1", "Group 2")
+  measurement_names <- c("Measurement 1", "Measurement 2")
   if(!is.null(x)){
     if(!is.null(INDEX)){
       stats <- summary_stats(x = x, INDEX = INDEX)
@@ -482,9 +482,9 @@ plot_tail_ratio <- function(x = NULL, INDEX = NULL, y = NULL,
        y = c(1, 0.95, 0.85, 0.8, 0.7, 0.65, 0.6), 
        adj = c(0, 0.5),
        labels = c(
-         ifelse(is.null(n), group_names[[1]], measurement_names[[1]]),
+         ifelse(!is.null(n2), group_names[[1]], measurement_names[[1]]),
          str2expression(text = paste0("bar(x)==~", round(m1, 2))),
-         ifelse(is.null(n), group_names[[2]], measurement_names[[2]]),
+         ifelse(!is.null(n2), group_names[[2]], measurement_names[[2]]),
          str2expression(text = paste0("bar(x)==~", round(m2, 2))),
          str2expression(text = eff_size_labs[[3]]),
          str2expression(text = eff_size_labs[[2]]),
@@ -501,8 +501,8 @@ plot_tail_ratio_zoom <- function(x = NULL, INDEX = NULL, y = NULL,
                                  tail = c("lower", "upper"), 
                                  cutoff) {
   
-  group_names <- c("Group a", "Group b")
-  measurement_names <- c("Measurement a", "Measurement b")
+  group_names <- c("Group 1", "Group 2")
+  measurement_names <- c("Measurement 1", "Measurement 2")
   if(!is.null(x)){
     if(!is.null(INDEX)){
       stats <- summary_stats(x = x, INDEX = INDEX)
@@ -576,8 +576,8 @@ plot_tail_ratio_zoom <- function(x = NULL, INDEX = NULL, y = NULL,
        y = c(1, 0.9, 0.8, 0.75, 0.7), 
        adj = c(0, 0.5),
        labels = c(
-         ifelse(is.null(n), group_names[[1]], measurement_names[[1]]),
-         ifelse(is.null(n), group_names[[2]], measurement_names[[2]]),
+         ifelse(!is.null(n2), group_names[[1]], measurement_names[[1]]),
+         ifelse(!is.null(n2), group_names[[2]], measurement_names[[2]]),
          str2expression(text = eff_size_labs[[3]]),
          str2expression(text = eff_size_labs[[2]]),
          str2expression(text = eff_size_labs[[1]])),
@@ -613,7 +613,7 @@ plot_non_parametric_tail_ratio <- function(x = NULL, INDEX = NULL, y = NULL,
     dataset1 <- x
     dataset2 <- y
     tail_ratio_non_parametric <- non_parametric_tail_ratio_dependent(x, y, reference_group, tail, cutoff)
-    measurement_names <- c("Measurement a", "Measurement b")
+    measurement_names <- c("Measurement 1", "Measurement 2")
   }
   
   d1 <- density(dataset1, bw = bw, kernel = kernel)
@@ -718,7 +718,7 @@ plot_non_parametric_tail_ratio_zoom <- function(x = NULL, INDEX = NULL, y = NULL
     dataset1 <- x
     dataset2 <- y
     tail_ratio_non_parametric <- non_parametric_tail_ratio_dependent(x, y, reference_group, tail, cutoff)
-    measurement_names <- c("Measurement a", "Measurement b")
+    measurement_names <- c("Measurement 1", "Measurement 2")
   }
   
   
@@ -810,7 +810,7 @@ plot_non_parametric_overlap <- function(x = NULL, INDEX = NULL, y = NULL,
   } else if (!is.null(y)){
     dataset1 <- x
     dataset2 <- y
-    measurement_names <- c("Measurement a", "Measurement b")
+    measurement_names <- c("Measurement 1", "Measurement 2")
   }
   
   d1 <- density(dataset1, bw = bw, kernel = kernel)
@@ -898,7 +898,7 @@ plot_non_parametric_u1 <- function(x = NULL, INDEX = NULL,  y = NULL,
   } else if (!is.null(y)){
     dataset1 <- x
     dataset2 <- y
-    measurement_names <- c("Measurement a", "Measurement b")
+    measurement_names <- c("Measurement 1", "Measurement 2")
   }
   
   d1 <- density(dataset1, bw = bw, kernel = kernel)
@@ -1024,7 +1024,7 @@ plot_non_parametric_u3 <- function(x = NULL, INDEX = NULL, y = NULL,
   } else {
     dataset1 <- x
     dataset2 <- y
-    measurement_names <- c("Measurement a", "Measurement b")
+    measurement_names <- c("Measurement 1", "Measurement 2")
   }
   eff_size_labs <- c(paste0(
     "U3==~",
@@ -1112,7 +1112,7 @@ plot_non_parametric_u3 <- function(x = NULL, INDEX = NULL, y = NULL,
 plot_parametric_ppc_difference <- function(x = NULL, INDEX = NULL, y = NULL,
                                            m1, s1, m2, s2, m3, s3, m4, s4) {
   
-  group_names <- c("Group a", "Group b")
+  group_names <- c("Group 1", "Group 2")
   measurement_names <- c("Pretest", "Posttest")
   if(!is.null(x) && !is.null(y) && !is.null(INDEX)){
     stats <- summary_stats(x = x, y = y, INDEX = INDEX)
@@ -1201,9 +1201,9 @@ plot_parametric_ppc_difference <- function(x = NULL, INDEX = NULL, y = NULL,
 
 
 plot_parametric_ppc_change <- function(x = NULL, INDEX = NULL, y = NULL,
-                                       m1, s1, m2, s2, sdiff1 = NULL, r1, m3, s3, m4, s4, sdiff2 = NULL, r2) {
+                                       m1, s1, m2, s2, sdiff1 = NA, r1, m3, s3, m4, s4, sdiff2 = NA, r2) {
   
-  group_names <- c("Group a", "Group b")
+  group_names <- c("Group 1", "Group 2")
   if(!is.null(x) && !is.null(y) && !is.null(INDEX)){
     stats <- summary_stats(x = x, y = y, INDEX = INDEX)
     for (i in names(stats)) {
@@ -1215,8 +1215,8 @@ plot_parametric_ppc_change <- function(x = NULL, INDEX = NULL, y = NULL,
   
   m_diff_group1 <- m2 - m1
   m_diff_group2 <- m4 - m3
-  if (is.null(sdiff1)) sdiff1 <- sd_diff(s1, s2, r1)
-  if (is.null(sdiff2)) sdiff2 <- sd_diff(s3, s4, r2)
+  if (is.na(sdiff1)) sdiff1 <- sd_diff(s1, s2, r1)
+  if (is.na(sdiff2)) sdiff2 <- sd_diff(s3, s4, r2)
   
   x_from <- min(m_diff_group1, m_diff_group2) - (3.5 * max(sdiff1, sdiff2))
   x_to <- max(m_diff_group1, m_diff_group2) + 3.5 * max(sdiff1, sdiff2)
@@ -1279,7 +1279,7 @@ plot_parametric_ppc_interaction <- function(x = NULL, INDEX = NULL, y = NULL,
                                             m1, s1, m2, s2, m3, s3, m4, s4, n1, n2, alpha = 0.05) {
   
   measurement_names <- c("Pretest", "Posttest")
-  group_names <- c("Group a", "Group b")
+  group_names <- c("Group 1", "Group 2")
   if(!is.null(x) && !is.null(y) && !is.null(INDEX)){
     stats <- summary_stats(x = x, y = y, INDEX = INDEX)
     for (i in names(stats)) {
