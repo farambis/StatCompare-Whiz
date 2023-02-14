@@ -127,6 +127,8 @@ all_eff_sizes_displayed <- list(
   u3_multivariate = html("Cohen's <em>U3</em>"),
   common_language_multivariate = html("Common Language (<em>CL</em>)"),
   tail_ratio_multivariate = html("Tail Ratio (<em>TR</em>)"),
+  variance_ratio_multivariate = html("Variance Ratio (<em>VR</em>)"),
+  # Test statistics
   student_t_test = html("Student <em>t</em>-test"),
   dependent_student_t_test = html("dependent Student <em>t</em>-test"),
   welch_t_test = html("Welch <em>t</em>-test"),

@@ -324,7 +324,8 @@ multivariateRawData <-
               all_eff_sizes$u3_multivariate,
               all_eff_sizes$common_language_multivariate,
               all_eff_sizes$pcc_multivariate,
-              all_eff_sizes$tail_ratio_multivariate
+              all_eff_sizes$tail_ratio_multivariate,
+              all_eff_sizes$variance_ratio_multivariate
             ),
             tsChoices = list(),
             plotChoices = list(),

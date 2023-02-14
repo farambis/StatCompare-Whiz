@@ -101,7 +101,8 @@ all_eff_sizes <- list(
   u1_multivariate = "u1_multivariate",
   u3_multivariate = "u3_multivariate",
   common_language_multivariate = "common_language_multivariate",
-  tail_ratio_multivariate = "tail_ratio_multivariate"
+  tail_ratio_multivariate = "tail_ratio_multivariate",
+  variance_ratio_multivariate = "variance_ratio_multivariate"
 )
 
 ## TS list ----
@@ -398,7 +399,8 @@ generate_multivariate_raw_data_dataframe <- function(es_list, dat, INDEX, alpha,
                   "u1_multivariate" = c(u1_multivariate(dat, INDEX), NA_real_, NA_real_, boot_multivariate(dat, INDEX, u1_multivariate, alpha = alpha)),
                   "u3_multivariate" = c(u3_multivariate(dat, INDEX), NA_real_, NA_real_, boot_multivariate(dat, INDEX, u3_multivariate, alpha = alpha)),
                   "common_language_multivariate" = c(common_language_multivariate(dat, INDEX), NA_real_, NA_real_, boot_multivariate(dat, INDEX, common_language_multivariate, alpha = alpha)),
-                  "tail_ratio_multivariate" = c(tail_ratio_multivariate(dat, INDEX, z), NA_real_, NA_real_, boot_multivariate(dat, INDEX, tail_ratio_multivariate, alpha = alpha, z = z))
+                  "tail_ratio_multivariate" = c(tail_ratio_multivariate(dat, INDEX, z), NA_real_, NA_real_, boot_multivariate(dat, INDEX, tail_ratio_multivariate, alpha = alpha, z = z)),
+                  "variance_ratio_multivariate" = c(variance_ratio_multivariate(dat, INDEX, standardised_by_group_1 = TRUE), NA_real_, NA_real_, boot_multivariate(dat, INDEX, variance_ratio_multivariate, alpha = alpha, standardised_by_group_1 = TRUE))
     )
     es_result <- c(es_result, res[[1]])
     es_ci_lower <- c(es_ci_lower, res[[2]])
@@ -4193,6 +4195,17 @@ pcc_multivariate <- function(x, INDEX) {
 pcc_multivariate_educational <- function(means, covariance_matrix) {
   mahalanobis_d <- mahalanobis_d_educational(means, covariance_matrix)
   return(calc_pcc_multivariate(mahalanobis_d))
+}
+
+## Multivariate VR ----
+
+variance_ratio_multivariate <- function(x, INDEX, standardised_by_group_1 = TRUE) {
+  data <- split(x, INDEX)
+  cov_mat1 <- cov(data[[1]])
+  cov_mat2 <- cov(data[[2]])
+  num <- ifelse(standardised_by_group_1, det(cov_mat2), det(cov_mat1))
+  denom <- ifelse(standardised_by_group_1, det(cov_mat1), det(cov_mat2))
+  return(num/denom)
 }
 
 ## Multivariate TR ----
