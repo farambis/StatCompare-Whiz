@@ -3,26 +3,34 @@
 <div class="toc_container">
 <h2 class="toc_title">Table of contents</h2>
  <ul>
-  <li><a href="#PPC-NP-change-focused-measures"><h3>1. Change-focused measures of effect size</h3></a>
+  <li><a href="#PPC-intro"><h3>1 The pretest-posttest-control design</h3></a>
+  <li><a href="#PPC-NP-change-focused-measures"><h3>2 Change-focused measure of effect size</h3></a>
     <ul>
-      <li><a href="#PPC-NP-d-PPC-Change"><h4>1.1. Nonparametric \(d_{PPC-Change}\)</h4></a></li>
+      <li><a href="#PPC-NP-d-PPC-Change"><h4>2.1 Nonparametric \(d_{PPC-Change}\)</h4></a></li>
     </ul>
   </li>
-    <li><a href="#PPC-NP-difference-focused-measures"><h3>2. Difference-focused measures of effect size</h3></a>
+    <li><a href="#PPC-NP-difference-focused-measures"><h3>3 Difference-focused measures of effect size</h3></a>
     <ul>
-     <li><a href="#PPC-NP-d-PPC-pre"><h4>2.1. Nonparametric \(d_{PPC,\,pre}\)</h4></a></li>
-     <li><a href="#PPC-NP-alternate-difference-focused-estimator"><h4>2.2. An alternate nonparametric difference-focused estimator </h4></a></li>
+     <li><a href="#PPC-NP-d-PPC-pre"><h4>3.1 Nonparametric \(d_{PPC,\,pre}\)</h4></a></li>
+     <li><a href="#PPC-NP-alternate-difference-focused-estimator"><h4>3.2 An alternate nonparametric difference-focused estimator </h4></a></li>
     </ul>
   </li>
-  <li><a href="#PPC-dominance-measure"><h3> 3. The pretest-posttest dominance measure </h3></a></li>
-  <li><a href="#PPC-NP-refs"><h3>4. References</h3></a></li>
+  <li><a href="#PPC-dominance-measure"><h3> 4 The pretest-posttest dominance measure </h3></a></li>
+  <li><a href="#PPC-NP-refs"><h3>5 References</h3></a></li>
  </ul>
 </div>
 
+<h2 id="PPC-intro"> 1 The Pretest-posttest-control design </h2>  
 
-<h3 id="PPC-NP-change-focused-measures"> A Change focused measures of effect size </h3>
+The pretest-posttest-control (PPC) design, also know as the pretest-posttest control-group design or the independent groups pretest-posttest (IGPP) design amongst other synonyms entails the random/quasirandom assignement of research participants to one of two conditions(e.g., a treatment or a control condition; a novel treatment and a gold-standard treatment condition; etc.)  and the measurement of an outcome variable at two points in time (i.e., both prior to and after treatment) (Morris, 2008).  
 
-<h4 id="PPC-NP-d-PPC-Change"> Nonparametric \(d_{PPC-Change}\) </h4>  
+A standardised effect size for the PPC design relates the difference of the mean changes between the two conditions (the numerator) to some measure of variability (the denominator). Different standardised effect sizes can be considered depending on the choice of the denominator, i.e., of the standardiser (Morris & DeShon, 2002; Morris, 2008; Feingold, 2009).  
+
+Two major "groups" of standardised effect sizes for the PPC design can be characterised based on whether the mean change within each groups is standardised by the variability of change scores (change-focused measures) or by the variability of raw scores (difference-focused measures) (Morris & DeShon, 2002; Feingold, 2009). A research question regarding changes in individual performance after some treatment might motivate the former definition while a research question focusing on group differences in the level of performance might motivate the latter definition (Morris & DeShon, 2002).  
+
+<h2 id="PPC-NP-change-focused-measures"> 2 Change focused measure of effect size </h2>
+
+<h3 id="PPC-NP-d-PPC-Change"> 2.1 Nonparametric \(d_{PPC-Change}\) </h3>  
 
 A nonparametric version of $d_{PPC-Change}$ is described by Hedges and Olkin (1985):  
 
@@ -46,12 +54,9 @@ We could not identify a closed form formula for the confidence interval of this 
 
 <br>
 
-<br>
+<h2 id="PPC-NP-difference-focused-measures"> 3 Difference-focused measures of effect size </h2>
 
-
-<h3 id="PPC-NP-difference-focused-measures"> Difference-focused measures of effect size </h3>
-
-<h4 id="PPC-NP-d-PPC-pre"> Nonparametric \(d_{PPC,\,pre}\) </h4>
+<h3 id="PPC-NP-d-PPC-pre"> 3.1 Nonparametric \(d_{PPC,\,pre}\) </h3>
 
 A nonparametric version of $d_{PPC,\,pre}$ is described by Hedges and Olkin (1985):  
 
@@ -72,11 +77,9 @@ When n is small $\hat{p}_{pre,\,a|b}$ might be equal to 0 or 1. To avoid consequ
 
 We could not identify a closed form formula for the confidence interval of this nonparametric effect size. Thus, a $1 - \alpha$ percentile bootstrap confidence interval is implemented exclusively.  
 
-
 <br>
 
-
-<h4 id="PPC-NP-alternate-difference-focused-estimator">  An alternate nonparametric difference-focused estimator </h4>
+<h3 id="PPC-NP-alternate-difference-focused-estimator">  3.2 An alternate nonparametric difference-focused estimator </h3>
 
 An alternate nonparametric difference-focused effect size estimator is given by Hedges and Olkin (1985): 
 
@@ -88,7 +91,7 @@ $$\hat{p}_{post,\,a} = \frac{x_{post,\,a} > median(x_{pre,\,a})}{n}$$
 $$\hat{p}_{post,\,b} = \frac{x_{post,\,b} > median(x_{pre,\,b})}{n}$$
 
 Thus $\hat{p}_{post,\,a}$ and $\hat{p}_{post,\,b}$ are the proporion of posttest scores of a group that are larger than the median of the pretest scores of the respective group. Consequently, $\hat{\delta}_{PPC,\,post}$ is the difference between the $\hat{p}_{post,\,a}$- and the $hat{p}_{post,\,b}$-quantile of the standard normal distribution.  
-This effect size estimates a similar population effect as $\hat{\delta}_{PPC,\,pre}$ when scores are normally distributed, namely $\delta_{PPC,\,post} = \frac{\mu_{post,\,a} - \mu_{pre,\,a}}{\sigma_{post,\,a}} - \frac{\mu_{post,\,b} - \mu_{pre,\,b}}{\sigma_{post,\,b}}$. The only difference between $\delta_{PPC,\,pre}$ and $\delta_{PPC,\,post}$ being the the choice of the standardiser of the population a and population b pre- and posttest mean differences. While $\delta_{PPC,\,pre}$ standardises the pre-post mean difference within each population by the population pretest standarad deviation, $\delta_{PPC,\,post}$ employs the population posttest standard deviation.  
+This effect size estimates a similar population effect as $\hat{\delta}_{PPC,\,pre}$ when scores are normally distributed, namely $\delta_{PPC,\,post} = \frac{\mu_{post,\,a} - \mu_{pre,\,a}}{\sigma_{post,\,a}} - \frac{\mu_{post,\,b} - \mu_{pre,\,b}}{\sigma_{post,\,b}}$. The only difference between $\delta_{PPC,\,pre}$ and $\delta_{PPC,\,post}$ being the the choice of the standardiser of the population ***a*** and population ***b*** pre- and posttest mean differences. While $\delta_{PPC,\,pre}$ standardises the pre-post mean difference within each population by the population pretest standarad deviation, $\delta_{PPC,\,post}$ employs the population posttest standard deviation.  
 Much like $\hat{\delta}_{PPC,\,pre}$ simplifies to the difference between the nonparametric versions of dependent groups Glass' $d_{G,\,pre}$ for groups a and b, so too does $\hat{\delta}_{PPC,\,post}$ simplify to the difference between the nonparametric versions of dependent groups Glass $d_{G,\,post}$ for groups a and b: $\hat{\delta}_{post,\,a}$ and $\hat{\delta}_{post,\,b}$.  
 
 It should be noted that Hedges and Olkin (1985) denoted this estimator as $\hat{\delta}_1$. The subscript has been changed from $2$ to $PPC,\,post$ in order to match the subscript used for this estimator with the subscript used for other estimators documented on this page.  
@@ -99,16 +102,13 @@ We could not identify a closed form formula for the confidence interval of this 
 
 <br>
 
-<br>
-
-
-<h3 id="PPC-dominance-measure">The pretest-posttest dominance measure</h2>
+<h2 id="PPC-dominance-measure"> 4 The pretest-posttest dominance measure</h2>
 
 Cliff (1993) describes an estimator to evaluate whether posttreatment scores are more likely to be higher than pretreatment scores in one group (e.g., a treatment/experimental group) compared with another group (e.g., a control group) in a pretest-posttest control design. The estimator is given by:
 
 $$ DM = DM_{exp} - DM_{con} $$
 
-with $DM_{exp}$ being the dominance measure of group a/the experimental group and $DM_{con}$ being the dominance measure of group b/the control group. Thus, this estimator is equivalent to the difference in dependent groups dominance measures $DM$ between the two contrasted groups. The dependent groups dominance measure is described in the documentation page for the dependent group design.  
+with $DM_{exp}$ being the dominance measure of group ***a***/the experimental group and $DM_{con}$ being the dominance measure of group ***b***/the control group. Thus, this estimator is equivalent to the difference in dependent groups dominance measures $DM$ between the two contrasted groups. The dependent groups dominance measure is described in the documentation page for the dependent group design.  
 
 $DM$ is calculated by adding the within-subject difference ($DM_w$), and the average between-subject dominance ($DM_b$) for dependent data. $DM_w$ is the probability that individuals change in a given direction (here: increase their score from one occasion of measurement to another) whereas $DM_b$ is the proportion of scores on the second occasion that are higher than scores by other individuals on the first. Therefore, the dominance measure for dependent groups can be calculated for the treatment/experimental and the control groups each as follows:
 
@@ -161,11 +161,9 @@ Additionally, a $1 - \alpha$ percentile bootstrap confidence interval is impleme
 
 <br>
 
-<br>
-
 <hr>
 
-<h2 id="PPC-NP-refs">References</h2>  
+<h2 id="PPC-NP-refs"> 5 References </h2>  
 
 Cliff, N. (1993). *Dominance statistics: Ordinal analyses to answer ordinal questions.* Psychological bulletin, 114(3), 494--509. <https://doi.org/10.1037/0033-2909.114.3.494>   
 

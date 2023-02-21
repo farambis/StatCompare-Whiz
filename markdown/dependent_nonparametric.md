@@ -1,42 +1,50 @@
 <div class = "toc_container">
 <h2 class = "toc_title"> Table of contents </h2>
  <ul>
-  <li><a href = "#DG_NP_intro"><h3> 1. Nonparametric estimation in the dependent groups design </h3></a></li>
-  <li><a href = "#DG_NP_SLD"><h3> 2. Nonparametric estimators of measures of standardised location difference  </h3></a>
+  <li><a href = "#DG_NP_intro"><h3> 1 The dependent groups design </h3></a></li>
+  <li><a href = "#DG_NP_SLD"><h3> 2 Nonparametric estimators of measures of standardised location difference  </h3></a>
     <ul>
-      <li><a href = "#DG_NP_dG"><h4> 2.1. Nonparametric Glass \(d_{G,\,j}\) </h4></a></li>
-      <li><a href = "#DG_NP_dz"><h4> 2.2. Nonparametric Cohen's \(d_z\) </h4></a></li>
+      <li><a href = "#DG_NP_dG"><h4> 2.1 Nonparametric Glass \(d_{G,\,j}\) </h4></a></li>
+      <li><a href = "#DG_NP_dz"><h4> 2.2 Nonparametric Cohen's \(d_z\) </h4></a></li>
     </ul>
   </li>
-  <li><a href = "#DG_NP_tails"><h3> 3. Nonparametric estimators of measures of difference in group tails  </h3></a>
+  <li><a href = "#DG_NP_tails"><h3> 3 Nonparametric estimators of measures of difference in group tails  </h3></a>
     <ul>
-      <li><a href = "#DG_NP_TR"><h4> 3.1. Nonparametric Tail Ratio (\(TR\)) </h4></a></li>
+      <li><a href = "#DG_NP_TR"><h4> 3.1 Nonparametric Tail Ratio (\(TR\)) </h4></a></li>
     </ul>
   </li>
-  <li><a href = "#DG_NP_OM"><h3> 4. Nonparametric estimators of measures of (non-)overlap  </h3></a>
+  <li><a href = "#DG_NP_OM"><h3> 4 Nonparametric estimators of measures of (non-)overlap  </h3></a>
     <ul>
-      <li><a href = "#DG_NP_OVL"><h4> 4.1. The Nonparametric Coefficient of Overlapping (\(OVL\)) </h4></a></li>
-      <li><a href = "#DG_NP_OVL2"><h4> 4.2. The Nonparametric Measure of Overlapping Coefficient Two (\(OVL_2\)) </h4></a></li>
-      <li><a href = "#DG_NP_U1"><h4> 4.3. Nonparametric Cohen's (\(U_1\)) </h4></a></li>
-      <li><a href = "#DG_NP_U2"><h4> 4.4. Nonparametric Cohen's (\(U_2\)) </h4></a></li>
-      <li><a href = "#DG_NP_U3"><h4> 4.5. Nonparametric Cohen's (\(U_3\)) </h4></a></li>
+      <li><a href = "#DG_NP_OVL"><h4> 4.1 The Nonparametric Coefficient of Overlapping (\(OVL\)) </h4></a></li>
+      <li><a href = "#DG_NP_OVL2"><h4> 4.2 The Nonparametric Measure of Overlapping Coefficient Two (\(OVL_2\)) </h4></a></li>
+      <li><a href = "#DG_NP_U1"><h4> 4.3 Nonparametric Cohen's (\(U_1\)) </h4></a></li>
+      <li><a href = "#DG_NP_U2"><h4> 4.4 Nonparametric Cohen's (\(U_2\)) </h4></a></li>
+      <li><a href = "#DG_NP_U3"><h4> 4.5 Nonparametric Cohen's (\(U_3\)) </h4></a></li>
     </ul>
   </li>
-  <li><a href = "#DG_NP_PM"><h3> 5. Nonparametric estimators of probabilistic measures of effect size </h3></a>
+  <li><a href = "#DG_NP_PM"><h3> 5 Nonparametric estimators of probabilistic measures of effect size </h3></a>
     <ul>
-      <li><a href = "#DG_NP_PS"><h4> 5.1. Probability of Superiority (\(PS\)) </h4></a></li>
-      <li><a href = "#DG_NP_A_measure"><h4> 5.2. The \(A\) measure of stochastic Superiority </h4></a></li>
-      <li><a href = "#DG_NP_GOR"><h4> 5.3. Generalized Odds Ratio (\(OR_g\)) </h4></a></li>
-      <li><a href = "#DG_NP_DM"><h4> 5.4. Dominance measure (\(DM\)) </h4></a></li>
+      <li><a href = "#DG_NP_PS"><h4> 5.1 Probability of Superiority (\(PS\)) </h4></a></li>
+      <li><a href = "#DG_NP_A_measure"><h4> 5.2 The \(A\) measure of stochastic Superiority </h4></a></li>
+      <li><a href = "#DG_NP_GOR"><h4> 5.3 Generalized Odds Ratio (\(OR_g\)) </h4></a></li>
+      <li><a href = "#DG_NP_DM"><h4> 5.4 Dominance measure (\(DM\)) </h4></a></li>
     </ul>
   </li>
-  <li><a href = "#DG_NP_refs"><h3> 6. References </h3></a></li>
+  <li><a href = "#DG_NP_refs"><h3> 6 References </h3></a></li>
  </ul>
 </div>
 
-<h2 id = "DG_NP_SLD"> Nonparametric estimators of measures of standardised location difference </h2>
+<h2 id = "DG_NP_intro"> 1 The dependent groups design </h2>
 
-<h3 id = "DG_NP_dG"> Nonparametric Glass \(d_{G,\,j}\) </h3>
+The dependent groups design---also often referred to as repeated measures design, within-subjects design or within-group design--is characterised by taking multiple measurements of a dependent variable on the same or on matched subjects/objects under different conditions or over multiple points in time (Kraska, 2022). Thus, the ES described here are applicable to a great variety of research designs, such as (Bonett, 2015):  
+- a pretest-posttest design (e.g., measuring a health outcome before and after applying a treatment)    
+- a within-subjects design where some variable is measured under two treatment conditions (e.g., a novel and a gold standard treatment)    
+- a longitudinal design where some variable is measured at two points in time without any intermediate intervention (e.g., measuring the personality traits of a cohort multiple times)  
+- or for a matched-pair design where subjects are paired based on covariates and randomly assigned to two conditions (e.g., into a control and an experimental condition).  
+
+<h2 id = "DG_NP_SLD"> 2 Nonparametric estimators of measures of standardised location difference </h2>
+
+<h3 id = "DG_NP_dG"> 2.1 Nonparametric Glass \(d_{G,\,j}\) </h3>
 
 A nonparametric version of Glass' $d_{G,\,j}$ is described by Kraemer and Andrews (1982) as well as by Hedges and Olkin (1985). Both groups of authors discussed their suggested estimators in the context of a pre- posttest design as it will be done here as well, with group b denoting pretest measurements and group a denoting posttest measurements. However keep in mind, that the same arguments apply to other types of dependent groups: 
 
@@ -50,11 +58,27 @@ $$ \hat{\delta}_b = \Phi^{-1}(\hat{p}_b)$$
 
 where $\hat{p}_a$ is given by
 
-$$ \hat{p}_a = \frac{x_a > median(x_b)}{n} $$
+$$ \hat{p}_a = \frac{1}{n} \sum_{i=1}^{n} I_{ \{x > Mdn_b \} } (x_{a_i}) $$
+
+with 
+
+$$ I_{ \{x > Mdn_b \} } (x) = \begin{cases}
+1 & \text{if } x \gt Mdn_b \cr
+0 & \text{if } x \leq Mdn_b
+\end{cases}
+$$
 
 and $\hat{p}_b$ is given by
 
-$$ \hat{p}_b = \frac{x_b < median(x_a)}{n} $$
+$$ \hat{p}_b = \frac{1}{n} \sum_{i=1}^{n} I_{ \{x < Mdn_a \} } (x_{b_i}) $$
+
+with 
+ 
+$$ I_{ \{x < Mdn_a \} } (x) = \begin{cases}
+1 & \text{if } x \lt Mdn_a \cr
+0 & \text{if } x \geq Mdn_a
+\end{cases}
+$$  
 
 If this effect size is chosen by the user, both estimators are provided, denoted as nonparametric Glass' $d_{G, 1}$&mdash;$\hat{\delta}_b$ is computed&mdash;and nonparametric Glass' $d_{G, 2}$&mdash;$\hat{\delta}_a$ is computed.The user can choose which to report/interpret (see documentation for $d_{G,\,j}$).
 
@@ -84,7 +108,16 @@ $$\hat{\delta}_z = \phi^{-1}(\hat{p}_{gain})$$
 
 where $p_{gain}$ is given by:  
 
-$$p_{gain} = \frac{x_a > x_b}{n}$$
+$$p_{gain} = \frac{1}{n} \sum_{i=1}^{n} I_{ \{d \geq 0\} } (d_i) $$
+
+with $d_i = x_{a_i} - x_{b_i}$ and 
+
+$$ I_{ \{d \geq 0\} } (d) = \begin{cases}
+1 & \text{if } d \gt 0 \cr
+0.5 & \text{if } d = 0 \cr
+0 & \text{if } d \lt 0
+\end{cases}
+$$  
 
 Thus  $p_{gain}$ is the proportion of individuals whose scores increase from pretest (group b) to posttest (group a), i.e., the proportion of change scores (also called difference scores) $x_a - x_b$ that are positive.
 If ties between pre-and posttest scores are present ($x_a = x_b$), each tie is counted as half an observation in each direction.
@@ -136,7 +169,7 @@ The tail ratio can be thought of as a risk ratio by considering scores below/abo
 
 The paired binomial proportions of interest are the marginal proportion of scores from group ***a*** that are categorised as "hits" $p_a$ and the marginal proportion of scores from group ***b*** that are categorised as "hits" $p_b$. The population tail ratio for a given cutoff value and region of interest is thus the ratio:
 
-$$\theta = \frac{p_{a|b}}{p_{b|a}}$$
+$$TR = \frac{p_{a|b}}{p_{b|a}}$$
 
 The observed data can be thought of as 2 x 2 table of the following form:
 
@@ -181,7 +214,7 @@ The observed data can be thought of as 2 x 2 table of the following form:
 
 The point estimate of the population tail ratio can be written as:
 
-$$\hat{\theta} = \frac{\hat{p}_{a|b}}{\hat{p}_{b|a}} = \frac{n_{1.|.1}}{n_{.1|1.}}$$
+$$\widehat{TR} = \frac{\hat{p}_{a|b}}{\hat{p}_{b|a}} = \frac{n_{1.|.1}}{n_{.1|1.}}$$
 
 with $\hat{p}_a = \frac{n_{1.}}{n}$ and $\hat{p}_b = \frac{n_{.1}}{n}$.
 
@@ -199,16 +232,16 @@ When "hits" are defined as scores below *t*:
 with
 
 $$ I_{\{x \leq t\})}(x) = \begin{cases}
-1 & \text{if} \qquad x \leq t \\
-0 & \text{if} \qquad x \gt t 
+1 & \text{if }  x \leq t \cr
+0 & \text{if }  x \gt t 
 \end{cases}
 $$
 
 and 
 
 $$ I_{\{x \geq t\}}(x) = \begin{cases}
-1 & \text{if} \qquad x \geq t \\
-0 & \text{if} \qquad x \lt t 
+1 & \text{if }  x \geq t \cr
+0 & \text{if }  x \lt t 
 \end{cases}
 $$
 
@@ -258,9 +291,8 @@ Assuming $x_{a_1}, \ldots, x_{a_{n_a}}$ denote observations of random variable $
 
 $$ \hat{f_{n_a}}(x) = \hat{f_{n_a}}(x|x_{a_i},\, i = 1 \ldots n) = \frac{1}{n_a}  \sum_{i = 1}^{n_a} \frac{1}{b} K \left( \frac{x - x_{a_i}}{b} \right)$$
 
-where kernel *K* and bandwidth *b* are to be determined. $\hat{f}_{n_b}$ (the estimator of $f_b$) can be defined analogously. To derive estimators for the $OVL$, $x_{a_i}$ can be transformed into the unit interval by an appropriate affine transformation. The integrals over the unit interval can now be approximated by a trapezoidal rule, resulting in (Schmid & Schmidt, 2005):
 
-$$ \hat{OVL} = \frac{1}{k} \sum_{i = 1}^k \frac{1}{2} \left( \min \left\{ \hat{f_{n_a}}  \left( \frac{i}{k} \right), \hat{f_{n_b}} \left( \frac{i}{k} \right) \right\} + \min \left\{ \hat{f_{n_a}} \left( \frac{i-1}{k} \right), \hat{f_{n_b}} \left( \frac{i-1}{k} \right) \right\} \right) $$
+$$ \widehat{OVL} = \frac{1}{k} \sum_{i = 1}^k \frac{1}{2} \left( \min \left\{ \hat{f_{n_a}}  \left( \frac{i}{k} \right), \hat{f_{n_b}} \left( \frac{i}{k} \right) \right\} + \min \left\{ \hat{f_{n_a}} \left( \frac{i-1}{k} \right), \hat{f_{n_b}} \left( \frac{i-1}{k} \right) \right\} \right) $$
 
 where *k* denotes the number of equidistant subintervals of the unit interval.
 
@@ -276,15 +308,15 @@ $$ OVL_2 = \frac{\int_{-\infty}^{\infty} \min \{ f_a(x), f_b(x) \} dx}{\int_{-\i
 
 The coefficient of overlapping 2 ($OVL_2$) is the proportion of overlap relative to the joint distribution of two contrasted populations (DelGiudice, 2019), which is the amount of combined area shared by the populations of measurements ***a*** and ***b***.  
 
-A nonparametric estimator of the above quantity may be obtained by estimating the numerator and denominator separately and dividing the two quantities. The numerator can be estimated as described in detail above (see $\hat{OVL}$). The denominator can be estimated in a similar fashion:
+A nonparametric estimator of the above quantity may be obtained by estimating the numerator and denominator separately and dividing the two quantities. The numerator can be estimated as described in detail above (see $\widehat{OVL}$). The denominator can be estimated in a similar fashion:
 
 $$ \hat{\theta} = \frac{1}{k} \sum_{i = 1}^k \frac{1}{2} \left( \max \left\{  \hat{f}_{n_a} \left( \frac{i}{k} \right), \hat{f}_{n_b} \left( \frac{i}{k} \right) \right\} + \max \left\{ \hat{f}_{n_a} \left( \frac{i - 1}{k} \right), \hat{f}_{n_b} \left( \frac{i - 1}{k} \right) \right\} \right) $$
 
 giving the estimator:
 
-$$ \hat{OVL}_2 = \frac{\hat{OVL}}{\hat{\theta}} $$
+$$ \widehat{OVL}_2 = \frac{\widehat{OVL}}{\hat{\theta}} $$
 
-Grice and Barret(2014) argue that $OVL$ is to be preferred over $OVL_2$ in most contexts, because $OVL_2$ gives information about overlap and nonoverlap with respect to the joint distribution or combined area of the two distributions, which is unintuitive. $OVL$, on the other hand, indicates what percentage of the area a distribution shares with the other distribution which is easier to interpret.  
+Grice and Barret(2014) argue that $OVL$ is to be preferred over $OVL_2$ in most contexts, because $OVL_2$ gives information about overlap and nonoverlap with respect to the joint distribution or combined area of the two distributions, which is unintuitive. $OVL$, on the other hand, indicates what proportion of the area a distribution shares with the other distribution which is easier to interpret.  
 
 We could not identify a closed form formula for the confidence interval of this ES. Thus, a $1 - \alpha$ percentile bootstrap confidence interval is implemented exclusively.  
 
@@ -296,13 +328,13 @@ The population effect of interest is given by:
 
 $$ U_1 = \frac{\int_{-\infty}^{\infty} \max \{ f_a(x), f_b(x) \} dx  - \int_{-\infty}^{\infty} \min \{ f_a(x), f_b(x) \} dx}{\int_{-\infty}^{\infty} \max \{ f_a(x), f_b(x) \} dx} = 1 - \frac{\int_{-\infty}^{\infty} \min \{ f_a(x), f_b(x) \} dx}{\int_{-\infty}^{\infty} \max \{ f_a(x), f_b(x) \} dx} = 1 - OVL_2 $$
 
-Cohen's $U_1$ can be interpreted as percentage of nonoverlap relative to the joint distribution of two populations (DelGiudice, 2019), which is the amount of combined area not shared by the populations of  measurements ***a*** and ***b***.  
+Cohen's $U_1$ can be interpreted as proportion of nonoverlap relative to the joint distribution of two populations (DelGiudice, 2019), which is the amount of combined area not shared by the populations of  measurements ***a*** and ***b***.  
 
-A nonparametric estimator of $U_1$ was implemented by making use of the relation between $U_1$ and $OVL_2$. Since $OVL_2$ is a measure of the percentage of overlap of the combined area of the two distributions and $U_1$ is a measure of the percentage of nonoverlap of the same area, $U_1$ can be expressed as a function of $OVL_2$ ($U_1 = 1 - OVL_2$) and consequently the estimator is given by:
+A nonparametric estimator of $U_1$ was implemented by making use of the relation between $U_1$ and $OVL_2$. Since $OVL_2$ is a measure of the proportion of overlap of the combined area of the two distributions and $U_1$ is a measure of the proportion of nonoverlap of the same area, $U_1$ can be expressed as a function of $OVL_2$ ($U_1 = 1 - OVL_2$) and consequently the estimator is given by:
 
-$$ \hat{U}_1 = 1 - \hat{OVL}_2$$
+$$ \hat{U}_1 = 1 - \widehat{OVL}_2$$
 
-with $\hat{OVL}_2$ being calculated as described above.  
+with $\widehat{OVL}_2$ being calculated as described above.  
 
 Any critique of $OVL_2$ discussed above is equally applicable to Cohen's $U_1$ since both ES quantify overlap/nonoverlap relative to the joint distribution of the contrasted measurements.  
 
@@ -312,9 +344,9 @@ We could not identify a closed form formula for the CI of this ES. Thus, a $1 - 
 
 <h3 id = "DG_NP_U2"> Nonparametric Cohen's (\(U_2\)) </h3>
 
-The population effect on interest is the percentage of measurement ***a*** scores that exceed the same percentage of measurement ***b*** scores. Thus a value of 0.7 means that the top 70% of measurement ***a*** scores exceed the bottom 70% of measurement ***b*** scores.
+The population effect on interest is the proportion of measurement ***a*** scores that exceed the same proportion of measurement ***b*** scores. Thus a value of 0.7 means that the top 70% of measurement ***a*** scores exceed the bottom 70% of measurement ***b*** scores.
 
-We propose the following non-parametric estimator for the above population effect:
+We propose the following nonparametric estimator for the above population effect:
 
 $$ \hat{U}_2 = \hat{F}_b(x_{a_{(t)}}) $$
 
@@ -364,27 +396,27 @@ The population effect of interest is given by:
 
 $$ U_3 = F_b(Q_a(0.5)) $$
 
-with $F_b(\cdot)$ being the cumulative distribution function of measurement ***b*** and $Q_a(\cdot)$ being the quantile function of measurement ***a***. Consequently, Cohen's measure of nonoverlap $U_3$ is the percentage of scores of the measurement with the lower mean (***b***) which the upper half of scores (the top 50%) of the measurement with the higher mean (***a***) exceeds (Cohen, 1988). Thus, a value of 0.7 for example means that the top 50% of measurement ***a*** scores exceed 70% of measurement ***b*** scores. Alternatively, one could conclude that the median score of measurement ***a*** exceeds 70% of the scores of measurement ***b***.
+with $F_b(\cdot)$ being the cumulative distribution function of measurement ***b*** and $Q_a(\cdot)$ being the quantile function of measurement ***a***. Consequently, Cohen's measure of nonoverlap $U_3$ is the proportion of scores of the measurement with the lower mean (***b***) which the upper half of scores (the top 50%) of the measurement with the higher mean (***a***) exceeds (Cohen, 1988). Thus, a value of 0.7 for example means that the top 50% of measurement ***a*** scores exceed 70% of measurement ***b*** scores. Alternatively, one could conclude that the median score of measurement ***a*** exceeds 70% of the scores of measurement ***b***.
 
-A non-parametric estimator of the above quantity is given by:
+A nonparametric estimator of the above quantity is given by:
 
 $$ \hat{U}_3 = \hat{F}_b(\hat{Q}_a(0.5))  $$
 
 with $\hat{F}_b(\cdot)$ being the empirical distribution function of measurement ***b*** scores and $\hat{Q}_a(\cdot)$ being the empirical quantile function of measurement ***a*** scores. The above formula can be written as:
 
-$$ \hat{U}_3 = \frac{1}{n} \sum_{i = 1}^{n_b} I_{ \{ x < \hat{Mdn}_a \} } \left( x_{b_i} \right) $$
+$$ \hat{U}_3 = \frac{1}{n} \sum_{i = 1}^{n_b} I_{ \{ x < Mdn_a \} } \left( x_{b_i} \right) $$
 
 with
 
-$$ I_{ \{ x < \hat{Mdn}_a \} }(x) = \begin{cases}
-1 & \text{if } x \leq \hat{Mdn}_a \cr
-0 & \text{if } x \gt \hat{Mdn}_a
+$$ I_{ \{ x < Mdn_a \} }(x) = \begin{cases}
+1 & \text{if } x \leq Mdn_a \cr
+0 & \text{if } x \gt Mdn_a
 \end{cases}
 $$
 
-and $\hat{Mdn}_a$ being the median (= $\hat{Q}_a(0.5)$) of measurement ***a*** scores, i.e., the measurement scores with the higher mean.
+and $Mdn_a$ being the median (= $\hat{Q}_a(0.5)$) of measurement ***a*** scores, i.e., the measurement scores with the higher mean.
 
-Thus, the estimator of $U_3$ is the percentage of scores of the measurement scores with the lower mean that gets exceeded by the median score of the measurement scores with the higher mean. Say that in a pre-posttest design posttest scores have a higher mean than the pretest scores. Then $\hat{U_3}$ would give the percentage of pretest scores that the median posttest score exceeds.    
+Thus, the estimator of $U_3$ is the proportion of scores of the measurement scores with the lower mean that gets exceeded by the median score of the measurement scores with the higher mean. Say that in a pre-posttest design posttest scores have a higher mean than the pretest scores. Then $\hat{U_3}$ would give the proportion of pretest scores that the median posttest score exceeds.    
 
 We could not identify a closed form formula for the CI for this ES. Thus, a $1 - \alpha$ percentile bootstrap CI is implemented exclusively.  
 
@@ -537,7 +569,7 @@ We could not identify a closed form formula for the confidence interval of this 
 <h3 id = "DG_NP_DM"> Dominance measure (\(DM\))</h3>
 
 Cliff(1993) defines the dominance measure, referred to by him as $\delta$, equivalent to the dominance measure discussed in the independent section:
-$$ DM = \mathbb{P}(X_a > X_b) - \mathbb{P}(X_b - X_a) $$
+$$ DM = \mathbb{P}(X_a > X_b) - \mathbb{P}(X_b > X_a) $$
 $DM$ is calculated by adding the within-subject difference ($DM_w$), and the average between-subject dominance ($DM_b$) for dependent data. $DM_w$ is the probability that individuals change in a given direction whereas $DM_b$ is the proportion of scores on the second occasion that are higher than scores by other individuals on the first. Therefore, the dominance measure for dependent groups can be calculated as follows: 
 $$  \hat{DM} = \hat{DM_w} + \hat{DM_b}$$ 
 with $\hat{DM_w}$ being
@@ -586,7 +618,7 @@ designs. *The Quantitative Methods for Psychology*, *16*(4), 418--421. <https://
 
 Del Giudice, M. (2019). *Measuring sex differences and similarities*. Gender and sexuality development: Contemporary theory and research.  
 
-Cliff, N. (1993). *Dominance statistics: Ordinal analyses to answer ordinal questions.* Psychological bulletin, 114(3), 494--509. <https://doi.org/10.1037/0033-2909.114.3.494>  
+Cliff, N. (1993). Dominance statistics: Ordinal analyses to answer ordinal questions. *Psychological Bulletin*, *114*(3), 494--509. <https://doi.org/10.1037/0033-2909.114.3.494>  
 
 Grissom, R. J., & Kim, J. J. (2001). Review of assumptions and problemns in the appropriate conceptualization of effect size. *Psychological Methods*, *6*(2), 135--146. <https://doi.org/10.1037//1082-989X.6.2.135>  
 

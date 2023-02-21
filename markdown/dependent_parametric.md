@@ -1,10 +1,10 @@
 <div class = "toc_container">
 <h2 class = "toc_title"> Table of contents </h2>
  <ul>
-  <li><a href = "#DG_P_intro"><h3> 1. The dependent groups design </h3></a></li>
-  <li><a href = "#DG_P_normality_homoscedasticity"><h3> 2. Measures assuming normally distributed and homoscedastic populations  </h3></a>
+  <li><a href = "#DG_P_intro"><h3> 1 The dependent groups design </h3></a></li>
+  <li><a href = "#DG_P_normality_homoscedasticity"><h3> 2 Measures assuming normally distributed and homoscedastic populations  </h3></a>
     <ul>
-      <li><a href = "#DG_P_normality_homoscedasticity_SLD"><h4> 2.1. Measures of standardised location difference </h4></a>
+      <li><a href = "#DG_P_normality_homoscedasticity_SLD"><h4> 2.1 Measures of standardised location difference </h4></a>
         <ul>
           <li><a href = "#DG_P_cohens_d"><h5> 2.1.1 Cohen's \(d\) </h5></a></li>
           <li><a href = "#DG_P_hedges_g"><h5> 2.1.2 Hedges' \(g\) </h5></a></li>
@@ -12,49 +12,49 @@
           <li><a href = "#DG_P_hedges_g"><h5> 2.1.2 Hedges' \(g_{RM}\) </h5></a></li>
         </ul>
       </li>
-      <li><a href = "#DG_P_normality_homoscedasticity_OM"><h4> 2.2. Measures of (non-)overlap </h4></a>
+      <li><a href = "#DG_P_normality_homoscedasticity_OM"><h4> 2.2 Measures of (non-)overlap </h4></a>
         <ul>
-          <li><a href = "#DG_P_OVL"><h5> 2.2.1 The Coefficient of Overlapping (\(OVL\)) </h5></a></li>
-          <li><a href = "#DG_P_OVL2"><h5> 2.2.2 The Coefficient of Overlapping Two (\(OVL_2\)) </h5></a></li>
+          <li><a href = "#DG_P_OVL"><h5> 2.2.1 The coefficient of overlapping (\(OVL\)) </h5></a></li>
+          <li><a href = "#DG_P_OVL2"><h5> 2.2.2 The coefficient of overlapping two (\(OVL_2\)) </h5></a></li>
           <li><a href = "#DG_P_U1"><h5> 2.2.3 Cohen's \(U_1\) </h5></a></li>
           <li><a href = "#DG_P_U2"><h5> 2.2.4 Cohen's \(U_2\)</h5></a></li>
           <li><a href = "#DG_P_U3"><h5> 2.2.5 Cohen's \(U_3\)</h5></a></li>
         </ul>
       </li>
-      <li><a href = "#DG_P_normality_EF"><h4> 2.3. Probabilistic measures of effect size </h4></a>
+      <li><a href = "#DG_P_normality_EF"><h4> 2.3 Probabilistic measures of effect size </h4></a>
           <ul>
-           <li><a href = "#DG_P_CLES"><h5> 2.3.1 Common language ES (\(CLES\)) </h5></a></li>
+           <li><a href = "#DG_P_CLES"><h5> 2.3.1 The common language ES (\(CLES\)) </h5></a></li>
           </ul>
         </li>
       <li>
     </ul>
   </li>
-  <li><a href = "#DG_P_normality"><h3> 3. Measures assuming normally distributed population(s) </h3></a>
+  <li><a href = "#DG_P_normality"><h3> 3 Measures assuming normally distributed population(s) </h3></a>
     <ul>
-     <li><a href = "#DG_P_normality_SLD"><h4> 3.1. Measures of standardised location difference </h4></a>
+     <li><a href = "#DG_P_normality_SLD"><h4> 3.1 Measures of standardised location difference </h4></a>
       <ul>
           <li><a href = "#DG_P_glass_dg"><h5> 3.1.1 Glass' \(d_G\) </h5></a></li>
-          <li><a href = "#DG_P_hedges_g_G"><h5> 3.1.2 Glass' \(g_G\) </h5></a></li>
+          <li><a href = "#DG_P_hedges_g_G"><h5> 3.1.2 Hedges' \(g_G\) </h5></a></li>
           <li><a href = "#DG_P_cohens_dz"><h5> 3.1.3 Cohen's \(d_z\) </h5></a></li>
           <li><a href = "#DG_P_hedges_gz"><h5> 3.1.4 Hedges' \(g_z\) </h5></a></li>
           <li><a href = "#DG_P_hedges_gz"><h5> 3.1.5 Cohen's \(d'\) </h5></a></li>
       </ul>
      </li>
-     <li><a href = "#DG_P_normality_SLD"><h4> 3.2. Measures of difference in group spread and tails </h4></a>
+     <li><a href = "#DG_P_normality_SLD"><h4> 3.2 Measures of difference in group spread and tails </h4></a>
       <ul>
-          <li><a href="#DG_P_TR"><h5> 3.2.1 Tail ratio (\(TR\)) </h5></a></li>
-          <li><a href="#DG_P_VR"><h5> 3.2.2 Variance ratio (\(VR\)) </h5></a></li>
+          <li><a href="#DG_P_VR"><h5> 3.2.1 Variance ratio (\(VR\)) </h5></a></li>
+          <li><a href="#DG_P_TR"><h5> 3.2.2 Tail ratio (\(TR\)) </h5></a></li>
       </ul>
      </li>
     </ul>
   </li>
-  <li><a href = "#DG_P_outlier_resistent"><h3> 4. Outlier resistent </h3></a>
+  <li><a href = "#DG_P_outlier_resistent"><h3> 4 Measures resistant to outliers </h3></a>
    <ul>
-    <li><a href = "#DG_P_outlier_resistent_SLD"><h4>4.1 Measures of standardised location difference </h4></a>
+    <li><a href = "#DG_P_outlier_resistent_SLD"><h4> 4.1 Measures of standardised location difference </h4></a>
      <ul>
       <li><a href = "#DG_P_d_R"><h5> 4.1.1 \(d_R\) (robust Cohen's \(d\)) </h5></a></li>
       <li><a href = "#DG_P_d_GR"><h5> 4.1.2 \(d_{R,\,j}\) (robust Glass\(d_{G,\,j}\)) </h5></a></li>
-      <li><a href = "#DG_P_d_Rz><h5> 4.1.3 \(d_{Rz}\) (robust Cohen's \(d_z\)) </h5></a></li>
+      <li><a href = "#DG_P_d_Rz"><h5> 4.1.3 \(d_{Rz}\) (robust Cohen's \(d_z\)) </h5></a></li>
       <li><a href = "#DG_NP_SMD"><h5> 4.1.4 Standardized Median Differences </h5></a>
         <ul>
           <li><a href = "#DG_P_d_MAD"><h6> 4.1.4.1 \(d_{MAD}\) </h6></a></li>
@@ -70,7 +70,7 @@
  </ul>
 </div>
 
-<h2 id = "DG_P_intro"> The dependent groups design </h2>
+<h2 id = "DG_P_intro"> 1 The dependent groups design </h2>
 
 The dependent groups design---also often referred to as repeated measures design, within-subjects design or within-group design--is characterised by taking multiple measurements of a dependent variable on the same or on matched subjects/objects under different conditions or over multiple points in time (Kraska, 2022). Thus, the ES described here are applicable to a great variety of research designs, such as (Bonett, 2015):  
 - a pretest-posttest design (e.g., measuring a health outcome before and after applying a treatment)    
@@ -78,9 +78,9 @@ The dependent groups design---also often referred to as repeated measures design
 - a longitudinal design where some variable is measured at two points in time without any intermediate intervention (e.g., measuring the personality traits of a cohort multiple times)  
 - or for a matched-pair design where subjects are paired based on covariates and randomly assigned to two conditions (e.g., into a control and an experimental condition).  
 
-<h2 id = "DG_P_normality_homoscedasticity"> Measures assuming normally distributed and homoscedastic populations </h3>
-<h3 id = "DG_P_normality_homoscedasticity_SLD"> Measures of standardised location difference </h3>
-<h4 id = "DG_P_cohens_d"> Cohen's \(d\) </h4>
+<h2 id = "DG_P_normality_homoscedasticity"> 2 Measures assuming normally distributed and homoscedastic populations </h3>
+<h3 id = "DG_P_normality_homoscedasticity_SLD"> 2.1 Measures of standardised location difference </h3>
+<h4 id = "DG_P_cohens_d"> 2.1.1 Cohen's \(d\) </h4>
 
 The population effect size of interest is given by the same formula as for the independent groups (IG) case:
 
@@ -215,7 +215,7 @@ $OVL$ = 1 if and only if the two measurement distributions are identical (i.e., 
 
 A parametric estimator of the above quantity is given by:
 
-$$ \hat{OVL} = 2 \Phi \left( \frac{-|d|}{2} \right) $$
+$$ \widehat{OVL} = 2 \Phi \left( \frac{-|d|}{2} \right) $$
 
 this estimator is a monotonic function of the absolute value of Cohen's $d$ (see above).  
 
@@ -237,9 +237,9 @@ $$ OVL_2 = \frac{OVL}{2 - OVL} $$
 
 and thus the estimator is given by:
 
-$$ \hat{OVL}_2 = \frac{\hat{OVL}}{2 - \hat{OVL}} $$
+$$ \widehat{OVL}_2 = \frac{\widehat{OVL}}{2 - \widehat{OVL}} $$
 
-Grice and Barret(2014) argue that the $OVL$ is to be preferred over $OVL_2$ in most contexts, because $OVL_2$ gives information about overlap and nonoverlap with respect to the joint distribution or combined area of the two distributions, which is unintuitive. $OVL$, on the other hand, indicates what percentage of the area a distribution shares with the other distribution which is easier to interpret.  
+Grice and Barret(2014) argue that the $OVL$ is to be preferred over $OVL_2$ in most contexts, because $OVL_2$ gives information about overlap and nonoverlap with respect to the joint distribution or combined area of the two distributions, which is unintuitive. $OVL$, on the other hand, indicates what proportion of the area a distribution shares with the other distribution which is easier to interpret.  
 
 We could not identify a closed form formula for the CI of this ES. Thus, a $1 - \alpha$ percentile bootstrap CI is implemented exclusively.  
 
@@ -251,17 +251,17 @@ The population effect of interest is given by:
 
 $$ U_1 = \frac{\int_{-\infty}^{\infty} \max \{ f_a(x), f_b(x) \} dx  - \int_{-\infty}^{\infty} \min \{ f_a(x), f_b(x) \} dx}{\int_{-\infty}^{\infty} \max \{ f_a(x), f_b(x) \} dx} = 1 - \frac{\int_{-\infty}^{\infty} \min \{ f_a(x), f_b(x) \} dx}{\int_{-\infty}^{\infty} \max \{ f_a(x), f_b(x) \} dx} = 1 - OVL_2 $$
 
-Cohen's $U_1$ can be interpreted as percentage of nonoverlap relative to the joint distribution of two populations (DelGiudice, 2019), which is the amount of combined area not shared by the populations of  measurements ***a*** and ***b***. It is characterized by the following formula under the assumption of normality and homoscedasticity (Cohen, 1988):
+Cohen's $U_1$ can be interpreted as proportion of nonoverlap relative to the joint distribution of two populations (DelGiudice, 2019), which is the amount of combined area not shared by the populations of  measurements ***a*** and ***b***. It is characterized by the following formula under the assumption of normality and homoscedasticity (Cohen, 1988):
 
 $$ U_1 = \frac{2 \Phi \left( \frac{|\delta|}{2} \right) - 1}{\Phi \left( \frac{  |\delta|}{2} \right)} = \frac{2 \left(1 - \Phi \left(\frac{-|\delta|}{2}\right)\right) - 1}{1 - \Phi \left(\frac{-|\delta|}{2}\right)} = \frac{1 - 2 \Phi\left(\frac{-|\delta|}{2}\right)}{\frac{1}{2}\left(2 - OVL\right)} = \frac{2(1 - OVL)}{2 - OVL} = \frac{(2 - OVL) - OVL}{2 - OVL} = 1 - \frac{OVL}{2 - OVL} = 1 - OVL_2 $$
 
-with $\delta$ being Cohen's $\delta$---which is effectively a deviate in the unit normal curve---and  $\Phi \left( . \right)$ being the normal cumulative distribution function which gives the percentage of the area falling below a given normal deviate; and $OVL$ and $OVL_2$ being the ES described above.  
+with $\delta$ being Cohen's $\delta$---which is effectively a deviate in the unit normal curve---and  $\Phi \left( . \right)$ being the normal cumulative distribution function which gives the proportion of the area falling below a given normal deviate; and $OVL$ and $OVL_2$ being the ES described above.  
 
 A parametric estimator of the above quantity is given by:  
 
-$$ \hat{U_1} = \frac{2 \Phi \left( \frac{|d|}{2} \right) - 1}{\Phi \left( \frac{|d|}{2} \right)} = 1 - \frac{\hat{OVL}}{2 - \hat{OVL}} = 1 - \hat{OVL}_2 $$
+$$ \hat{U_1} = \frac{2 \Phi \left( \frac{|d|}{2} \right) - 1}{\Phi \left( \frac{|d|}{2} \right)} = 1 - \frac{\widehat{OVL}}{2 - \widehat{OVL}} = 1 - \widehat{OVL}_2 $$
 
-with $d$ being Cohen's $d$ and $\hat{OVL}$ and $\hat{OVL}_2$ being defined as above.  
+with $d$ being Cohen's $d$ and $\widehat{OVL}$ and $\widehat{OVL}_2$ being defined as above.  
 
 Any critique of $OVL_2$ discussed above is equally applicable to Cohen's $U_1$ since both ES quantify overlap/nonoverlap relative to the joint distribution of the contrasted populations.  
 
@@ -271,11 +271,11 @@ We could not identify a closed form formula for the CI of this ES. Thus, a $1 - 
 
 <h4 id = "DG_P_u2"> Cohen's \(U_2\) </h4>
 
-The population effect on interest is the percentage of measurement ***a*** scores that exceeds the same percentage in measurement ***b*** scores. Thus a value of 0.7 means that the top 70% of measurement ***a*** scores exceed the bottom 70% of measurement ***b*** scores. It is described by the following formula under the assumption of normality and homoscedasticity (Cohen, 1988):  
+The population effect on interest is the proportion of measurement ***a*** scores that exceeds the same proportion in measurement ***b*** scores. Thus a value of 0.7 means that the top 70% of measurement ***a*** scores exceed the bottom 70% of measurement ***b*** scores. It is described by the following formula under the assumption of normality and homoscedasticity (Cohen, 1988):  
 
 $$ U2 = \Phi \left( \frac{\delta}{2} \right) $$
 
-with $\delta$ being Cohen's $\delta$ (as defined above)---which is effectively a deviate in the unit normal curve---and  $\Phi \left( . \right)$ being the normal cumulative distribution function which gives the percentage of the area falling below a given normal deviate.  
+with $\delta$ being Cohen's $\delta$ (as defined above)---which is effectively a deviate in the unit normal curve---and  $\Phi \left( . \right)$ being the normal cumulative distribution function which gives the proportion of the area falling below a given normal deviate.  
 
 A parametric estimator of the above quantity is given by:  
 
@@ -295,11 +295,11 @@ The population effect of interest is given by:
 
 $$ U_3 = F_b(Q_a(0.5)) $$
 
-with $F_b(\cdot)$ being the cumulative distribution function of measurement ***b*** and $Q_a(\cdot)$ being the quantile function of measurement ***a***. Consequently, Cohen's measure of nonoverlap $U_3$ is the percentage of scores of the measurement with the lower mean (***b***) which the upper half of scores (the top 50%) of the measurement with the higher mean (***a***) exceeds (Cohen, 1988). Thus, a value of 0.7 for example means that the top 50% of measurement ***a*** scores exceed 70% of measurement ***b*** scores. Alternatively, one could conclude that the median score of measurement ***a*** exceeds 70% of the scores of measurement ***b***. Under the assumption of normality and homoscedasticity this quantity can be expressed by simply plugging Cohen's $\delta$ into the normal cumulative distribution function, giving the formula:  
+with $F_b(\cdot)$ being the cumulative distribution function of measurement ***b*** and $Q_a(\cdot)$ being the quantile function of measurement ***a***. Consequently, Cohen's measure of nonoverlap $U_3$ is the proportion of scores of the measurement with the lower mean (***b***) which the upper half of scores (the top 50%) of the measurement with the higher mean (***a***) exceeds (Cohen, 1988). Thus, a value of 0.7 for example means that the top 50% of measurement ***a*** scores exceed 70% of measurement ***b*** scores. Alternatively, one could conclude that the median score of measurement ***a*** exceeds 70% of the scores of measurement ***b***. Under the assumption of normality and homoscedasticity this quantity can be expressed by simply plugging Cohen's $\delta$ into the normal cumulative distribution function, giving the formula:  
 
 $$ U_3 = \Phi \left( |\delta| \right) $$
 
-with $\delta$ being Cohen's $\delta$ (as defined above)---which is effectively a deviate in the unit normal curve---and  $\Phi \left( . \right)$ being the normal cumulative distribution function which gives the percentage of the area falling below a given normal deviate.  
+with $\delta$ being Cohen's $\delta$ (as defined above)---which is effectively a deviate in the unit normal curve---and  $\Phi \left( . \right)$ being the normal cumulative distribution function which gives the proportion of the area falling below a given normal deviate.  
 
 A parametric estimator of the above quantity is given by:    
 
@@ -312,17 +312,19 @@ We could not identify a closed form formula for the CI for this ES. Thus, a $1 -
 <br>
 
 <h3 id = "DG_P_normality_EF"> Probabilistic measures of effect size </h3>
-<h4 id = "DG_P_CLES"> The Common Language ES \(CLES\) <h3>
+<h4 id = "DG_P_CLES"> The Common Language ES \(CLES\) </h4>
 
 The population effect of interest is given by:
 
-$$ \mathbb{P}\(D > 0\) = \mathbb{X_{i,\,post} > X_{i,\,pre}}$$
+$$ \mathbb{P} \left( D > 0 \right) = \mathbb{P} \left( X_{i,\,post} > X_{i,\,pre} \right)$$
 
-that is, the probability that a randomly selected score from the population of difference scores ($D = X_{post} - X_{pre}$) is greater than 0 (McGraw & Wong, 1992). This probability corresponds to the probability of someone's score from  measurement 2 (e.g., post treatment) exceeding the person's score from measurement 1 (e.g., pre treatment). The latter quantity can be interpreted as the probability of a subject improving themselves in the studied variable&mdash;if higher scores reflect betterment in the said variable&mdach; or the probability of someone ameliorating in the studied variable&mdash;if higher scores reflect amelioration in said variable. As argued by Mastrich & Hernandez (2021), The CL es can be considered to provide an intuitive way to understand statistical results and therefore aids practitioners in understanding research findings and making informed decisions. 
+that is, the probability that a randomly selected score from the population of difference scores ($D = X_{post} - X_{pre}$) is greater than 0 (McGraw & Wong, 1992). This probability corresponds to the probability of someone's score from  measurement 2 (e.g., post treatment) exceeding the person's score from measurement 1 (e.g., pre treatment). The latter quantity can be interpreted as the probability of a subject improving themselves in the studied variable---if higher scores reflect betterment in the said variable---or the probability of someone ameliorating in the studied variable---if higher scores reflect amelioration in said variable. As argued by Mastrich & Hernandez (2021), The CL es can be considered to provide an intuitive way to understand statistical results and therefore aids practitioners in understanding research findings and making informed decisions. Under normality this population effect is a function of the effect estimated by $d_z$:
+
+$$ \mathbb{P} \left( D > 0 \right) = \Phi \left( \delta_z \right) $$
 
 A parametric estimator assuming normality the distribution of difference scores *D* is given by (McGraw & Wong, 1992):
 
-$$CL = \Phi\(d_z\)$$
+$$ CL = \Phi \left( d_z \right) $$
 
 with $d_z$ being the ES discussed above.  
 
@@ -423,7 +425,7 @@ Thus, if $\rho > 0.5$ then $\sigma_D > \sigma$ and conversely, if $\rho < 0.5$ t
 
 However, if the difference score (also referred to as change score) is the outcome of interest, such as in longitudinal studies, it can be appropriate to estimate $\delta_D$. If the research question at hand is regarding how an individual's performance changes on average, then $\delta_D$ is the population effect of interest (Morris & DeShon, 2002).
 
-$\delta_D$ tells us how many change score standard deviations the mean change score is removed from 0. More interestingly, the percentage of positive and negative change scores can be determined by treating $\delta_D$ like a *Z* score and examining the cumulative distribution function of the standard normal distribution (Morris & DeShon, 2002). For example, a $\delta_D = 0.84$ would imply that roughly 80% of people improve their performance after a treatment, while 20% perform less well after treatment. If normality of change scores cannot be assumed, this convenient interpretation is no longer appropriate.
+$\delta_D$ tells us how many change score standard deviations the mean change score is removed from 0. More interestingly, the proportion of positive and negative change scores can be determined by treating $\delta_D$ like a *Z* score and examining the cumulative distribution function of the standard normal distribution (Morris & DeShon, 2002). For example, a $\delta_D = 0.84$ would imply that roughly 80% of people improve their performance after a treatment, while 20% perform less well after treatment. If normality of change scores cannot be assumed, this convenient interpretation is no longer appropriate.
 
 The population effect size of interest can be estimated by the following formula (e.g., Cohen, 1988):
 
@@ -522,6 +524,57 @@ Additionally, an $1 - \alpha$ percentile bootstrap CI is computed. The simulatio
 <br>
 
 <h3 id = "DG_P_normality_spread_tails"> Measures of difference in group spread and tails  </h3>
+
+<h4 id = "DG_P_VR"> Variance ratio \(VR\) </h4>
+
+The population effect size of interest is given by:
+
+$$ VR = \frac{\sigma_{a|b}^2}{\sigma_{b|a}^2} $$
+
+It is simply the population ratio of variances with either the first measurement being the reference group $\frac{\sigma_{b}^2}{\sigma_{a}^2}$ or the second measurement being the reference group $\frac{\sigma_{a}^2}{\sigma_{b}^2}$. This effect size can be of interest in the context of dependent groups for various reasons (Bonett, 2006):\
+- for assessing the effect of treatment on variability in a response variable
+- for studying changes in variability in a response variable over time
+- for assessing the extent of variance homogeneity/heterogeneity, instead of conducting a hypothesis test
+- for assisting in the choosing of effect size or of a variance as the standardiser for some of the effect sizes described above.
+
+The sample estimate of $\theta$ is given by the ratio of sample variances:
+
+$$ \widehat{VR} = \frac{s_{a|b}^2}{s_{a|b}^2} $$
+
+Two different confidence interval procedures are implemented based on Bonett (2006). The first procedure can only be computed if raw data is uploaded. The second procedure is implemented for the "Educational mode" of the app and is based on simple summary statistics that can be provided by the user. Firstly, the latter procedure is outlined. The confidence interval is computed as:
+
+$$ CI = (\frac{s_{a|b}^2}{s_{a|b}^2})\{k \pm \sqrt{k^2 - 1}\} $$
+
+with
+
+$$ k = 1 + \frac{2(1 - r^2)t_{\frac{\alpha}{2};n - 2}^2}{n - 2} $$
+
+$t_{\frac{\alpha}{2};n - 2}$ being the $\frac{\alpha}{2}$ quantile of the Student's *t* distribution with *n - 2* degrees of freedom.\
+This procedure yields an exact confidence interval for the population effect size if bivariate normality of the two measurements is satisfied. However, the described method is sensitive to even mild departures from normality. Bonett (2006) showed that when the distributions of the two measurements slightly differ from normality, the coverage probability falls drastically below the nominal $1 - \alpha$ rate.
+
+When raw data are available an approximate confidence interval with asymptotic probability coverage of 1 - $\alpha$ under bivariate nonnormality can be computed as follows:
+
+$$CI = exp\{ln(\frac{s_{a|b}^2}{s_{a|b}^2}) \pm z_{\frac{\alpha}{2}}\sqrt{\nu_1 + \nu_2 - 2a}\} $$
+
+with
+
+$$a = r_d\sqrt{\nu_1\nu_2} $$
+
+$$r_d = Cor(d_{ia}, d_{ib}) $$
+
+$$d_{ij} = (X_{ij} - \bar{X}_{j})^2 $$
+
+$$\nu_j = \frac{\bar{\gamma}_{2j} - \frac{n - 3}{n}}{n - 4} $$
+
+$$\bar{\gamma}_{2j} = \frac{n\sum_{i = 1}^n{(X_{ia} - \bar{X}_{t,\,a})^4}}{\{\sum_{i = 1}^n{(X_{ia} - \bar{X}_{a})^2}\}^2} $$
+
+where $\bar{X}_{t,\,a}$ is the trimmed mean with a trim-proportion of $\frac{1}{\{2(n - 4)^2\}}$.\
+The expression $\sqrt{\nu_1 + \nu_2 - 2a}$ is the estimate of the standard deviation of $\frac{s_{a|b}^2}{s_{a|b}^2}$.
+
+Bonett (2006) reports that the above procedure has probability coverage close to the nominal $1 - \alpha$ level under bivariate normality, tending to be slightly more liberal particularly when the sample size is low (*n = 10*). This approximate method is also not immune to violations of bivariate normality and it can have poor coverage probability when the population correlation is high (*r \> 0.5*) and the sample size is low (*n = 10*). In particular, Bonett (2006) remarks that the approximate procedure tends to be conservative with platykurtic (light-tailed) distributions and conservative with leptokrutic (heavy-tailed) distributions. However, the author notes that the exact method shows the same pattern of behaviour while being more conservative with light-tailed as well as more liberal with heavy-tailed distributions.  
+
+<br>
+
 <h4 id = "DG_P_TR"> Tail ratio \(TR\) </h4>
 
 Standardised mean differences such as Cohen's $d$ narrow their assessment on the centers of distributions, i.e., on typical observations. For many psychological, biological, and medical models which predict that the probability of some outcome or manifestation only starts increasing after some threshold the tails of distributions are more relevant (Voracek et al., 2013), e.g.,:  
@@ -553,9 +606,9 @@ The tail ratio can be thought of as a risk ratio by considering scores below/abo
 - first observation a "miss", second observation a "hit" (21)  
 - two "misses" (22)  
 
-The paired binomial proportions of interest are the marginal proportion of scores from group ***a*** that are categorised as "hits" $p_a$ and the marginal proportion of scores from group ***b*** that are categorised as "hits" $p_b$. The population tail ratio for a given cutoff value and region of interest is thus the ratio:
+The paired binomial proportions of interest are the marginal proportion of scores from group ***a*** that are categorised as "hits" $p_a$ and the marginal proportion of scores from group ***b*** that are categorised as "hits" $p_b$. The population tail ratio for a given cutoff value and region of interest is thus given by:
 
-$$\theta = \frac{p_{a|b}}{p_{b|a}}$$
+$$ TR = \frac{p_{a|b}}{p_{b|a}} $$
 
 The observed data can be thought of as 2 x 2 table of the following form:
 
@@ -600,7 +653,7 @@ The observed data can be thought of as 2 x 2 table of the following form:
 
 The point estimate of the population tail ratio can be written as:
 
-$$\hat{\theta} = \frac{\hat{p}_{a|b}}{\hat{p}_{b|a}} = \frac{n_{1.|.1}}{n_{.1|1.}}$$
+$$\widehat{TR} = \frac{\hat{p}_{a|b}}{\hat{p}_{b|a}} = \frac{n_{1.|.1}}{n_{.1|1.}}$$
 
 with $\hat{p}_a = \frac{n_{1.}}{n}$ and $\hat{p}_b = \frac{n_{.1}}{n}$.
 
@@ -648,59 +701,10 @@ Additionally, an $1 - \alpha$ percentile bootstrap CI is computed.
 
 <br>
 
-<h4 id = "DG_P_VR"> Variance ratio \(VR\) </h4>
-
-The population effect size of interest is given by:
-
-$$ VR = \frac{\sigma_{a|b}^2}{\sigma_{a|b}^2} $$
-
-It is simply the population ratio of variances with either the first measurement being the reference group $\frac{\sigma_{b}^2}{\sigma_{a}^2}$ or the second measurement being the reference group $\frac{\sigma_{a}^2}{\sigma_{b}^2}$. This effect size can be of interest in the context of dependent groups for various reasons (Bonett, 2006):\
-- for assessing the effect of treatment on variability in a response variable
-- for studying changes in variability in a response variable over time
-- for assessing the extent of variance homogeneity/heterogeneity, instead of conducting a hypothesis test
-- for assisting in the choosing of effect size or of a variance as the standardiser for some of the effect sizes described above.
-
-The sample estimate of $\theta$ is given by the ratio of sample variances:
-
-$$ \hat{VR} = \frac{s_{a|b}^2}{s_{a|b}^2} $$
-
-Two different confidence interval procedures are implemented based on Bonett (2006). The first procedure can only be computed if raw data is uploaded. The second procedure is implemented for the "Educational mode" of the app and is based on simple summary statistics that can be provided by the user. Firstly, the latter procedure is outlined. The confidence interval is computed as:
-
-$$ CI = (\frac{s_{a|b}^2}{s_{a|b}^2})\{k \pm \sqrt{k^2 - 1}\} $$
-
-with
-
-$$ k = 1 + \frac{2(1 - r^2)t_{\frac{\alpha}{2};n - 2}^2}{n - 2} $$
-
-$t_{\frac{\alpha}{2};n - 2}$ being the $\frac{\alpha}{2}$ quantile of the Student's t distribution with *n - 2* degrees of freedom.\
-This procedure yields an exact confidence interval for the population effect size if bivariate normality of the two measurements is satisfied. However, the described method is sensitive to even mild departures from normality. Bonett (2006) showed that when the distributions of the two measurements lightly differ from normality, the coverage probability falls drastically below the nominal $1 - \alpha$ rate.
-
-When raw data are available an approximate confidence interval with asymptotic probability coverage of 1 - $\alpha$ under bivariate nonnormality can be computed as follows:
-
-$$CI = exp\{ln(\frac{s_{a|b}^2}{s_{a|b}^2}) \pm z_{\frac{\alpha}{2}}\sqrt{\nu_1 + \nu_2 - 2a}\} $$
-
-with
-
-$$a = r_d\sqrt{\nu_1\nu_2} $$
-
-$$r_d = Cor(d_{ia}, d_{ib}) $$
-
-$$d_{ij} = (X_{ij} - \bar{X}_{j})^2 $$
-
-$$\nu_j = \frac{\bar{\gamma}_{2j} - \frac{n - 3}{n}}{n - 4} $$
-
-$$\bar{\gamma}_{2j} = \frac{n\sum_{i = 1}^n{(X_{ia} - \bar{X}_{t,\,a})^4}}{\{\sum_{i = 1}^n{(X_{ia} - \bar{X}_{a})^2}\}^2} $$
-
-where $\bar{X}_{t,\,a}$ is the trimmed mean with a trim-proportion of $\frac{1}{\{2(n - 4)^2\}}$.\
-The expression $\sqrt{\nu_1 + \nu_2 - 2a}$ is the estimate of the standard deviation of $\frac{s_{a|b}^2}{s_{a|b}^2}$.
-
-Bonett (2006) reports that the above procedure has probability coverage close to the nominal $1 - \alpha$ level under bivariate normality, tending to be slightly more liberal particularly when the sample size is low (*n = 10*). This approximate method is also not immune to violations of bivariate normality and it can have poor coverage probability when the population correlation is high (*r \> 0.5*) and the sample size is low (*n = 10*). In particular Bonett (2006) remarks that the approximate procedure tends to be conservative with platykurtic (light-tailed) distributions and conservative with leptokrutic (heavy-tailed) distributions. However, the author notes that the exact method shows the same pattern of behaviour while being more conservative with light-tailed as well as more liberal with heavy-tailed distributions.  
-
-<br>
-
-
 <h2 id = "DG_P_outlier_resistent"> Measures resistant to outliers </h2>
+
 <h3 id = "DG_P_outlier_resistent_SLD"> Measures of standardised location difference </h3>
+
 <h4 id = "DG_P_d_R"> \(d_R\) (robust Cohen's \(d\)) </h4>
 
 The population effect size of interest is given by the formula:
@@ -913,7 +917,7 @@ Borenstein, M., Hedges, L. V., Higgins, J. P. T., & Rothstein, H. R. (2009). *In
 
 Bradley, E. L. (2006) Overlapping coefficient. In S. Kotz, C. B. Read, N. Balakrishnan, B. Vidakovic, & N. L. Johnson (Eds.), *Encyclopedia of statistical sciences* (1900). New York: Wiley. <https://doi.org/10.1002/0471667196.ess1900.pub2>
 
-Cohen, J. (1988). *Statistical Power Analysis for the Behavioral Sciences* (2nd ed.). Routledge. <https://doi.org/10.4324/9780203771587>  
+Cohen, J. (1988). *Statistical Power Analysis for the Behavioral Sciences* (2nd ed.). Lawrence Erlbaum Associates. <https://doi.org/10.4324/9780203771587>  
 
 Cousineau, D., & Goulett-Pelletier, J.-C. (2021). A study of confidence intervals for Cohen's $d$ in within-subject designs with new proposals. *The Quantitative Methods for Psychology*, *17*(1), 51--75. <https://doi.org/10.20982/tqmp.17.1.p051>  
 
@@ -924,11 +928,11 @@ Field, A., Miles, J., & Zoe, F. (2012). *Discovering statistics using R*. Sage. 
 
 Grissom, R. J., & Kim, J. J. (2001). Review of assumptions and problemns in the appropriate conceptualization of effect size. *Psychological Methods*, *6*(2), 135--146. <https://doi.org/10.1037//1082-989X.6.2.135>
 
-Grissom, R. J., & Kim, J. J. (2012). *Effect sizes for research: Univariate and multivariate applications* (2nd ed.). Taylor and Francis Group.  
+Grissom, R. J., & Kim, J. J. (2012). *Effect sizes for research: Univariate and multivariate applications* (2nd ed.). Routledge.  
 
 Kraska, M. (2022). Repeated measures design. In Frey, B. (Ed.), *The SAGE encyclopedia of research design: Vol. 3* (2nd ed., pp.1395--1398). SAGE Publications, Inc. <https://dx.doi.org/10.4135/9781071812082>  
 
-Mastrich, Z., & Hernandez, I. (2021). Results everyone can understand: A review of common language effect size indicators to bridge the research-practice gap. *Health Psychology*, *40*(10), 727.
+Mastrich, Z., & Hernandez, I. (2021). Results everyone can understand: A review of common language effect size indicators to bridge the research-practice gap. *Health Psychology*, *40*(10), 727--736. <https://doi.org/10.1037/hea0001112>  
 
 McGraw, K. O., & Wong, S. P. (1992). A common language effect size statistic. *Psychological bulletin*, *111*(2), 361.
 
