@@ -329,16 +329,16 @@ $$ \hat{p}_{a>b} = \frac{U}{(n_an_b) - n_{ties}} $$
 
 where *U* is
 
-$$U = \sum_{i = 1}^{n_a}\sum_{j = 1}^{n_b}I_{\{x_{ia} \gt x_{jb}\}}(x_{ia}, x_{jb})$$
+$$U = \sum_{i = 1}^{n_a}\sum_{j = 1}^{n_b}I_{\{x_{a_i} \gt X_{b_j}\}}(x_{a_i}, X_{b_j})$$
 
 and
 
-$$I_{ \{ x_{ia} \gt x_{ib} \} }(x_{ia}, x_{jb}) = \begin{cases}
-1 & \text{if }  x_{ia} \gt x_{jb} \cr
-0 & \text{if }  x_{ia} \leq x_{jb}
+$$I_{ \{ x_{a_i} \gt x_{b_j} \} }(x_{a_i}, X_{b_j}) = \begin{cases}
+1 & \text{if }  x_{a_i} \gt X_{b_j} \cr
+0 & \text{if }  x_{a_i} \leq X_{b_j}
 \end{cases}$$
 
-with *U* being the *U*-statistic---the number of times that the scores from one specified sample are higher than the scores from the other sample with which they are paired (with ties being ignored)---and $(n_an_b) - n_{ties}$ being the total number of possibles pairings minus the number of pairings resulting in a tie (which should optimally be 0 if this estimator is chosen). Thus, $\hat{p}_{a>b}$ is the proportion of times a group ***a*** score was higher than a group ***b*** score in the sample (with ties being ignored). This definition assumes no ties or equal allocations of ties (Grissom, 1994a). This assumption should hold for continuous dependent variables. However, in practice continuous variables can often only be measured coarsely, which might result in tied values. Additionally, psychological research also employs measures on an ordinal scale, which too likely yield ties. Grissom (1994b) recommended count ties as half a "win". It can be argued that this leads to a slightly different definition of the population effect and thus it can be considered its own distinct ES - see the *A* measure of stochastic superiority below (Vargha & Delaney, 2000).
+with *U* being the *U*-statistic---the number of times that the scores from one specified sample are higher than the scores from the other sample with which they are paired (with ties being ignored)---and $(n_an_b) - n_{ties}$ being the total number of possibles pairings minus the number of pairings resulting in a tie (which should optimally be 0 if this estimator is chosen). Thus, $\hat{p}_{a>b}$ is the proportion of times a group ***a*** score was higher than a group ***b*** score in the sample (with ties being ignored). This definition assumes no ties or equal allocations of ties (Grissom, 1994a). This assumption should hold for continuous dependent variables. However, in practice continuous variables can often only be measured coarsely, which might result in tied values. Additionally, psychological research also employs measures on an ordinal scale, which too likely yield ties. Grissom (1994b) recommended counting ties as half a "win". It can be argued that this leads to a slightly different definition of the population effect and thus it can be considered its own distinct ES - see the *A* measure of stochastic superiority below (Vargha & Delaney, 2000).
 
 $\hat{p}_{a>b}$ is a nonparamatetric estimator of the population effect also estimated by the *CL* ES statistic , in the sense that the former estimator's definition does not rely on the normality and homoscedasticity assumption of the latter estimator's.
 
@@ -387,26 +387,26 @@ $$ \hat{A}_b = \frac{U'_b}{n_an_b} $$
 
 where $U'_a$ is
 
-$$U'_a = \sum_{i = 1}^{n_a}\sum_{j = 1}^{n_b}I_{\{x_{ia} \geq x_{jb}\}}(x_{ia}, x_{jb})$$
+$$U'_a = \sum_{i = 1}^{n_a}\sum_{j = 1}^{n_b}I_{\{x_{a_i} \geq X_{b_j}\}}(x_{a_i}, X_{b_j})$$
 
 with
 
-$$I_{\{x_{ia} \geq x_{ib}\}}(x_{ia}, x_{jb}) = \begin{cases}
-1 & \text{if } x_{ia} \gt x_{jb} \cr
-0.5 & \text{if } x_{ia} = x_{jb} \cr
-0 & \text{if } x_{ia} \lt x_{jb}
+$$I_{\{x_{a_i} \geq x_{b_j}\}}(x_{a_i}, X_{b_j}) = \begin{cases}
+1 & \text{if } x_{a_i} \gt X_{b_j} \cr
+0.5 & \text{if } x_{a_i} = X_{b_j} \cr
+0 & \text{if } x_{a_i} \lt X_{b_j}
 \end{cases}$$
 
 and $U'_b$ being:
 
-$$U'_a = \sum_{i = 1}^{n_a}\sum_{j = 1}^{n_b}I_{\{x_{ia} \leq x_{jb}\}}(x_{ia}, x_{jb})$$
+$$U'_a = \sum_{i = 1}^{n_a}\sum_{j = 1}^{n_b}I_{\{x_{a_i} \leq X_{b_j}\}}(x_{a_i}, X_{b_j})$$
 
 with
 
-$$I_{\{x_{ia} \leq x_{ib}\}}(x_{ia}, x_{jb}) = \begin{cases}
-1 & \text{if } x_{ia} \lt x_{jb} \cr
-0.5 & \text{if } x_{ia} = x_{jb} \cr
-0 & \text{if } x_{ia} \gt x_{jb}
+$$I_{\{x_{a_i} \leq x_{b_j}\}}(x_{a_i}, X_{b_j}) = \begin{cases}
+1 & \text{if } x_{a_i} \lt X_{b_j} \cr
+0.5 & \text{if } x_{a_i} = X_{b_j} \cr
+0 & \text{if } x_{a_i} \gt X_{b_j}
 \end{cases}$$
 
 with *U'* being the *U*-statistic accounting for ties---the number of times that the scores from one specified sample are higher than or equal to the scores from the other sample with which they are paired---and $n_an_b$ being the total number of possibles pairings. Thus, $\hat{A}_a$ is the proportion of times a group ***a*** score was higher than or equal to a group ***b*** score in the sample (and vice versa).  
@@ -467,7 +467,7 @@ $$ \tilde{p} = \frac{U}{n_a n_b}$$
 
 with *U* being defined as above (see documentation for the Probability of Superiority, *PS*).
 
-When there are no ties present---i.e., $x_{ia} \neq x_{jb} \quad \text{for any} \ i \in \{1, \ldots, n_a\}, \ \text{and} \ j \in \{1,\ldots,n_b\}$---both $\hat{p}_{a>b}$ and $\hat{p}_{b>a}$ can range from 0 to 1. In this case, the *DM* ranges from -1 to 1. However, when ties are present then the *DM* ranges from -*g* to *g* with *g* being the proportion of comparisons where $x_{ia} \neq x_{jb}$.
+When there are no ties present---i.e., $x_{a_i} \neq X_{b_j} \quad \text{for any} \ i \in \{1, \ldots, n_a\}, \ \text{and} \ j \in \{1,\ldots,n_b\}$---both $\hat{p}_{a>b}$ and $\hat{p}_{b>a}$ can range from 0 to 1. In this case, the *DM* ranges from -1 to 1. However, when ties are present then the *DM* ranges from -*g* to *g* with *g* being the proportion of comparisons where $x_{a_i} \neq X_{b_j}$.
 
 Additionally, when there are not ties present the *DM* is a linear function of the *PS*:
 
@@ -510,13 +510,13 @@ Grissom, R. J. (1994b). Statistical analysis of ordinal categorical status after
 
 Grissom, R. J., & Kim, J. J. (2001). Review of assumptions and problemns in the appropriate conceptualization of effect size. *Psychological Methods*, *6*(2), 135--146. <https://doi.org/10.1037//1082-989X.6.2.135>
 
-Grissom, R. J., & Kim, J. J. (2005). *Effect sizes for research: A broad practical approach*. Lawrence Erlbaum Associates..
+Grissom, R. J., & Kim, J. J. (2005). *Effect sizes for research: A broad practical approach*. Lawrence Erlbaum Associates.  
 
-Grissom, R. J., & Kim, J. J. (2012). *Effect sizes for research: Univariate and multivariate applications* (2nd ed.). Routledge.
+Grissom, R. J., & Kim, J. J. (2012). *Effect sizes for research: Univariate and multivariate applications* (2nd ed.). Routledge.  
 
 Hedges, L. V., & Olkin, I. (1985). *Statistical methods for meta-analysis*. Academic Press.
 
-Kraemer, H. C., & Andrews, G. (1982). *A nonparametric technique for meta-analysis effect size calculation*. Psychological bulletin, 91(2), 404. <https://psycnet.apa.org/doi/10.1037/0033-2909.91.2.404>
+Kraemer, H. C., & Andrews, G. (1982). A nonparametric technique for meta-analysis effect size calculation. *Psychological Bulletin*, *91*(2), 404. <https://psycnet.apa.org/doi/10.1037/0033-2909.91.2.404>
 
 Newcombe, R. G. (2006). Confidence intervals for an effect size measure based on the Mann–Whitney statistic. Part 1: general issues and tail‐area‐based methods. *Statistics in Medicine*, *25*(4), 543--557.
 

@@ -23,10 +23,9 @@
           </li>
         </ul>
         <ul>
-          <li><a href="#IG_P_normality_EF"><h4>2.3.1 Probabilistic measures of effect size </h4></a>
+          <li><a href="#IG_P_normality_homoscedasticity_prob_ES"><h4>2.3 Probabilistic measures of effect size </h4></a>
             <ul>
-             <li><a href="#IG_P_CLES"><h5>2.3.1 The common language ES (\(CLES\)) </h5></a></li>
-             <li><a href="#IG_P_PCC"><h5>2.3.2 Probability of correct classification (\(PCC\)) </h5></a></li>
+             <li><a href="#IG_P_PCC"><h5>2.3.1 Probability of correct classification (\(PCC\)) </h5></a></li>
             </ul>
           </li>
         <li>
@@ -38,17 +37,24 @@
           <ul>
             <li><a href="#IG_P_glass_dg"><h5>3.1.1 Glass \(d_G\)</h5></a></li>
             <li><a href="#IG_P_hedges_g_G"><h5>3.1.2 Glass' \(g_G\)</h5></a></li>
-            <li><a href="#IG_P_bonet_d"><h5>3.1.3 Cohen's \(d'\)</h5></a></li>
+            <li><a href="#IG_P_bonett_d"><h5>3.1.3 Cohen's \(d'\)</h5></a></li>
             <li><a href="#IG_P_bonett_g"><h5>3.1.4 Hedges' \(g'\)</h5></a></li>
             <li><a href="#IG_P_d2_KS"><h5>3.1.5 Kulinskaya-Staudte's \(d^2_{KS}\)</h5></a></li>
           </ul>
       </li>
     </ul>
+    <ul>
+      <li><a href="#IG_P_normality_prob_ES"><h4>3.2 Probabilistic measures of effect size </h4></a>
+        <ul>
+          <li><a href="#IG_P_CLES"><h5>3.2.1 The common language ES (\(CLES\)) </h5></a></li>
+        </ul>
+      </li>
+    </ul>
       <ul>
-        <li><a href="#IG_P_normality_homoscedasticity_tail"><h4>3.2 Measures of difference in group spread and tails </h4></a>
+        <li><a href="#IG_P_normality_tail_and_spread_ES"><h4>3.3 Measures of difference in group spread and tails </h4></a>
           <ul>
-            <li><a href="#IG_P_VR"><h5>3.2.1 Variance ratio (\(VR\))</h5></a></li>
-            <li><a href="#IG_P_TR"><h5>3.2.2 Tail ratio (\(TR\))</h5></a></li>
+            <li><a href="#IG_P_VR"><h5>3.3.1 Variance ratio (\(VR\))</h5></a></li>
+            <li><a href="#IG_P_TR"><h5>3.3.2 Tail ratio (\(TR\))</h5></a></li>
           </ul>
         </li>
       </ul>
@@ -302,33 +308,9 @@ We could not identify a closed form formula for the CI for this ES. Thus, a $1 -
 
 <br>
 
-<h3 id="IG_P_normality_EF"> 2.3 Probabilistic measures of effect size </h3>
+<h3 id="IG_P_normality_homoscedasticity_prob_ES"> 2.3 Probabilistic measures of effect size </h3>
 
-<h4 id = "IG_P_CLES"> 2.3.1 The common language ES (\(CLES\)) </h4>
-
-The population effect of interest is given by:
-
-$$ \mathbb{P} \left( X_a > X_b \right) $$
-
-that is, the probability that a randomly selected score from population ***a*** exceeds a randomly selected score from population ***b***. As argued by Mastrich & Hernandez (2021), The *CL* ES can be considered to provide an intuitive way to understand statistical results and therefore aids practitioners in understanding research findings and making informed decisions.
-
-The parametric estimator, which assumes normality and homoscedasticity of the two populations, implemented in this application is given by (McGraw & Wong, 1992):
-
-$$ CL = \Phi \left( \frac{\bar{X}_a - \bar{X_b}}{\sqrt{s_a^2 + s_b^2}} \right) $$
-
-One of many alternate parametric estimators (e.g., see Grissom, 1994) of the above population effect is:
-
-$$ CL_d = \Phi \left( \frac{d}{\sqrt2} \right) $$
-
-When $n_a = n_b = n$, $CL_d = \Phi ( \frac{\bar{X}_a - \bar{X}_b}{\sqrt{\frac{(n-1)(s_a^2 + s_b^2)}{\frac{2(n-1)}{2}}}} ) =  \Phi ( \frac{\bar{X}_a - \bar{X_b}}{\sqrt{s_a^2 + s_b^2}} ) = CL$. However, when $n_a \neq n_b$, $CL_d$ only approximates the value of $CL$ ($CL_d \approx CL$).  
-
-No closed form formulas were identified for the computation of a ($1 - \alpha$) CI for the *CL* ES. Mastrich & Hernandez (2021) recommends to transform the bounds of the CI of $d$ "to provide a sense of uncertainty around the reported CLES" (p. 733). The user of this application can use the above formula on the CI limits given by the application for $d$ to transform these limits into $CL_d$ values, if they wish to do so. Otherwise, a $1 - \alpha$ percentile bootstrap CI is computed and can be used to communicate said uncertainty.
-
-Two nonparametric estimators of the above population effect that do not make the normality or homoscedasticity assumptions of the *CL* ES, are called the probability of superiority (*PS*; Grissom, 1994) and the *A* measure of stochastic superiority (Vargha & Delaney, 2000) (see the documentation tab of the page on nonparametric ES for the independent groups design). As discussed by Grissom and Kim (2001) and Vargha and Delaney (2000) these estimators can be considered preferable to the  parametric estimator and if raw data is available the user is best advised to compute one of them alongside the *CL* ES.
-
-<br>
-
-<h4 id="IG_P_PCC"> 2.3.2 Probability of correct classification (\(PCC\)) </h4>
+<h4 id="IG_P_PCC"> 2.3.1 Probability of correct classification (\(PCC\)) </h4>
 
 The population effect of interest is the probability of correctly determining the population membership of a randomly drawn individual (with the options being population ***a*** or ***b***)---i.e., the value of the independent variable (group membership)---based on their value on the dependent variable (e.g., score on an outcome variable of interest).  
 
@@ -420,7 +402,7 @@ $$ g_{G,\,b} = \frac{\bar{X_a} - \bar{X_b}}{s_b} * J(\nu) $$
 
 with $\nu = n_j - 1$ denoting the degrees of freedom and $J(\nu)$ being defined above (see documentation of Hedges' $g$).  
 
-If this effect size is chosen by the user, both estimators are provided denoted as $g_{G, 1}$&mdash;using the first group's standard deviation in the denominator&mdash;and $g_{G, 2}$&mdash;using the second group's standard deviation in the denominator.The user can choose which to report/interpret (see documentation for $d_{G,\,j}$).  
+If this effect size is chosen by the user, both estimators are provided denoted as $g_{G, 1}$---using the first group's standard deviation in the denominator---and $g_{G, 2}$---using the second group's standard deviation in the denominator.The user can choose which to report/interpret (see documentation for $d_{G,\,j}$).  
 
 CI implementation is the same as for $d_{G,\,j}$, employing the method described by Steiger and Fouladi (1997) which uses the noncentral t distribution to construct a $1 - \alpha$ CI.
 
@@ -443,7 +425,7 @@ Additionally, an $1 - \alpha$ percentile bootstrap CI is computed.
 
 <br>
 
-<h4 id = "IG_P_bonet_d"> 3.1.3 Cohen's \(d'\) </h4>
+<h4 id = "IG_P_bonett_d"> 3.1.3 Cohen's \(d'\) </h4>
 
 The population effect size of interest is given by the formula (e.g.,Cohen, 1988):
 
@@ -453,17 +435,17 @@ with $\sigma'$ being:
 
 $$ \sigma' = \sqrt{\frac{\sigma^2_a + \sigma^2_b}{2}} $$
 
-The mean difference of two populations of interest $\mu_a - \mu_b$ is standardised by the root mean square of the population variances $\sigma^2_a$ and $\sigma^2_b$. Thus, this population effect does not assume homoscedasticity. In return, the population mean difference is standardised by the population standard deviation of a hypothetical population with a standard deviation between $\sigma_a$ and $\sigma_b$. Bonett (2008) states the noncentral *t* CI method for Cohen's $d$ is only exact under the assumptions of normality and homoscedasticity. However, the author notes that it is difficult to assess homoscedasticity and the extent to which population variances differ, especially when samples are of small to moderate size. Therefore he advocated using the above population effect size. Nonetheless, Bonett (2008) also acknowledges that the population effect loses its meaningfulness under stronger levels of heteroscedasticity.  
+The mean difference of two populations of interest $\mu_a - \mu_b$ is standardised by the root mean square of the population variances $\sigma^2_a$ and $\sigma^2_b$. Thus, this population effect does not assume homoscedasticity. In return, the population mean difference is standardised by the standard deviation of a hypothetical population with a standard deviation between $\sigma_a$ and $\sigma_b$. Thus, $\delta'$ tells us how many $\sigma'$ units $\mu_b$ lies below or above $\mu_a$.  
 
-Cohen (1988) also recommends this standardiser when population variances differ. However, as Cohen (1988) too points out, this population effect can no longer be converted into many of the highly intuitive and practical effect sizes such $CLES$, $OVL$ or any of Cohen's $U$ statistics. 
+Grissom and Kim (2012) note that some experts have a problem with this standardiser. Algina et al. (2005) argue that under heteroscedasticity $\sigma'$ fails to represent the variability in either group and Bonett (2008), a proponent of the above ES definition, acknowledges that the population effect loses its meaningfulness when variances differ considerably. If heteroscedasticity is assumed to be considerable Bonett (2008) recommends estimating $\Delta_j$ instead of $delta'$---without giving an exact definition of considerable heteroscedasticity in terms of a variance ratio or the like. Additionally, as Cohen (1988) points out, $\delta'$ can not be converted into any of Cohen's *U* effects (or the *OVL* for that matter), which can be considered to reduce the interpretability of $\delta'$ since Cohen (1988) defined the *U* measures to aid the interpretation of the standardised mean difference.  
 
-$\delta'$ tells us how many $\sigma'$ units $\mu_b$ lies below or above $\mu_a$ .  
+However, Bonett (2008) advocates for the use of $\delta'$ and argues that it is still a more meaningful effect than $\delta$ owing to the fact that it does not rely on the equality of variances assumption. As Bonett (2008) points out the noncentral *t* CI method for Cohen's $d$ is only exact under the assumptions of normality and homoscedasticity and as the author notes, it is difficult to assess homoscedasticity and the extent to which population variances differ, especially when samples are of small to moderate size. It should also be noted that while $\delat'$ cannot be converte into the *U* population effect, it can be converted into the $CLES$, which has been found to foster understanding of statistical results (Mastrich & Hernandez, 2021).  
 
-The sample estimate of this population effect is given by the formula (e.g.,Bonett (2008)):
+The sample estimate of the  population effect is given by the formula (e.g., Bonett, 2008):
 
-$$ d'= \frac{\bar{X}_a - \bar{X}_b}{s'} $$
+$$ d' = \frac{\bar{X}_a - \bar{X}_b}{s'} $$
 
-with $s' = \sqrt{\frac{s_a^2 + s_b^2}{2}}$
+with $ s' = \sqrt{\frac{s_a^2 + s_b^2}{2}} $
 
 If $n_a = n_b$, then $s_p$ will be equal to $s'$ and thus $d$ will be equal to $d'$. This estimator has a bias. It systematically overestimates the size of the true population standardised mean difference. This bias can be corrected - see Hedges' $g'$.  
 
@@ -521,9 +503,41 @@ Kulinskaya and Staudte (2006) only described estimation of tolerance intervals f
 
 <br>
 
-<h3 id="IG_P_normality_homoscedasticity_tail"> 3.2 Measures of difference in group spread and tails </h3>
+<h3 id="IG_P_normality_prob_ES"> 3.2 Probabilistic measures of effect size </h3>
 
-<h4 id="IG_P_VR"> 3.2.1 Variance ratio (\(VR\))</h4>
+<h4 id = "IG_P_CLES"> 3.2.1 The common language ES (\(CLES\)) </h4>
+
+The population effect of interest is given by:
+
+$$ \mathbb{P} \left( X_a > X_b \right) = \mathbb{P} \left( X_a - X_b > 0 \right)$$
+
+that is, the probability that a randomly selected score from population ***a*** exceeds a randomly selected score from population ***b***. Or alternatively, the propbability that a randomly selected difference score ($X_a - X_b$) is greater than zero. As argued by Mastrich & Hernandez (2021), The *CLES* can be considered to provide an intuitive way to understand statistical results and therefore aids practitioners in understanding research findings and making informed decisions.
+
+Under the assumption of normally distributed populations the population of difference scores $D = X_a - X_b$ follow a normal distribution too with a mean of $\mu_D = \mathbb{E}[X_a - X_b] = \mu_a - \mu_b$ and a variance of $\sigma_D^2 = Var(X_a - X_b) = Var(X_a) + Var(X_b) + 2 Cov(X_a, X_b) Var(X_a) Var(X_B)$ with the last term being equal to 0 since the groups are independent and thus $Cov(X_a, X_b) = 0$. Consequently $\sigma_D^2 = Var(X_a - X_b) = Var(X_a) + Var(X_B)$ and thus $D \sim \mathbb{N}(\mu_a - \mu_b, \sigma_a^2 + \sigma_b^2)$. This results in the following definition of the population effect:
+
+$$ \mathbb{P} \left( X_a > X_b \right) = \mathbb{P} \left( X_a - X_b > 0 \right) = \Phi \left( \frac{0 - \mu_D}{\sigma_D} \right) =  \Phi \left( \frac{\mu_a - \mu_b}{\sqrt{\sigma_a^2 + \sigma_b^2}} \right) $$
+
+A parametric estimator of this quantity can be derived by replacing the population parameters in the equation with sample estimators  (McGraw & Wong, 1992):
+
+$$ CL = Phi \left( \frac{\bar{X}_a - \bar{X_b}}{\sqrt{s_a^2 + s_b^2}} \right) $$
+
+One of many alternate parametric estimators (e.g., see Grissom, 1994) of the above population effect is:
+
+$$ CL_d = \Phi \left( \frac{d}{\sqrt2} \right) $$
+
+This estimator relies additionally to the normality assumption on the equality of variances assumption, in which case $\sigma_D^2 = \sigma_a^2 + \sigma_b^2 = \sigma^2 + \sigma^2 = 2\sigma^2$. Since $s_p$ is an appropriate estimator for $\sigma$ the population variance of diffrence scores ($\sigma_D^2 = 2\sigma^2$) can be estimated as $s_d^2 = 2 s_p^2$. Consequently $ CL_d = \frac{d}{\sqrt{2}} = \frac{\bar{X}_a - \bar{X}_b}{\sqrt{2 s_p^2}} $.
+
+Coincidentally, when sample sizes are equal $n_a = n_b = n$, then $CL_d = \Phi ( \frac{\bar{X}_a - \bar{X}_b}{\sqrt{\frac{(n-1)(s_a^2 + s_b^2)}{\frac{2(n-1)}{2}}}} ) =  \Phi ( \frac{\bar{X}_a - \bar{X_b}}{\sqrt{s_a^2 + s_b^2}} )$ is equal to the estimator not assuming equality of variances. However, when $n_a \neq n_b$ and equality of variances is not assumed, $CL_d$ only approximates the value of $CL$ ($CL_d \approx CL$).  
+
+No closed form formulas were identified for the computation of a ($1 - \alpha$) CI for the *CL* ES. Mastrich & Hernandez (2021) recommends to transform the bounds of the CI of $d$ "to provide a sense of uncertainty around the reported CLES" (p. 733). The user of this application can use the above formula on the CI limits given by the application for $d$ to transform these limits into $CL_d$ values, if they wish to do so. Otherwise, a $1 - \alpha$ percentile bootstrap CI is computed and can be used to communicate said uncertainty.
+
+Two nonparametric estimators of the above population effect that do not make the normality or homoscedasticity assumptions of the *CL* ES, are called the probability of superiority (*PS*; Grissom, 1994) and the *A* measure of stochastic superiority (Vargha & Delaney, 2000) (see the documentation tab of the page on nonparametric ES for the independent groups design). As discussed by Grissom and Kim (2001) and Vargha and Delaney (2000) these estimators can be considered preferable to the  parametric estimator and if raw data is available the user is best advised to compute one of them alongside the *CL* ES.
+
+<br>
+
+<h3 id="IG_P_normality_tail_and_spread_ES"> 3.3 Measures of difference in group spread and tails </h3>
+
+<h4 id="IG_P_VR"> 3.3.1 Variance ratio (\(VR\))</h4>
 
 The population effect size of interest is given by:  
 
@@ -566,7 +580,7 @@ Additionally, an $1 - \alpha$ percentile bootstrap CI is computed.
 
 <br>
 
-<h4 id="IG_P_TR"> 3.2.2 Tail ratio (\(TR\))</h4>
+<h4 id="IG_P_TR"> 3.3.2 Tail ratio (\(TR\))</h4>
 
 Standardised mean differences such as Cohen's $d$ narrow their assessment on the centers of distributions, i.e., on typical observations. For many psychological, biological, and medical models which predict that the probability of some outcome or manifestation only starts increasing after some threshold the tails of distributions are more relevant (Voracek et al., 2013), e.g.,:  
 
@@ -654,7 +668,7 @@ $$ \delta_{R} = c\frac{\mu_{t,\,a} - \mu_{t,\,b}}{\sigma_w} $$
 
 The difference of $\gamma$-percent trimmed means of populations ***a*** and ***b*** $\mu_{t,\,a} - \mu_{t,\,b}$ is standardised by the (common) $\gamma$-percent winsorised population standard deviation $\sigma_w$ and scaled by $c$.
 
-$\delta_{R}$ tells us how many rescaled $\gamma$-percent winsorised standard deviation units $\mu_{t,\,a}$ (e.g., $\mu_{tpost}$) lies below or above $\mu_tb$ (e.g., $\mu_{tpre}$). This measure of effect is applicable in all contexts in which $\delta$ is applicable (see above for some examples).
+$\delta_{R}$ tells us how many rescaled $\gamma$-percent winsorised standard deviation units $\mu_{t,\,a}$ lies below or above $\mu_{t,\,b}$. This measure of effect is applicable in all contexts in which $\delta$ is applicable.
 
 Much like how Cohen's $d$ assumes homogeneity of population variances, this ES assumes homogeneity of population winsorised variances i.e., that $\sigma^2_{w,\,a} = \sigma^2_{w,\,b} = \sigma^2_{w}$.
 
@@ -662,7 +676,7 @@ The value of $c$ is the value of the winsorised standard deviation of the standa
 
 The motivation behind this ES definition is that according to Algina et al. (2005) it manages to more accurately capture the degree of separation between the distribution of two groups when these groups do not follow normal distributions. They argue that the mean and variance are not robust in the sense that a small change in the population distribution can have a large influence on the size of these parameters. As a consequence $\delta$ itself is strongly affected by the shape of the population distributions. On the other hand, the trimmed mean and the winsorised variance are robust according to this definition of robustness.  Thus, $\delta_R$ is not so strongly affected the shape of the population distributions. The authors show this by computing $\delta$ and $\delta_R$ for two scenarios. In scenario one the contrasted populations follow normal distributions (population ***a*** follows $\mathbb{N}(1,1)$ and population ***b*** follows $\mathbb{N}(0,1)$) which leads to identical values for $\delta$ and $\delta_R$ (= 1). In scenario two these distributions are contamined with another normal distribution ($\mathbb{N}(0, 10)$) which has the effect that the populations follow mixed normal distributions with their respective means remaining unchanged but their variances increasing (from 1 to 3.3). The population distributions in the two scenarios are however very similar since the contamination in the second scenario mainly affected the tails of the population distributions (they became heavier compared to normal distributions). Thus, the separation between the population distributions was highly similar in the two scenarios. This similarity in separation was not captured by $\delta$ which differed noticeably between the two scenarios since the population variances increased substantially from scenario one to scenario two ($\delta = 0.3$ in scenario two). However, $\delta_R$ was able to more accurately reflect that the separation between the population distributions only changed minutely ($\delta_R = 0.9$ in scenario two). Since it often might not be reasonable to assume that populations follow normal distributions, Algina et al. (2005) recommend estimating $\delta_R$ when one is interested in reporting a measure of standardised location difference.
 
-It should be noted that the above population effect and its estimator are still robust if the winsorised variance is not rescaled by $c$. Dividing $\delta_R$ gives the population effect $\delta_R^{\dagger} = \frac{\mu_{t,\,a} - \mu_{t,\,b}}{\sigma_w}$. Keselman et al. (2008, p.119) write about the related ES $\delta_{R,\j}$ (see below) that "when the 20% trimmed distribution is similar in shape to a 20% trimmed normal distribution (just what trimming is intended to accomplish), using .642 will put the ES on a scale that is similar to the scale of Cohen’s (1965) ES. Not using .642 means that the ES will not be on a familiar scale in any situation. In addition, as was true in regard to the interpretation of $\delta$, the meaning of $\delta_{R_j}$ will emerge from repeated use of the ES."
+It should be noted that the above population effect and its estimator are still robust if the winsorised variance is not rescaled by $c$. Dividing $\delta_R$ by $c$ gives the population effect $\delta_R^{\dagger} = \frac{\mu_{t,\,a} - \mu_{t,\,b}}{\sigma_w}$. Keselman et al. (2008, p.119) write about the related ES $\delta_{R,\j}$ (see below) that "when the 20% trimmed distribution is similar in shape to a 20% trimmed normal distribution (just what trimming is intended to accomplish), using .642 will put the ES on a scale that is similar to the scale of Cohen’s (1965) ES. Not using .642 means that the ES will not be on a familiar scale in any situation. In addition, as was true in regard to the interpretation of $\delta$, the meaning of $\delta_{R_j}$ will emerge from repeated use of the ES."  
 
 The estimator of the population effect is given by (Algina et al., 2005):
 
@@ -674,7 +688,7 @@ $$ s_{wp} = \sqrt{\frac{(n_a - 1)s^2_{w,\,a} + (n_b - 1)s^2_{w,\,b}}{n_a + n_b -
 
 As stated above, $c$ is a constant with a value depending on $\gamma$. In this application we follow the recommendation of Algina et al. (2005) by setting $\gamma$ to 20 and thus $c = 0.642$. Should populations ***a*** and ***b*** follow normal distributions with equal variances, then $\frac{s_{wp}}{c}$ estimates $\sigma$ and $\bar{X}_{t,\,a}$ and $\bar{X}_{t,\,b}$ estiamte $\mu_a$ and $\mu_b$ respectively. Consequently $d_{R}$ would estimate $\delta$. This way the robust statistic $d_{R}$ estimates the same population effect as its non robust counterpart $d$ under normality.
 
-In case the user of this app would prefer to estimate $\delta^{\dagger}_R$, the point and the interval estimates simply have to be multiplied with $\frac{1}{c}$ resulting in the estimator $d^{\dagger}_R$.
+In case the user of this app would prefer to estimate $\delta^{\dagger}_R$, the point and the interval estimates simply have to be multiplied with $\frac{1}{c}$ resulting in the estimator $d^{\dagger}_R$.  
 
 A noncentral *t* CI based on Algina et al. (2005) is implemented:
 
@@ -713,13 +727,13 @@ $$ \Delta_{R,\,b} = c \cdot \frac{\mu_{t,\,a} - \mu_{t,\,b}}{\sigma_{w,\,b}} $$
 
 The difference of $\gamma$-percent trimmed means of populations ***a*** and ***b*** ($\mu_{t,\,a} - \mu_{t,\,b}$) is standardised by the $\gamma$-percent winsorised standard deviation of population ***a***/***b*** ($\sigma_{w(a|b)}$) and scaled by $c$.
 
-$\Delta_{R,\,j}$ tells us how many population ***j*** rescaled $\gamma$-percent winsorised standard deviation units $\mu_{t,\,a}$ (e.g., $\mu_{t,\,post}$) lies below or above $\mu_{t,\,b}$ (e.g., $\mu_{t,\,pre}$). This measure of effect is applicable in all contexts in which $\Delta_j$ is applicable (see above for some examples). When the contrasted populations are heteroscedastic $\Delta_{R,\,a}$ and $\Delta_{R,\,b}$ are distinct population effects and even under homoscedasticity (when the two population effects are identical) the sample estimates will differ depending on which group's winsorised standard deviation is used as the standardiser---simply due to the fact that the sample winsorised standard deviations within the groups will most likely differ. It is up to the user to decide which estimate to interpret and report. If this effect size is chosen by the user, both estimators are provided denoted as $d_{R, 1}$---using the first group's winsorised standard deviation in the denominator---and $d_{R, 2}$---using the second group's winsorised standard deviation in the denominator.
+$\Delta_{R,\,j}$ tells us how many population ***j*** rescaled $\gamma$-percent winsorised standard deviation units $\mu_{t,\,a}$ lies below or above $\mu_{t,\,b}$. This measure of effect is applicable in all contexts in which $\Delta_j$ is applicable (see above for some examples). When the contrasted populations are heteroscedastic $\Delta_{R,\,a}$ and $\Delta_{R,\,b}$ are distinct population effects and even under homoscedasticity (when the two population effects are identical) the sample estimates will differ depending on which group's winsorised standard deviation is used as the standardiser---simply due to the fact that the sample winsorised standard deviations within the groups will most likely differ. It is up to the user to decide which estimate to interpret and report. If this effect size is chosen by the user, both estimators are provided denoted as $d_{R, 1}$---using the first group's winsorised standard deviation in the denominator---and $d_{R, 2}$---using the second group's winsorised standard deviation in the denominator.  
 
-The value of $c$ is the value of the winsorised standard deviation of the standard normal distribution ($\mathbb{N}(0, 1)$) with $\gamma$-percent trimming. For $\gamma = 20$ trimming, as performed with this app, $c = 0.642$. This means that the ratio of the $\gamma$-percent winsorised standard deviation to the "regular" standard deviation is $0.642 : 1$ if a population follows a normal distribution. Should populations ***a*** and ***b*** follow normal distributions, then $\frac{s_{w,\,j}}{c}$ estimates $\sigma_j$ and $\bar{X}_{t,\,b}$ and $\bar{X}_{t,\,a}$ estimate $\mu_{b}$ and $\mu_{a}$ respectively. Consequently $d_{R,\,j}$ would estimate $\Delta_j$. This way the robust statistic $d_{R,\,j}$ estimates the same population effect as its non robust counterpart $d_{G,\,j}$ under normality.
+The value of $c$ is the value of the winsorised standard deviation of the standard normal distribution ($\mathbb{N}(0, 1)$) with $\gamma$-percent trimming. For $\gamma = 20$ trimming, as performed with this app, $c = 0.642$. This means that the ratio of the $\gamma$-percent winsorised standard deviation to the "regular" standard deviation is $0.642 : 1$ if a population follows a normal distribution. Should populations ***a*** and ***b*** follow normal distributions, then $\frac{s_{w,\,j}}{c}$ estimates $\sigma_j$ and $\bar{X}_{t,\,b}$ and $\bar{X}_{t,\,a}$ estimate $\mu_{b}$ and $\mu_{a}$ respectively. Consequently $d_{R,\,j}$ would estimate $\Delta_j$. This way the robust statistic $d_{R,\,j}$ estimates the same population effect as its non robust counterpart $d_{G,\,j}$ under normality.  
 
 See the documentation of $\delta_R$ above for the motivation behind this defintion of ES. The rationale of the argumentation is that using robust parameters in the ES defintion (i.e., trimmed means and winsorised variances) robust ES, such as $\delta_{R,\j}$ are better able to quantify the separation between two distributions when outliers are common and in general when the populations do not follow normal distributions.
 
-It should be noted that the above population effect and its estimator are still robust if the winsorised variance is not rescaled by $c$. Dividing $\delta_{R,\,j}$ gives the population effect $\delta^{\dagger}_{R,\,j} = \frac{\mu_{t,\,a} - \mu_{t,\,b}}{\sigma_{w,\,j}}$. Keselman et al. (2008, p.119) write that "when the 20% trimmed distribution is similar in shape to a 20% trimmed normal distribution (just what trimming is intended to accomplish), using .642 will put the ES on a scale that is similar to the scale of Cohen’s (1965) ES. Not using .642 means that the ES will not be on a familiar scale in any situation. In addition, as was true in regard to the interpretation of $\delta$, the meaning of $\delta_{R_j}$ will emerge from repeated use of the ES."
+It should be noted that the above population effect and its estimator are still robust if the winsorised variance is not rescaled by $c$. Dividing $\delta_{R,\,j}$ gives the population effect $\delta^{\dagger}_{R,\,j} = \frac{\mu_{t,\,a} - \mu_{t,\,b}}{\sigma_{w,\,j}}$. Keselman et al. (2008, p.119) write that "when the 20% trimmed distribution is similar in shape to a 20% trimmed normal distribution (just what trimming is intended to accomplish), using .642 will put the ES on a scale that is similar to the scale of Cohen’s (1965) ES. Not using .642 means that the ES will not be on a familiar scale in any situation. In addition, as was true in regard to the interpretation of $\delta$, the meaning of $\delta_{R_j}$ will emerge from repeated use of the ES."  
 
 The sample estimate of the population effect is given by (Algina et al., 2006b):
 
@@ -733,9 +747,9 @@ $$ d_{R,\,b} = c \frac{\bar{X}_{t,\,a} - \bar{X}_{t,\,b}}{s_{w,\,b}} $$
 
 with $\bar{X}_{t,\,b}$ and $\bar{X}_{t,\,a}$ being the $\gamma$-percent trimmed means of the independent samples and $s_{w,\,a}$ being the sample $\gamma$-percent winsorised standard deviation of group ***a*** and $s_{w,\,b}$ being the sample $\gamma$-percent winsorised standard deviation of group ***b***.
 
-As stated above, $c$ is a constant with a value depending on $\gamma$. In this application we follow the recommendation of Algina et al. (2006b) by setting $\gamma$ to 20 and thus $c = 0.642$. Should populations ***a*** and ***b*** follow normal distributions with equal variances, then $\frac{s_{w,\,j}}{c}$ estimates $\sigma$ and $\bar{X}_{t,\,a}$ and $\bar{X}_{t,\,b}$ estiamte $\mu_a$ and $\mu_b$ respectively. Consequently $d_{R,\,j}$ would estimate $\Delta_j$. This way the robust statistic $d_{R,\,j}$ estimates the same population effect as its non robust counterpart $d$ under normality.
+As stated above, $c$ is a constant with a value depending on $\gamma$. In this application we follow the recommendation of Algina et al. (2006b) by setting $\gamma$ to 20 and thus $c = 0.642$. Should populations ***a*** and ***b*** follow normal distributions then $\frac{s_{w,\,j}}{c}$ estimates $\sigma_j$ and $\bar{X}_{t,\,a}$ and $\bar{X}_{t,\,b}$ estiamte $\mu_a$ and $\mu_b$ respectively. Consequently $d_{R,\,j}$ would estimate $\Delta_j$. This way the robust statistic $d_{R,\,j}$ estimates the same population effect as its non robust counterpart $d_{G,\,j}$ under normality.  
 
-In case the user of this app would prefer to estimate $\delta^{\dagger}_{R,\,j}$, the point and the interval estimates simply have to be multiplied with $\frac{1}{c}$ resulting in the estimator $d^{\dagger}_{R,\,j}$.
+In case the user of this app would prefer to estimate $\delta^{\dagger}_{R,\,j}$, the point and the interval estimates simply have to be multiplied with $\frac{1}{c}$ resulting in the estimator $d^{\dagger}_{R,\,j}$.  
 
 An approximate noncentral *t* CI based on Algina et al. (2006b) is implemented:
 
@@ -775,9 +789,11 @@ $$ \sigma'_w = \sqrt{\frac{\sigma^2_{w,\,a} + \sigma^2_{w,\,b}}{2}} $$
 
 The difference of two population $\gamma$-percent trimmed means is standardised by the root mean square of the population $\gamma$-percent winsorised variances $\sigma^2_{w,\,a}$ and $\sigma^2_{w,\,b}$ and scaled by $c$ which is a function of $\gamma$. Thus, this population effect does not assume homoscedasticity. In return, the population trimmed mean difference is standardised by the winsorised standard deviation of a hypothetical population with a winsorised standard deviation halfway between $\sigma_{w,\,a}$ and $\sigma_{w,\,b}$. This ES is a robust version of the Cohen's $d'$ which has been favoured by Bonett (2008) for situations in which population variances are (slightly) homoscedastic. While Keselman et al. (2008) too prefer using the unweighted average of (winsorised) standard deviations as a standardiser compared to a weighted average (such as Cohen's $d$ or Kulinskaya and Staudte's $d^2_{KS}$) when populations are heteroscedastic, they still favour estimating $\delta_{R,\,j}$ overall under heteroscedasticity.
 
-By replacing the non-robust parameters (the mean and variance) with robust parameters (trimmed mean and winsorised variance), this population effect should more accurately be able to capture the degree of separation between two distributions even when those distributions are non-normal (e.g., have heavier tails than normal distributions). This is the idea underlying this and the other robust standardised location difference measures (like $d_R$ and $d_{R,\,j}$).
+By replacing the non-robust parameters (the mean and variance) with robust parameters (trimmed mean and winsorised variance), this population effect should more accurately be able to capture the degree of separation between two distributions even when those distributions are non-normal (e.g., have heavier tails than normal distributions). This is the idea underlying this and the other robust standardised location difference measures (like $d_R$ and $d_{R,\,j}$).  
 
-The value of $c$ is the value of the winsorised standard deviation of the standard normal distribution ($\mathbb{N}(0, 1)$) with $\gamma$-percent trimming. For $\gamma = 20$ trimming, as performed with this app, $c = 0.642$. This means that the ratio of the $\gamma$-percent winsorised standard deviation to the "regular" standard deviation is $0.642 : 1$ if a population follows a normal distribution. Thus, if popualtions ***a*** and ***b*** follow normal distributions with equal variances, then $\frac{\sigma_{w'}}{c} = \sigma'$ and consequently $\delta'_{R} = \delta'$.
+It should be noted that the above population effect and its estimator are still robust if the winsorised variance is not rescaled by $c$. Dividing $\delta'_R$ by $c$ gives the population effect $\delta_R'^{\dagger} = \frac{\mu_{t,\,a} - \mu_{t,\,b}}{\sigma'_w}$. Keselman et al. (2008, p.119) write about the related ES $\delta_{R,\j}$ (see above) that "when the 20% trimmed distribution is similar in shape to a 20% trimmed normal distribution (just what trimming is intended to accomplish), using .642 will put the ES on a scale that is similar to the scale of Cohen’s (1965) ES. Not using .642 means that the ES will not be on a familiar scale in any situation. In addition, as was true in regard to the interpretation of $\delta$, the meaning of $\delta_{R_j}$ will emerge from repeated use of the ES."  
+
+The value of $c$ is the value of the winsorised standard deviation of the standard normal distribution ($\mathbb{N}(0, 1)$) with $\gamma$-percent trimming. For $\gamma = 20$ trimming, as performed with this app, $c = 0.642$. This means that the ratio of the $\gamma$-percent winsorised standard deviation to the "regular" standard deviation is $0.642 : 1$ if a population follows a normal distribution. Thus, if popualtions ***a*** and ***b*** follow normal distributions, then $\frac{\sigma_{w'}}{c} = \sigma'$ and consequently $\delta'_{R} = \delta'$.
 
 The estimator of the population effect is given by:
 
@@ -789,9 +805,9 @@ $$ s_{w'} = \sqrt{\frac{s^2_{w,\,a} + s^2_{w,\,b}}{2}} $$
 
 $c$ is a constant with a value dependeing on $\gamma$. As recommended by Keselman et al. (2008) $\gamma$ is set to 20 for this application and thus $c = 0.642$.
 
-As stated above, $c$ is a constant with a value depending on $\gamma$. In this application we follow the recommendation of Keselman et al. (2008) by setting $\gamma$ to 20 and thus $c = 0.642$. Should populations ***a*** and ***b*** follow normal distributions with equal variances, then $\frac{s_{w'}}{c}$ estimates $\sigma'$ and $\bar{X}_{t,\,a}$ and $\bar{X}_{t,\,b}$ estiamte $\mu_a$ and $\mu_b$ respectively. Consequently $d'_{R}$ would estimate $\delta'$. This way the robust statistic $d'_{R}$ estimates the same population effect as its non robust counterpart $d'$ under normality.
+As stated above, $c$ is a constant with a value depending on $\gamma$. In this application we follow the recommendation of Keselman et al. (2008) by setting $\gamma$ to 20 and thus $c = 0.642$. Should populations ***a*** and ***b*** follow normal distributions, then $\frac{s_{w'}}{c}$ estimates $\sigma'$ and $\bar{X}_{t,\,a}$ and $\bar{X}_{t,\,b}$ estiamte $\mu_a$ and $\mu_b$ respectively. Consequently $d'_{R}$ would estimate $\delta'$. This way the robust statistic $d'_{R}$ estimates the same population effect as its non robust counterpart $d'$ under normality.
 
-In case the user of this app would prefer to estimate $\delta'^{\dagger}_R$, the point and the interval estimates simply have to be multiplied with $\frac{1}{c}$ resulting in the estimator $d'^{\dagger}_R$.
+In case the user of this app would prefer to estimate $\delta'^{\dagger}_R$, the point and the interval estimates simply have to be multiplied with $\frac{1}{c}$ resulting in the estimator $d'^{\dagger}_R$.  
 
 Keselman et al. (2008) did not describe a closed form formula for CI computation and recommended the use of a $1 - \alpha$ percentile bootstrap CI, which is implemented for this application. The perdcentile bootstrap CI performed well both for $d_R$ as well as $d_{R,\,j}$ not only under normality but under non-normality of population distibutions too.
 
@@ -804,7 +820,7 @@ Grissom and Kim (2001) reported on three such ES estimators that use robust esti
 
 $$ \hat\delta_{a|b} =  \frac{Mdn_a - Mdn_b}{S_{a|b}} $$
 
-with $Mdn_a$ being the Median of group a, $Mdn_b$ being the median of group ***b*** and $S_{a|b}$ being the standardiser, which is some robust measure of variability of the baseline/control group (e.g., the median absolute  deviation of a gold standard treatment). Here, if this estimator is chosen by the user, both estimators are provided denoted as $d_{MAD, 1}$/$d_{R_{IQ}, 1}$/$d_{bw, 1}$&mdash;using the first group's variability estimator in the denominator&mdash;and $d_{MAD, 2}$/$d_{R_{IQ}, 2}$/$d_{bw, 2}$&mdash;using the second group's variability estimator in the denominator.
+with $Mdn_a$ being the Median of group a, $Mdn_b$ being the median of group ***b*** and $S_{a|b}$ being the standardiser, which is some robust measure of variability of the baseline/control group (e.g., the median absolute  deviation of a gold standard treatment). Here, if this estimator is chosen by the user, both estimators are provided denoted as $d_{MAD, 1}$/$d_{R_{IQ}, 1}$/$d_{bw, 1}$---using the first group's variability estimator in the denominator---and $d_{MAD, 2}$/$d_{R_{IQ}, 2}$/$d_{bw, 2}$---using the second group's variability estimator in the denominator.
 
 <br>
 
@@ -812,7 +828,7 @@ The sampling variance of these estimators are currently unknown and thus only $1
 
 <br>
 
-Grissom and Kim (2001) note that other standardised median differences could be conceived by using yet another robust measure of variability in the denominator. However, we agree with the comment of Grissom and Kim (2012) that "the field should settle on the use of a reduced number of appropriate measures" (p.75) and that a alternate robust estimator which has a well-behaved confidence interval should be determined and consistently used when outliers threaten to violate assumptions.
+Grissom and Kim (2001) note that other standardised median differences could be conceived by using yet another robust measure of variability in the denominator. However, we agree with the comment of Grissom and Kim (2012) that "the field should settle on the use of a reduced number of appropriate measures" (p.75) and that a robust estimator with a well-behaved confidence interval should be determined and consistently used when outliers threaten to violate assumptions.
 
 <h4 id = "IG_P_d_MAD"> 4.1.4.1 \(d_{MAD}\) </h4>  
 

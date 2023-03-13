@@ -50,6 +50,7 @@ all_eff_sizes <- list(
   cohens_drm = "cohens_drm",
   hedges_grm = "hedges_grm",
   bonett_d_dependent = "bonett_d_dependent",
+  bonett_d_corr_dependent = "bonett_d_corr_dependent",
   cohens_dz = "cohens_dz",
   hedges_gz = "hedges_gz",
   glass_d_dependent = "glass_d_dependent",
@@ -66,6 +67,7 @@ all_eff_sizes <- list(
   robust_cohens_dz = "robust_cohens_dz",
   robust_cohens_d_dependent = "robust_cohens_d_dependent",
   robust_glass_d_dependent = "robust_glass_d_dependent",
+  robust_bonett_d_dependent = "robust_bonett_d_dependent",
   non_parametric_tail_ratio_dependent = "non_parametric_tail_ratio_dependent",
   standardised_median_difference_biweight_dependent = "standardised_median_difference_biweight_dependent",
   standardised_median_difference_mad_dependent = "standardised_median_difference_mad_dependent",
@@ -248,7 +250,8 @@ generate_es_raw_data_dataframe <- function(es_list, INDEX = NULL, x, y, tail, re
                   "hedges_g_dependent" = c(hedges_g(x = x, y = y), hedges_g_dependent_ci(x = x, y = y, alpha = alpha), boot_general_dependent_groups(x, y, hedges_g, alpha)),
                   "cohens_drm" = c(cohens_drm(x = x, y = y), cohens_drm_ci(x = x, y = y, alpha = alpha), boot_general_dependent_groups(x, y, cohens_drm, alpha)),
                   "hedges_grm" = c(hedges_grm(x = x, y = y), hedges_grm_ci(x = x, y = y, alpha = alpha), boot_general_dependent_groups(x, y, hedges_grm, alpha)),
-                  "bonett_d_dependent" = c(bonett_d_dependent(x = x, y = y), bonett_d_dependent_ci(x = x, y = y, alpha = alpha), boot_general_dependent_groups(x, y, bonett_d_dependent, alpha)),
+                  "bonett_d_dependent" = c(bonett_d(x = x, y = y), bonett_d_dependent_ci(x = x, y = y, alpha = alpha), boot_general_dependent_groups(x, y, bonett_d, alpha)),
+                  "bonett_d_corr_dependent" = c(bonett_d_corr_dependent(x = x, y = y), bonett_d_dependent_ci(x = x, y = y, alpha = alpha), boot_general_dependent_groups(x, y, bonett_d_corr_dependent, alpha)),
                   "cohens_dz" = c(cohens_dz(x = x, y = y), cohens_dz_ci(x = x, y = y, alpha = alpha), boot_general_dependent_groups(x, y, cohens_dz, alpha)),
                   "hedges_gz" = c(hedges_gz(x = x, y = y), hedges_gz_ci(x = x, y = y, alpha = alpha), boot_general_dependent_groups(x, y, hedges_gz, alpha)),
                   "glass_d_dependent" = data.frame(rbind(c(glass_d(x = x, y = y, standardised_by_group_1 = TRUE), unlist(glass_d_dependent_ci(x = x, y = y, standardised_by_group_1 = TRUE, alpha = alpha)), unlist(boot_general_dependent_groups(x, y, glass_d, alpha, standardised_by_group_1 = TRUE))), c(glass_d(x = x, y = y, standardised_by_group_1 = FALSE), unlist(glass_d_dependent_ci(x = x, y = y, standardised_by_group_1 = FALSE, alpha = alpha)), unlist(boot_general_dependent_groups(x, y, glass_d, alpha, standardised_by_group_1 = FALSE))))),
@@ -266,7 +269,8 @@ generate_es_raw_data_dataframe <- function(es_list, INDEX = NULL, x, y, tail, re
                   "non_parametric_variance_ratio_dependent" = c(variance_ratio(x = x, y = y), non_parametric_variance_ratio_dependent_ci(x = x, y = y, alpha = alpha), boot_general_dependent_groups(x, y, variance_ratio, alpha)),
                   "tail_ratio_dependent" = c(tail_ratio(x = x, y = y, tail = tail, reference_group = ref, cutoff = cutoff), tail_ratio_dependent_ci(x = x, y = y, tail = tail, reference_group = ref, cutoff = cutoff, alpha = alpha), boot_general_dependent_groups(x, y, tail_ratio, alpha, tail = tail, reference_group = ref, cutoff = cutoff)),
                   "robust_cohens_dz" = c(robust_cohens_dz(x = x, y = y), NA_real_, NA_real_, boot_general_dependent_groups(x, y, robust_cohens_dz, alpha)),
-                  "robust_cohens_d_dependent" = c(robust_cohens_d(x = x, y = y, trim = 0.2), robust_cohens_d_dependent_ci(x = x, y = y, trim = 0.2,  alpha = alpha), boot_general_dependent_groups(x, y, robust_cohens_d, alpha)),
+                  "robust_cohens_d_dependent" = c(robust_cohens_d(x = x, y = y, trim = 0.2), NA_real_, NA_real_, boot_general_dependent_groups(x, y, robust_cohens_d, alpha)),
+                  "robust_bonett_d_dependent" = c(robust_bonett_d(x = x, y = y, trim = 0.2), robust_bonett_d_dependent_ci(x = x, y = y, trim = 0.2, alpha = alpha), boot_general_dependent_groups(x, y, robust_bonett_d, alpha)),
                   "robust_glass_d_dependent" = data.frame(rbind(c(robust_glass_d(x = x, y = y, standardised_by_group_1 = TRUE), unlist(robust_glass_d_dependent_ci(x = x, y = y, alpha = alpha, standardised_by_group_1 = TRUE)), unlist(boot_general_dependent_groups(x, y, robust_glass_d, alpha, standardised_by_group_1 = TRUE))), c(robust_glass_d(x = x, y = y, standardised_by_group_1 = FALSE), unlist(robust_glass_d_dependent_ci(x = x, y = y, alpha = alpha, standardised_by_group_1 = FALSE)), unlist(boot_general_dependent_groups(x, y, robust_glass_d, alpha, standardised_by_group_1 = FALSE))))),
                   "non_parametric_ovl_dependent" = c(non_parametric_ovl(x = x, y = y), NA_real_, NA_real_, boot_general_dependent_groups(x, y, non_parametric_ovl, alpha)),
                   "generalized_odds_ratio_dependent" = c(generalized_odds_ratio(x = x, y = y), NA_real_, NA_real_, boot_general_dependent_groups(x, y, generalized_odds_ratio, alpha)),
@@ -343,7 +347,8 @@ generate_es_educational_dataframe <- function(es_list, mean1, standardDeviation1
                   "hedges_g_dependent" = c(hedges_g(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, df = sampleSize1 - 1, n1 = sampleSize1, n2 = sampleSize1), hedges_g_dependent_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1, r = correlation1, alpha = alpha)),
                   "cohens_drm" = c(cohens_drm(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, sdiff = standardDeviationDiff1, r = correlation1), cohens_drm_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, sdiff = standardDeviationDiff1, n = sampleSize1, r = correlation1, alpha = alpha)),
                   "hedges_grm" = c(hedges_grm(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, sdiff = standardDeviationDiff1, n = sampleSize1, r = correlation1), hedges_grm_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, sdiff = standardDeviationDiff1, n = sampleSize1, r = correlation1, alpha = alpha)),
-                  "bonett_d_dependent" = c(bonett_d_dependent(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1), bonett_d_dependent_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1, r = correlation1, alpha = alpha)),
+                  "bonett_d_dependent" = c(bonett_d(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2), bonett_d_dependent_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, sdiff = standardDeviationDiff1, n = sampleSize1, r = correlation1, alpha = alpha)),
+                  "bonett_d_corr_dependent" = c(bonett_d_corr_dependent(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, n = sampleSize1), bonett_d_dependent_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, sdiff = standardDeviationDiff1, n = sampleSize1, r = correlation1, alpha = alpha)),
                   "cohens_dz" = c(cohens_dz(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, sdiff = standardDeviationDiff1, r = correlation1), cohens_dz_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, sdiff = standardDeviationDiff1, n = sampleSize1, r = correlation1, alpha = alpha)),
                   "hedges_gz" = c(hedges_gz(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, sdiff = standardDeviationDiff1, n = sampleSize1, r = correlation1), hedges_gz_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, sdiff = standardDeviationDiff1, n = sampleSize1, r = correlation1, alpha = alpha)),
                   "glass_d_dependent" = data.frame(rbind(c(glass_d(m1 = mean1, m2 = mean2, s1 = standardDeviation1, standardised_by_group_1 = TRUE), unlist(glass_d_dependent_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, sdiff = standardDeviationDiff1, n = sampleSize1, r = correlation1, standardised_by_group_1 = TRUE, alpha = alpha))), c(glass_d(m1 = mean1, m2 = mean2, s2 = standardDeviation2, standardised_by_group_1 = FALSE), unlist(glass_d_dependent_ci(m1 = mean1, m2 = mean2, s1 = standardDeviation1, s2 = standardDeviation2, sdiff = standardDeviationDiff1, n = sampleSize1, r = correlation1, standardised_by_group_1 = FALSE, alpha = alpha))))),
@@ -1528,9 +1533,13 @@ glass_d_corr_dependent_ci <- function(x = NULL, y = NULL, m1, m2, s1, s2, sdiff 
 }
 
 ##### Cohen's d' ----
-bonett_d <- function(x = NULL, INDEX = NULL, m1, m2, s1, s2) {
-  if (!is.null(x) && !is.null(INDEX)) {
-    stats <- summary_stats(x = x, INDEX = INDEX)
+bonett_d <- function(x = NULL, INDEX = NULL, y = NULL, m1, m2, s1, s2) {
+  if (!is.null(x)) {
+    if (!is.null(INDEX)) {
+      stats <- summary_stats(x = x, INDEX = INDEX)
+    } else if (!is.null(y)) {
+      stats <- summary_stats(x = x, y = y)
+    }
     for (i in names(stats)) {
       assign(i, stats[[i]])
     }
@@ -1556,6 +1565,23 @@ bonett_d_ci <- function(x = NULL, INDEX = NULL, m1, m2, s1, s2, n1, n2, alpha = 
   res <- d + c(z_crit, abs(z_crit)) * sqrt(v)
   return(list(lower_bound = res[[1]],
               upper_bound = res[[2]]))
+}
+
+bonett_d_dependent_ci <- function(x = NULL, y = NULL, m1, m2, s1, s2, sdiff = NA, n, r, alpha = 0.05) {
+  if (!is.null(x) && !is.null(y)) {
+    stats <- summary_stats(x = x, y = y)
+    for (i in names(stats)) {
+      assign(i, stats[[i]])
+    }
+  }
+  if (is.na(sdiff)) sdiff <- sd_diff(s1, s2, r)
+  s <- sqrt((s1^2 + s2^2)/2)
+  d <- bonett_d(m1 = m1, m2 = m2, s1 = s1, s2 = s2)
+  v <- (d^2 * (s1^4 + s2^4 + 2 * r^2 * s1^2 * s2^2)) / (8 * (n - 1) * s^4) + sdiff^2 / ((n - 1) * s^2)
+  z_crit <- qnorm(1 - alpha / 2)
+  ci <- d + c(-z_crit, z_crit) * sqrt(v)
+  return(list(lower_bound = ci[[1]],
+              upper_bound = ci[[2]]))
 }
 
 ##### Hedges g' ----
@@ -1588,6 +1614,19 @@ bonett_d_corr_ci <- function(x = NULL, INDEX = NULL, m1, m2, s1, s2, n1, n2, alp
   res <- d + c(z_crit, abs(z_crit)) * sqrt(v)
   return(list(lower_bound = res[[1]],
               upper_bound = res[[2]]))
+}
+
+##### Cohen's d'_corr ----
+bonett_d_corr_dependent <- function(x = NULL, y = NULL, m1, m2, s1, s2, n) {
+  if (!is.null(x) && !is.null(y)) {
+    stats <- summary_stats(x = x, y = y)
+    for (i in names(stats)) {
+      assign(i, stats[[i]])
+    }
+  }
+  sdp <- sd_pooled(s1, s2, n1 = n, n2 = n)
+  res <- sqrt((n - 2) / (n - 1)) * ((m2 - m1) / sdp)
+  return(res)
 }
 
 ##### Kulinskaya and Staudte (2006)  ----
@@ -1640,24 +1679,6 @@ robust_cohens_d_ci <- function(x = NULL, INDEX = NULL, trim = 0.2, alpha = 0.05)
   d_R_ci <- ncp_ci * c * sqrt(((ntr1 + ntr2) * (N - 2)) / (ntr1 * ntr2 * (ntr1 + ntr2 - 2)))
   return(list(lower_bound = d_R_ci[[1]],
               upper_bound = d_R_ci[[2]]))
-}
-
-robust_cohens_d_dependent_ci <- function(x, y, trim = 0.2, alpha = 0.05) {
-  
-  stats <- summary_stats(x = x, y = y, trim = trim, winvar = TRUE)
-  for (i in names(stats)) {
-    assign(i, stats[[i]])
-  }
-  d1 <- (n - 1) * winvar1 / (ntr * (ntr - 1))
-  d2 <- (n - 1) * winvar2 / (ntr * (ntr - 1))
-  d12 <- (n - 1) * wincov / (ntr * (ntr - 1))
-  non_centrality_parameter <- (trm2 - trm1) / sqrt(d1 + d2 - 2 * d12)
-  df <- ntr - 1
-  ncp_ci <- get_noncentral_t_ci(non_centrality_parameter, df, alpha)
-  c <- AKP_correction(trim)
-  robust_cohens_d_dependent_ci <- c * ncp_ci * sqrt((2 * (d1 + d2 - 2 * d12)) / (winvar1 + winvar2))
-  return(list(lower_bound = robust_cohens_d_dependent_ci[[1]],
-              upper_bound = robust_cohens_d_dependent_ci[[2]]))
 }
 
 ##### robust Glass' d ----
@@ -1722,16 +1743,40 @@ robust_glass_d_dependent_ci <- function(x, y, trim = 0.2, standardised_by_group_
 }
 
 ##### robust Cohen's d' ----
- robust_bonett_d <- function(x, INDEX, trim = 0.2) {
-   stats <- summary_stats(x = x, INDEX = INDEX, trim = trim, winvar = TRUE)
-   for (i in names(stats)) {
-     assign(i, stats[[i]])
+ robust_bonett_d <- function(x = NULL, INDEX = NULL, y = NULL, trim = 0.2) {
+   if (!is.null(x)) {
+     if (!is.null(INDEX)) {
+       stats <- summary_stats(x = x, INDEX = INDEX, trim = trim, winvar = TRUE)
+     } else if (!is.null(y)) {
+       stats <- summary_stats(x = x, y = y, trim = trim, winvar = TRUE)
+     }
+     for (i in names(stats)) {
+       assign(i, stats[[i]])
+     }
    }
    c <- AKP_correction(trim)
    standardiser <- sqrt((winvar1 + winvar2)/2)
    res <- c * (trm2 - trm1)/standardiser
    return(res)
  }
+
+robust_bonett_d_dependent_ci <- function(x, y, trim = 0.2, alpha = 0.05) {
+  
+  stats <- summary_stats(x = x, y = y, trim = trim, winvar = TRUE)
+  for (i in names(stats)) {
+    assign(i, stats[[i]])
+  }
+  d1 <- (n - 1) * winvar1 / (ntr * (ntr - 1))
+  d2 <- (n - 1) * winvar2 / (ntr * (ntr - 1))
+  d12 <- (n - 1) * wincov / (ntr * (ntr - 1))
+  non_centrality_parameter <- (trm2 - trm1) / sqrt(d1 + d2 - 2 * d12)
+  df <- ntr - 1
+  ncp_ci <- get_noncentral_t_ci(non_centrality_parameter, df, alpha)
+  c <- AKP_correction(trim)
+  robust_cohens_d_dependent_ci <- c * ncp_ci * sqrt((2 * (d1 + d2 - 2 * d12)) / (winvar1 + winvar2))
+  return(list(lower_bound = robust_cohens_d_dependent_ci[[1]],
+              upper_bound = robust_cohens_d_dependent_ci[[2]]))
+}
 
 ##### robust Cohen's d_z ----
 robust_cohens_dz <- function(x, y, trim = 0.2) {
@@ -3135,32 +3180,7 @@ non_parametric_cohens_u3 <- function(x = NULL, INDEX = NULL, y = NULL) {
 # dependent groups parametric ----
 
 
-bonett_d_dependent <- function(x = NULL, y = NULL, m1, m2, s1, s2, n) {
-  if (!is.null(x) && !is.null(y)) {
-    stats <- summary_stats(x = x, y = y)
-    for (i in names(stats)) {
-      assign(i, stats[[i]])
-    }
-  }
-  sdp <- sd_pooled(s1, s2, n1 = n, n2 = n)
-  res <- sqrt((n - 2) / (n - 1)) * ((m2 - m1) / sdp)
-  return(res)
-}
 
-bonett_d_dependent_ci <- function(x = NULL, y = NULL, m1, m2, s1, s2, n, r, alpha = 0.05) {
-  if (!is.null(x) && !is.null(y)) {
-    stats <- summary_stats(x = x, y = y)
-    for (i in names(stats)) {
-      assign(i, stats[[i]])
-    }
-  }
-  sdp <- sd_pooled(s1, s2, n1 = n, n2 = n)
-  bonett_d_dependent <- bonett_d_dependent(m1 = m1, m2 = m2, s1 = s1, s2 = s2, n = n) * sqrt((n - 1) / (n - 2))
-  v <- (bonett_d_dependent^2 * (s1^4 + s2^4 + 2 * r^2 * s1^2 * s2^2)) / (8 * (n - 1) * sdp^4) + sdiff^2 / ((n - 1) * sdp^2)
-  bonett_d_dependent_ci <- bonett_d_dependent + c(qnorm(alpha / 2), qnorm(1 - alpha / 2)) * sqrt(v)
-  return(list(lower_bound = bonett_d_dependent_ci[[1]],
-              upper_bound = bonett_d_dependent_ci[[2]]))
-}
 
 cohens_dz <- function(x = NULL, y = NULL, m1, m2, s1, s2, sdiff = NA, r) {
   if (!is.null(x) && !is.null(y)) {
