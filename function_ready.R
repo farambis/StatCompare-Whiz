@@ -96,7 +96,9 @@ all_eff_sizes <- list(
   non_parametric_dominance_measure_mixed = "non_parametric_dominance_measure_mixed",
   # Effect sizes for multivariate analysis
   mahalanobis_d = "mahalanobis_d",
-  bias_corrected_d_multivariate = "bias_corrected_d_multivariate",
+  bias_corrected_mahalanobis_d = "bias_corrected_mahalanobis_d",
+  H2 = "H2",
+  EPV2 = "EPV2",
   ovl_multivariate = "ovl_multivariate",
   pcc_multivariate = "pcc_multivariate",
   ovl_two_multivariate = "ovl_two_multivariate",
@@ -397,7 +399,9 @@ generate_multivariate_raw_data_dataframe <- function(es_list, dat, INDEX, alpha,
     if (!i %in% all_eff_sizes) stop("This is not an offered effect size!\n")
     res <- switch(i,
                   "mahalanobis_d" = c(mahalanobis_d(dat, INDEX), mahalanobis_d_raw_data_ci(dat, INDEX, alpha), boot_multivariate(dat, INDEX, mahalanobis_d, alpha = alpha)),
-                  "bias_corrected_d_multivariate" = c(bias_corrected_d_multivariate(dat, INDEX), NA_real_, NA_real_, boot_multivariate(dat, INDEX, bias_corrected_d_multivariate, alpha = alpha)),
+                  "bias_corrected_mahalanobis_d" = c(bias_corrected_mahalanobis_d(dat, INDEX), bias_corrected_mahalanobis_d_ci(dat, INDEX, alpha), boot_multivariate(dat, INDEX,  bias_corrected_mahalanobis_d, alpha = alpha)),
+                  "H2" = c(H2(dat, INDEX), NA_real_, NA_real_, boot_multivariate(dat, INDEX, H2, alpha = alpha)),
+                  "EPV2" = c(EPV2(dat, INDEX), NA_real_, NA_real_, boot_multivariate(dat, INDEX, EPV2, alpha = alpha)),
                   "ovl_multivariate" = c(ovl_multivariate(dat, INDEX), NA_real_, NA_real_, boot_multivariate(dat, INDEX, ovl_multivariate, alpha = alpha)),
                   "ovl_two_multivariate" = c(ovl_two_multivariate(dat, INDEX), NA_real_, NA_real_, boot_multivariate(dat, INDEX, ovl_two_multivariate, alpha = alpha)),
                   "pcc_multivariate" = c(pcc_multivariate(dat, INDEX), NA_real_, NA_real_, boot_multivariate(dat, INDEX, pcc_multivariate, alpha = alpha)),
@@ -434,7 +438,9 @@ generate_multivariate_educational_dataframe <- function(es_list, means, covarian
     if (!i %in% all_eff_sizes) stop("This is not an offered effect size!\n")
     res <- switch(i,
                   "mahalanobis_d" = c(mahalanobis_d_educational(means, covariance_matrix), mahalanobis_d_educational_ci(means, covariance_matrix, n1, n2, alpha)),
-                  "bias_corrected_d_multivariate" = c(bias_corrected_d_multivariate_educational(means, covariance_matrix, n1, n2), NA_real_, NA_real_),
+                  "bias_corrected_mahalanobis_d" = c(bias_corrected_mahalanobis_d_educational(means, covariance_matrix, n1, n2), bias_corrected_mahalanobis_d_educational_ci(means, covariance_matrix, n1, n2, alpha)),
+                  "H2" =  c(H2_educational(means, covariance_matrix), NA_real_, NA_real_),
+                  "EPV2" =  c(EPV2_educational(means, covariance_matrix), NA_real_, NA_real_),
                   "ovl_multivariate" = c(ovl_multivariate_educational(means, covariance_matrix), NA_real_, NA_real_),
                   "ovl_two_multivariate" = c(ovl_two_multivariate_educational(means, covariance_matrix), NA_real_, NA_real_),
                   "pcc_multivariate" = c(pcc_multivariate_educational(means, covariance_matrix), NA_real_, NA_real_),
@@ -2740,31 +2746,35 @@ parametric_ovl <- function(x = NULL, INDEX = NULL, m1, m2, s1, s2, n1, n2) {
   2 * pnorm(-abs(d) / 2)
 }
 
-get_noncentral_F_ci <- function(non_centrality_parameter, df2, alpha) {
-  cibound_candidates <- c(0, max(non_centrality_parameter * 7, 10))
-
-  if (pf(non_centrality_parameter, 1, df2) <= 1 - alpha / 2) {
+get_noncentral_F_ci <- function(ncp, df1, df2, interval, alpha) {
+  
+  if (!missing(interval)) {
+    cibound_candidates <- interval
+  } else {
+    cibound_candidates <- c(0, max(ncp * 7, 10))
+  }
+  
+  if (pf(ncp, df1, df2) <= 1 - alpha / 2) {
     ll <- 0
   } else {
     ll <- suppressWarnings(
       uniroot(f = function(x) {
-        pf(q = non_centrality_parameter, df1 = 1, df2 = df2, ncp = x) - (1 - alpha / 2)
+        pf(q = ncp, df1 = df1, df2 = df2, ncp = x) - (1 - alpha / 2)
       },
-              interval = cibound_candidates)
+      interval = cibound_candidates)
     )$root
   }
-
-  if (pf(non_centrality_parameter, 1, df2) <= (alpha / 2)) {
+  
+  if (pf(ncp, df1, df2) <= (alpha / 2)) {
     ul <- 0
   } else {
     ul <- suppressWarnings(
       uniroot(f = function(x) {
-        pf(q = non_centrality_parameter, df1 = 1, df2 = df2, ncp = x) - (alpha / 2)
+        pf(q = ncp, df1 = df1, df2 = df2, ncp = x) - (alpha / 2)
       },
-              interval = cibound_candidates)
+      interval = cibound_candidates)
     )$root
   }
-
   return(c(ll, ul))
 }
 
@@ -2779,7 +2789,7 @@ parametric_ovl_ci <- function(x = NULL, INDEX = NULL, m1, m2, s1, s2, n1, n2, al
   tmp <- student_t(m1 = m1, m2 = m2, var1 = s1^2, var2 = s2^2, n1 = n1, n2 = n2)
   t2 <- tmp$t_val^2
   df2 <- tmp$df
-  ncp_ci <- get_noncentral_F_ci(t2, df2, alpha)
+  ncp_ci <- get_noncentral_F_ci(ncp = t2, df1 = 1, df2 = df2, alpha = alpha)
   nu <- sqrt((n1 + n2) / (n1 * n2))
   cohens_d_abs_val_ci <- sqrt(ncp_ci) * nu
   lower_bound <- 2 * pnorm(-cohens_d_abs_val_ci[[2]] / 2)
@@ -4045,90 +4055,117 @@ mahalanobis_d_educational_ci <- function(means, covariance_matrix, n1, n2, alpha
 }
 
 mahalanobis_d_ci <- function(mahalanobis_d, p, n1, n2, alpha = 0.05) {
-  conf.level <- 1 - alpha
-  mahalanbis_d2 <- mahalanobis_d^2
-  if (!is.null(n1)) {
-    f_cal <- (mahalanbis_d2) * (n1 * n2 * (n1 + n2 - p - 1)) / (p * (n1 + n2) * (n1 + n2 - 2))
-    lower_prob <- conf.level + (1 - conf.level) / 2
-    upper_prob <- (1 - conf.level) / 2
-    critical_F_upper <- qf(upper_prob, p, n1 + n2 - p - 1)
-    critical_F_lower <- qf(lower_prob, p, n1 + n2 - p - 1)
+  
+  deltahat2 <- mahalanobis_d^2
+  D2 <- deltahat2 * (n1 * n2 * (n1 + n2 - p - 1)) / (p * (n1 + n2) * (n1 + n2 - 2))
+  f <- (n1 * n2) / (n1 + n2)
+  lmbda <- deltahat2 * f
+  ncp_ci_bound_candidates <- c(0, lmbda * 100)
+  ncp_ci <- get_noncentral_F_ci(ncp = D2, df1 = p, df2 = n1 + n2 - p - 1, alpha = alpha,
+                                interval = ncp_ci_bound_candidates)
+  ci <- sqrt(ncp_ci / f)
+  return(list(lower_bound = ci[[1]],
+              upper_bound = ci[[2]]))
+}
 
-    # lower
-    if (mahalanbis_d2 > critical_F_lower) {
-      ncp_est_max <- 10000 / (1 / n1 + 1 / n2)
-      ncp_est_min <- 0
-      ncp_est <- (ncp_est_max - ncp_est_min) / 2
+### H2 and EPV2 ----
+H2 <- function(x, INDEX) {
+  cohens_ds <- vapply(x, cohens_d, FUN.VALUE = numeric(1),INDEX = INDEX)
+  data <- split(x, INDEX)
+  cor_mat1 <- cor(data[[1]])
+  cor_mat2 <- cor(data[[2]])
+  pooled_cor_mat <- pool_cor_mat(cor_mat1, cor_mat2, nrow(data[[1]]), nrow(data[[2]]))
+  C_values <- (t(cohens_ds) %*% solve(pooled_cor_mat)) * cohens_ds
+  C_values <- sort(abs(C_values))
+  N <- length(C_values)
+  sum_Ci <- sum(C_values)
+  sum_iCi <- sum(C_values * seq(1:N))
+  H2 <- ((2/N) * sum_iCi - ((N + 1)/N) * sum_Ci) / ((N - 1) * mean(C_values))
+  return(H2)
+}
 
-      est_p <- pf(f_cal, p, (n1 + n2 - p - 1), lower.tail = TRUE, ncp = ncp_est)
+H2_educational <- function(means, covariance_matrix) {
+  dif <- means[[1]] - means[[2]]
+  C_values <- (t(dif) %*% solve(covariance_matrix)) * dif
+  C_values <- sort(abs(C_values))
+  N <- length(C_values)
+  sum_Ci <- sum(C_values)
+  sum_iCi <- sum(C_values * seq(1:N))
+  H2 <- ((2/N) * sum_iCi - ((N + 1)/N) * sum_Ci) / ((N - 1) * mean(C_values))
+  return(H2)
+}
 
-      while (abs(est_p - lower_prob) > .00001) {
-        if ((est_p - lower_prob) < 0) { ncp_est_max <- ncp_est
-          ncp_est <- ncp_est_min + (ncp_est_max - ncp_est_min) / 2
-        }
-        else { ncp_est_min <- ncp_est
-          ncp_est <- ncp_est_min + (ncp_est_max - ncp_est_min) / 2
-        }
-        est_p <- pf(f_cal, p, (n1 + n2 - p - 1), lower.tail = TRUE, ncp = ncp_est)
-      }
-      lower_bound <- sqrt(ncp_est * (1 / n1 + 1 / n2))
-    }
-    else {
-      lower_bound <- NA
-    }
+EPV2 <- function(x, INDEX) {
+  cohens_ds <- vapply(x, cohens_d, FUN.VALUE = numeric(1),INDEX = INDEX)
+  data <- split(x, INDEX)
+  cor_mat1 <- cor(data[[1]])
+  cor_mat2 <- cor(data[[2]])
+  pooled_cor_mat <- pool_cor_mat(cor_mat1, cor_mat2, nrow(data[[1]]), nrow(data[[2]]))
+  C_values <- (t(cohens_ds) %*% solve(pooled_cor_mat)) * cohens_ds
+  C_values <- sort(abs(C_values))
+  N <- length(C_values)
+  sum_Ci <- sum(C_values)
+  sum_iCi <- sum(C_values * seq(1:N))
+  H2 <- ((2/N) * sum_iCi - ((N + 1)/N) * sum_Ci) / ((N - 1) * mean(C_values))
+  EPV2 <- 1-(H2 * (N - 1)/N)
+  return(EPV2)
+}
 
-    # upper
-    if (mahalanbis_d2 > critical_F_upper) {
-      ncp_est_max <- 10000 / (1 / n1 + 1 / n2)
-      ncp_est_min <- 0
-      ncp_est <- (ncp_est_max - ncp_est_min) / 2
-
-      est_p <- pf(f_cal, p, (n1 + n2 - p - 1), lower.tail = TRUE, ncp = ncp_est)
-
-      while (abs(est_p - upper_prob) > .00001) {
-        if ((est_p - upper_prob) < 0) {
-          ncp_est_max <- ncp_est
-          ncp_est <- ncp_est_min + (ncp_est_max - ncp_est_min) / 2
-        }
-        else {
-          ncp_est_min <- ncp_est
-          ncp_est <- ncp_est_min + (ncp_est_max - ncp_est_min) / 2
-        }
-        est_p <- pf(f_cal, p, (n1 + n2 - p - 1), lower.tail = TRUE, ncp = ncp_est)
-      }
-      upper_bound <- sqrt(ncp_est * (1 / n1 + 1 / n2))
-    }
-    else upper_bound <- NA
-  }
-
-  return(list(lower_bound = lower_bound,
-              upper_bound = upper_bound))
-
+EPV2_educational <- function(means, covariance_matrix) {
+  dif <- means[[1]] - means[[2]]
+  C_values <- (t(dif) %*% solve(covariance_matrix)) * dif
+  C_values <- sort(abs(C_values))
+  N <- length(C_values)
+  sum_Ci <- sum(C_values)
+  sum_iCi <- sum(C_values * seq(1:N))
+  H2 <- ((2/N) * sum_iCi - ((N + 1)/N) * sum_Ci) / ((N - 1) * mean(C_values))
+  EPV2 <- 1-(H2 * (N - 1)/N)
+  return(EPV2)
 }
 
 ## small sample bias corrected Mahalanbois D ----
-
-calc_bias_corrected_d_multivariate <- function(k, mahalanobis_d, n1, n2) {
-  d <- (n1 + n2 - k - 3) / (n1 + n2 - 2) * mahalanobis_d^2 - k * (n1 + n2) / (n1 * n2)
+calc_bias_corrected_mahalanobis_d <- function(p, mahalanobis_d, n1, n2) {
+  d <- (n1 + n2 - p - 3) / (n1 + n2 - 2) * mahalanobis_d^2 - p * (n1 + n2) / (n1 * n2)
   d <- ifelse(d > 0, d, 0)
   return(sqrt(d))
 }
 
-bias_corrected_d_multivariate <- function(x, INDEX) {
-  k <- ncol(x)
+bias_corrected_mahalanobis_d <- function(x, INDEX) {
+  p <- ncol(x)
   mahalanobis_d <- mahalanobis_d(x, INDEX)
   data <- split(x, INDEX)
   n1 <- nrow(data[[1]])
   n2 <- nrow(data[[2]])
-  return(calc_bias_corrected_d_multivariate(k, mahalanobis_d, n1, n2))
+  return(calc_bias_corrected_mahalanobis_d(p, mahalanobis_d, n1, n2))
 }
 
-bias_corrected_d_multivariate_educational <- function(means, covariance_matrix, n1, n2) {
-  k <- nrow(means)
+bias_corrected_mahalanobis_d_ci <- function(x, INDEX, alpha) {
+  data <- split(x, INDEX)
+  n1 <- nrow(data[[1]])
+  n2 <- nrow(data[[2]])
+  p <- ncol(x)
+  D <- mahalanobis_d(x, INDEX)
+  D_ci <- mahalanobis_d_ci(D, p, n1, n2, alpha)
+  lower_bound <- calc_bias_corrected_mahalanobis_d(p, D_ci$lower_bound, n1, n2)
+  upper_bound <- calc_bias_corrected_mahalanobis_d(p, D_ci$upper_bound, n1, n2)
+  return(list(lower_bound = lower_bound,
+              upper_bound = upper_bound))
+}
+
+bias_corrected_mahalanobis_d_educational <- function(means, covariance_matrix, n1, n2) {
+  p <- nrow(means)
   mahalanobis_d <- mahalanobis_d_educational(means, covariance_matrix)
-  return(calc_bias_corrected_d_multivariate(k, mahalanobis_d, n1, n2))
+  return(calc_bias_corrected_mahalanobis_d(p, mahalanobis_d, n1, n2))
 }
 
+bias_corrected_mahalanobis_d_educational_ci <- function(means, covariance_matrix, n1, n2, alpha) {
+  p <- nrow(means)
+  D_ci <- mahalanobis_d_educational_ci(means, covariance_matrix, n1, n2, alpha)
+  lower_bound <- calc_bias_corrected_mahalanobis_d(p, D_ci$lower_bound, n1, n2)
+  upper_bound <- calc_bias_corrected_mahalanobis_d(p, D_ci$upper_bound, n1, n2)
+  return(list(lower_bound = lower_bound,
+              upper_bound = upper_bound))
+}
 ## Multivariate OVL ----
 calc_ovl_multivariate <- function(mahalanobis_d) {
   return(2 * pnorm(-mahalanobis_d / 2))

@@ -206,15 +206,15 @@ $$ \hat{\eta^2} = \left( \frac{d}{\nu} \right)^2 = t^2 $$
 
 with $$ \nu = \sqrt{\frac{n_a + n_b}{n_a \cdot n_b}} $$
 
-with $n_{a|b}$  being the sample size of group ***a*** and ***b*** respectively and $t$ being the student's *t*-statistic. Then the ncp $\eta^2_L$ of the noncentral *F* distribution (with $df_1 = 1$ and $df_2 = n_a + n_b - 2$ degrees of freedom) which has $\hat{\eta^2}$ as its $1 - \frac{\alpha}{2}$ quantile is iteratively searched for. If $\mathbb{P} \left( F_{1, n_a + n_b - 2}(ncp = 0) \leq \hat{\eta^2} \right) \leq 1 - \frac{\alpha}{2}$ then $\eta^2_L$ is set to 0.
+with $n_{a|b}$  being the sample size of group ***a*** and ***b*** respectively and $t$ being the student's *t*-statistic. Then the ncp $\eta^2_L$ of the noncentral *F* distribution with $df_1 = 1$ and $df_2 = n_a + n_b - 2$ degrees of freedom which has $\hat{\eta^2}$ as its $1 - \frac{\alpha}{2}$ quantile is iteratively searched for. If $\mathbb{P} \left( F_{1, n_a + n_b - 2}(ncp = 0) \leq \hat{\eta^2} \right) \leq 1 - \frac{\alpha}{2}$ then $\eta^2_L$ is set to 0.
 
-Next, the non-centrality parameter $\eta^2_U$ of the noncentral *F* distribution (with $df_1 = 1$ and $df_2 = n_a + n_b - 2$ degrees of freedom) which has $\hat{\eta^2}$ as its $\frac{\alpha}{2}$ quantile is iteratively searched for. If $\mathbb{P}\left(F_{1, n_a + n_b - 2}(ncp = 0) \leq \hat{\eta^2} \right) \leq \frac{\alpha}{2}$ then $\eta^2_U$ is set to 0.
+Next, the non-centrality parameter $\eta^2_U$ of the noncentral *F* distribution with $df_1 = 1$ and $df_2 = n_a + n_b - 2$ degrees of freedom which has $\hat{\eta^2}$ as its $\frac{\alpha}{2}$ quantile is iteratively searched for. If $\mathbb{P}\left(F_{1, n_a + n_b - 2}(ncp = 0) \leq \hat{\eta^2} \right) \leq \frac{\alpha}{2}$ then $\eta^2_U$ is set to 0.
 
 The identified upper and lower confidence limits of $\eta^2$ are then transformed back into $\widehat{OVL}$:
 
 $$ LL = 2 \Phi \left( \frac{-(\eta^2_U \cdot \nu)}{2} \right) $$
 
-$$ UL = 2 \Phi \left( \frac{-(\eta^2_L \cdot \nu)}{2} \right) )$$
+$$ UL = 2 \Phi \left( \frac{-(\eta^2_L \cdot \nu)}{2} \right) $$
 
 This method yields a noncentral *F* based approximate CI. This CI formula, just as the formula for the estimator, is derived under the assumption that both populations follow normal distributions with equal variances. Simulations by Reiser and Faraggi (1999) found that when assumptions are met, this method showed close to nominal $1 - \alpha$ coverage rates for various values of $\delta$ and outperformed alternative CI procedures when the value of $\delta$ and/or sample sizes are small.
 
@@ -552,7 +552,7 @@ Among various contexts, the variance ratio can be of particular interest:
 
 Thus, it is advisable to compute and inspect variance ratios and their confidence intervals.  
 
-The sample estimatoris given by the ratio of sample variances:
+The sample estimators given by the ratio of sample variances:
 
 $$ \widehat{VR} = \frac{s_{a|b}^2}{s_{a|b}^2} $$
 
