@@ -24,7 +24,7 @@ dependentGroups <-
 
 mixedDesign <-
   menuItem(
-    text = 'Mixed Design',
+    text = 'Pretest-posttest-control',
     tabName = 'mixedDesign',
     parametricSidebarItem('mixedDesignParametric'),
     nonparametricSidebarItem('mixedDesignNonParametric')
