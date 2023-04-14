@@ -1250,10 +1250,10 @@ plot_parametric_ppc_change <- function(x = NULL, INDEX = NULL, y = NULL,
            y1 = c(max(y_group1), max(y_group2)), 
            lty = c("dashed", "dotted")
   )
-  title(expression(paste("Visualising ", d["PPC-Change"])))
+  title(expression(paste("Visualising ", d["PPC-change"])))
   graphics::box()
   
-  eff_size_lab <- paste0("d[PPC-Change]:~", round(d_PPC_change(m1 = m1, m2 = m2, sdiff1 = sdiff1, m3 = m3, m4 = m4, sdiff2 = sdiff2), 2))
+  eff_size_lab <- paste0("d[PPC-change]:~", round(d_PPC_change(m1 = m1, m2 = m2, sdiff1 = sdiff1, m3 = m3, m4 = m4, sdiff2 = sdiff2), 2))
   par(mar = c(3, 0.5, 3, 0))
   plot(c(0,1), c(0,1), type = "n", axes = FALSE, xlab = "", ylab = "", main = "")
   segments(x0 = 0, x1 = 0.15,
