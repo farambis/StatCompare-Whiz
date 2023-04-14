@@ -354,7 +354,7 @@ More interestingly perhaps, $\Delta_j$ is rather similar to a *Z* score. Consequ
 
 Treatments can increase the variance in an outcome of interest due to differential responsiveness of treatment subjects to the treatment (Grisson & Kim, 2012, pp. 17-20). Thus, the variance of the population receiving a treatment might be higher than the variance of the population not receiving it. In such cases $\Delta_a$ and $\Delta_b$ provide distinct population effects. However, even when the contrasted populations are homoscedastic, the estimators $d_{G,\,a}$ and $d_{G,\,b}$ will usally yield different estimates due to the sample standard deviation within each group most likely being different. In either case, it is up to the user to decide which estimate to interpret. A common recommendation is to compute the estimator using the standard deviation of a comparison (e.g., control) group (e.g., Grissom & Kim, 2001). If the user of this application chooses this ES, both estimators are computed and denoted as $d_{G, 1}$---being the estimate using the first group's standard deviation in the denominator---and $d_{G, 2}$---being the estimate using the second group's standard deviation in the denominator.    
 
-The estimator for $\Delta_j$ is given by the formula (e.g.,Grissom & Kim, 2001):
+The estimator for $\Delta_j$ is given by the formula (Glass, 1977):
 
 $$ d_{G,\,j} = \frac{\bar{X_a} - \bar{X_b}}{s_j} $$
 
@@ -908,7 +908,9 @@ Fitts, D. A. (2021). Expected and empirical coverages of different methods for g
 
 Gart, J. J., & Nam, J. (1988). Approximate interval estimation of the ratio of binomial parameters: A review and corrections for skewness. *Biometrics*, *44*(2), 323--338. <https://doi.org/10.2307/2531848>  
 
-Glass, G. V. (1976). Primary, secondary, and meta-analysis of research. *Educational researcher*, *5*(10), 3--8. <https://doi.org/10.3102/0013189X005010003>  
+Glass, G. V. (1976). Primary, secondary, and meta-analysis of research. *Educational Researcher*, *5*(10), 3--8. <https://doi.org/10.3102/0013189X005010003>  
+
+Glass, G. V. (1977). Integrating findings: The meta-analysis of research. *Review of Reasearch in Education*, *5*(1), 351--379. <https://doi.org/10.3102/0091732X005001351>
 
 Goulet-Pelletier, J.-C., & Cousineau, D. (2018). A review of effect sizes and their confidence intervals, Part I: The Cohen's d family. *The Quantitative Methods for Psychology*, *14*, 242--265. <https://doi.org/10.20982/tqmp.14.4.p242>  
 

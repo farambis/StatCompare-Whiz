@@ -1,4 +1,3 @@
-::: toc_container
 <h2 class="toc_title">
 
 Table of contents

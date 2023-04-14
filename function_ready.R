@@ -313,7 +313,7 @@ generate_es_raw_data_dataframe <- function(es_list, INDEX = NULL, x, y, tail, re
     es_boot_ci_lower,
     es_boot_ci_upper
   )
-  colnames(es_dataframe) <- c("Name", "Effect Size", "Ci Ll", "Ci Ul", "Boot Ci Ll", "Boot Ci Ul")
+  colnames(es_dataframe) <- c("Name", "ES", "CI LL", "CI UL", "Boot CI LL", "Boot CI UL")
   return(es_dataframe)
 }
 
@@ -382,7 +382,7 @@ generate_es_educational_dataframe <- function(es_list, mean1, standardDeviation1
     es_ci_lower,
     es_ci_upper
   )
-  colnames(es_dataframe) <- c("Name", "Effect Size", "Ci Ll", "Ci Ul")
+  colnames(es_dataframe) <- c("Name", "ES", "CI LL", "CI UL")
   return(es_dataframe)
 }
 
@@ -421,7 +421,7 @@ generate_multivariate_raw_data_dataframe <- function(es_list, dat, INDEX, alpha,
     es_boot_ci_lower,
     es_boot_ci_upper
   )
-  colnames(es_dataframe) <- c("Name", "Effect Size", "Ci Ll", "Ci Ul", "Boot Ci Ll", "Boot Ci Ul")
+  colnames(es_dataframe) <- c("Name", "ES", "CI LL", "CI UL", "Boot CI LL", "Boot CI UL")
   return(es_dataframe)
 }
 
@@ -453,7 +453,7 @@ generate_multivariate_educational_dataframe <- function(es_list, means, covarian
     es_ci_lower,
     es_ci_upper
   )
-  colnames(es_dataframe) <- c("Name", "Effect Size", "Ci Ll", "Ci Ul")
+  colnames(es_dataframe) <- c("Name", "ES", "CI LL", "CI UL")
   return(es_dataframe)
 }
 
@@ -514,7 +514,7 @@ generate_non_parametric_ts_dataframe <- function(ts_list, INDEX, x, y) {
     ts_z_value,
     ts_p_value
   )
-  colnames(ts_dataframe) <- c("Name", "Test statistic", "z", "p")
+  colnames(ts_dataframe) <- c("Name", "TS", "z", "p")
   return(ts_dataframe)
 }
 

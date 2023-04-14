@@ -311,7 +311,7 @@ $$d_{PPC,\,pooled-pre-post} = \frac{\left(\bar{X}_{post,\,a} - \bar{X}_{pre,\,a}
 
 with
 
-$$s_{pre+post,\,pooled} = \sqrt{\frac{(n_a - 1)(s_{pre,\,a}^2 +s_{post,\,a}) + (n_b - 1)(s_{pre,\,b}^2 + s_{post,\,b})}{2(n_a + n_b - 2)}}$$
+$$s_{pre+post,\,pooled} = \sqrt{\frac{(n_a - 1)(s_{pre,\,a}^2 +s_{post,\,a}^2) + (n_b - 1)(s_{pre,\,b}^2 + s_{post,\,b}^2)}{2(n_a + n_b - 2)}}$$
 
 Morris (2008) termed this estimator $g_{PPC3}$. Since we are referring to ESs not corrected for bias as $d$, we have opted for $d$ instead of $g$. Additionally, we have put information about the study design (PPC) and the standardiser (pooled pretest and posttest standard deviations) in the subscript. 
 

@@ -346,10 +346,10 @@ esAndTsRawDataServer <- function(id, design, assumption, INDEX, x, y) {
                        gt() %>%
                        tab_style(style = cell_text(align = "left"), locations = cells_body(columns = 1)) %>%
                        fmt_number(-1, decimals = 2) %>%
-                       tab_footnote(footnote = "Confidence interval lower limit", locations = cells_column_labels("Ci Ll")) %>%
-                       tab_footnote(footnote = "Confidence interval upper limit", locations = cells_column_labels("Ci Ul")) %>%
-                       tab_footnote(footnote = "Bootstrap confidence interval lower limit", locations = cells_column_labels("Boot Ci Ll")) %>%
-                       tab_footnote(footnote = "Bootstrap confidence interval upper limit", locations = cells_column_labels("Boot Ci Ul")) %>%
+                       tab_footnote(footnote = "Confidence interval lower limit", locations = cells_column_labels("CI LL")) %>%
+                       tab_footnote(footnote = "Confidence interval upper limit", locations = cells_column_labels("CI UL")) %>%
+                       tab_footnote(footnote = "percentile bootstrap confidence interval lower limit based on 200 bootstrap samples", locations = cells_column_labels("Boot CI LL")) %>%
+                       tab_footnote(footnote = "percentile bootstrap confidence interval upper limit based on 200 bootstrap samples", locations = cells_column_labels("Boot CI UL")) %>%
                        tab_style(style = cell_text(size = "small"), locations = cells_footnotes())
                    },
                    value = 0.66,
@@ -432,8 +432,8 @@ esAndTsEducationalServer <- function(id, mean1, standardDeviation1, sampleSize1,
                        gt() %>%
                        tab_style(style = cell_text(align = "left"), locations = cells_body(columns = 1)) %>%
                        fmt_number(-1, decimals = 2) %>%
-                       tab_footnote(footnote = "Confidence interval lower limit", locations = cells_column_labels("Ci Ll")) %>%
-                       tab_footnote(footnote = "Confidence interval upper limit", locations = cells_column_labels("Ci Ul")) %>%
+                       tab_footnote(footnote = "Confidence interval lower limit", locations = cells_column_labels("CI LL")) %>%
+                       tab_footnote(footnote = "Confidence interval upper limit", locations = cells_column_labels("CI UL")) %>%
                        tab_style(style = cell_text(size = "small"), locations = cells_footnotes())
                    },
                    value = 0.66,
@@ -493,10 +493,10 @@ esAndTsMultivariateRawDataServer <- function(id, data, INDEX, dataInputX) {
           gt() %>%
           tab_style(style = cell_text(align = "left"), locations = cells_body(columns = 1)) %>%
           fmt_number(-1, decimals = 2) %>%
-          tab_footnote(footnote = "Confidence interval lower limit", locations = cells_column_labels("Ci Ll")) %>%
-          tab_footnote(footnote = "Confidence interval upper limit", locations = cells_column_labels("Ci Ul")) %>%
-          tab_footnote(footnote = "Bootstrap confidence interval lower limit", locations = cells_column_labels("Boot Ci Ll")) %>%
-          tab_footnote(footnote = "Bootstrap confidence interval upper limit", locations = cells_column_labels("Boot Ci Ul")) %>%
+          tab_footnote(footnote = "Confidence interval lower limit", locations = cells_column_labels("CI LL")) %>%
+          tab_footnote(footnote = "Confidence interval upper limit", locations = cells_column_labels("CI UL")) %>%
+          tab_footnote(footnote = "percentile bootstrap confidence interval lower limit based on 200 bootstrap samples", locations = cells_column_labels("Boot CI LL")) %>%
+          tab_footnote(footnote = "percentile bootstrap confidence interval upper limit based on 200 bootstrap samples", locations = cells_column_labels("Boot CI UL")) %>%
           tab_style(style = cell_text(size = "small"), locations = cells_footnotes())
       },
       value = 0.66,
@@ -529,8 +529,8 @@ esAndTsMultivariateEducationalServer <- function(id, means, covarianceMatrix, n1
           gt() %>%
           tab_style(style = cell_text(align = "left"), locations = cells_body(columns = 1)) %>%
           fmt_number(-1, decimals = 2) %>%
-          tab_footnote(footnote = "Confidence interval lower limit", locations = cells_column_labels("Ci Ll")) %>%
-          tab_footnote(footnote = "Confidence interval upper limit", locations = cells_column_labels("Ci Ul")) %>%
+          tab_footnote(footnote = "Confidence interval lower limit", locations = cells_column_labels("CI LL")) %>%
+          tab_footnote(footnote = "Confidence interval upper limit", locations = cells_column_labels("CI UL")) %>%
           tab_style(style = cell_text(size = "small"), locations = cells_footnotes())
       },
       value = 0.66,
