@@ -28,11 +28,11 @@
 
 <h2 id = "PPC-intro"> 1 The Pretest-posttest-control design </h2>  
 
-The pretest-posttest-control (PPC) design, also know as the pretest-posttest control-group design or the independent groups pretest-posttest (IGPP) design amongst other synonyms entails the random/quasirandom assignement of research participants to one of two conditions(e.g., a treatment or a control condition; a novel treatment and a gold-standard treatment condition; etc.)  and the measurement of an outcome variable at two points in time (i.e., both prior to and after treatment) (Morris, 2008).  
+The pretest-posttest-control (PPC) design, also know as the pretest-posttest control-group design or the independent groups pretest-posttest (IGPP) design amongst other synonyms entails the random/quasirandom assignment of research participants to one of two conditions(e.g., a treatment or a control condition; a novel treatment and a gold-standard treatment condition; etc.)  and the measurement of an outcome variable at two points in time (i.e., both prior to and after treatment) (Morris, 2008).  
 
 A standardised effect size (ES) for the PPC design relates the difference of the mean changes between the two conditions (the numerator) to some measure of variability (the denominator). Different standardised ESs can be considered depending on the choice of the denominator, i.e., of the standardiser (Morris & DeShon, 2002; Morris, 2008; Feingold, 2009).  
 
-Two major "groups" of standardised ESs for the PPC design can be characterised based on whether the mean change within each groups is standardised by the variability of change scores (change-focused measures) or by the variability of raw scores (difference-focused measures) (Morris & DeShon, 2002; Feingold, 2009). A research question regarding changes in individual performance after some treatment might motivate the former definition while a research question focusing on group differences in the level of performance might motivate the latter definition (Morris & DeShon, 2002).  
+Two major "groups" of standardised ESs for the PPC design can be characterised based on whether the mean change within each group is standardised by the variability of change scores (change-focused measures) or by the variability of raw scores (difference-focused measures) (Morris & DeShon, 2002; Feingold, 2009). A research question regarding changes in individual performance after some treatment might motivate the former definition while a research question focusing on group differences in the level of performance might motivate the latter definition (Morris & DeShon, 2002).  
 
 <h2 id="PPC-change-focused-measures"> 2 Change-focused measures of ES </h1>  
 
@@ -364,9 +364,9 @@ $$ \widehat{Var}(g_{PPC,\,pooled-pre-post}) = \widehat{Var}(J(\nu) d_{PPC,\,pool
 
 The $1 - \alpha$ level CI procedure implemented in this app returns the following lower and upper limits:
 
-$$ LL = g_{PCC,\,pooled-pre-post} - \Phi^{-1} \right( 1 - \frac{\alpha}{2} \left) \widehat{Var}(g_{PPC,\,pooled-pre-post}) $$
+$$ LL = g_{PCC,\,pooled-pre-post} - \Phi^{-1} \left( 1 - \frac{\alpha}{2} \right) \widehat{Var}(g_{PPC,\,pooled-pre-post}) $$
 
-$$ UL = g_{PCC,\,pooled-pre-post} + \Phi^{-1} -\right( 1 - \frac{\alpha}{2} \left) \widehat{Var}(g_{PPC,\,pooled-pre-post}) $$
+$$ UL = g_{PCC,\,pooled-pre-post} + \Phi^{-1} -\left( 1 - \frac{\alpha}{2} \right) \widehat{Var}(g_{PPC,\,pooled-pre-post}) $$
 
 The discussion regarding the precision of $d_{PPC,\,pooled-pre-post}$ as well as the effects of heterogeneity of variances on the ES estimator and its sampling variance apply to $g_{PPC,\,pooled-pre-post}$ as well (see above). 
 
