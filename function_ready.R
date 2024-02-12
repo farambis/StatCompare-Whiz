@@ -1379,7 +1379,7 @@ hedges_g <- function(x = NULL, INDEX = NULL, y = NULL, m1, m2, s1, s2, df, n1, n
     } else if (!is.null(y)) {
       stats <- summary_stats(x = x, y = y)
       df <- stats$n - 1
-      n1 <- n2 <- df$n
+      n1 <- n2 <- stats$n
     }
     for (i in names(stats)) {
       assign(i, stats[[i]])
@@ -1420,7 +1420,7 @@ hedges_g_dependent_ci <- function(x = NULL, y = NULL, m1, m2, s1, s2, n, r, alph
   sdp <- sd_pooled(s1, s2, n1 = n, n2 = n)
   W <- (s1 * s2) / (sdp^2)
   rW <- r * W
-  non_centrality_parameter <- hedges_g(m1 = m1, m2 = m2, s1 = s1, s2 = s2, df = n - 1) * sqrt(n / (2 * (1 - rW)))
+  non_centrality_parameter <- hedges_g(m1 = m1, m2 = m2, s1 = s1, s2 = s2, df = n - 1, n1 = n, n2 = n) * sqrt(n / (2 * (1 - rW)))
   df <- 2 * (n - 1) / (1 + r^2)
   ncp_ci <- get_noncentral_t_ci(non_centrality_parameter, df, alpha)
   hedges_g_dependent_ci <- ncp_ci * sqrt(2 * (1 - rW) / n)

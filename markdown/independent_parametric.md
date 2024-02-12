@@ -370,7 +370,7 @@ A $1 - \alpha$ noncentral *t* CI was implemented according to Algina et al. (200
 
 Firstly Glass' $d_{G,\,j}$ is transformed into an estimated non-centrality parameter $\hat{\lambda}$: 
 
-$$ \hat{\lambda} = \frac{d_{G,\,j}}{\sqrt{\frac{1}{n_i} + \frac{s_i^2}{n_j \cdot s_j^2}}} $$ 
+$$ \hat{\lambda} = \frac{d_{G,\,j}}{\sqrt{\frac{1}{n_j} + \frac{s_i^2}{n_i \cdot s_j^2}}} $$ 
 
 with $n_i$ and $s_i$ being the sample size and the standard deviation of the group **not** being standardised by. Then the non-centrality parameter $\lambda_L$ of the noncentral *t* distribution with $\nu = n_j - 1$ degrees of freedom which has $\hat{\lambda}$ as its $1 - \frac{\alpha}{2}$ quantile is iteratively searched for.
 
@@ -410,7 +410,7 @@ Firstly Glass' $g_{G,\,j}$ is transformed into an estimated non-centrality param
 
 $$\hat{\lambda} = \frac{g_{G,\,j}}{\sqrt{\frac{1}{n_i} + \frac{s_i^2}{n_j*s_j^2}}} $$ 
 
-with $n_i$ and $s_i$ being the sample and the standard deviation of the group not being standardised by. Then the non-centrality parameter $\lambda_L$ of the noncentral t distribution (with $\nu = n_j - 1$ degrees of freedom) which has $\hat{\lambda}$ as its $1 - \frac{\alpha}{2}$ quantile is iteratively searched for.  
+with $n_i$ and $s_i$ being the sample size and the standard deviation of the group not being standardised by. Then the non-centrality parameter $\lambda_L$ of the noncentral t distribution (with $\nu = n_j - 1$ degrees of freedom) which has $\hat{\lambda}$ as its $1 - \frac{\alpha}{2}$ quantile is iteratively searched for.  
 
 Next, the non-centrality parameter $\lambda_U$ of the noncentral t distribution (with $\nu = n_j - 1$ degrees of freedom) which has $\hat{\lambda}$ as its $\frac{\alpha}{2}$ quantile is iteratively searched for.  
 
@@ -777,7 +777,7 @@ Additionally, a $1 - \alpha$ percentile bootstrap CI is computed as well. Algina
 
 <br>
 
-<h4 id = "IG_P_bonett_d_R"> 4.1.3 \(d'_{R}\) (robust Cohen's \(d'\)) </h4>
+<h4 id = "IG_P_bonett_d_R"> 4.1.3 \(d'_R\) (robust Cohen's \(d'\)) </h4>
 
 The population effect size of interest is given by the formula (Keselman et al., 2008):
 
@@ -904,7 +904,7 @@ Del Giudice, M. (2019). Measuring sex differences and similarities. *Gender and 
 
 Fagerland, M. W., Lydersen, S., & Laake, P. (2015). Recommended confidence intervals for two independent binomial proportions. *Statistical Methods in Medical Research*, *24*(2), 224--254. <https://doi.org/10.1177/0962280211415469>  
 
-Fitts, D. A. (2021). Expected and empirical coverages of different methods for generating noncentral t confidence intervals for a standardized mean difference.*Behavior Research Methods*, <https://doi.org/10.3758/s13428-021-01550-4>  
+Fitts, D. A. (2021). Expected and empirical coverages of different methods for generating noncentral t confidence intervals for a standardized mean difference.*Behavior Research Methods*, *53*(6), 2412-–2429 <https://doi.org/10.3758/s13428-021-01550-4>  
 
 Gart, J. J., & Nam, J. (1988). Approximate interval estimation of the ratio of binomial parameters: A review and corrections for skewness. *Biometrics*, *44*(2), 323--338. <https://doi.org/10.2307/2531848>  
 
@@ -943,6 +943,8 @@ Nam, J. (1995). Confidence limits for the ratio of two binomial proportions base
 Peng, C.-Y. J., & Chen, L.-T. (2014). Beyond Cohen's d: Alternative effect size measures for between-subject designs. *The Journal of Experimental Education*, *82*(1), 22--50. <https://doi.org/10.1080/00220973.2012.745471>  
 
 Reiser, B., &  Faraggi, D. (1999). Confidence intervals for the overlapping coefficient: The normal equal variance case. *Journal of the Royal Statistical Society: Series D (The Statistician)*, *48*(3), 413--418. <https://doi.org/10.1111/1467-9884.00199>  
+
+Steiger, J. H., & Fouladi, R. T. (1997). Noncentrality interval estimation and the evaluation of statistical methods. In Harlow, L. L., Mulaik, S. A., & Steiger, J. H. (Eds.), *What if there were no significance tests?* (pp. 221--257). Erlbaum.  
 
 Shoemaker, L. H. (1999). Interquantile tests for dispersion in skewed distributions. *Communications in Statistics B: Simulation and Computation*, *28*(1), 189--205. <https://doi.org/10.1080/03610919908813543>  
 

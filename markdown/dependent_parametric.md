@@ -180,13 +180,13 @@ Additionally, an $1 - \alpha$ percentile bootstrap CI is computed.
 
 As mentioned above $d_{RM}$ has a slight positive bias, which can be corrected. This alternative formula (e.g., Borenstein et al., 2009, p. 29) too estimates $\delta_{RM}$ and is given by:
 
-$$ g_{RM} = \frac{\bar{X}_{post} - \bar{X}_{pre}}{s_d}\sqrt{2(1-r)} * J(\nu) $$
+$$ g_{RM} = \frac{\bar{X}_{post} - \bar{X}_{pre}}{s_d}\sqrt{2(1-r)} \cdot J(\nu) $$
 
 with $\nu = n - 1$ denoting the degrees of freedom and $J(\nu)$ being given above (see documentation of Hedges' $g$).  
 
 A approximate large-sample $1 - \alpha$ CI is implemented similarly as the CI for $d_{RM}$ with $\widehat{Var}(d_{RM})$ being multiplied by $J(\nu)^2$:
 
-$$ CI = g_{RM} \pm z_{\frac{\alpha}{2}}*\sqrt{\widehat{VAR}(d_{RM}) * J(\nu)^2} $$
+$$ CI = g_{RM} \pm z_{\frac{\alpha}{2}} \cdot \sqrt{\widehat{Var}(d_{RM}) \cdot J(\nu)^2} $$
 
 Bonett (2015) recommends reporting the unbiased point estimate alongside with the CI calculated for the biased estimator---i.e., the CI for $d_{RM}$. The author argues that using the biased estimate in the formula should produce slightly more accurate coverage rates. If the user of this shiny app wishes to follow this recommendation, they are advised to report the CI computed for $d_{RM}$, since here a CI for $g_{RM}$ is computed with the estimated variance of $d_{RM}$ being multiplied by $J(\nu)^2$ following Borenstein et al. (2009, p. 27).  
 
@@ -350,17 +350,17 @@ With $\bar{X_a}$ being the sample mean of group ***a***, $\bar{X_b}$ being the s
 
 An approximate large-sample CI is implemented according to Bonett (2015):
 
-$$CI = d_{G,\,j} \pm z_{\frac{\alpha}{2}}*\sqrt{\widehat{VAR}(d_{G,\,j})}$$
+$$CI = d_{G,\,j} \pm z_{\frac{\alpha}{2}} * \sqrt{\widehat{Var}(d_{G,\,j})}$$
 
 with
 
-$$\widehat{VAR}(d_{G,\,j}) = \frac{d^2_{Gj}}{2(n - 1)} + \frac{s^2_d}{s^2_j(n - 1)}$$
+$$\widehat{Var}(d_{G,\,j}) = \frac{d^2_{Gj}}{2(n - 1)} + \frac{s^2_d}{s^2_j(n - 1)}$$
 
 This estimate of the variance of $d_{G,\,j}$ does assume normality but not homoscedasticity.
 
 Bonett (2015) examined this CI method under various conditions using simulations. The author reported coverage rates very close to the nominal $1 - \alpha$ rate (\~$\pm 1%$) under bivariate normality and low to relatively high levels of heteroscedasticity (with population variance ratios of up to $\sigma_a:\sigma_b = 16:1$ and $\sigma_a:\sigma_b = 1:16$). However, when the normality assumption is violated, the method fails to maintain a consistent coverage rate close to the nominal $1 - \alpha$ rate. The largest deviations from the nominal coverage rate (\~$\pm 5%$) were observed for rather large effect size ($\Delta \le 0.6$) and large correlations ($\rho \le 0.9$) under the conditions studied.
 
-Algina et al. (2005b) proposed a noncentral t based approximate CI and examined its behaviour under nonnormality and heteroscedasticity. While this method performed identically well under normality, it did show lower coverage rates under the cases of nonnormality studied by the authors with coverage rates decreasing with increasing size of $\Delta$. In general the CI method performed worse than the one implemented here, however, this might be due to the fact that Bonett (2015) and Algina et al. (2005b) considered differing cases of nonnormality. Consequently, Algina et al. (2005b) recommend a different effect size alltogether, $d_{R,\,j}$, under nonnormality.
+Algina et al. (2005b) proposed a noncentral t based approximate CI and examined its behaviour under nonnormality and heteroscedasticity. While this method performed identically well under normality, it did show lower coverage rates under the cases of nonnormality studied by the authors with coverage rates decreasing with increasing size of $\Delta$. In general the CI method performed worse than the one implemented here, however, this might be due to the fact that Bonett (2015) and Algina et al. (2005b) considered differing cases of nonnormality. Consequently, Algina et al. (2005b) recommend a different effect size altogether, $d_{R,\,j}$, under nonnormality.
 
 Additionally, an $1 - \alpha$ percentile bootstrap CI is computed. Algina et al. (2005b) studied this method under nonnormality and heteroscedasticity. Nonnormality caused coverage rates to consistently fall below the nominal rate, decreasing with an increasing value of $\delta$. This effect was especially strong, when the variance of the population whose standard deviation estimate was used as the standardiser (population b) was higher than the variance of the other population (population a). Such a ratio of population variances ($\sigma^2_b > \sigma^2_a$) resulted in low coverage rates even under normality, dipping below 0.9 for some combinations of effect size and sample size.
 
@@ -382,7 +382,7 @@ with $\nu = n - 1$ denoting the degrees of freedom and $J(\nu)$ being defined as
 
 A approximate large-sample $1 - \alpha$ CI is implemented similarly as the CI for $d_{G,\,j}$ with $\widehat{Var}(d_{G,\,j})$ being multiplied by $J(\nu)^2$:
 
-$$ CI = g_{G,\,j} \pm z_{\frac{\alpha}{2}}*\sqrt{\widehat{Var}(d_{G,\,j}) * J(\nu)^2} $$
+$$ CI = g_{G,\,j} \pm z_{\frac{\alpha}{2}} * \sqrt{\widehat{Var}(d_{G,\,j}) * J(\nu)^2} $$
 
 Bonett (2015) recommends reporting the unbiased point estimate alongside with the CI calculated for $d_{G,\,j}$. The author argues that using the biased estimate in the formula should give slightly more accurate coverage rates. If the user of this shiny app wishes to follow this recommendation, they are advised to report the CI computed for $d_{G,\,j}$, since the estimated variance of $d_{G,\,j}$ is multiplied by $J(\nu)^2$ for the current implementation following Borenstein et al. (2009, p. 27).
 
@@ -1027,6 +1027,8 @@ Morris, S. B., & DeShon, R. P. (2002). Combining effect size estimates in meta-a
 Nam, J., & Blackwelder, W. C. (2002). Analysis of the ratio of marginal probabilities in a matched-pair setting. *Statistics in Medicine*, *21*(5), 689--699. <https://doi.org/10.1002/sim.1017>  
 
 Peng, C.-Y. J., & Chen, L.-T. (2014). Beyond Cohen's d: Alternative effect size measures for between-subject designs. *The Journal of Experimental Education*, *82*(1), 22--50. <https://doi.org/10.1080/00220973.2012.745471>  
+
+Steiger, J. H., & Fouladi, R. T. (1997). Noncentrality interval estimation and the evaluation of statistical methods. In Harlow, L. L., Mulaik, S. A., & Steiger, J. H. (Eds.), *What if there were no significance tests?* (pp. 221--257). Erlbaum.  
 
 Tukey, J. W., & McLaughlin, D. H. (1963). Less vulnerable confidence and significance procedures for location based on a single sample: Trimming/winsorization 1. *Sankhyā: The Indian Journal of Statistics, Series A (1961-2002)*, *25*(3), 331--352. <http://www.jstor.org/stable/25049278>  
 
