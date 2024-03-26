@@ -307,8 +307,8 @@ homePageContent <-
                       </div>
                       <div class = accordion_content>
                         <p>This is the companion application to the paper <em><a href=https://gitlab.com/shiny-r-effect-sizes/effect-sizes></em>
-                          Shiny application for group-based comparisons of means and beyond</a></em>. Please cite the aforementioned study when referring to this app.
-                          The source code for this app can be found on Gitlab: <a href=https://gitlab.com/shiny-r-effect-sizes/effect-sizes>https://gitlab.com/shiny-r-effect-sizes/effect-sizes</a>
+                          Extending the family: A guide to embracing effect sizes for comparing groups beyond Cohen's d</a></em>. Please cite the aforementioned paper when referring to this app.
+                          The source code for this app can be found on <a href=https://gitlab.com/shiny-r-effect-sizes/effect-sizes>Gitlab</a>.
                         </p>
                         <p>Over a third of quantitative research conducted in psychological science employ research designs in which two or more groups are compared (Blanca et al., 2018). Computing and interpreting effect sizes (ES) alongside their confidence intervals (CI)
                           is a frequently called for data analysis practice (APA, 2020; e.g., Cumming, 2014; Thompson, 2002;  Wilkinson & the Task Force on Statistical Inference). Thus, researchers ought to be equipped with knowledge about the ES they can use for analysing their 
