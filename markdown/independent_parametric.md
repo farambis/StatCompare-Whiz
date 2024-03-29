@@ -270,13 +270,13 @@ We could not identify a closed form formula for the CI of this ES. Thus, a $1 - 
 
 The population effect on interest is is the proportion of population ***a*** that exceeds the same proportion in population ***b***. Thus, a value of 0.7 for example means that the top 70% of population ***a*** exceed the bottom 70% of population ***b***. Under the assumption of normality and homoscedasticity this quantity can be expressed by simply plugging Cohen's $\delta$ into the normal cumulative distribution function, giving the formula:
 
-$$ U2 = \Phi \left( \frac{\delta}{2} \right) $$
+$$ U2 = \Phi \left( \frac{|\delta|}{2} \right) $$
 
 with $\delta$ being Cohen's $\delta$ (as defined above)---which is effectively a deviate in the unit normal curve---and  $\Phi \left( . \right)$ being the normal cumulative distribution function which gives the proportion of the area falling below a given normal deviate.
 
 A parametric estimator of the above quantity is given by:
 
-$$ \hat{U}_2 = \Phi \left( \frac{d}{2} \right) $$
+$$ \hat{U}_2 = \Phi \left( \frac{|d|}{2} \right) $$
 
 with $d$ being Cohen's $d$---which again is effectively a deviate in the unit normal curve.
 

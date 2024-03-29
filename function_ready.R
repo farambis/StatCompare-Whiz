@@ -2878,7 +2878,7 @@ parametric_cohens_u2 <- function(x = NULL, INDEX = NULL, m1, m2, s1, s2, n1, n2)
   } else {
     d <- cohens_d(m1 = m1, m2 = m2, s1 = s1, s2 = s2, n1 = n1, n2 = n2)
   }
-  return(pnorm(d / 2))
+  return(pnorm(abs(d) / 2))
 
 }
 
@@ -2890,15 +2890,15 @@ parametric_cohens_u2_ci <- function(x = NULL, INDEX = NULL, m1, m2, s1, s2, n1, 
     d <- cohens_d(m1 = m1, m2 = m2, s1 = s1, s2 = s2, n1 = n1, n2 = n2)
     ci <- cohens_d_ci(m1 = m1, m2 = m2, s1 = s1, s2 = s2, n1 = n1, n2 = n2, alpha = alpha)
   }
-  lower_bound <- pnorm(ci[[ifelse(d > 0, 1, 2)]] / 2)
-  upper_bound <- pnorm(ci[[ifelse(d > 0, 2, 1)]] / 2)
+  lower_bound <- pnorm(abs(ci[[ifelse(d > 0, 1, 2)]]) / 2)
+  upper_bound <- pnorm(abs(ci[[ifelse(d > 0, 2, 1)]]) / 2)
   return(list(lower_bound = lower_bound,
               upper_bound = upper_bound))
 }
 
 parametric_cohens_u2_dependent <- function(x = NULL, y = NULL, m1, m2, s1, s2, n) {
   d <- cohens_d(x = x, y = y, m1 = m1, m2 = m2, s1 = s1, s2 = s2, n1 = n, n2 = n)
-  cohens_coefficient_of_nonoverlap_u2_parametric_dependent <- pnorm(d / 2)
+  cohens_coefficient_of_nonoverlap_u2_parametric_dependent <- pnorm(abs(d) / 2)
   return(cohens_coefficient_of_nonoverlap_u2_parametric_dependent)
 }
 
@@ -3121,24 +3121,6 @@ non_parametric_cohens_u1 <- function(x = NULL, INDEX = NULL, y = NULL, kernel = 
 }
 
 ##### U2 ----
-Fhat <- function(x, dat) {
-  mean(dat <= x)
-}
-
-non_parametric_cohens_u2_root_finding_version <- function(x, INDEX) {
-  datasets <- split(x, INDEX)
-  dataset1 <- sort(datasets[[1]])
-  dataset2 <- sort(datasets[[2]])
-  
-  if (dataset2[[1]] >= dataset1[[length(dataset1)]]) return(1)
-  if (dataset2[[length(dataset1)]] <= dataset1[[1]]) return(0)
-  
-  temp <- uniroot(f = function(x){(1 - Fhat(x = x, dat = dataset2)) - Fhat(x = x, dat = dataset1)},
-                  interval = c(min(c(dataset1, dataset2)), max(c(dataset1, dataset2))))$root
-
-  res <- Fhat(temp, dataset1)
-  return(res)
-}
 
 non_parametric_cohens_u2 <- function(x = NULL, INDEX = NULL, y = NULL) {
   if (!is.null(x) && !is.null(INDEX)) {
@@ -3150,21 +3132,20 @@ non_parametric_cohens_u2 <- function(x = NULL, INDEX = NULL, y = NULL) {
     dataset2 <- sort(y, decreasing = TRUE)
   }
   
-  if (dataset2[[length(dataset2)]] >= dataset1[[length(dataset1)]]) return(1)
-  if (dataset2[[1]] <= dataset1[[1]]) return(0)
+  res <- optim(
+    par = 0.5,
+    fn = function(p) {
+      diff <- quantile(dataset1, probs = c(p, 1 - p)) - quantile(dataset2, probs = c(1 - p, p))
+      min(abs(diff))
+    },
+    method = "L-BFGS-B",
+    lower = 0.5,
+    upper = 1
+  )$par
   
-  index <- 0
-  for (i in dataset2) {
-    index <- index + 1
-    tmp1 <- mean(dataset1 <= i)
-    tmp2 <- index / length(dataset2)
-    if (tmp2 > tmp1) {
-      result <- tmp1 # to be conservative the lower value is returned
-      break
-    }
-  }
-  return(result)
+  return(res)
 }
+
 
 ##### U3 ----
 
