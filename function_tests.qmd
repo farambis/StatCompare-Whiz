@@ -1165,10 +1165,23 @@ all.equal(fun_val, test_fun_val)
 
 ##### Parametric Estimation
 
+###### Point Estimator
+
 ```{r}
-fun_val <- ovl_parametric(x = d$x, INDEX = d$INDEX)
+fun_val <- parametric_ovl(x = d$x, INDEX = d$INDEX)
 test_fun_val <- effectsize::p_overlap(x = d[d$INDEX == "a", "x"], y = d[d$INDEX == "b", "x"])$Overlap
 all.equal(fun_val, test_fun_val)
+rm(fun_val, test_fun_val)
+```
+
+###### Interval Estimator
+
+The results of `parametric_ovl_ci()` and `effectsize::p_overlap()` differ slightly. The reason for this is that the two functions use slightly different implementations of a non-centrality parameter based CI. While `parametric_ovl_ci()` uses a non-central *F*-distribution, `effectsize::p_overlap()` uses a non-central *t*-distribution. Reiser and Faraggi (1999) found the non-central *F* based CI to be somewhat better performant under the conditions studied by them. However, the differences between the two methods were small for most conditions.
+```{r}
+fun_val <- unname(unlist(parametric_ovl_ci(x = d$x, INDEX = d$INDEX)))
+test_fun_val <- unname(unlist(effectsize::p_overlap(x = d[d$INDEX == "a", "x"], y = d[d$INDEX == "b", "x"])[c('CI_low', 'CI_high')]))
+all.equal(fun_val[1], test_fun_val[1])
+all.equal(fun_val[2], test_fun_val[2])
 rm(fun_val, test_fun_val)
 ```
 
