@@ -16,6 +16,7 @@ install.packages("shinydashboard")
 install.packages("shinyvalidate")
 install.packages("DT")
 install.packages("gt")
+install.packages("mvtnorm")
 ```
 To start the application run 
 ```
@@ -27,7 +28,7 @@ Context and usage of the application is described on the Homepage, which can be 
 
 ## Contributors
 
-This application was created by [Marton Gyimesi](https://github.com/johnsmith) and [Victor Webersberger](https://github.com/farambis).
+This application was created by [Marton Laszlo Gyimesi](https://github.com/marton-gyimesi) and [Victor Webersberger](https://github.com/farambis).
 Victor Webersberger and Marton Laszlo Gyimesi contributed equally to the conceptualization and programming of the StatCompare Whiz R Shiny application.
 
 ## Feedback and Support
