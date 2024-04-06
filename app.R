@@ -11,7 +11,7 @@ source('uiNavigationSidebar.R')
 source('uiBody.R')
 source('esServer.R')
 options(htmlwidgets.TOJSON_ARGS = list(na = 'string'))
-ui <- dashboardPage(dashboardHeader(),
+ui <- dashboardPage(dashboardHeader(title = 'StatCompare Whiz'),
                     sidebar = navigationSidebar,
                     body = body)
 shinyApp(ui, esServer)

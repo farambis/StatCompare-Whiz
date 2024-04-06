@@ -107,8 +107,8 @@ all_eff_sizes_displayed <- list(
   non_parametric_cohens_dz_dependent = html("non-parametric Cohen's <em>d<sub>z</sub></em>"),
   non_parametric_ovl_two_dependent = html("non-parametric <em>OVL<sub>2</sub></em>"),
   # Effect sizes for the pretest-posttest-control design
-  d_PPC_change = html("<em>d<sub>PPC-Change</sub></em>"),
-  g_PPC_change = html("<em>g<sub>PPC-Change</sub></em>"),
+  d_PPC_change = html("<em>d<sub>PPC-change</sub></em>"),
+  g_PPC_change = html("<em>g<sub>PPC-change</sub></em>"),
   d_PPC_pre = html("<em>d<sub>PPC, pre</sub></em>"),
   g_PPC_pre = html("<em>g<sub>PPC, pre</sub></em>"),
   d_PPC_pooled_pre = html("<em>d<sub>PPC, pooled-pre</sub></em>"),

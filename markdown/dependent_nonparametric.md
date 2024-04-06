@@ -31,7 +31,7 @@ Table of contents
 
 <a href = "#DG_NP_dG">
 
-<h4>2.1 Nonparametric Glass $d_{G,\,j}$</h4>
+<h4>2.1 Nonparametric Glass \(d_{G,\,j}\)</h4>
 
 </a>
 
@@ -41,7 +41,7 @@ Table of contents
 
 <a href = "#DG_NP_dz">
 
-<h4>2.2 Nonparametric Cohen's $d_z$</h4>
+<h4>2.2 Nonparametric Cohen's \(d_z\)</h4>
 
 </a>
 
@@ -65,7 +65,7 @@ Table of contents
 
 <a href = "#DG_NP_TR">
 
-<h4>3.1 Nonparametric Tail Ratio ($TR$)</h4>
+<h4>3.1 Nonparametric Tail Ratio (\(TR\))</h4>
 
 </a>
 
@@ -89,7 +89,7 @@ Table of contents
 
 <a href = "#DG_NP_OVL">
 
-<h4>4.1 The Nonparametric Coefficient of Overlapping ($OVL$)</h4>
+<h4>4.1 The Nonparametric Coefficient of Overlapping (\(OVL\))</h4>
 
 </a>
 
@@ -99,7 +99,7 @@ Table of contents
 
 <a href = "#DG_NP_OVL2">
 
-<h4>4.2 The Nonparametric Measure of Overlapping Coefficient Two ($OVL_2$)</h4>
+<h4>4.2 The Nonparametric Measure of Overlapping Coefficient Two (\(OVL_2\))</h4>
 
 </a>
 
@@ -109,7 +109,7 @@ Table of contents
 
 <a href = "#DG_NP_U1">
 
-<h4>4.3 Nonparametric Cohen's ($U_1$)</h4>
+<h4>4.3 Nonparametric Cohen's (\(U_1\))</h4>
 
 </a>
 
@@ -119,7 +119,7 @@ Table of contents
 
 <a href = "#DG_NP_U2">
 
-<h4>4.4 Nonparametric Cohen's ($U_2$)</h4>
+<h4>4.4 Nonparametric Cohen's (\(U_2\))</h4>
 
 </a>
 
@@ -129,7 +129,7 @@ Table of contents
 
 <a href = "#DG_NP_U3">
 
-<h4>4.5 Nonparametric Cohen's ($U_3$)</h4>
+<h4>4.5 Nonparametric Cohen's (\(U_3\))</h4>
 
 </a>
 
@@ -153,7 +153,7 @@ Table of contents
 
 <a href = "#DG_NP_PS">
 
-<h4>5.1 Probability of Superiority ($PS$)</h4>
+<h4>5.1 Probability of Superiority (\(PS\))</h4>
 
 </a>
 
@@ -163,7 +163,7 @@ Table of contents
 
 <a href = "#DG_NP_A_measure">
 
-<h4>5.2 The $A$ measure of stochastic Superiority</h4>
+<h4>5.2 The \(A\) measure of stochastic Superiority</h4>
 
 </a>
 
@@ -173,7 +173,7 @@ Table of contents
 
 <a href = "#DG_NP_GOR">
 
-<h4>5.3 Generalized Odds Ratio ($OR_g$)</h4>
+<h4>5.3 Generalized Odds Ratio (\(OR_g\))</h4>
 
 </a>
 
@@ -183,7 +183,7 @@ Table of contents
 
 <a href = "#DG_NP_DM">
 
-<h4>5.4 Dominance measure ($DM$)</h4>
+<h4>5.4 Dominance measure (\(DM\))</h4>
 
 </a>
 
