@@ -32,8 +32,6 @@ This application was created by [Marton Laszlo Gyimesi](https://github.com/marto
 Victor Webersberger and Marton Laszlo Gyimesi contributed equally to the conceptualization and programming of the StatCompare Whiz R Shiny application.
 
 ## Feedback and Support
-<<<<<<< HEAD
+
 If you have any feedback or encounter any issues with this application, please open an issue on our [Github repository](https://github.com/farambis/StatCompare-Whiz/issues).
-=======
-If you have any feedback or encounter any issues with this application, please open an issue on our [Gitlab repository](https://github.com/farambis/StatCompare-Whiz/issues).
->>>>>>> master
+
