@@ -182,7 +182,7 @@ Let $X_a$ denote the random variable '*score of a random member of population a*
 
 The population effect of interest is given by (e.g., Reiser & Faraggi, 1999):
 
-$$ OVL = \int_{-\infty}^{\infty} \min \left \{f_a(x), f_b(x) \right \} dx $$
+$$ OVL = \int_{-\infty}^{\infty} \min \left( f_a(x), f_b(x) \right) \, dx $$
 
 The coefficient of overlapping ($OVL$) is defined as the common area under two probability densities---i.e., the proportion of overlap between the two distributions/populations---and is used as a measure of agreement of two distributions (Bradley, 2006).  Under the assumption of normality and homoscedasticity the above quantity can be expressed by simply plugging Cohen's $\delta$ into the normal cumulative distribution function, giving the formula:
 
@@ -439,7 +439,7 @@ The mean difference of two populations of interest $\mu_a - \mu_b$ is standardis
 
 Grissom and Kim (2012) note that some experts have a problem with this standardiser. Algina et al. (2005) argue that under heteroscedasticity $\sigma'$ fails to represent the variability in either group and Bonett (2008), a proponent of the above ES definition, acknowledges that the population effect loses its meaningfulness when variances differ considerably. If heteroscedasticity is assumed to be considerable Bonett (2008) recommends estimating $\Delta_j$ instead of $delta'$---without giving an exact definition of considerable heteroscedasticity in terms of a variance ratio or the like. Additionally, as Cohen (1988) points out, $\delta'$ can not be converted into any of Cohen's *U* effects (or the *OVL* for that matter), which can be considered to reduce the interpretability of $\delta'$ since Cohen (1988) defined the *U* measures to aid the interpretation of the standardised mean difference.  
 
-However, Bonett (2008) advocates for the use of $\delta'$ and argues that it is still a more meaningful effect than $\delta$ owing to the fact that it does not rely on the equality of variances assumption. As Bonett (2008) points out the noncentral *t* CI method for Cohen's $d$ is only exact under the assumptions of normality and homoscedasticity and as the author notes, it is difficult to assess homoscedasticity and the extent to which population variances differ, especially when samples are of small to moderate size. It should also be noted that while $\delat'$ cannot be converte into the *U* population effect, it can be converted into the $CLES$, which has been found to foster understanding of statistical results (Mastrich & Hernandez, 2021).  
+However, Bonett (2008) advocates for the use of $\delta'$ and argues that it is still a more meaningful effect than $\delta$ owing to the fact that it does not rely on the equality of variances assumption. As Bonett (2008) points out the noncentral *t* CI method for Cohen's $d$ is only exact under the assumptions of normality and homoscedasticity and as the author notes, it is difficult to assess homoscedasticity and the extent to which population variances differ, especially when samples are of small to moderate size. It should also be noted that while $\delta'$ cannot be converte into the *U* population effect, it can be converted into the $CLES$, which has been found to foster understanding of statistical results (Mastrich & Hernandez, 2021).  
 
 The sample estimate of the  population effect is given by the formula (e.g., Bonett, 2008):
 
