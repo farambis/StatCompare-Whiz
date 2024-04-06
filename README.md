@@ -24,7 +24,7 @@ library(shiny); runApp('ui.R')
 ```
 
 ## Context 
-Context and usage of the application is described on the Homepage, which can be seen [here](https://todo/) or on the 'Home Page section' after you started the application.
+Context and usage of the application is described on the Homepage, which can be seen [here](https://marton-l-gy.shinyapps.io/StatCompare-Whiz/) or on the 'Home Page section' after you started the application.
 
 ## Contributors
 
