@@ -1,4 +1,4 @@
-::: toc_container
+<div class="toc_container">
 <h2 class="toc_title">
 
 Table of contents
@@ -204,7 +204,7 @@ Table of contents
 </li>
 
 </ul>
-:::
+</div>
 
 <h2 id="DG_NP_intro">
 
