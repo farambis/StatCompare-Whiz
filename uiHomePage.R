@@ -306,8 +306,8 @@ homePageContent <-
                         <h2>About this app</h2>
                       </div>
                       <div class = accordion_content>
-                        <p>This is the companion application to the paper <em><a href=https://github.com/farambis/StatCompare-Whiz></em>
-                          Extending the family: A guide to embracing effect sizes for comparing groups beyond Cohen's d</a></em>. Please cite the aforementioned paper when referring to this app.
+                        <p>This is the companion application to the paper <em><a href=https://www.psychologicalscience.org/publications/ampps></em>
+                          One app to rule them all: A one-stop solution calculator and guide for 95 effect-size variants for two-group comparisons of central tendency, variability, overlap, dominance, and distributional tails</a></em>. Please cite the aforementioned paper when referring to this app.
                           The source code for this app can be found on <a href=https://github.com/farambis/StatCompare-Whiz>Github</a>.
                         </p>
                         <p>Over a third of quantitative research conducted in psychological science employ research designs in which two or more groups are compared (Blanca et al., 2018). Computing and interpreting effect sizes (ES) alongside their confidence intervals (CI)

@@ -482,9 +482,9 @@ plot_tail_ratio <- function(x = NULL, INDEX = NULL, y = NULL,
        y = c(1, 0.95, 0.85, 0.8, 0.7, 0.65, 0.6), 
        adj = c(0, 0.5),
        labels = c(
-         ifelse(!is.null(n2), group_names[[1]], measurement_names[[1]]),
+         ifelse(is.null(n), group_names[[1]], measurement_names[[1]]),
          str2expression(text = paste0("bar(x)==~", round(m1, 2))),
-         ifelse(!is.null(n2), group_names[[2]], measurement_names[[2]]),
+         ifelse(is.null(n), group_names[[2]], measurement_names[[2]]),
          str2expression(text = paste0("bar(x)==~", round(m2, 2))),
          str2expression(text = eff_size_labs[[3]]),
          str2expression(text = eff_size_labs[[2]]),
@@ -576,8 +576,8 @@ plot_tail_ratio_zoom <- function(x = NULL, INDEX = NULL, y = NULL,
        y = c(1, 0.9, 0.8, 0.75, 0.7), 
        adj = c(0, 0.5),
        labels = c(
-         ifelse(!is.null(n2), group_names[[1]], measurement_names[[1]]),
-         ifelse(!is.null(n2), group_names[[2]], measurement_names[[2]]),
+         ifelse(is.null(n), group_names[[1]], measurement_names[[1]]),
+         ifelse(is.null(n), group_names[[2]], measurement_names[[2]]),
          str2expression(text = eff_size_labs[[3]]),
          str2expression(text = eff_size_labs[[2]]),
          str2expression(text = eff_size_labs[[1]])),
@@ -657,7 +657,7 @@ plot_non_parametric_tail_ratio <- function(x = NULL, INDEX = NULL, y = NULL,
   graphics::box()
   
   eff_size_labs <- c(paste0("VR==~", 
-                            round(variance_ratio(s1 = s1, s2 = s2, standardised_by_group_1 = ifelse(reference_group == "group1", TRUE, FALSE)), 2)
+                            round(variance_ratio(s1 = sd(dataset1), s2 = sd(dataset2), standardised_by_group_1 = ifelse(reference_group == "group1", TRUE, FALSE)), 2)
   ),
   paste0(
     "TR==~",
@@ -755,7 +755,7 @@ plot_non_parametric_tail_ratio_zoom <- function(x = NULL, INDEX = NULL, y = NULL
   graphics::box()
   
   eff_size_labs <- c(paste0("VR==~", 
-                            round(variance_ratio(s1 = s1, s2 = s2, standardised_by_group_1 = ifelse(reference_group == "group1", TRUE, FALSE)), 2)
+                            round(variance_ratio(s1 = sd(dataset1), s2 = sd(dataset2), standardised_by_group_1 = ifelse(reference_group == "group1", TRUE, FALSE)), 2)
   ),
   paste0(
     "TR==~",
