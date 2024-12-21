@@ -8,6 +8,7 @@ navigationSidebar <-
       independentGroups,
       dependentGroups,
       mixedDesign,
-      multivariateMeasures
+      multivariateMeasures,
+      footer
     )
   )

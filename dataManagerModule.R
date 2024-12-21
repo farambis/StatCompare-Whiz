@@ -59,7 +59,7 @@ dataManagerUI <-
 
 
     dataManagerIO[["fileInput"]] <- fileInput(inputId = ns("file"),
-                                              label = "Upload your datafile",
+                                              label = "Upload your (.csv) datafile",
                                               accept = acceptedFormats)
 
     if (design %in% c("indGrps", "mixed")) {

@@ -3,7 +3,7 @@ multivariateInputUI <- function(id, mode, acceptedFormats) {
   userInput <- tagList()
   if (mode == "rawData") {
     userInput[["data"]] <- fileInput(inputId = ns("fileDat"),
-                                     label = "Upload your datafile",
+                                     label = "Upload your (.csv) datafile",
                                      accept = acceptedFormats)
     userInput[["inputDataIndex"]] <-
       selectInput(
@@ -23,10 +23,10 @@ multivariateInputUI <- function(id, mode, acceptedFormats) {
 
   } else {
     userInput[["means"]] <- fileInput(inputId = ns("fileMeans"),
-                                      label = "Upload a file containing the means of the outcome/dependent variables",
+                                      label = "Upload a (.csv) file containing the means of the outcome/dependent variables",
                                       accept = acceptedFormats)
     userInput[["covarianceMatrix"]] <- fileInput(inputId = ns("fileCovarianceMatrix"),
-                                                 label = "Upload a file containing the pooled covariance matrix",
+                                                 label = "Upload a (.csv) file containing the pooled covariance matrix",
                                                  accept = acceptedFormats)
     userInput[["n1"]] <- numericInput(inputId = ns("n1"), label = "n1", value = 100)
     userInput[["n2"]] <- numericInput(inputId = ns("n2"), label = "n2", value = 100)

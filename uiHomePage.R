@@ -354,7 +354,8 @@ homePageContent <-
                         <p>Any analysis of raw data as well as  the multivariate analysis of aggregate data requires the user to upload files containing
                           the raw or aggregate data. Any uploaded file should meet the following general criteria:
                           <ul>
-                            <li>It should be a <b>.csv</b> file, meaning that columns should be separated by commas and a decimal point should be denoted by a period.</li>
+                            <li>(For now at least) it should be a <b>.csv</b> file, meaning that columns should be separated by commas and a decimal point should be denoted by a period.
+                            Further file types might be added in future versions of the app.</li>
                             <li>The first row of the file should contain the variable names (with exception of the aggregate data files for multivariate analysis).</li>
                             <li>Missing cell values should be denoted by <code>NA</code>.</li>
                           </ul>

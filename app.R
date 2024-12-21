@@ -1,4 +1,5 @@
 rm(list = ls())
+app_version <- readLines('VERSION')
 library(shiny)
 library(shinydashboard)
 library(shinyvalidate)
