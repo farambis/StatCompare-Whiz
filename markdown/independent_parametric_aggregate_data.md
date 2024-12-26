@@ -1,87 +1,87 @@
 <div class="toc_container" xmlns="http://www.w3.org/1999/html">
 <h2 class="toc_title">Table of contents</h2>
   <ul>
-    <li><a href="#IG_P_intro"><h3>1 The independent groups design</h3></a></li>
-    <li><a href="#IG_P_normality_homoscedasticity"><h3>2 Measures assuming normally distributed and homoscedastic populations</h3></a>
+    <li><a href="#IG_P_AD_intro"><h3>1 The independent groups design</h3></a></li>
+    <li><a href="#IG_P_AD_normality_homoscedasticity"><h3>2 Measures assuming normally distributed and homoscedastic populations</h3></a>
         <ul>
-          <li><a href="#IG_P_normality_SLD"><h4>2.1 Measures of standardised location difference </h4></a>
+          <li><a href="#IG_P_AD_normality_SLD"><h4>2.1 Measures of standardised location difference </h4></a>
           <ul>
-            <li><a href="#IG_P_cohens_d"><h5>2.1.1 Cohen's \(d\) </h5></a></li>
-            <li><a href="#IG_P_hedges_g"><h5>2.1.2 Hedges' \(g\) </h5></a></li>
+            <li><a href="#IG_P_AD_cohens_d"><h5>2.1.1 Cohen's \(d\) </h5></a></li>
+            <li><a href="#IG_P_AD_hedges_g"><h5>2.1.2 Hedges' \(g\) </h5></a></li>
           </ul>
           </li>
         </ul>
         <ul>
-          <li><a href="#IG_P_overlap_measures"><h4>2.2 Measures of (non-)overlap </h4></a>
+          <li><a href="#IG_P_AD_overlap_measures"><h4>2.2 Measures of (non-)overlap </h4></a>
               <ul>
-                <li><a href="#IG_P_OVL"><h5>2.2.1 The coefficient of overlapping (\(OVL\))</h5></a></li>
-                <li><a href="#IG_P_OVL2"><h5>2.2.2 The coefficient of overlapping Two (\(OVL_2\)) </h5></a></li>
-                <li><a href="#IG_P_U1"><h5>2.2.3 Cohen's \(U_1\) </h5></a></li>
-                <li><a href="#IG_P_U2"><h5>2.2.4 Cohen's \(U_2\)</h5></a></li>
-                <li><a href="#IG_P_U3"><h5>2.2.5 Cohen's \(U_3\)</h5></a></li>
+                <li><a href="#IG_P_AD_OVL"><h5>2.2.1 The coefficient of overlapping (\(OVL\))</h5></a></li>
+                <li><a href="#IG_P_AD_OVL2"><h5>2.2.2 The coefficient of overlapping Two (\(OVL_2\)) </h5></a></li>
+                <li><a href="#IG_P_AD_U1"><h5>2.2.3 Cohen's \(U_1\) </h5></a></li>
+                <li><a href="#IG_P_AD_U2"><h5>2.2.4 Cohen's \(U_2\)</h5></a></li>
+                <li><a href="#IG_P_AD_U3"><h5>2.2.5 Cohen's \(U_3\)</h5></a></li>
               </ul>
           </li>
         </ul>
         <ul>
-          <li><a href="#IG_P_normality_homoscedasticity_prob_ES"><h4>2.3 Probabilistic measures of effect size </h4></a>
+          <li><a href="#IG_P_AD_normality_homoscedasticity_prob_ES"><h4>2.3 Probabilistic measures of effect size </h4></a>
             <ul>
-             <li><a href="#IG_P_PCC"><h5>2.3.1 Probability of correct classification (\(PCC\)) </h5></a></li>
+             <li><a href="#IG_P_AD_PCC"><h5>2.3.1 Probability of correct classification (\(PCC\)) </h5></a></li>
             </ul>
           </li>
         <li>
         </ul>
     </li>
-    <li><a href = "#IG_P_normality_dist_pop"><h3> 3 Measures assuming normally distributed population</h3></a>
+    <li><a href = "#IG_P_AD_normality_dist_pop"><h3> 3 Measures assuming normally distributed population</h3></a>
     <ul>
-      <li><a href="#IG_P_normality_homoscedasticity_SLD"><h4>3.1 Measures of standardised location difference </h4></a>
+      <li><a href="#IG_P_AD_normality_homoscedasticity_SLD"><h4>3.1 Measures of standardised location difference </h4></a>
           <ul>
-            <li><a href="#IG_P_glass_dg"><h5>3.1.1 Glass \(d_G\)</h5></a></li>
-            <li><a href="#IG_P_hedges_g_G"><h5>3.1.2 Glass' \(g_G\)</h5></a></li>
-            <li><a href="#IG_P_bonett_d"><h5>3.1.3 Cohen's \(d'\)</h5></a></li>
-            <li><a href="#IG_P_bonett_g"><h5>3.1.4 Hedges' \(g'\)</h5></a></li>
-            <li><a href="#IG_P_d2_KS"><h5>3.1.5 Kulinskaya-Staudte's \(d^2_{KS}\)</h5></a></li>
+            <li><a href="#IG_P_AD_glass_dg"><h5>3.1.1 Glass \(d_G\)</h5></a></li>
+            <li><a href="#IG_P_AD_hedges_g_G"><h5>3.1.2 Glass' \(g_G\)</h5></a></li>
+            <li><a href="#IG_P_AD_bonett_d"><h5>3.1.3 Cohen's \(d'\)</h5></a></li>
+            <li><a href="#IG_P_AD_bonett_g"><h5>3.1.4 Hedges' \(g'\)</h5></a></li>
+            <li><a href="#IG_P_AD_d2_KS"><h5>3.1.5 Kulinskaya-Staudte's \(d^2_{KS}\)</h5></a></li>
           </ul>
       </li>
     </ul>
     <ul>
-      <li><a href="#IG_P_normality_prob_ES"><h4>3.2 Probabilistic measures of effect size </h4></a>
+      <li><a href="#IG_P_AD_normality_prob_ES"><h4>3.2 Probabilistic measures of effect size </h4></a>
         <ul>
-          <li><a href="#IG_P_CLES"><h5>3.2.1 The common language ES (\(CLES\)) </h5></a></li>
+          <li><a href="#IG_P_AD_CLES"><h5>3.2.1 The common language ES (\(CLES\)) </h5></a></li>
         </ul>
       </li>
     </ul>
       <ul>
-        <li><a href="#IG_P_normality_tail_and_spread_ES"><h4>3.3 Measures of difference in group spread and tails </h4></a>
+        <li><a href="#IG_P_AD_normality_tail_and_spread_ES"><h4>3.3 Measures of difference in group spread and tails </h4></a>
           <ul>
-            <li><a href="#IG_P_VR"><h5>3.3.1 Variance ratio (\(VR\))</h5></a></li>
-            <li><a href="#IG_P_TR"><h5>3.3.2 Tail ratio (\(TR\))</h5></a></li>
+            <li><a href="#IG_P_AD_VR"><h5>3.3.1 Variance ratio (\(VR\))</h5></a></li>
+            <li><a href="#IG_P_AD_TR"><h5>3.3.2 Tail ratio (\(TR\))</h5></a></li>
           </ul>
         </li>
       </ul>
     </li>
-    <li><a href="#IG_P_robust"><h3>4 Measures resistant to outliers </h3></a>
+    <li><a href="#IG_P_AD_robust"><h3>4 Measures resistant to outliers </h3></a>
      <ul>
-      <li><a href="#IG_P_normality_homoscedasticity_SLD"><h4>4.1 Measures of standardised location difference </h4></a>
+      <li><a href="#IG_P_AD_normality_homoscedasticity_SLD"><h4>4.1 Measures of standardised location difference </h4></a>
        <ul>
-        <li><a href="#IG_P_d_R"><h5>4.1.1 \(d_R\) (robust Cohen's \(d\))</h5></a></li>
-        <li><a href="#IG_P_d_GR"><h5>4.1.2 \(d_{R,\,j}\) (robust Glass \(d_{G,\,j}\))</h5></a></li>
-        <li><a href="#IG_P_bonett_d_R"><h5>4.1.3 \(d'_{R}\) (robust Cohen's \(d'\))</h5></a></li>
+        <li><a href="#IG_P_AD_d_R"><h5>4.1.1 \(d_R\) (robust Cohen's \(d\))</h5></a></li>
+        <li><a href="#IG_P_AD_d_GR"><h5>4.1.2 \(d_{R,\,j}\) (robust Glass \(d_{G,\,j}\))</h5></a></li>
+        <li><a href="#IG_P_AD_bonett_d_R"><h5>4.1.3 \(d'_{R}\) (robust Cohen's \(d'\))</h5></a></li>
         <li><a href="#IG_NP_SMD"><h5>4.1.4 Standardized median differences</h5></a>
           <ul>
-            <li><a href="#IG_P_d_MAD"><h6> 4.1.4.1 \(d_{MAD}\) </h6></a></li>
-            <li><a href="#IG_P_d_RIQ"><h6> 4.1.4.2 \(d_{R_{IQ}}\) </h6></a></li>
-            <li><a href="#IG_P_d_bw"><h6> 4.1.4.3 \(d_{bw}\) </h6></a></li>
+            <li><a href="#IG_P_AD_d_MAD"><h6> 4.1.4.1 \(d_{MAD}\) </h6></a></li>
+            <li><a href="#IG_P_AD_d_RIQ"><h6> 4.1.4.2 \(d_{R_{IQ}}\) </h6></a></li>
+            <li><a href="#IG_P_AD_d_bw"><h6> 4.1.4.3 \(d_{bw}\) </h6></a></li>
           </ul>
         </li>
        </ul>
       </li>
      </ul>
     </li>
-    <li><h3><a href = "#IG_P_refs"> 5 References</a></h3></li>
+    <li><h3><a href = "#IG_P_AD_refs"> 5 References</a></h3></li>
   </ul>
 </div>
 
-<h2 id="IG_P_intro"> 1 The independent groups design </h2>
+<h2 id="IG_P_AD_intro"> 1 The independent groups design </h2>
 
 The independent groups design---also often referred to as the between-subjects design or the between---group design–is characterised by different groups being exposed to different levels of an independent variable (e.g., experimental conditions). Each test subject can only be a member of one group. Importantly,  no individual's score in one group may be related to or predictable from any individual's score in another group. Thus, the ES described here are applicable to multiple types of studies comparing distinct groups:  
 - comparing a group receiving a treatment/intervention (the experimental group) with a different group not receiving any treatment/intervention (the control group). 
@@ -90,11 +90,11 @@ The independent groups design---also often referred to as the between-subjects d
 
 <br>
 
-<h2 id="IG_P_normality_homoscedasticity"> 2 Measures assuming normally distributed and homoscedastic populations </h2>
+<h2 id="IG_P_AD_normality_homoscedasticity"> 2 Measures assuming normally distributed and homoscedastic populations </h2>
 
-<h3 id="IG_P_normality_SLD"> 2.1 Measures of standardised location difference </h3>
+<h3 id="IG_P_AD_normality_SLD"> 2.1 Measures of standardised location difference </h3>
 
-<h4 id="IG_P_cohens_d"> 2.1.1 Cohen's \(d\) </h4>
+<h4 id="IG_P_AD_cohens_d"> 2.1.1 Cohen's \(d\) </h4>
 
 The population effect size of interest is given by the formula:
 
@@ -140,7 +140,7 @@ Additionally, an $1 - \alpha$ percentile bootstrap CI is computed. Under the cas
 
 <br>
 
-<h4 id="IG_P_hedges_g"> 2.1.2 Hedges' \(g\) </h4> 
+<h4 id="IG_P_AD_hedges_g"> 2.1.2 Hedges' \(g\) </h4> 
 
 As mentioned above $d$ has a slight positive bias, which can be corrected. This alternative formula given by Hedges (1981) estimates $\delta$ and is given by:  
 
@@ -169,7 +169,7 @@ Additionally, an $1 - \alpha$ percentile bootstrap CI is computed.
 
 <br>
 
-<h3 id="IG_P_overlap_measures"> 2.2 Measures of (non-)overlap </h3>
+<h3 id="IG_P_AD_overlap_measures"> 2.2 Measures of (non-)overlap </h3>
 
 Under the assumption that the populations being compared follow normal distributions with equal variances it is possible to define measures of (non-)overlap which are related to Cohen's $d$ and to each other through the cumulative normal distribution function $\Phi(\cdot)$ (Cohen, 1988).
 
@@ -178,7 +178,7 @@ Let $X_a$ denote the random variable '*score of a random member of population a*
 
 <br>
 
-<h4 id="IG_P_OVL"> 2.2.1 The coefficient of overlapping (\(OVL\)) </h4>
+<h4 id="IG_P_AD_OVL"> 2.2.1 The coefficient of overlapping (\(OVL\)) </h4>
 
 The population effect of interest is given by (e.g., Reiser & Faraggi, 1999):
 
@@ -222,7 +222,7 @@ Additionally, a $1 - \alpha$ percentile bootstrap CI is implemented.
 
 <br>
 
-<h4 id="IG_P_OVL2"> 2.2.2 The coefficient of overlapping two (\(OVL_2\)) </h4>
+<h4 id="IG_P_AD_OVL2"> 2.2.2 The coefficient of overlapping two (\(OVL_2\)) </h4>
 
 The population effect of interest is given by:
 
@@ -242,7 +242,7 @@ We could not identify a closed form formula for the CI of this ES. Thus, a $1 - 
 
 <br>
 
-<h4 id="IG_P_U1"> 2.2.3 Cohen's \(U_1\) </h4>
+<h4 id="IG_P_AD_U1"> 2.2.3 Cohen's \(U_1\) </h4>
 
 The population effect of interest is given by:
 
@@ -266,7 +266,7 @@ We could not identify a closed form formula for the CI of this ES. Thus, a $1 - 
 
 <br>
 
-<h4 id="IG_P_U2"> 2.2.4 Cohen's \(U_2\) </h4>
+<h4 id="IG_P_AD_U2"> 2.2.4 Cohen's \(U_2\) </h4>
 
 The population effect on interest is is the proportion of population ***a*** that exceeds the same proportion in population ***b***. Thus, a value of 0.7 for example means that the top 70% of population ***a*** exceed the bottom 70% of population ***b***. Under the assumption of normality and homoscedasticity this quantity can be expressed by simply plugging Cohen's $\delta$ into the normal cumulative distribution function, giving the formula:
 
@@ -284,7 +284,7 @@ We could not identify a closed form formula for the confidence interval of this 
 
 <br>
 
-<h4 id="IG_P_U3"> 2.2.5 Cohen's \(U_3\) </h4>
+<h4 id="IG_P_AD_U3"> 2.2.5 Cohen's \(U_3\) </h4>
 
 For the following description we assume that group ***a*** has a higher mean than group ***b***.
 
@@ -308,9 +308,9 @@ We could not identify a closed form formula for the CI for this ES. Thus, a $1 -
 
 <br>
 
-<h3 id="IG_P_normality_homoscedasticity_prob_ES"> 2.3 Probabilistic measures of effect size </h3>
+<h3 id="IG_P_AD_normality_homoscedasticity_prob_ES"> 2.3 Probabilistic measures of effect size </h3>
 
-<h4 id="IG_P_PCC"> 2.3.1 Probability of correct classification (\(PCC\)) </h4>
+<h4 id="IG_P_AD_PCC"> 2.3.1 Probability of correct classification (\(PCC\)) </h4>
 
 The population effect of interest is the probability of correctly determining the population membership of a randomly drawn individual (with the options being population ***a*** or ***b***)---i.e., the value of the independent variable (group membership)---based on their value on the dependent variable (e.g., score on an outcome variable of interest).  
 
@@ -330,11 +330,11 @@ We could not identify a closed form formula for the CI of this ES. Thus, a $1 - 
 
 <br>  
 
-<h2 id="IG_P_normality_dist_pop"> 3 Measures assuming normally distributed populations </h2>
+<h2 id="IG_P_AD_normality_dist_pop"> 3 Measures assuming normally distributed populations </h2>
 
-<h4 id="IG_P_normality_homoscedasticity_SLD"> 3.1. Measures of standardised location difference </h4>
+<h4 id="IG_P_AD_normality_homoscedasticity_SLD"> 3.1. Measures of standardised location difference </h4>
 
-<h4 id="IG_P_glass_dg"> 3.1.1 Glass' \(d_G\) </h4>
+<h4 id="IG_P_AD_glass_dg"> 3.1.1 Glass' \(d_G\) </h4>
 
 The population effect of interest is given by:
 
@@ -388,7 +388,7 @@ Additionally, a $1 - \alpha$ percentile bootstrap CI is computed. This method ha
 
 <br>
 
-<h4 id="IG_P_hedges_g_G"> 3.1.2 Hedges' \(g_G\) </h4>
+<h4 id="IG_P_AD_hedges_g_G"> 3.1.2 Hedges' \(g_G\) </h4>
 
 As mentioned above $d_{G,\,j}$ has a slight positive bias, which can be corrected. This alternative formula (e.g., Hedges, 1981 ) estimates the same population parameter as $d_{G,\,j}$:
 
@@ -425,7 +425,7 @@ Additionally, an $1 - \alpha$ percentile bootstrap CI is computed.
 
 <br>
 
-<h4 id="IG_P_bonett_d"> 3.1.3 Cohen's \(d'\) </h4>
+<h4 id="IG_P_AD_bonett_d"> 3.1.3 Cohen's \(d'\) </h4>
 
 The population effect size of interest is given by the formula (e.g.,Cohen, 1988):
 
@@ -463,7 +463,7 @@ Additionally, an $1 - \alpha$ percentile bootstrap CI is computed.
 
 <br>
 
-<h4 id="IG_P_bonett_g'"> 3.1.4 Hedges' \(g'\) </h4> 
+<h4 id="IG_P_AD_bonett_g'"> 3.1.4 Hedges' \(g'\) </h4> 
 
 As mentioned above $d'$ has a slight positive bias, which can be corrected. This alternative statistic estimates the same population parameter as $d'$. The bias-corrected estimator is given by (Bonett, 2009):
 
@@ -485,7 +485,7 @@ Additionally, an $1 - \alpha$ percentile bootstrap CI is computed.
 
 <br>
 
-<h4 id="IG_P_d2_KS"> 3.1.5 Kulinskaya-Staudte's \(d^2_{KS}\) </h4>  
+<h4 id="IG_P_AD_d2_KS"> 3.1.5 Kulinskaya-Staudte's \(d^2_{KS}\) </h4>  
 
 Kulinskaya and Staudte (2006) argued for estimating the following population effect size when population variances are unequal:
 
@@ -503,9 +503,9 @@ Kulinskaya and Staudte (2006) only described estimation of tolerance intervals f
 
 <br>
 
-<h3 id="IG_P_normality_prob_ES"> 3.2 Probabilistic measures of effect size </h3>
+<h3 id="IG_P_AD_normality_prob_ES"> 3.2 Probabilistic measures of effect size </h3>
 
-<h4 id="IG_P_CLES"> 3.2.1 The common language ES (\(CLES\)) </h4>
+<h4 id="IG_P_AD_CLES"> 3.2.1 The common language ES (\(CLES\)) </h4>
 
 The population effect of interest is given by:
 
@@ -535,9 +535,9 @@ Two nonparametric estimators of the above population effect that do not make the
 
 <br>
 
-<h3 id="IG_P_normality_tail_and_spread_ES"> 3.3 Measures of difference in group spread and tails </h3>
+<h3 id="IG_P_AD_normality_tail_and_spread_ES"> 3.3 Measures of difference in group spread and tails </h3>
 
-<h4 id="IG_P_VR"> 3.3.1 Variance ratio (\(VR\))</h4>
+<h4 id="IG_P_AD_VR"> 3.3.1 Variance ratio (\(VR\))</h4>
 
 The population effect size of interest is given by:  
 
@@ -580,7 +580,7 @@ Additionally, an $1 - \alpha$ percentile bootstrap CI is computed.
 
 <br>
 
-<h4 id="IG_P_TR"> 3.3.2 Tail ratio (\(TR\))</h4>
+<h4 id="IG_P_AD_TR"> 3.3.2 Tail ratio (\(TR\))</h4>
 
 Standardised mean differences such as Cohen's $d$ narrow their assessment on the centers of distributions, i.e., on typical observations. For many psychological, biological, and medical models which predict that the probability of some outcome or manifestation only starts increasing after some threshold the tails of distributions are more relevant (Voracek et al., 2013), e.g.,:  
 
@@ -611,23 +611,23 @@ $$ TR = \frac{p_{a|b}}{p_{b|a}} $$
 The observed data can be thought of as 2 x 2 table of the following form:  
 
 <table class = "TR_table">
-	<tr>
-		<th>Group</th>
-		<th>Hits</th>
-		<th>Misses</th>
-		<th>Sum</th>
-	</tr>
-	<tr>
-	  <th style="text-align:centered">a</th>
-	  <td>\(n_{11}\)</td>
-	  <td>\(n_{12}\)</td>
-	  <td>\(n_{1.}\)</td>
-	</tr>
-	<tr>
-	  <th>b</th>
-	  <td>\(n_{21}\)</td>
-	  <td>\(n_{22}\)</td>
-	  <td>\(n_{2.}\)</td>
+    <tr>
+        <th>Group</th>
+        <th>Hits</th>
+        <th>Misses</th>
+        <th>Sum</th>
+    </tr>
+    <tr>
+      <th style="text-align:centered">a</th>
+      <td>\(n_{11}\)</td>
+      <td>\(n_{12}\)</td>
+      <td>\(n_{1.}\)</td>
+    </tr>
+    <tr>
+      <th>b</th>
+      <td>\(n_{21}\)</td>
+      <td>\(n_{22}\)</td>
+      <td>\(n_{2.}\)</td>
   </tr>
 </table>
 
@@ -656,11 +656,11 @@ Additionally, an $1 - \alpha$ percentile bootstrap CI is computed.
 
 <br>
 
-<h2 id="IG_P_robust"> 4 ES robust to outliers </h3>
+<h2 id="IG_P_AD_robust"> 4 ES robust to outliers </h3>
 
-<h3 id="#IG_P_normality_homoscedasticity_SLD"> 4.1 Measures of standardised location difference </h4>
+<h3 id="#IG_P_AD_normality_homoscedasticity_SLD"> 4.1 Measures of standardised location difference </h4>
 
-<h4 id="IG_P_d_R"> 4.1.1 \(d_R\) (robust Cohen's \(d\)) </h4>
+<h4 id="IG_P_AD_d_R"> 4.1.1 \(d_R\) (robust Cohen's \(d\)) </h4>
 
 The population effect size of interest is given by the formula:
 
@@ -713,7 +713,7 @@ Additionally, a $1 - \alpha$ percentile bootstrap CI is computed as well. Algina
 
 <br>
 
-<h4 id="IG_P_d_GR"> 4.1.2 \(d_{R,\,j}\) (robust Glass \(d_{G,\,j}\)) </h4>
+<h4 id="IG_P_AD_d_GR"> 4.1.2 \(d_{R,\,j}\) (robust Glass \(d_{G,\,j}\)) </h4>
 
 The population effect size of interest is given by the formula (Algina et al., 2006b):
 
@@ -777,7 +777,7 @@ Additionally, a $1 - \alpha$ percentile bootstrap CI is computed as well. Algina
 
 <br>
 
-<h4 id="IG_P_bonett_d_R"> 4.1.3 \(d'_R\) (robust Cohen's \(d'\)) </h4>
+<h4 id="IG_P_AD_bonett_d_R"> 4.1.3 \(d'_R\) (robust Cohen's \(d'\)) </h4>
 
 The population effect size of interest is given by the formula (Keselman et al., 2008):
 
@@ -830,7 +830,7 @@ The sampling variance of these estimators are currently unknown and thus only $1
 
 Grissom and Kim (2001) note that other standardised median differences could be conceived by using yet another robust measure of variability in the denominator. However, we agree with the comment of Grissom and Kim (2012) that "the field should settle on the use of a reduced number of appropriate measures" (p.75) and that a robust estimator with a well-behaved confidence interval should be determined and consistently used when outliers threaten to violate assumptions.
 
-<h4 id="IG_P_d_MAD"> 4.1.4.1 \(d_{MAD}\) </h4>  
+<h4 id="IG_P_AD_d_MAD"> 4.1.4.1 \(d_{MAD}\) </h4>  
 
 The difference in Medians can be standardised by the Median Absolute Deviation (MAD) of the baseline/control group.
 Then the standardised median difference is calculated with the following formula (Grissom & Kim, 2001):
@@ -846,7 +846,7 @@ We follow the naming convention of Grissom and Kim (2005) who designated the med
 
 <br>
 
-<h4 id="IG_P_d_RIQ"> 4.1.4.2 \(d_{R_{IQ}}\) </h4>  
+<h4 id="IG_P_AD_d_RIQ"> 4.1.4.2 \(d_{R_{IQ}}\) </h4>  
 
 The difference in medians can be standardised by the interquartile range $R_{IQ}$, the difference between the third quartile (0.75-quantile) and the first quartile (0.25-quantile), of the baseline/control group.  
 Then the standardised median difference is calculated with the following formula (Laird & Mosteller, 1990).
@@ -859,7 +859,7 @@ We again follow the naming convention of Grissom and Kim (2005) who designated t
 
 <br>
 
-<h4 id="IG_P_d_bw"> 4.1.4.3 \(d_{bw}\) </h4>
+<h4 id="IG_P_AD_d_bw"> 4.1.4.3 \(d_{bw}\) </h4>
 
 The differences in medians can be standardised by the biweight standard deviation $s_bw$ of the baseline/control group (Grissom & Kim, 2001).  
 Then the standardised median difference is calculated with the following formula (Grissom & Kim, 2001):
@@ -880,7 +880,7 @@ Grissom and Kim (2001) note that compared to the $MAD$ $s_bw$ has a relatively s
 
 <hr>
 
-<h2 id="IG_P_refs"> 5 References </h2>
+<h2 id="IG_P_AD_refs"> 5 References </h2>
 
 Algina, J., Keselman, H. J., & Penfield, R. D. (2005). An alternative to Cohen’s standardized mean difference effect size: A robust parameter and confidence interval in the two independent groups case. *Psychological Methods*, *10*(3), 317--238. <https://doi.org/10.1037/1082-989X.10.3.317>  
 

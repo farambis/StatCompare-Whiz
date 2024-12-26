@@ -3,30 +3,30 @@
 <div class="toc_container">
 <h2 class="toc_title">Table of contents</h2>
  <ul>
-  <li><a href="#MV_P_PPC-intro"><h3>1 The pretest-posttest-control design</h3></a>
-  <li><a href="#MV_P_PPC-change-focused-measures"><h3>2 Change-focused measures of ES</h3></a>
+  <li><a href="#MD_P_AD_PPC-intro"><h3>1 The pretest-posttest-control design</h3></a>
+  <li><a href="#MD_P_AD_PPC-change-focused-measures"><h3>2 Change-focused measures of ES</h3></a>
     <ul>
-      <li><a href="#MV_P_PPC-d_PPC-Change"><h4>2.1 \(d_{PPC-Change}\)</h4></a></li>
-      <li><a href="#MV_P_PPC-g_PPC-Change"><h4>2.2 \(g_{PPC-Change}\)</h4></a></li>
+      <li><a href="#MD_P_AD_PPC-d_PPC-Change"><h4>2.1 \(d_{PPC-Change}\)</h4></a></li>
+      <li><a href="#MD_P_AD_PPC-g_PPC-Change"><h4>2.2 \(g_{PPC-Change}\)</h4></a></li>
     </ul>
   </li>
-  <li><a href="#MV_P_PPC-difference-focused_measures"><h3>3 Difference-focused measures of ES</h3></a>
+  <li><a href="#MD_P_AD_PPC-difference-focused_measures"><h3>3 Difference-focused measures of ES</h3></a>
     <ul>
-     <li><a href="#MV_P_d_PPC1"><h4>3.1 \(d_{PPC,\,pre}\)</h4></a></li>
-     <li><a href="#MV_P_g_PPC1"><h4>3.2 \(g_{PPC,\,pre}\)</h4></a></li>
-     <li><a href="#MV_P_d_PPC2"><h4>3.4 \(d_{PPC,\,pooled-pre}\)</h4></a></li>
-     <li><a href="#MV_P_g_PPC2"><h4>3.3 \(g_{PPC,\,pooled-pre}\)</h4></a></li>
-     <li><a href="#MV_P_d_PPC3"><h4>3.5 \(d_{PPC,\,pooled-pre-post}\)</h4></a></li>
-     <li><a href="#MV_P_g_PPC3"><h4>3.6 \(g_{PPC,\,pooled-pre-post}\)</h4></a></li>
+     <li><a href="#MD_P_AD_d_PPC1"><h4>3.1 \(d_{PPC,\,pre}\)</h4></a></li>
+     <li><a href="#MD_P_AD_g_PPC1"><h4>3.2 \(g_{PPC,\,pre}\)</h4></a></li>
+     <li><a href="#MD_P_AD_d_PPC2"><h4>3.4 \(d_{PPC,\,pooled-pre}\)</h4></a></li>
+     <li><a href="#MD_P_AD_g_PPC2"><h4>3.3 \(g_{PPC,\,pooled-pre}\)</h4></a></li>
+     <li><a href="#MD_P_AD_d_PPC3"><h4>3.5 \(d_{PPC,\,pooled-pre-post}\)</h4></a></li>
+     <li><a href="#MD_P_AD_g_PPC3"><h4>3.6 \(g_{PPC,\,pooled-pre-post}\)</h4></a></li>
     </ul>
   </li>
-  <li><a href="#MV_P_PPC-refs"><h3>4 References</h3></a></li>
+  <li><a href="#MD_P_AD_PPC-refs"><h3>4 References</h3></a></li>
  </ul>
 </div>
 
 <article>
 
-<h2 id="MV_P_PPC-intro"> 1 The Pretest-posttest-control design </h2>  
+<h2 id="MD_P_AD_PPC-intro"> 1 The Pretest-posttest-control design </h2>  
 
 The pretest-posttest-control (PPC) design, also know as the pretest-posttest control-group design or the independent groups pretest-posttest (IGPP) design amongst other synonyms entails the random/quasirandom assignment of research participants to one of two conditions(e.g., a treatment or a control condition; a novel treatment and a gold-standard treatment condition; etc.)  and the measurement of an outcome variable at two points in time (i.e., both prior to and after treatment) (Morris, 2008).  
 
@@ -34,13 +34,13 @@ A standardised effect size (ES) for the PPC design relates the difference of the
 
 Two major "groups" of standardised ESs for the PPC design can be characterised based on whether the mean change within each group is standardised by the variability of change scores (change-focused measures) or by the variability of raw scores (difference-focused measures) (Morris & DeShon, 2002; Feingold, 2009). A research question regarding changes in individual performance after some treatment might motivate the former definition while a research question focusing on group differences in the level of performance might motivate the latter definition (Morris & DeShon, 2002).  
 
-<h2 id="MV_P_PPC-change-focused-measures"> 2 Change-focused measures of ES </h1>  
+<h2 id="MD_P_AD_PPC-change-focused-measures"> 2 Change-focused measures of ES </h1>  
 
 As described above, a standardised ES for the PPC design might employ different standardisers based on the focus of the research question at hand (Morris & DeShon, 2002). Morris and DeShon (2002) argues that if a researcher is primarily interested in the way a certain outcome changes within individuals as a result of some treatment, then the standard deviation of change scores is an appropriate standardiser of the mean change within a group. This way the population of change scores becomes the metric of the ES.  
 
 Such a change-focused measure of ES is closely related to Cohen's $d_z$ as described below. A change-focused measure of effect could be employed for example in order to assess the extent to which environmentally conscious behaviour increases as a response to a certain treatment (e.g., information campaign, social-psychological intervention, behavioural-economics based incentive scheme, etc.) compared to the change that occurs without that treatment.  
 
-<h3 id="MV_P_PPC-d_PPC-Change"> 2.1 \(d_{PPC-Change}\)</h3>  
+<h3 id="MD_P_AD_PPC-d_PPC-Change"> 2.1 \(d_{PPC-Change}\)</h3>  
 
 The population ES of interest is given by the formula:
 
@@ -96,7 +96,7 @@ Additionally, an $1 - \alpha$ percentile bootstrap CI is computed.
 
 <br>
 
-<h3 id="MV_P_PPC-g_PPC-Change"> 2.2 \(g_{PPC-change}\) </h3>
+<h3 id="MD_P_AD_PPC-g_PPC-Change"> 2.2 \(g_{PPC-change}\) </h3>
 
 As mentioned above $d_{PCC-change}$ has a slight positive bias, which can be corrected. This alternative formula too estimates $\delta_{PPC-change}$:
 
@@ -122,7 +122,7 @@ Additionally, an $1 - \alpha$ percentile bootstrap CI is computed.
 
 <br>
 
-<h2 id="MV_P_PPC-difference-focused_measures"> 3 Difference-focused measures of ES </h1>
+<h2 id="MD_P_AD_PPC-difference-focused_measures"> 3 Difference-focused measures of ES </h1>
 
 If the focus of a research question lies on a group difference in the level of an outcome variable, then the variability of said outcome measure (and not that of change scores) is the appropriate standardiser of the post-pretest mean difference within each group (Morris & DeShon, 2002; Feingold, 2009). After a decision in favour of a difference-focused ES, there still remain multiple standardisers to choose from (Morris, 2008).  
 
@@ -140,7 +140,7 @@ As can be noted by comparing the given examples for the applications of change-f
 
 <br>
 
-<h3 id="MV_P_d_PPC1"> 3.1 \(d_{PPC,\,pre}\) </h3>
+<h3 id="MD_P_AD_d_PPC1"> 3.1 \(d_{PPC,\,pre}\) </h3>
 
 In general the population ES of interest is given by the formula (Becker, 1988):
 
@@ -182,7 +182,7 @@ Additionally, an $1 - \alpha$ percentile bootstrap CI is computed.
 
 <br>
 
-<h3 id="MV_P_g_PPC1"> 3.2 \(g_{PPC,\,pre}\)</h3>
+<h3 id="MD_P_AD_g_PPC1"> 3.2 \(g_{PPC,\,pre}\)</h3>
 
 As mentioned above $d_{PCC,\,pre}$ has a slight positive bias, which can be corrected. This alternative formula (Becker, 1988) also estimates $\delta_{PPC,\,pre}$:
 
@@ -210,7 +210,7 @@ Additionally, an $1 - \alpha$ percentile bootstrap CI is computed.
 
 <br>
 
-<h3 id="MV_P_d_PPC2"> 3.3 \(d_{PPC,\,pooled-pre}\) </h3>
+<h3 id="MD_P_AD_d_PPC2"> 3.3 \(d_{PPC,\,pooled-pre}\) </h3>
 
 The population ES being estimated is given by the formula (Morris, 2008):
 
@@ -274,7 +274,7 @@ An $1 - \alpha$ percentile bootstrap CI is implemented as well, which should pro
 
 <br>
 
-<h3 id="MV_P_g_PPC2"> 3.4 \(g_{PPC,\,pooled-pre}\)</h3>  
+<h3 id="MD_P_AD_g_PPC2"> 3.4 \(g_{PPC,\,pooled-pre}\)</h3>  
 
 As mentioned above $d_{PCC,\,pooled-pre}$ has a slight positive bias, which can be corrected. This alternative formula (Morris, 2008) also estimates $\delta_{PPC,\,pooled-pre}$:
 
@@ -302,7 +302,7 @@ Thus, if there is reason to believe that the post-treatment variance(s) is diffe
 
 <br>
 
-<h3 id="MV_P_d_PPC3"> 3.5 \(d_{PPC,\,pooled-pre-post}\)</h3>
+<h3 id="MD_P_AD_d_PPC3"> 3.5 \(d_{PPC,\,pooled-pre-post}\)</h3>
 
 The population ES being estimated has already been defined further above (Morris, 2008):
 
@@ -348,7 +348,7 @@ An $1 - \alpha$ percentile bootstrap CI is implemented, which should provide a m
 
 <br>
 
-<h3 id="MV_P_g_PPC3"> 3.6 \(g_{PPC,\,pooled-pre-Post}\) </h3>
+<h3 id="MD_P_AD_g_PPC3"> 3.6 \(g_{PPC,\,pooled-pre-Post}\) </h3>
 
 As mentioned above $d_{PCC,\,pooled-pre-post}$ has a slight positive bias, which can be corrected. The bias-corrected estimator implemented in this app is based on Morris (2008) but uses the now identified associated degrees of freedom (Pustejovsky, 2016):
 
@@ -376,7 +376,7 @@ Thus, if there is reason to believe that the post-treatment variance is differen
 
 <hr>
 
-<h2 id="MV_P_PPC-refs"> 4 References </h2>
+<h2 id="MD_P_AD_PPC-refs"> 4 References </h2>
 
 Becker, B. J. (1988). Synthesizing standardized mean-change measures. *British Journal of Mathematical and Statistical Psychology*, *41*(2), 257--278. <https://doi.org/10.1111/j.2044-8317.1988.tb00901.x>  
 

@@ -1,5 +1,4 @@
 rm(list = ls())
-app_version <- readLines('VERSION')
 library(shiny)
 library(shinydashboard)
 library(shinyvalidate)
@@ -8,11 +7,12 @@ library(gt)
 library(mvtnorm)
 source('function_ready.R')
 source('plot_function_ready.R')
+source('uiDashboardHeader.R')
 source('uiNavigationSidebar.R')
 source('uiBody.R')
 source('esServer.R')
 options(htmlwidgets.TOJSON_ARGS = list(na = 'string'))
-ui <- dashboardPage(dashboardHeader(title = 'StatCompare Whiz'),
+ui <- dashboardPage(header = myHeader,
                     sidebar = navigationSidebar,
                     body = body)
 shinyApp(ui, esServer)

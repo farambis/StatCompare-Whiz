@@ -3,10 +3,18 @@ source('uiHomePage.R')
 
 # all_eff_sizes and all_test_statistics are defined in function_ready.R 
 
-descriptions <- list(independent_parametric = "markdown/independent_parametric.md", independent_parametric = "markdown/multivariate.md",
-                     independent_nonparametric = "markdown/independent_nonparametric.md", dependent_parametric = "markdown/dependent_parametric.md",
-                     dependent_nonparametric = "markdown/dependent_nonparametric.md", mixed_design_parametric = "markdown/mixed_design_parametric.md",
-                     mixed_design_nonparametric = "markdown/mixed_design_nonparametric.md", multivariate_measures = "markdown/multivariate.md")
+descriptions <- list(
+  independent_parametric = "markdown/independent_parametric.md",
+  independent_parametric_aggregate_data = "markdown/independent_parametric_aggregate_data.md",
+  independent_nonparametric = "markdown/independent_nonparametric.md",
+  dependent_parametric = "markdown/dependent_parametric.md",
+  dependent_parametric_aggregate_data = "markdown/dependent_parametric_aggregate_data.md",
+  dependent_nonparametric = "markdown/dependent_nonparametric.md",
+  mixed_design_parametric = "markdown/mixed_design_parametric.md",
+  mixed_design_parametric_aggregate_data = "markdown/mixed_design_parametric_aggregate_data.md",
+  mixed_design_nonparametric = "markdown/mixed_design_nonparametric.md",
+  multivariate_measures = "markdown/multivariate.md"
+  )
 
 # homePage ----------------------------------------------------------------
 homePageBody <-
@@ -90,7 +98,7 @@ independentGroupsParametricEducational <-
                  all_plots$parametric_cohens_u3,
                  all_plots$tail_ratio,
                  all_plots$tail_ratio_zoom),
-            descriptions$independent_parametric
+            descriptions$independent_parametric_aggregate_data
           )
   )
 
@@ -204,7 +212,7 @@ dependentGroupsParametricEducational <-
                          all_plots$parametric_cohens_u3,
                          all_plots$tail_ratio,
                          all_plots$tail_ratio_zoom),
-                    descriptions$dependent_parametric
+                    descriptions$dependent_parametric_aggregate_data
           ))
 
 dependentGroupsNonparametric <-
@@ -289,7 +297,7 @@ mixedDesignParametricEducational <-
               list(all_plots$parametric_PPC_change,
                    all_plots$parametric_PPC_difference,
                    all_plots$parametric_PPC_interaction),
-            description = descriptions$mixed_design_parametric
+            description = descriptions$mixed_design_parametric_aggregate_data
           ))
 
 mixedDesignNonParametric <-

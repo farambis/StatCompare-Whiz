@@ -1,3 +1,5 @@
+.rscignore
+manifest.json
 .Rproj.user
 .Rhistory
 .RData

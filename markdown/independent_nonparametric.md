@@ -20,7 +20,7 @@
   <a href="#IG_NP_refs"><h3>6 References</h3></a>
 </div>
 
-<h2 id = "IP_NP_intro"> 1 The independent groups design </h2>  
+<h2 id="IP_NP_intro"> 1 The independent groups design </h2>  
 
 The independent groups design---also often referred to as the between-subjects design or the between-group design---is characterised by different groups being exposed to different levels of an independent variable (e.g., experimental conditions). Each test subject can only be a member of one group. Importantly,  no individual's score in one group may be related to or predictable from any individual's score in another group. Thus, the ES described here are applicable to multiple types of studies comparing distinct groups:  
 - comparing a group receiving a treatment/intervention (the experimental group) with a different group not receiving any treatment/intervention (the control group). 
@@ -28,9 +28,9 @@ The independent groups design---also often referred to as the between-subjects d
 
 When normality and equality of variances are not assumed most of the population effects described on the documentation tab of the independent groups parametric page remain perfectly sensible quantities to estimate. However, any estimator that assumes normality and equality of variances is no longer suitable to estimate them. In this case the use of nonparametric estimators can be recommended as they are not based on said assumptions. 
 
-<h2 id ="IG_NP_SLD"> 2 Nonparametric estimators of measures of standardised location difference </h2>  
+<h2 id="IG_NP_SLD"> 2 Nonparametric estimators of measures of standardised location difference </h2>  
 
-<h3 id ="IG_NP_dG"> 2.1 Nonparametric Glass' \( d_{G,\,j}\) </h3>
+<h3 id="IG_NP_dG"> 2.1 Nonparametric Glass' \( d_{G,\,j}\) </h3>
 
 A nonparametric version of Glass' $d_{G,\,j}$ is described by Hedges and Olkin (1985):
 
@@ -44,29 +44,21 @@ $$\hat\gamma_{b}^{\ast} = \Phi^{-1}(q_{b}^{\ast})$$
 
 where $q_{a}^{\ast}$ is given by:
 
-$$ q_{a}^{\ast} = \frac{1}{n_a} \sum_{i=1}^{n_a} I_{ \{x > Mdn_b \} } (x_{a_i}) $$
+$$q_{a}^{\ast} = \frac{1}{n_a} \sum_{i=1}^{n_a} I_{ \{x > Mdn_b \} } (x_{a_i})$$
 
 with 
 
-$$ I_{ \{x > Mdn_b \} } (x) = \begin{cases}
-1 & \text{if } x \gt Mdn_b \cr
-0 & \text{if } x \leq Mdn_b
-\end{cases}
-$$
+$$I_{ \{x > Mdn_b \} } (x) = \begin{cases} 1 & \text{if } x \gt Mdn_b \cr 0 & \text{if } x \leq Mdn_b \end{cases}$$
 
 and $q_{b}^{\ast}$ is given by:
 
-$$ q_{b}^{\ast} = \frac{1}{n_b} \sum_{i=1}^{n_b} I_{ \{x < Mdn_a \} } (x_{b_i}) $$
+$$q_{b}^{\ast} = \frac{1}{n_b} \sum_{i=1}^{n_b} I_{ \{x < Mdn_a \} } (x_{b_i})$$
  
 with 
  
-$$ I_{ \{x < Mdn_a \} } (x) = \begin{cases}
-1 & \text{if } x \lt Mdn_a \cr
-0 & \text{if } x \geq Mdn_a
-\end{cases}
-$$
+$$I_{ \{x < Mdn_a \} } (x) = \begin{cases} 1 & \text{if } x \lt Mdn_a \cr 0 & \text{if } x \geq Mdn_a \end{cases}$$
 
-If this effect size is chosen by the user, both estimators are provided denoted as nonparametric Glass' $d_{G, 1}$---$\hat\gamma_{b}^{\ast}$ is computed---and nonparametric Glass' $d_{G, 2}$---$\hat\gamma_{a}^{\ast}$ is computed.The user can choose which to report/interpret (see documentation for $d_{G,\,j}$).
+If this effect size is chosen by the user, both estimators are provided denoted as nonparametric Glass' $d_{G, 1}$ --- $\hat{\gamma_{b}^{\ast}}$ is computed---and nonparametric Glass' $d_{G, 2}$ --- $\hat{\gamma_{a}^{\ast}}$ is computed.The user can choose which to report/interpret (see documentation for $d_{G,\,j}$ ).
 
 $q_{a}^{\ast}$ is the proportion of group ***a*** measurements that are larger than the median of the group ***b*** measurements. Consequently, $\hat\gamma_{a}^{\ast}$ is the $q_{a}^{\ast}$-quantile of the standard normal distribution.
 The reason $\hat\gamma_{a}^{\ast}$ can be considered a nonparametric version of Glass' $d_{G,\,a}$ is owed to the fact that when the observations are independently normally distributed, $\hat\gamma_{a}^{\ast}$ is an estimator of the population effect size $\Delta_a = \frac{\mu_a - \mu_b}{\sigma_a}$. This is the same population effect estimated by $d_{G,\,a}$.
@@ -85,9 +77,9 @@ We could not identify a closed form formula for the confidence interval of this 
 
 <br>
 
-<h2 id = "IG_NP_spread_tails"> 3 Nonparametric estimators of measures of difference in group spread and tails </h2>
+<h2 id="IG_NP_spread_tails"> 3 Nonparametric estimators of measures of difference in group spread and tails </h2>
 
-<h3 id = "IG_NP_VR"> 3.1 Nonparametric variance ratio (\(VR\)) </h3>
+<h3 id="IG_NP_VR"> 3.1 Nonparametric variance ratio (\(VR\)) </h3>
 
 The population effect of interest as well as the implemented point estimate of the population effect are identical to the ones detailed in the documentation page of the "parametric educational" and the "parametric raw data" modes. The only difference to the implementation for the "parametric" modes is the implemented confidence interval procedure detailed here.  
 
@@ -106,20 +98,40 @@ Additionally, an $1 - \alpha$ percentile bootstrap CI is computed.
 
 <br>
 
-<h3 id = "IG_NP_TR"> 3.2 Nonparametric tail ratio (\(TR\)) </h3>
+<h3 id="IG_NP_TR"> 3.2 Nonparametric tail ratio (\(TR\)) </h3>
 
 For a detailed discussion of various possible use cases as well as of the interpretation of the TR ES consult the documentation panel of the page on parametric ES for the independent groups design.
 
 The TR can be thought of as a risk ratio by considering scores below/above a cutoff value as "successes"/"hits" and scores above/below a cutoff as "failures"/"misses". The number of "hits" in group a is binomially distributed with parameters $n_a$ and $p_a$, where $p_a$ is the proportion of scores in population a below/above a cutoff. Conversely, the number of "hits" in group b is also binomially distributed with parameters $n_b$ and $p_b$, where $p_b$ is the proportion of scores in population b below/above a cutoff. The population tail ratio for a given cutoff value and region of interest is thus the ratio:
 
-$$ TR = \frac{p_{a|b}}{p_{b|a}}$$
+$$TR = \frac{p_{a|b}}{p_{b|a}}$$
 
 The observed data can be thought of as 2 x 2 table of the following form:
 
-| Group | hits | misses | sum |
-|-------|------|--------|-----|
-|a|$n_{11}$|$n_{12}$|$n_{1.}$ |
-|b|$n_{21}$|$n_{22}$|$n_{2.}$ |
+<table>
+  <thead>
+	  <tr>
+		  <th scope = col>Group</th>
+		  <th scope = col>hits</th>
+		  <th scope = col>misses</th>
+		  <th scope = col>sum</th>
+	  </tr>
+	</thead>
+	<tbody>
+  	<tr>
+  	  <td>a</td>
+  	  <td>\(n_{11}\)</td>
+  	  <td>\(n_{12}\)</td>
+  	  <td>\(n_{1\cdot}\)</td>
+  	</tr>
+  	<tr>
+  	  <td>b</td>
+  	  <td>\(n_{21}\)</td>
+  	  <td>\(n_{22}\)</td>
+  	  <td>\(n_{2\cdot}\)</td>
+    </tr>
+  </tbody>
+</table>
 
 The point estimate of the population tail ratio can be written as:
 
@@ -135,11 +147,7 @@ When "hits" are defined as scores below *t*:
 
 with
 
-$$ I_{\{x \leq t\}}(x) = \begin{cases}
-1 & \text{if } x \leq t \cr
-0 & \text{if } x \gt t
-\end{cases}
-$$
+$$I_{\{x \leq t\}}(x) = \begin{cases} 1 & \text{if } x \leq t \cr 0 & \text{if } x \gt t \end{cases}$$
 
 and when "hits" are defined as scores above *t*:
 
@@ -148,43 +156,39 @@ and when "hits" are defined as scores above *t*:
 
 with
 
-$$ I_{\{x \geq t\}}(x) = \begin{cases}
-1 & \text{if } x \geq t \cr
-0 & \text{if } x \lt t
-\end{cases}
-$$
+$$I_{\{x \geq t\}}(x) = \begin{cases} 1 & \text{if } x \geq t \cr 0 & \text{if } x \lt t \end{cases}$$
 
 With $n_{11}, n_{21}, n_{1.}$ and $n_{2.}$ defined and computed the ratio of the binomial proportions $\hat{p}_a$ and $\hat{p}_b$ and consequently the point estimate of the tail ratio can be determined.
 
-An approximate confidence interval is implemented for both the parametric and the nonparametric analyses. Fagerland et al. (2015) analysed multiple approximate and exact confidence intervals for the ratio of binomial proportions. While none of the assessed procedures yielded appropriate coverage rates across the various conditions the authors examined, the Koopman confidence interval (Koopman, 1984) performed decently across most of the studied scenarios and has been recommended by the authors. However, Fagerland et al. (2015) emphasize that while the Koopman interval is in general closest to the nominal level, it can be somewhat liberal (average coverage probabilities between 0.92 and 0.95 for an $1 - \alpha$ level of 0.95) for combinations of unequal sample sizes and small population proportions ($p_{a|b} \leq 0.2$). Koopman (1984) described an iterative search algorithm for finding the confidence limit, however Nam (1995) found a closed form formula, which has been implemented for this application. Since both the iterative search and the closed form solution are quite elaborate and have been described in detail in the cited literature, neither is described in detail here.
+An approximate confidence interval is implemented for both the parametric and the nonparametric analyses. Fagerland et al. (2015) analysed multiple approximate and exact confidence intervals for the ratio of binomial proportions. While none of the assessed procedures yielded appropriate coverage rates across the various conditions the authors examined, the Koopman confidence interval (Koopman, 1984) performed decently across most of the studied scenarios and has been recommended by the authors. However, Fagerland et al. (2015) emphasize that while the Koopman interval is in general closest to the nominal level, it can be somewhat liberal (average coverage probabilities between 0.92 and 0.95 for an $1 - \alpha$ level of 0.95) for combinations of unequal sample sizes and small population proportions ( $p_{a|b} \leq 0.2$ ). Koopman (1984) described an iterative search algorithm for finding the confidence limit, however Nam (1995) found a closed form formula, which has been implemented for this application. Since both the iterative search and the closed form solution are quite elaborate and have been described in detail in the cited literature, neither is described in detail here.
 
 Additionally, an $1 - \alpha$ percentile bootstrap CI is computed.
 
 <br>
 
-<h2 id = "IG_NP_OM"> 4 Nonparametric estimators of measures of (non-)overlap </h2>
+<h2 id="IG_NP_OM"> 4 Nonparametric estimators of measures of (non-)overlap </h2>
 
 For the documentation of these measures the following notation will be used:  
 Let $X_a$ denote the random variable 'score of a random member of population ***a***' and $X_b$ denote the random variable 'score of a random member of population ***b***. Further, let $F_a$ and $F_b$ denote the corresponding absolutely continuous distribution functions and $f_a$ and $f_b$ the corresponding probability density functions respectively.
 
 <br>
 
-<h3 id = "IG_NP_OVL"> 4.1 The nonparametric coefficient of overlapping (\(OVL\)) </h3>
+<h3 id="IG_NP_OVL"> 4.1 The nonparametric coefficient of overlapping (\(OVL\)) </h3>
 
 The population effect of interest is given by (e.g., Schmid & Schmidt, 2006):
 
-$$ OVL = \int_{-\infty}^{\infty} \min \{ f_a(x), f_b(x) \} dx $$
+$$OVL = \int_{-\infty}^{\infty} \min \{ f_a(x), f_b(x) \} dx$$
 
-The coefficient of overlapping ($OVL$) is thus defined as the common area under two probability densities---i.e., the proportion of overlap between the two distributions/populations---and can for example be used as a measure of agreement of two distributions (Bradley, 2006).
+The coefficient of overlapping ( $OVL$ ) is thus defined as the common area under two probability densities---i.e., the proportion of overlap between the two distributions/populations---and can for example be used as a measure of agreement of two distributions (Bradley, 2006).
 
 Nonparametric estimators of the above quantity can be obtained by replacing the densities by appropriate kernel density estimators and the integrals by an appropriate quadrature formula.
 Assuming $x_{a_1}$, ..., $x_{a_{n_a}}$ denote observations of random variable $X_a$, a density estimator for *f* is obtained by (Schmid & Schmidt, 2006):
 
-$$ \hat{f_{n_a}}(x) = \hat{f_{n_a}}(x|x_{a_i},\, i =1\ldots n) = \frac{1}{n_a}  \sum_{i = 1}^{n_a} \frac{1}{b} K \left( \frac{x - x_{a_i}}{b} \right)$$
+$$\hat{f_{n_a}}(x) = \hat{f_{n_a}}(x|x_{a_i},\, i =1\ldots n) = \frac{1}{n_a}  \sum_{i = 1}^{n_a} \frac{1}{b} K \left( \frac{x - x_{a_i}}{b} \right)$$
 
 where kernel *K* and bandwidth ***b*** are to be determined. $\hat{f}_{n_b}$ can be defined analogously. To derive estimators for the $OVL$, $x_{a_i}$ can be transformed into the unit interval by an appropriate affine transformation. The integrals over the unit interval can now be approximated by a trapezoidal rule, resulting in (Schmid & Schmidt, 2006):
 
-$$ \widehat{OVL} = \frac{1}{k} \sum_{i = 1}^k \frac{1}{2} \left( \min \left\{ \hat{f_{n_a}}  \left( \frac{i}{k} \right), \hat{f_{n_b}} \left( \frac{i}{k} \right) \right\} + \min \left\{ \hat{f_{n_a}} \left( \frac{i-1}{k} \right), \hat{f_{n_b}} \left( \frac{i-1}{k} \right) \right\} \right) $$
+$$\widehat{OVL} = \frac{1}{k} \sum_{i = 1}^k \frac{1}{2} \left( \min \left\{ \hat{f_{n_a}}  \left( \frac{i}{k} \right), \hat{f_{n_b}} \left( \frac{i}{k} \right) \right\} + \min \left\{ \hat{f_{n_a}} \left( \frac{i-1}{k} \right), \hat{f_{n_b}} \left( \frac{i-1}{k} \right) \right\} \right)$$
 
 where *k* denotes the number of equidistant subintervals of the unit interval.
 
@@ -192,21 +196,21 @@ Anderson et al. (2012) describes the asymptotic properties of various nonparamet
 
 <br>
 
-<h3 id = "IG_NP_OVL2"> 4.2 The nonparametric coefficient of overlapping two (\(OVL_2\)) </h3>
+<h3 id="IG_NP_OVL2"> 4.2 The nonparametric coefficient of overlapping two (\(OVL_2\)) </h3>
 
 The population effect of interest is given by:
 
-$$ OVL_2 = \frac{\int_{-\infty}^{\infty} \min \{ f_a(x), f_b(x) \} dx}{\int_{-\infty}^{\infty} \max \{ f_a(x), f_b(x) \} dx} = \frac{OVL}{\int_{-\infty}^{\infty} \max \{ f_a(x), f_b(x) \} dx} $$
+$$OVL_2 = \frac{\int_{-\infty}^{\infty} \min \{ f_a(x), f_b(x) \} dx}{\int_{-\infty}^{\infty} \max \{ f_a(x), f_b(x) \} dx} = \frac{OVL}{\int_{-\infty}^{\infty} \max \{ f_a(x), f_b(x) \} dx}$$
 
-The coefficient of overlapping 2 ($OVL_2$) is the proportion of overlap relative to the joint distribution of two contrasted populations (DelGiudice, 2019), which is the amount of combined area shared by the two populations.
+The coefficient of overlapping 2 ( ${OVL}_2$ ) is the proportion of overlap relative to the joint distribution of two contrasted populations (DelGiudice, 2019), which is the amount of combined area shared by the two populations.
 
-A nonparametric estimator of the above quantity may be obtained by estimating the numerator and denominator separately and dividing the two quantities. The numerator can be estimated as described in detail above (see $\widehat{OVL}$). The denominator can be estimated in a similar fashion:
+A nonparametric estimator of the above quantity may be obtained by estimating the numerator and denominator separately and dividing the two quantities. The numerator can be estimated as described in detail above (see $\widehat{OVL}$ ). The denominator can be estimated in a similar fashion:
 
-$$ \hat{\theta} = \frac{1}{k} \sum_{i = 1}^k \frac{1}{2} \left( \max \left\{  \hat{f}_{n_a} \left( \frac{i}{k} \right), \hat{f}_{n_b} \left( \frac{i}{k} \right) \right\} + \max \left\{ \hat{f}_{n_a} \left( \frac{i - 1}{k} \right), \hat{f}_{n_b} \left( \frac{i - 1}{k} \right) \right\} \right) $$
+$$\hat{\theta} = \frac{1}{k} \sum_{i = 1}^k \frac{1}{2} \left( \max \left\{  \hat{f}_{n_a} \left( \frac{i}{k} \right), \hat{f}_{n_b} \left( \frac{i}{k} \right) \right\} + \max \left\{ \hat{f}_{n_a} \left( \frac{i - 1}{k} \right), \hat{f}_{n_b} \left( \frac{i - 1}{k} \right) \right\} \right)$$
 
 giving the estimator:
 
-$$ \widehat{OVL}_2 = \frac{\widehat{OVL}}{\hat{\theta}} $$
+$$\widehat{OVL}_2 = \frac{\widehat{OVL}}{\hat{\theta}}$$
 
 Grice and Barret(2014) argue that $OVL$ is to be preferred over $OVL_2$ in most contexts, because $OVL_2$ gives information about overlap and nonoverlap with respect to the joint distribution or combined area of the two distributions, which is unitutitive. $OVL$, on the other hand, indicates what proportion of the area a distribution shares with the other distribution which is easier to interpret.
 
@@ -214,17 +218,17 @@ We could not identify a closed form formula for the confidence interval of this 
 
 <br>
 
-<h3 id = "IG_NP_U1"> 4.3 Nonparametric Cohen's \(U_1\) </h3>
+<h3 id="IG_NP_U1"> 4.3 Nonparametric Cohen's \(U_1\) </h3>
 
 The population effect of interest is given by:  
 
-$$ U_1 = \frac{\int_{-\infty}^{\infty} \max \{ f_a(x), f_b(x) \} dx  - \int_{-\infty}^{\infty} \min \{ f_a(x), f_b(x) \} dx}{\int_{-\infty}^{\infty} \max \{ f_a(x), f_b(x) \} dx} = 1 - \frac{\int_{-\infty}^{\infty} \min \{ f_a(x), f_b(x) \} dx}{\int_{-\infty}^{\infty} \max \{ f_a(x), f_b(x) \} dx} = 1 - OVL_2 $$
+$$U_1 = \frac{\int_{-\infty}^{\infty} \max \{ f_a(x), f_b(x) \} dx  - \int_{-\infty}^{\infty} \min \{ f_a(x), f_b(x) \} dx}{\int_{-\infty}^{\infty} \max \{ f_a(x), f_b(x) \} dx} = 1 - \frac{\int_{-\infty}^{\infty} \min \{ f_a(x), f_b(x) \} dx}{\int_{-\infty}^{\infty} \max \{ f_a(x), f_b(x) \} dx} = 1 - OVL_2$$
 
 Cohen's $U_1$ can be interpreted as proportion of nonoverlap relative to the joint distribution of two populations (DelGiudice, 2019), which is the amount of combined area not shared by the two populations (Cohen, 1988).
 
-A nonparametric estimator of $U_1$ was implemented by making use of the relation between $U_1$ and $OVL_2$. Since $OVL_2$ is a measure of the proportion of overlap of the combined area of the two distributions and $U_1$ is a measure of the proportion of nonoverlap of the same area, $U_1$ can be expressed as a function of $OVL_2$ ($U_1 = 1 - OVL_2$) and consequently the estimator is given by:
+A nonparametric estimator of $U_1$ was implemented by making use of the relation between $U_1$ and $OVL_2$. Since $OVL_2$ is a measure of the proportion of overlap of the combined area of the two distributions and $U_1$ is a measure of the proportion of nonoverlap of the same area, $U_1$ can be expressed as a function of ${OVL}_2$ (i.e., $U_1 = 1 - OVL_2$ ) and consequently the estimator is given by:
 
-$$ \hat{U}_1 = 1 - \widehat{OVL}_2$$
+$$\hat{U}_1 = 1 - \widehat{OVL}_2$$
 
 with $\widehat{OVL}_2$ being calculated as described above.
 
@@ -234,45 +238,33 @@ We could not identify a closed form formula for the CI of this ES. Thus, a $1 - 
 
 <br>
 
-<h3 id = "IG_NP_U2"> 4.4 Nonparametric Cohen's \(U_2\) </h3>
+<h3 id="IG_NP_U2"> 4.4 Nonparametric Cohen's \(U_2\) </h3>
 
 The population effect on interest is is the proportion of population ***a*** that exceeds the same proportion in population ***b***. Thus a value of 0.7 means that the top 70% of population ***a*** exceed the bottom 70% of population ***b***.
 
 We propose the following nonparametric estimator for the above population effect:
 
-$$ \hat{U}_2 = \hat{F}_b(x_{a_{(t)}}) $$
+$$\hat{U}_2 = \hat{F}_b(x_{a_{(t)}})$$
 
 for a value of *t* that satisfies
-$$
-t \in \{ x_{a_{(1)}}, \ldots, x_{a_{(n_a)}} \} :
-\begin{cases}
-1 - \hat{F}_a( x_{a_{(t)}} ) > \hat{F}_b( x_{a_{(t)}} ) \cr
-1 - \hat{F}_a( x_{a_{(t - 1)}} ) < \hat{F}_b( x_{a_{(t -1)}} )
-\end{cases}
-$$
+$$t \in \{ x_{a_{(1)}}, \ldots, x_{a_{(n_a)}} \} : \begin{cases} 1 - \hat{F}_a( x_{a_{(t)}} ) > \hat{F}_b( x_{a_{(t)}} ) \cr1 - \hat{F}_a( x_{a_{(t - 1)}} ) < \hat{F}_b( x_{a_{(t -1)}}) \end{cases}$$
 
 where $x_{a_{(1)}, \ldots, x_{a_{(n_a)}}}$ are the order statistics of the group ***a*** observations and $\hat{F}_{a|b}$ is the empirical distribution function of group ***a***/***b*** given by:
 
-$$ \hat{F}_{a|b}(t) = \frac{1}{n_{a|b}} \sum_{i = 1}^{n_{a|b}} I_{\{x_{{a|b}_i} \leq t\}}(x_{{a|b}_i}) $$
+$$\hat{F}_{a|b}(t) = \frac{1}{n_{a|b}} \sum_{i = 1}^{n_{a|b}} I_{\{x_{{a|b}_i} \leq t\}}(x_{{a|b}_i})$$
 
 with
-$$
-I_{\{x_{{a|b}_i} \leq t\}} (x_{{a|b}_i}) =
-\begin{cases}
-1 & \text{if } x_{{a|b}_i} \leq t \cr
-0 & \text{if } x_{{a|b}_i} \gt t
-\end{cases}
-$$
+$$I_{\{x_{{a|b}_i} \leq t\}} (x_{{a|b}_i}) = \begin{cases} 1 & \text{if } x_{{a|b}_i} \leq t \cr 0 & \text{if } x_{{a|b}_i} \gt t \end{cases}$$
 
 The above estimator of $U_2$ can also be thought of as the value of $\hat{F}_b$ at the intersection point of $1 - \hat{F}_a$ and $\hat{F}_b$---which has to be determined by an iterative search algorithm since empirical distribtuion functions are always discrete.
 
 It should be noted that if
 
-$$ \max \{ x_{a_1}, \ldots, x_{a_{n_a}} \} < \min \{ x_{b_1}, \ldots, x_{n_{b}} \} $$
+$$\max \{ x_{a_1}, \ldots, x_{a_{n_a}} \} < \min \{ x_{b_1}, \ldots, x_{n_{b}} \}$$
 
 then $\hat{U}_2$ is set to 0 and conversely, if
 
-$$ \min \{ x_{a_1}, \ldots, x_{a_{n_a}} \} > \max \{ x_{b_1}, \ldots, x_{n_{b}} \} $$
+$$\min \{ x_{a_1}, \ldots, x_{a_{n_a}} \} > \max \{ x_{b_1}, \ldots, x_{n_{b}} \}$$
 
 $\hat{U}_2$ is set to 1.
 
@@ -280,30 +272,28 @@ An $1 - \alpha$ percentile bootstrap CI is implemented exclusively.
 
 <br>
 
-<h3 id = "IG_NP_U3"> 4.5 Nonparametric Cohen's \(U_3\) </h3>
+<h3 id="IG_NP_U3"> 4.5 Nonparametric Cohen's \(U_3\) </h3>
 
 For the following description we assume that group ***a*** has a higher mean than group ***b***.
 
 The population effect of interest is given by:
 
-$$ U_3 = F_b(Q_a(0.5)) $$
+$$U_3 = F_b(Q_a(0.5))$$
 
 with $F_b(\cdot)$ being the cumulative distribution function of population ***b*** and $Q_a(\cdot)$ being the quantile function of population ***a***. Consequently, Cohen's measure of nonoverlap $U_3$ is the proportion of the population with the lower mean (***b***) which the upper half of the cases (the top 50%) of the population with the higher mean (***a***) exceeds (Cohen, 1988). Thus, a value of 0.7 for example means that the top 50% of population ***a*** exceed 70% of population ***b***. Alternatively, one could conclude that the median member of population ***a*** exceeds 70% of the members of population ***b***.
 
 A nonparametric estimator of the above quantity is given by:
 
-$$ \hat{U}_3 = \hat{F}_b(\hat{Q}_a(0.5))  $$
+$$\hat{U}_3 = \hat{F}_b(\hat{Q}_a(0.5))$$
 
 with $\hat{F}_b(\cdot)$ being the empirical distribution function of group ***b*** and $\hat{Q}_a(\cdot)$ being the empirical quantile function of group ***a***. The above formula can be written as:
 
-$$ \hat{U}_3 = \frac{1}{n_b} \sum_{i = 1}^{n_b} I_{ \{ x < Mdn_a \} } \left( x_{b_i} \right)$$
+$$\hat{U}_3 = \frac{1}{n_b} \sum_{i = 1}^{n_b} I_{ \{ x < Mdn_a \} } \left( x_{b_i} \right)$$
+
 with
-$$ I_{ \{ x < Mdn_a \} }(x) = \begin{cases}
-1 & \text{if } x \leq Mdn_a \cr
-0 & \text{if } x \gt Mdn_a
-\end{cases}
-$$
-and $Mdn_a$ being the median (=$\hat{Q}_a(0.5)$) of group ***a***, i.e., the group with the higher mean.
+$$I_{ \{ x < Mdn_a \} }(x) = \begin{cases} 1 & \text{if } x \leq Mdn_a \cr 0 & \text{if } x \gt Mdn_a \end{cases}$$
+
+and $Mdn_a$ being the median (= $\hat{Q}_a(0.5)$ ) of group ***a***, i.e., the group with the higher mean.
 
 Thus, the estimator of $U_3$ is the proportion of values of the group with the lower mean that gets exceeded by the median of the group with the higher mean.
 
@@ -311,21 +301,21 @@ We could not identify a closed form formula for the CI for this ES. Thus, a $1 -
 
 <br>
 
-<h2 id = "IG_NP_PM"> 5 Nonparametric estimators of probabilistic measures of effect </h2>
+<h2 id="IG_NP_PM"> 5 Nonparametric estimators of probabilistic measures of effect </h2>
 
-<h3 id = "IG_NP_A_measure"> 5.1 The probability of superiority (PS) </h3>
+<h3 id="IG_NP_A_measure"> 5.1 The probability of superiority (PS) </h3>
 
 The population effect of interest is given by:
 
-$$PS = \mathbb{P}(X_a > X_b) $$
+$$PS = \mathbb{P}(X_a > X_b)$$
 
-that is, the probability that a randomly sampled member of population ***a*** will have a score ($X_a$) that is higher than the score ($X_b$) attained by a randomly sampled member of population ***b*** (Grissom, 1994a). This is the same population effect estimated by the parametric Common Language (*CL*) ES statistic (see the documentation tab of the page on parametric ES for the independent groups design).
+that is, the probability that a randomly sampled member of population ***a*** will have a score ( $X_a$ ) that is higher than the score ( $X_b$ ) attained by a randomly sampled member of population ***b*** (Grissom, 1994a). This is the same population effect estimated by the parametric Common Language (*CL*) ES statistic (see the documentation tab of the page on parametric ES for the independent groups design).
 
 Therefore, the *PS* measures the probabilistic superiority of one group's scores over another group's scores. Since it is a probability, its value ranges from 0 to 1. A *PS* of 0 means that every member of population ***a*** is outscored by every member of population ***b***. A *PS* of 1 means that every member of population ***a*** outscores every member of population ***b***.
 
 A nonparametric estimator of this population effect is given by (Grissom, 1994a):
 
-$$ \hat{p}_{a>b} = \frac{U}{(n_an_b) - n_{ties}} $$
+$$\hat{p}_{a>b} = \frac{U}{(n_an_b) - n_{ties}}$$
 
 where *U* is
 
@@ -333,23 +323,20 @@ $$U = \sum_{i = 1}^{n_a}\sum_{j = 1}^{n_b}I_{\{x_{a_i} \gt X_{b_j}\}}(x_{a_i}, X
 
 and
 
-$$I_{ \{ x_{a_i} \gt x_{b_j} \} }(x_{a_i}, X_{b_j}) = \begin{cases}
-1 & \text{if }  x_{a_i} \gt X_{b_j} \cr
-0 & \text{if }  x_{a_i} \leq X_{b_j}
-\end{cases}$$
+$$I_{ \{ x_{a_i} \gt x_{b_j} \} }(x_{a_i}, X_{b_j}) = \begin{cases} 1 & \text{if }  x_{a_i} \gt X_{b_j} \cr 0 & \text{if }  x_{a_i} \leq X_{b_j} \end{cases}$$
 
 with *U* being the *U*-statistic---the number of times that the scores from one specified sample are higher than the scores from the other sample with which they are paired (with ties being ignored)---and $(n_an_b) - n_{ties}$ being the total number of possibles pairings minus the number of pairings resulting in a tie (which should optimally be 0 if this estimator is chosen). Thus, $\hat{p}_{a>b}$ is the proportion of times a group ***a*** score was higher than a group ***b*** score in the sample (with ties being ignored). This definition assumes no ties or equal allocations of ties (Grissom, 1994a). This assumption should hold for continuous dependent variables. However, in practice continuous variables can often only be measured coarsely, which might result in tied values. Additionally, psychological research also employs measures on an ordinal scale, which too likely yield ties. Grissom (1994b) recommended counting ties as half a "win". It can be argued that this leads to a slightly different definition of the population effect and thus it can be considered its own distinct ES - see the *A* measure of stochastic superiority below (Vargha & Delaney, 2000).
 
 $\hat{p}_{a>b}$ is a nonparamatetric estimator of the population effect also estimated by the *CL* ES statistic , in the sense that the former estimator's definition does not rely on the normality and homoscedasticity assumption of the latter estimator's.
 
-The means of the sampling distributions of $\hat{p}_{a>b}$  and the *CL* statistic are typically very similar when the population means are equal ($\mu_a = \mu_b$) with the correlation between the two sets of estimates found to be well over .9 in Monte-Carlo simulations (Grissom & Kim, 2001).  
+The means of the sampling distributions of $\hat{p}_{a>b}$  and the *CL* statistic are typically very similar when the population means are equal ( $\mu_a = \mu_b$ ) with the correlation between the two sets of estimates found to be well over .9 in Monte-Carlo simulations (Grissom & Kim, 2001).  
 However, as the difference between $\mu_a$ and $\mu_b$ increases, this correlation sometimes decreases to a value as low as approximately .2, and  the *CL* statistic tended to show more sampling error than the *PS* estimator as the difference increased.  
 Therefore, researchers who are estimating $\mathbb{P}(X_a > X_b)$ should think about reporting *PS* alongside, if not instead of, the *CL* ES, even when assuming normality and homoscedasticity (Grissom & Kim, 2001).
 
 The exact confidence interval is calculated based on Newcombe (2006):
 
-$$ UL = \hat{p}_{a>b} + z \sqrt{var(\hat{p}_{a>b})} $$
-$$ LL = \hat{p}_{a>b} - z \sqrt{var(\hat{p}_{a>b})} $$
+$$UL = \hat{p}_{a>b} + z \sqrt{var(\hat{p}_{a>b})}$$
+$$LL = \hat{p}_{a>b} - z \sqrt{var(\hat{p}_{a>b})}$$
 
 with *z* being:
 
@@ -357,13 +344,13 @@ $$z = \Phi^{-1}(1 - \frac{\alpha}{2})$$
 
 and $var(\hat{p}_{a>b})$ being:
 
-$$var(\hat{p}_{a>b}) = \hat{p}_{a>b}(1 - \hat{p}_{a>b}) \frac{1 + \frac{n (1 - \hat{p}_{a>b})}{2 - \hat{p}_{a>b}} + \frac{m \hat{p}_{a>b}}{1 + \hat{p}_{a>b}}}{nm}\$$
+$$var(\hat{p}_{a>b}) = \hat{p}_{a>b}(1 - \hat{p}_{a>b}) \frac{1 + \frac{n (1 - \hat{p}_{a>b})}{2 - \hat{p}_{a>b}} + \frac{m \hat{p}_{a>b}}{1 + \hat{p}_{a>b}}}{nm}$$
 
 Additionally, a $1 - \alpha$ percentile bootstrap CI is computed.
 
 <br>
 
-<h3 id = "IG_NP_A_measure"> 5.2 The \(A\) measure of stochastic superiority </h3>
+<h3 id="IG_NP_A_measure"> 5.2 The \(A\) measure of stochastic superiority </h3>
 
 The population effect of interest is given by:
 
@@ -381,9 +368,9 @@ If the dependent variable of interest is continuous and ties are not possible, t
 
 A nonparametric estimators of these population effects are given by (Vargha & Delaney, 2000):
 
-$$ \hat{A}_a = \frac{U'_a}{n_an_b} $$
+$$\hat{A}_a = \frac{U'_a}{n_an_b}$$
 
-$$ \hat{A}_b = \frac{U'_b}{n_an_b} $$
+$$\hat{A}_b = \frac{U'_b}{n_an_b}$$
 
 where $U'_a$ is
 
@@ -391,11 +378,7 @@ $$U'_a = \sum_{i = 1}^{n_a}\sum_{j = 1}^{n_b}I_{\{x_{a_i} \geq X_{b_j}\}}(x_{a_i
 
 with
 
-$$I_{\{x_{a_i} \geq x_{b_j}\}}(x_{a_i}, X_{b_j}) = \begin{cases}
-1 & \text{if } x_{a_i} \gt X_{b_j} \cr
-0.5 & \text{if } x_{a_i} = X_{b_j} \cr
-0 & \text{if } x_{a_i} \lt X_{b_j}
-\end{cases}$$
+$$I_{\{x_{a_i} \geq x_{b_j}\}}(x_{a_i}, X_{b_j}) = \begin{cases} 1 & \text{if } x_{a_i} \gt X_{b_j} \cr 0.5 & \text{if } x_{a_i} = X_{b_j} \cr 0 & \text{if } x_{a_i} \lt X_{b_j} \end{cases}$$
 
 and $U'_b$ being:
 
@@ -403,19 +386,15 @@ $$U'_a = \sum_{i = 1}^{n_a}\sum_{j = 1}^{n_b}I_{\{x_{a_i} \leq X_{b_j}\}}(x_{a_i
 
 with
 
-$$I_{\{x_{a_i} \leq x_{b_j}\}}(x_{a_i}, X_{b_j}) = \begin{cases}
-1 & \text{if } x_{a_i} \lt X_{b_j} \cr
-0.5 & \text{if } x_{a_i} = X_{b_j} \cr
-0 & \text{if } x_{a_i} \gt X_{b_j}
-\end{cases}$$
+$$I_{\{x_{a_i} \leq x_{b_j}\}}(x_{a_i}, X_{b_j}) = \begin{cases} 1 & \text{if } x_{a_i} \lt X_{b_j} \cr 0.5 & \text{if } x_{a_i} = X_{b_j} \cr 0 & \text{if } x_{a_i} \gt X_{b_j} \end{cases}$$
 
 with *U'* being the *U*-statistic accounting for ties---the number of times that the scores from one specified sample are higher than or equal to the scores from the other sample with which they are paired---and $n_an_b$ being the total number of possibles pairings. Thus, $\hat{A}_a$ is the proportion of times a group ***a*** score was higher than or equal to a group ***b*** score in the sample (and vice versa).  
 If this effect size is chosen by the user, both estimators are provided denoted as $\hat{A}_1$---estimating the second groups superioirty over the first (= $\hat{A}_a$ in the notation above)---and $\hat{A}_2$---estimating the first groups superiority over the first (= $\hat{A}_b$ in the notation above).
 
 The exact confidence interval is calculated based on Newcombe (2006):
 
-$$ UL = \hat{A}_{a|b} + z \sqrt{var(\hat{A}_{a|b})} $$
-$$ LL = \hat{A}_{a|b} - z \sqrt{var(\hat{A}_{a|b})} $$
+$$UL = \hat{A}_{a|b} + z \sqrt{var(\hat{A}_{a|b})}$$
+$$LL = \hat{A}_{a|b} - z \sqrt{var(\hat{A}_{a|b})}$$
 
 with *z* being:
 
@@ -423,25 +402,25 @@ $$z = \Phi^{-1}(1 - \frac{\alpha}{2})$$
 
 and $var(\hat{A}_{a|b})$ being
 
-$$var(\hat{A}_{a|b}) = \hat{A}_{a|b} (1 - \hat{A}_{a|b}) \frac{1 + \frac{n (1 - \hat{A}_{a|b})}{2 - \hat{A}_{a|b}} + \frac{m \hat{A}_{a|b}}{1 + \hat{A}_{a|b}}}{mn}\$$
+$$var(\hat{A}_{a|b}) = \hat{A}_{a|b} (1 - \hat{A}_{a|b}) \frac{1 + \frac{n (1 - \hat{A}_{a|b})}{2 - \hat{A}_{a|b}} + \frac{m \hat{A}_{a|b}}{1 + \hat{A}_{a|b}}}{mn}$$
 
 Additionally, a $1 - \alpha$ percentile bootstrap CI is computed.
 
 <br>
 
-<h3 id = "IG_NP_GOR"> 5.3 Generalized odds ratio (\(OR_g\)) </h3>
+<h3 id="IG_NP_GOR"> 5.3 Generalized odds ratio (\(OR_g\)) </h3>
 
 The population effect of interest is given by:  
 
-$$ OR_{gpop} = \frac{\mathbb{P}(X_a > X_b)}{\mathbb{P}(X_b > X_a)} $$
+$$OR_{gpop} = \frac{\mathbb{P}(X_a > X_b)}{\mathbb{P}(X_b > X_a)}$$
 
 The $OR_{gpop}$---also known as Agresti's alpha---measures the odds that a randomly drawn score from population ***a*** will be superior to a randomly drawn score from population ***b***.
 
 A nonparametric estimator that does not make assumptions about the shape of the two population distributions given by (Grissom & Kim, 2012):
 
-$$ OR_g = \frac{\hat{p}_{a>b}}{\hat{p}_{b>a}}$$
+$$OR_g = \frac{\hat{p}_{a>b}}{\hat{p}_{b>a}}$$
 
-Thus, the generalized odds ratio ($OR_g$) is the probability of superiority of group ***a*** compared to group ***b*** divided by the probability of superiority of group ***b*** compared to group ***a***.  When there are not ties present/when ties are ignored, the above estimator can be rewritten as:
+Thus, the generalized odds ratio ( $OR_g$ ) is the probability of superiority of group ***a*** compared to group ***b*** divided by the probability of superiority of group ***b*** compared to group ***a***.  When there are not ties present/when ties are ignored, the above estimator can be rewritten as:
 
 $$OR_g = \frac{\hat{p}_{a>b}}{1 - \hat{p}_{a>b}}$$
 
@@ -451,19 +430,19 @@ We could not identify a closed form formula for the confidence interval of this 
 
 <br>
 
-<h3 id = "IG_NP_DM"> 5.4 Dominance measure (\(DM\))</h3>
+<h3 id="IG_NP_DM"> 5.4 Dominance measure (\(DM\))</h3>
 
 A variation of the probability of superiority was discussed by Cliff(1993) and is called Dominance Measure (*DM*):
 
-$$ DM = \mathbb{P}(X_a > X_b) - \mathbb{P}(X_b > X_a) $$
+$$DM = \mathbb{P}(X_a > X_b) - \mathbb{P}(X_b > X_a)$$
 
 Its estimator is consequently given by:
 
-$$ ds = \tilde{p}_{a>b} - \tilde{p}_{b>a} $$
+$$ds = \tilde{p}_{a>b} - \tilde{p}_{b>a}$$
 
 with
 
-$$ \tilde{p} = \frac{U}{n_a n_b}$$
+$$\tilde{p} = \frac{U}{n_a n_b}$$
 
 with *U* being defined as above (see documentation for the Probability of Superiority, *PS*).
 
@@ -475,8 +454,8 @@ $$DM = 2PS -1$$
 
 and as a result, the confidence limits for the DM can be calculated by transforming the confidence limits on the *PS* statistic as follows (Grissom & Kim, 2012):
 
-$$ UL = 2PS_{UL} - 1$$
-$$ UL = 2PS_{LL} - 1 $$
+$$UL = 2PS_{UL} - 1$$
+$$UL = 2PS_{LL} - 1$$
 
 with $PS_{UL}$ and $PS_{LL}$ being calculated as described above (see documentation for the *PS*).
 

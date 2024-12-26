@@ -68,7 +68,7 @@ $$ D = \sqrt{ \mathbf{(\mathbf{\mu_a} - \mathbf{\mu_b})}^T \mathbf{\Sigma}^{-1} 
 
 with $\mathbf{(\mathbf{\mu_a} - \mathbf{\mu_b})}$ being the vector of population mean differences on the dependent variables of interest and $\mathbf{\Sigma}^{-1}$ being the inverse of the common population covariance matrix of said variables. 
 
-The Mahalanobis distance $D$ generalises the concept of a standardised difference between means from the one-dimensional case to higher dimensions (Olejnik & Algina, 2000). Just as Cohen’s $d$ describes the distance between two group means in terms of the common standard deviation of the two groups, so does $D$ measure the distance between the mean vectors (centroids) of the two groups in terms of the common multivariate standard deviation of the two groups (Del Giudice, 2009). In fact $D$ is a function of the Cohen’s $d$’s of the dependent variables of interest (e.g., Olejnik & Algina, 2000): The above definition can be rewritten in terms of the vector of Cohen's $\delta$'s of the dependent variables of interest ($\mathbf{\delta}$) and the inverse of the common correlation matrix of the variables ($\mathbf{P}^{-1}$):  
+The Mahalanobis distance $D$ generalises the concept of a standardised difference between means from the one-dimensional case to higher dimensions (Olejnik & Algina, 2000). Just as Cohen’s $d$ describes the distance between two group means in terms of the common standard deviation of the two groups, so does $D$ measure the distance between the mean vectors (centroids) of the two groups in terms of the common multivariate standard deviation of the two groups (Del Giudice, 2009). In fact $D$ is a function of the Cohen’s $d$’s of the dependent variables of interest (e.g., Olejnik & Algina, 2000): The above definition can be rewritten in terms of the vector of Cohen's $\delta$'s of the dependent variables of interest ( $\mathbf{\delta}$ ) and the inverse of the common correlation matrix of the variables ( $\mathbf{P}^{-1}$ ):  
 
 $$ D = \sqrt{ \mathbf{\delta}^T \mathbf{P}^{-1} \mathbf{\delta} } $$
 
@@ -94,13 +94,13 @@ $$ LL = \lambda_L \frac{n_a + n_b}{n_a n_b} $$
 
 $$ UL = \lambda_U \frac{n_a + n_b}{n_a n_b} $$ 
 
-Resiser (2001) noted that while the actual coverage rate is conservative ($1 - \frac{\alpha}{2}$) when $D = 0$, the procedure yields close to nominal coverage rates for values of $D > 0$.  
+Resiser (2001) noted that while the actual coverage rate is conservative ( $1 - \frac{\alpha}{2}$ ) when $D = 0$, the procedure yields close to nominal coverage rates for values of $D > 0$.  
 
 Additionally, a $1 - \alpha$ percentile bootstrap confidence interval is implemented.  
 
 <br>
 
-<h5 id = "mult_H2"> 2.1.1.1 \(H_2\) </h5>
+<h5 id="mult_H2"> 2.1.1.1 \(H_2\) </h5>
 
 As remarked above, it is impossible to assess whether an observed value of $\hat{D}$ is the result of equal contributions of differences on all $p$ studied dependent variables or is mainly driven by very large differences on a small number of variables (Del Giudice, 2017). The first of the two measures introduced by Del Giudice (2017, 2018) to address this conundrum is the $H_2$ statistic. It attempts to measure the inequality in the contributions of differences on individual variables by computing the (corrected) Gini index of the absolute values of individual "contribution" scores $C_i$. The $p$ "contribution" scores are computed based on a decomposition of $\hat{D}^2$:  
 
@@ -120,7 +120,7 @@ A $1 - \alpha$ percentile bootstrap confidence interval is implemented exclusive
 
 <br>
 
-<h5 id = "mult_H2"> 2.1.1.1 \(EPV_2\) </h5>
+<h5 id="mult_H2"> 2.1.1.1 \(EPV_2\) </h5>
 
 The second statistic introduced by Del Giudice (2017, 2018) to address the question whether the observed value of $\hat{D}$ is the result of equal contributions by every dependent variable used for computing it or is mainly driven by a few large differences is called $EPV_2$. It is itself a function of the $H_2$ statistic:  
 
@@ -140,7 +140,7 @@ $$ D_u = \sqrt{ \max \{ 0, \hat{D}^2 \frac{n_a + n_b - p -3}{n_a + nb - 2} - p \
 
 with $\hat{D}$ being calculated as described above and $p$ being the number of dependent variables considered.  
 
-This bias-corrected estimator removes the upward bias of $\hat{D}$, which can get especially large when the collected sample size ($N = n_a + n_b$) is small relative to the number of variables ($p$) and when the population value of $D$ is small ($D < 0.45$) (Del Giudice, 2022).  
+This bias-corrected estimator removes the upward bias of $\hat{D}$, which can get especially large when the collected sample size ( $N = n_a + n_b$ ) is small relative to the number of variables ( $p$ ) and when the population value of $D$ is small ( $D < 0.45$ ) (Del Giudice, 2022).  
 
 A noncentral *F* based CI is implemented as described for $D$ according to Reiser (2001). The limits of the CI obtained using the above method are simply transformed from $\hat{D}$ values into $\hat{D}_u$ values by applying the correction described in this section.  
 
@@ -150,7 +150,7 @@ Additionally, a $1 - \alpha$ percentile bootstrap CI is implemented exclusively.
 
 <h4 id="mult_ovl">2.2.1 The multivariate coefficient of overlapping (\(OVL\))</h4>
 
-The multivariate coefficient of overlapping ($OVL$) is defined as the common area under the multivariate probability densities of the two groups---i.e., the proportion of overlap between the multivariate distributions---and is used as a measure of agreement of two multivariate distributions (Reiser, 2001). When the compared groups are assumed to follow multivariate normal distributions with identical covariance matrices the multivariate $OVL$ can be expressed by simply plugging Mahalanobi's $D$ into the normal cumulative distribution function, giving the formula:
+The multivariate coefficient of overlapping ( $OVL$ ) is defined as the common area under the multivariate probability densities of the two groups---i.e., the proportion of overlap between the multivariate distributions---and is used as a measure of agreement of two multivariate distributions (Reiser, 2001). When the compared groups are assumed to follow multivariate normal distributions with identical covariance matrices the multivariate $OVL$ can be expressed by simply plugging Mahalanobi's $D$ into the normal cumulative distribution function, giving the formula:
 
 $$ OVL = 2 \Phi \left( \frac{-D}{2} \right) $$
 
@@ -166,7 +166,7 @@ We could not identify a closed form formula for the CI of this ES. Thus, a $1 - 
 
 <h4 id="mult_ovl2">2.2.2 The Coefficient of Overlapping (\(OVL_2\))</h4>
 
-The multivariate coefficient of overlapping 2 ($OVL_2$) is the proportion of overlap relative to the combined multivariate density function of two contrasted populations (Del Giudice, 2022), which is the amount of combined area under the combined multivariate density shared by the two populations. When the compared groups are assumed to follow multivariate normal distributions with identical covariance matrices the multivariate $OVL_2$ can be expressed as a function of $OVL$ and thus of $D$ (Del Giudice, 2022):
+The multivariate coefficient of overlapping 2 ( $OVL_2$ ) is the proportion of overlap relative to the combined multivariate density function of two contrasted populations (Del Giudice, 2022), which is the amount of combined area under the combined multivariate density shared by the two populations. When the compared groups are assumed to follow multivariate normal distributions with identical covariance matrices the multivariate $OVL_2$ can be expressed as a function of $OVL$ and thus of $D$ (Del Giudice, 2022):
 
 $$ OVL_2 = \frac{OVL}{2 - OVL} = \frac{\Phi(-\hat{D}/2)}{1 - \Phi(-hat{D}/2)} $$
 
@@ -220,9 +220,9 @@ We could not identify a closed form formula for the CI for this ES. Thus, a $1 -
 
 <h3 id="mult_normality_EF"> 2.3 Probabilistic measures of effect </h3>
 
-<h4 id = "IG_P_CLES">2.3.1 The Common Language ES (\(CLES\)) </h4>
+<h4 id="IG_P_CLES">2.3.1 The Common Language ES (\(CLES\)) </h4>
 
-Del Giudice (2022) described the multivariate Common Language ES ($CLES$) as the probability that the combination of values of the dependent variables of a randomly selected member of one group is more typical of that group than the combination of values of a randomly sampled member of the other group. For a discussion on what defines the typicality of an observation see Del Giudice (2022). When the compared groups are assumed to follow multivariate normal distributions with identical covariance matrices the multivariate $CLES$ can be expressed by simply plugging Mahalanobi's $D$ into the normal cumulative distribution function, giving the formula:  
+Del Giudice (2022) described the multivariate Common Language ES ( $CLES$ ) as the probability that the combination of values of the dependent variables of a randomly selected member of one group is more typical of that group than the combination of values of a randomly sampled member of the other group. For a discussion on what defines the typicality of an observation see Del Giudice (2022). When the compared groups are assumed to follow multivariate normal distributions with identical covariance matrices the multivariate $CLES$ can be expressed by simply plugging Mahalanobi's $D$ into the normal cumulative distribution function, giving the formula:  
 
 $$ CL = \Phi \left( \frac{D}{\sqrt{2}} \right) $$
 

@@ -290,7 +290,7 @@ multivariateExampleAggregateData2 <-
 
 homePageContent <- 
   fluidPage(
-    includeCSS("style/home_page_style.css"),
+    includeCSS("www/home_page_style.css"),
     fluidRow(
       column(
         width=10,
@@ -369,7 +369,7 @@ homePageContent <-
                     <hr>
                     <div class = accordion_container>
                       <div class = accordion_label>
-                        <h2>Design-specific data requirements  example data sets</h2>
+                        <h2>Design-specific data requirements & example data sets</h2>
                       </div>
                       <div class = accordion_content>
               "

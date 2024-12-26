@@ -43,14 +43,3 @@ multivariateMeasures <-
       tabName = paste0('multivariate', 'Educational')
     )
   )
-
-footer <- tags$footer(
-  style = 'position: absolute; 
-          bottom: 0; 
-          width: 100%; 
-          padding: 10px; 
-          text-align: center; 
-          background-color: #222d32; 
-          color: #b8c7ce;',
-  paste0("Version: ", app_version)
-  )
