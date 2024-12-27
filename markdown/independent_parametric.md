@@ -443,9 +443,11 @@ However, Bonett (2008) advocates for the use of $\delta'$ and argues that it is 
 
 The sample estimate of the  population effect is given by the formula (e.g., Bonett, 2008):
 
-$$ d' = \frac{\bar{X}_a - \bar{X}_b}{s'} $$
+$$d' = \frac{\bar{X}_a - \bar{X}_b}{s'}$$
 
-with $ s' = \sqrt{\frac{s_a^2 + s_b^2}{2}} $
+with 
+
+$$s' = \sqrt{\frac{s_a^2 + s_b^2}{2}}$$
 
 If $n_a = n_b$, then $s_p$ will be equal to $s'$ and thus $d$ will be equal to $d'$. This estimator has a bias. It systematically overestimates the size of the true population standardised mean difference. This bias can be corrected - see Hedges' $g'$.  
 
@@ -525,9 +527,15 @@ One of many alternate parametric estimators (e.g., see Grissom, 1994) of the abo
 
 $$ CL_d = \Phi \left( \frac{d}{\sqrt2} \right) $$
 
-This estimator relies additionally to the normality assumption on the equality of variances assumption, in which case $\sigma_D^2 = \sigma_a^2 + \sigma_b^2 = \sigma^2 + \sigma^2 = 2\sigma^2$. Since $s_p$ is an appropriate estimator for $\sigma$ the population variance of diffrence scores ( $\sigma_D^2 = 2\sigma^2$ ) can be estimated as $s_d^2 = 2 s_p^2$. Consequently $ CL_d = \frac{d}{\sqrt{2}} = \frac{\bar{X}_a - \bar{X}_b}{\sqrt{2 s_p^2}} $.
+This estimator relies additionally to the normality assumption on the equality of variances assumption, in which case $\sigma_D^2 = \sigma_a^2 + \sigma_b^2 = \sigma^2 + \sigma^2 = 2\sigma^2$. Since $s_p$ is an appropriate estimator for $\sigma$ the population variance of diffrence scores ( $\sigma_D^2 = 2\sigma^2$ ) can be estimated as $s_d^2 = 2 s_p^2$. Consequently,
 
-Coincidentally, when sample sizes are equal $n_a = n_b = n$, then $CL_d = \Phi ( \frac{\bar{X}_a - \bar{X}_b}{\sqrt{\frac{(n-1)(s_a^2 + s_b^2)}{\frac{2(n-1)}{2}}}} ) =  \Phi ( \frac{\bar{X}_a - \bar{X_b}}{\sqrt{s_a^2 + s_b^2}} )$ is equal to the estimator not assuming equality of variances. However, when $n_a \neq n_b$ and equality of variances is not assumed, $CL_d$ only approximates the value of $CL$ ( $CL_d \approx CL$ ).  
+ $$CL_d = \frac{d}{\sqrt{2}} = \frac{\bar{X}_a - \bar{X}_b}{\sqrt{2 s_p^2}}$$
+
+Coincidentally, when sample sizes are equal --- i.e., $n_a = n_b = n$, then 
+
+$$CL_d = \Phi ( \frac{\bar{X}_a - \bar{X}_b}{\sqrt{\frac{(n-1)(s_a^2 + s_b^2)}{\frac{2(n-1)}{2}}}} ) =  \Phi ( \frac{\bar{X}_a - \bar{X_b}}{\sqrt{s_a^2 + s_b^2}} )$$
+
+ is equal to the estimator not assuming equality of variances. However, when $n_a \neq n_b$ and equality of variances is not assumed, $CL_d$ only approximates the value of $CL$ ( $CL_d \approx CL$ ).  
 
 No closed form formulas were identified for the computation of a ( $1 - \alpha$ ) CI for the *CL* ES. Mastrich & Hernandez (2021) recommends to transform the bounds of the CI of $d$ "to provide a sense of uncertainty around the reported CLES" (p. 733). The user of this application can use the above formula on the CI limits given by the application for $d$ to transform these limits into $CL_d$ values, if they wish to do so. Otherwise, a $1 - \alpha$ percentile bootstrap CI is computed and can be used to communicate said uncertainty.
 
@@ -633,7 +641,7 @@ The observed data can be thought of as 2 x 2 table of the following form:
 
 The point estimate of the population tail ratio can be written as:  
 
-$$ \widehat{TR} = \frac{\hat{p}_{a|b}}{\hat{p}_{b|a}} $$
+$$\widehat{TR} = \frac{\hat{p}_{a|b}}{\hat{p}_{b|a}}$$
 
 with $\hat{p}_a = \frac{n_{11}}{n_{1.}}$ and $\hat{p}_b = \frac{n_{21}}{n_{2.}}$.  
 
