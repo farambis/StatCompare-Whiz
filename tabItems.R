@@ -1,5 +1,6 @@
 source('uiTabItemGeneratingFunction.R')
 source('uiHomePage.R')
+source('uiChangelog.R')
 
 # all_eff_sizes and all_test_statistics are defined in function_ready.R 
 
@@ -371,3 +372,8 @@ multivariateEducational <- tabItem(tabName = 'multivariateEducational',
                                    )
 )
 
+changelogBody <-
+  tabItem(
+    tabName = "changelog",
+    changelogContent
+  )

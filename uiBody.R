@@ -14,7 +14,8 @@ body <- dashboardBody(
     mixedDesignParametricEducational,
     mixedDesignNonParametric,
     multivariateRawData,
-    multivariateEducational
+    multivariateEducational,
+    changelogBody
   ),
   tags$div(id = "back-to-top", class = "back-to-top", icon("arrow-up")),
   includeScript('www/custom.js')
