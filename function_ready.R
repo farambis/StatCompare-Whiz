@@ -221,7 +221,7 @@ generate_es_raw_data_dataframe <- function(es_list, INDEX = NULL, x, y, tail, re
                   "bonett_d_corr" = c(bonett_d_corr(x = x, INDEX = INDEX), bonett_d_corr_ci(x = x, INDEX = INDEX, alpha = alpha), boot_general(x, INDEX, bonett_d_corr, alpha = alpha)),
                   "kulinskaya_staudte" = c(kulinskaya_staudte(x = x, INDEX = INDEX), NA_real_, NA_real_, boot_general(x, INDEX, alpha = alpha, kulinskaya_staudte)),
                   "robust_cohens_d" = c(robust_cohens_d(x = x, INDEX = INDEX, trim = 0.2), robust_cohens_d_ci(x = x, INDEX = INDEX, trim = 0.2, alpha = alpha), boot_general(x, INDEX, robust_cohens_d, alpha)),
-                  "robust_glass_d" = data.frame(rbind(c(robust_glass_d(x, INDEX, standardised_by_group_1 = TRUE), unlist(robust_glass_d_ci(x, INDEX, standardised_by_group_1 = TRUE)), unlist(boot_general(x, INDEX, robust_glass_d, alpha, standardised_by_group_1 = TRUE))), c(robust_glass_d(x, INDEX, standardised_by_group_1 = FALSE), unlist(robust_glass_d_ci(x, INDEX, standardised_by_group_1 = FALSE)), unlist(boot_general(x, INDEX, robust_glass_d, standardised_by_group_1 = FALSE))))),
+                  "robust_glass_d" = data.frame(rbind(c(robust_glass_d(x, INDEX, standardised_by_group_1 = TRUE), unlist(robust_glass_d_ci(x, INDEX, standardised_by_group_1 = TRUE, alpha = alpha)), unlist(boot_general(x, INDEX, robust_glass_d, alpha, standardised_by_group_1 = TRUE))), c(robust_glass_d(x, INDEX, standardised_by_group_1 = FALSE), unlist(robust_glass_d_ci(x, INDEX, standardised_by_group_1 = FALSE, alpha = alpha)), unlist(boot_general(x, INDEX, robust_glass_d, alpha, standardised_by_group_1 = FALSE))))),
                   "robust_bonett_d" = c(robust_bonett_d(x = x, INDEX = INDEX, trim = 0.2), NA_real_, NA_real_, boot_general(x, INDEX, robust_bonett_d, alpha = alpha, trim = 0.2)),
                   "standardised_median_difference_mad" = data.frame(rbind(c(standardised_median_difference_mad(x = x, INDEX = INDEX, standardised_by_group_1 = TRUE), NA_real_, NA_real_, unlist(boot_general(x, INDEX, standardised_median_difference_mad, alpha, standardised_by_group_1 = TRUE))), c(standardised_median_difference_mad(x, INDEX, standardised_by_group_1 = FALSE), NA_real_, NA_real_, unlist(boot_general(x, INDEX, standardised_median_difference_mad, alpha, standardised_by_group_1 = FALSE))))),
                   "standardised_median_difference_riq" = data.frame(rbind(c(standardised_median_difference_riq(x = x, INDEX = INDEX, standardised_by_group_1 = TRUE), NA_real_, NA_real_, unlist(boot_general(x, INDEX, standardised_median_difference_riq, alpha, standardised_by_group_1 = TRUE))), c(standardised_median_difference_riq(x = x, INDEX = INDEX, standardised_by_group_1 = FALSE), NA_real_, NA_real_, unlist(boot_general(x, INDEX, standardised_median_difference_riq, alpha, standardised_by_group_1 = FALSE))))),
@@ -1706,7 +1706,7 @@ robust_glass_d <- function(x = NULL, INDEX = NULL, y = NULL, trim = 0.2, standar
   return(res)
 }
 
-robust_glass_d_ci <- function(x, INDEX, trim = 0.2, standardised_by_group_1 = TRUE) {
+robust_glass_d_ci <- function(x, INDEX, trim = 0.2, standardised_by_group_1 = TRUE, alpha = 0.05) {
   stats <- summary_stats(x = x, INDEX = INDEX, trim = trim, winvar = TRUE)
   for (i in names(stats)) {
     assign(i, stats[[i]])
