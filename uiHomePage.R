@@ -290,7 +290,6 @@ multivariateExampleAggregateData2 <-
 
 homePageContent <- 
   fluidPage(
-    includeCSS("www/home_page_style.css"),
     fluidRow(
       column(
         width=10,
@@ -550,6 +549,5 @@ homePageContent <-
               "
         )
       )
-    ),
-    includeScript(path="js/home_page_script.js", type = "text/javascript")
+    )
   )
