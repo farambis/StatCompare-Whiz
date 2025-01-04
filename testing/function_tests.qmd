@@ -1305,7 +1305,7 @@ rm(fun_val, test_fun_val)
 
 #### DG Design
 
-The results differ between `ps_dependent_group()` and `effectsize::p_superiorty(paired = TRUE, parametric = FALSE)`. While the former computes the probability of superiority according to Grissom and Kim (2012) by dividing the number of positive difference scores ($x_1 - x_2$) by the number of pairs of observations (minus ties), the latter transforms the rank biserial correlation of dependent groups into the probability of superiority as $(r_{rb} + 1)/2$. The latter formula was developed for transforming the rank biserial correlation of interdependent groups into the probability of superiority. Therefore, this formula might not be applicable for the dependent samples case.
+The results differ between `ps_dependent_group()` and `effectsize::p_superiorty(paired = TRUE, parametric = FALSE)`. While the former computes the probability of superiority according to Grissom and Kim (2012) by dividing the number of positive difference scores ( $x_1 - x_2$ ) by the number of pairs of observations (minus ties), the latter transforms the rank biserial correlation of dependent groups into the probability of superiority as $(r_{rb} + 1)/2$. The latter formula was developed for transforming the rank biserial correlation of interdependent groups into the probability of superiority. Therefore, this formula might not be applicable for the dependent samples case.
 ```{r}
 fun_val <- ps_dependent_groups(x = d$x, y = d$y, ignore_ties = FALSE)
 test_fun_val <- effectsize::p_superiority(x = d$y, y = d$x, parametric = FALSE, paired = TRUE)$p_superiority

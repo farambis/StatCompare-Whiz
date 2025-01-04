@@ -43,3 +43,9 @@ multivariateMeasures <-
       tabName = paste0('multivariate', 'Educational')
     )
   )
+
+changelog <- menuItem(
+  text = ' Changelog',
+  tabName = 'changelog',
+  icon = icon('list-alt', lib = 'font-awesome')
+)

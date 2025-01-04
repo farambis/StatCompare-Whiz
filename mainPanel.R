@@ -7,10 +7,10 @@ esMainPanel <- function(id, esChoices, tsChoices, plotChoices, description, mode
   ns <- NS(id)
   mainPanel(tabsetPanel(
     id = ns("mainPanel"),
-    if (mode == "rawData")tabPanel(title = "Data", DT::DTOutput(ns("dataTable")), hr(), summaryStatisticsTableUI(ns("summaryStatisticsTable"), design = design)),
-    tabPanel(title = "Effect Sizes & Test Statistics", esAndTsUi(ns("esAndTs"), esChoices, tsChoices)),
-    if (length(plotChoices) != 0) tabPanel(title = "Plots", plotUi(ns("plotting"), plotChoices = plotChoices)),
-    tabPanel(title = icon("circle-info"), withMathJax(includeMarkdown(description)), includeCSS("markdown/markdown_documentation_style.css"))
+    if (mode == "rawData") tabPanel(title = span(icon('table'), "Data"), DT::DTOutput(ns("dataTable")), hr(), summaryStatisticsTableUI(ns("summaryStatisticsTable"), design = design)),
+    tabPanel(title = span(icon('calculator'), "Effect Sizes & Test Statistics"), esAndTsUi(ns("esAndTs"), esChoices, tsChoices)),
+    if (length(plotChoices) != 0) tabPanel(title = span(icon('chart-line'), 'Plots'), plotUi(ns("plotting"), plotChoices = plotChoices)),
+    tabPanel(title = span(icon('book'), 'Effect Size Reference'), withMathJax(includeMarkdown(description)), includeCSS("markdown/markdown_documentation_style.css"))
   ))
 }
 

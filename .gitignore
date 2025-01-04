@@ -1,5 +1,8 @@
+.rscignore
+manifest.json
 .Rproj.user
 .Rhistory
 .RData
 .Ruserdata
+deploy.sh
 rsconnect/

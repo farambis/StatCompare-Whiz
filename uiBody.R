@@ -1,6 +1,7 @@
 source("tabItems.R")
 
 body <- dashboardBody(
+  includeCSS('www/custom.css'),
   tabItems(
     homePageBody,
     independentGroupsParametricRawData,
@@ -13,6 +14,9 @@ body <- dashboardBody(
     mixedDesignParametricEducational,
     mixedDesignNonParametric,
     multivariateRawData,
-    multivariateEducational
-  )
+    multivariateEducational,
+    changelogBody
+  ),
+  tags$div(id = "back-to-top", class = "back-to-top", icon("arrow-up")),
+  includeScript('www/custom.js')
 )

@@ -20,7 +20,7 @@
  </ul>
 </div>
 
-<h2 id = "PPC-intro"> 1 The Pretest-posttest-control design </h2>  
+<h2 id="PPC-intro"> 1 The Pretest-posttest-control design </h2>  
 
 The pretest-posttest-control (PPC) design, also know as the pretest-posttest control-group design or the independent groups pretest-posttest (IGPP) design amongst other synonyms entails the random/quasirandom assignment of research participants to one of two conditions(e.g., a treatment or a control condition; a novel treatment and a gold-standard treatment condition; etc.)  and the measurement of an outcome variable at two points in time (i.e., both prior to and after treatment) (Morris, 2008).  
 
@@ -28,9 +28,9 @@ A standardised effect size (ES) for the PPC design relates the difference of the
 
 Two major "groups" of standardised ESs for the PPC design can be characterised based on whether the mean change within each group is standardised by the variability of change scores (change-focused measures) or by the variability of raw scores (difference-focused measures) (Morris & DeShon, 2002; Feingold, 2009). A research question regarding changes in individual performance after some treatment might motivate the former definition while a research question focusing on group differences in the level of performance might motivate the latter definition (Morris & DeShon, 2002).   
 
-<h2 id = "PPC-NP-change-focused-measures"> 2 Change focused measure of effect size </h2>
+<h2 id="PPC-NP-change-focused-measures"> 2 Change focused measure of effect size </h2>
 
-<h3 id = "PPC-NP-d-PPC-Change"> 2.1 \(\hat{\delta}_{PPC-change}\) (nonparametric \(d_{PPC-change}\)) </h3>  
+<h3 id="PPC-NP-d-PPC-Change"> 2.1 \(\hat{\delta}_{PPC-change}\) (nonparametric \(d_{PPC-change}\)) </h3>  
 
 A nonparametric version of the $d_{PPC-change}$ estimator (see the documentation tab of the page on parametric ES estimators for the PPC design) is described by Hedges and Olkin (1984):  
 
@@ -50,7 +50,7 @@ $$ I_{ \{d \geq 0\} } (d) = \begin{cases}
 \end{cases}
 $$
 
-Thus, $\hat{p}_{gain,\,a}$ and $\hat{p}_{gain,\,b}$ are the proportions of positive change scores ($d = x_{post} - x_{pre}$) in each group respectively. If ties between pre- and posttest scores are present, each tie is counted as half an observation in each direction. This estimator is the difference between the $\hat{p}_{gain,\,a}$- and the $hat{p}_{gain,\,b}$-quantile of the standard normal distribution. Much like $d_{PPC-change}$ simplifies to the difference between Cohen's $d_z$ of groups ***a*** and ***b***, so too does its nonparametric counterpart simplify to the difference between the nonparametric versions of Cohen's $d_z$ of groups ***a*** and ***b***, namely $\hat{\delta}_{z,\,a}$ and $\hat{\delta}_{z,\,b}$.  
+Thus, $\hat{p}_{gain,\,a}$ and $\hat{p}_{gain,\,b}$ are the proportions of positive change scores ( $d = x_{post} - x_{pre}$ ) in each group respectively. If ties between pre- and posttest scores are present, each tie is counted as half an observation in each direction. This estimator is the difference between the $\hat{p}_{gain,\,a}$- and the $hat{p}_{gain,\,b}$-quantile of the standard normal distribution. Much like $d_{PPC-change}$ simplifies to the difference between Cohen's $d_z$ of groups ***a*** and ***b***, so too does its nonparametric counterpart simplify to the difference between the nonparametric versions of Cohen's $d_z$ of groups ***a*** and ***b***, namely $\hat{\delta}_{z,\,a}$ and $\hat{\delta}_{z,\,b}$.  
 
 The reason $\hat{\delta}_{PPC-change}$ can be considered a nonparametric version of $d_{PPC-change}$ is owed to the fact that when scores are normally distributed, then $\hat{\delta}_{PPC-change}$ is an estimator of the population effect size given by $\delta_{PPC-change} = \frac{\mu_{post,\,a} - \mu_{pre,\,a}}{\sigma_{D,\,a}} - \frac{\mu_{post,\,b} - \mu_{pre,\,b}}{\sigma_{D,\,b}}$ (for further details on this population effect: see the documentation entry on $d_{PPC-change}$ on the page for parametric ES estimators for the PPC design).  
 
@@ -62,9 +62,9 @@ We could not identify a closed form formula for the confidence interval (CI) of 
 
 <br>
 
-<h2 id = "PPC-NP-difference-focused-measures"> 3 Difference-focused measures of effect size </h2>
+<h2 id="PPC-NP-difference-focused-measures"> 3 Difference-focused measures of effect size </h2>
 
-<h3 id = "PPC-NP-d-PPC-pre"> 3.1 \(\hat{\delta}_{PPC,\,pre}\) (nonparametric \(d_{PPC,\,pre}\)) </h3>
+<h3 id="PPC-NP-d-PPC-pre"> 3.1 \(\hat{\delta}_{PPC,\,pre}\) (nonparametric \(d_{PPC,\,pre}\)) </h3>
 
 A nonparametric version of $d_{PPC,\,pre}$ (see the documentation tab of the page on parametric ES estimators for the PPC design) is described by Hedges and Olkin (1984):  
 
@@ -95,7 +95,7 @@ We could not identify a closed form formula for the CI of this ES. Thus, a $1 - 
 
 <br>
 
-<h3 id = "PPC-NP-alternate-difference-focused-estimator">  3.2 An alternate nonparametric difference-focused estimator </h3>
+<h3 id="PPC-NP-alternate-difference-focused-estimator">  3.2 An alternate nonparametric difference-focused estimator </h3>
 
 An alternate nonparametric difference-focused effect size estimator is given by Hedges and Olkin (1984): 
 
@@ -128,7 +128,7 @@ We could not identify a closed form formula for the CI of this ES. Thus, a $1 - 
 
 <br>
 
-<h2 id = "PPC-dominance-measure"> 4 The pretest-posttest dominance measure</h2>
+<h2 id="PPC-dominance-measure"> 4 The pretest-posttest dominance measure</h2>
 
 Cliff (1993) describes an estimator to evaluate whether posttreatment scores are more likely to be higher than pretreatment scores in one group (e.g., a treatment/experimental group) compared with another group (e.g., a control group) in a pretest-posttest control design. The estimator is given by:
 
@@ -136,7 +136,7 @@ $$ DM = DM_{exp} - DM_{con} $$
 
 with $DM_{exp}$ being the dominance measure of group ***a***/the experimental group and $DM_{con}$ being the dominance measure of group ***b***/the control group. Thus, this estimator is equivalent to the difference in dependent groups dominance measures $DM$ between the two contrasted groups. The dependent groups dominance measure is described in the documentation page for the dependent group design.  
 
-$DM$ is calculated by adding the within-subject difference ($DM_w$), and the average between-subject dominance ($DM_b$) for dependent data. $DM_w$ is the probability that individuals change in a given direction (here: increase their score from one occasion of measurement to another) whereas $DM_b$ is the proportion of scores on the second occasion that are higher than scores by other individuals on the first. Therefore, the dominance measure for dependent groups can be calculated for the treatment/experimental and the control groups each as follows:
+$DM$ is calculated by adding the within-subject difference ( $DM_w$ ), and the average between-subject dominance ( $DM_b$ ) for dependent data. $DM_w$ is the probability that individuals change in a given direction (here: increase their score from one occasion of measurement to another) whereas $DM_b$ is the proportion of scores on the second occasion that are higher than scores by other individuals on the first. Therefore, the dominance measure for dependent groups can be calculated for the treatment/experimental and the control groups each as follows:
 
 $$\hat{DM} = \hat{DM_w} + \hat{DM_b}$$
 
@@ -189,7 +189,7 @@ Additionally, a $1 - \alpha$ percentile bootstrap confidence interval is impleme
 
 <hr>
 
-<h2 id = "PPC-NP-refs"> 5 References </h2>  
+<h2 id="PPC-NP-refs"> 5 References </h2>  
 
 Cliff, N. (1993). *Dominance statistics: Ordinal analyses to answer ordinal questions.* Psychological bulletin, 114(3), 494--509. <https://doi.org/10.1037/0033-2909.114.3.494>   
 
