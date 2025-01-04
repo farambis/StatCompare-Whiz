@@ -6,3 +6,4 @@ manifest.json
 .Ruserdata
 deploy.sh
 rsconnect/
+.vscode

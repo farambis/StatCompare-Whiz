@@ -2418,8 +2418,8 @@ calculate_ps_ignoring_ties <- function(dataset1, dataset2) {
 ts_for_mann_whitney_based_ps <- function(INDEX, x, y = NULL) { # deviates by 0.02 from stat wilcoxin test which is continuity corrected
   if (is.null(y)) {
     dataset <- split(x, INDEX)
-    x <- dataset[1]
-    y <- dataset[2] }
+    x <- dataset[[1]]
+    y <- dataset[[2]] }
   u_val <- calculate_u_with_ties(x, y)
   z_value <- calculate_z_for_u_statistic(x, y)
   p_value <- calculate_p_value_from_z(z_value)
