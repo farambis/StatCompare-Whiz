@@ -23,7 +23,7 @@ dashed_line <- 2
 # Parametric plots ----
 ## Plot for parametric overlapping coefficient ----
 
-generate_data_plot <- function(es_plot, x = NULL, INDEX = NULL, y = NULL, m1, m2, m3, m4, s1, s2, s3, s4, sdiff1 = NA, sdiff2 = NA, n1, n2, r1, r2, n, kernel, reference_group, tail, cutoff) {
+generate_data_plot <- function(es_plot, x = NULL, INDEX = NULL, y = NULL, m1, m2, m3, m4, s1, s2, s3, s4, sdiff1 = NA, sdiff2 = NA, n1, n2, r1, r2, n = NULL, kernel, reference_group, tail, cutoff) {
   if (!es_plot %in% all_plots) stop("this is not an offered plot!\n")
   res <- switch(es_plot,
                 "parametric_ovl" = plot_parametric_overlap(x, INDEX, y = y, m1 = m1, m2 = m2, s1 = s1, s2 = s2, n1 = n1, n2 = n2, n = n),
@@ -395,7 +395,7 @@ plot_tail_ratio <- function(x = NULL, INDEX = NULL, y = NULL,
                             reference_group = c("group1", "group2"),
                             tail = c("lower", "upper"), 
                             cutoff) {
-  
+
   group_names <- c("Group 1", "Group 2")
   measurement_names <- c("Measurement 1", "Measurement 2")
   if(!is.null(x)){
@@ -410,7 +410,7 @@ plot_tail_ratio <- function(x = NULL, INDEX = NULL, y = NULL,
       assign(i, stats[[i]])
     }
   }
-  
+
   x_from <- min(m1, m2) - 3.5 * max(s1, s2)
   x_to <- max(m1, m2) + 3.5 * max(s1, s2)
   x_length <- max((x_to - x_from) * 2, 201)
