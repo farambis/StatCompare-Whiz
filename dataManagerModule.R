@@ -11,10 +11,16 @@ var_options <- function(data, type = NULL) {
   names(data)
 }
 
-missingDataNotification <- function(n) {
+missingDataNotification <- function(n_removed, n_remain) {
   showNotification(
-    ui = paste0("Warning: ", n, " rows have been removed because of missing values"),
-    duration = 5,
+    ui = paste0(
+      "Warning: ",
+      n_removed,
+      " rows have been removed because of missing values\n",
+      n_remain,
+      "observations remain"
+    ),
+    duration = 8,
     type = "warning"
   )
 }
@@ -34,7 +40,7 @@ filterDataAndNotify <- function(data, input) {
   filterProperties <- list()
   for(value in selectedProperties) {
     filterProperty <- input[[value]]
-    if (is.null(filterProperty) || filterProperty == ''  || !filterProperty %in% colnames(data)){
+    if (is.null(filterProperty) || any(filterProperty == '')  || any(!filterProperty %in% colnames(data))){
       return(data)
     }
     filterProperties <- c(filterProperties, filterProperty)
@@ -43,7 +49,8 @@ filterDataAndNotify <- function(data, input) {
   filtered_data <- data[rownames(na.omit(data[unlist(filterProperties)])), ]
   n_removed <- initial_rows - nrow(filtered_data)
   if (n_removed > 0) {
-    missingDataNotification(n_removed)
+    n_remain <- initial_rows - n_removed
+    missingDataNotification(n_removed, n_remain)
   }
   return (filtered_data)
 }
