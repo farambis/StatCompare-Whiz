@@ -2231,7 +2231,7 @@ koopman_nam_risk_ratio_ci <- function(n11, n21, n1., n2., alpha) {
         }
       }
       chi1 <- 0
-      while (chi1 >= -z) {
+      while (chi1 >= z_crit) {
         a <- (ni + nj) * phi_upper
         b <- -((i + nj) * phi_upper + j + ni)
         c <- i + j
@@ -2262,7 +2262,6 @@ koopman_nam_risk_ratio_ci <- function(n11, n21, n1., n2., alpha) {
 nam_p2_MLE_to_phi <- function(n11, n21, n1., n2., p2_MLE_bound) {
   res <- (1 - (n1. - n11) * (1 - p2_MLE_bound) / (n21 + n1. - (n2. + n1.) * p2_MLE_bound)) / p2_MLE_bound
 }
-
 
 newcombe_price_bonett_risk_ratio_ci <- function(n11, n21, n1., n2., alpha) {
   z_crit <- qnorm(alpha / 2)
