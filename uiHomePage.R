@@ -350,12 +350,12 @@ homePageContent <-
                           effect depends critically on the context and goals of a study; even 
                           different guidelines provide different criteria for classifying effect 
                           sizes into categories
-                          (<a href=https://doi.org/10.1177/2515245919847202>Funder & Ozer, 2019</a>).
+                          (<a href=https://journals.sagepub.com/doi/10.1177/2515245919847202>Funder & Ozer, 2019</a>).
                           We actively encourage users to interpret ES values depending on the 
                           specific research domain and research question at hand, and reach their 
                           own conclusions about the practical significance of a given effect (see 
                           <a href=https://doi.org/10.1007/978-3-030-84273-4_1>Del Giudice, 2022</a>;
-                          <a href=https://doi.org/10.1177/2515245919847202>Funder & Ozer, 2019</a>; 
+                          <a href=https://journals.sagepub.com/doi/10.1177/2515245919847202>Funder & Ozer, 2019</a>; 
                           <a href=https://doi.org/10.1111/j.1750-8606.2008.00061.x>Hill et al., 2008</a>;
                           <a href=https://psycnet.apa.org/doi/10.1037/0022-0167.51.4.473>Vacha-Haase & Thompson, 2004</a>
                           ).
