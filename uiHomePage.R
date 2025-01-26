@@ -342,16 +342,23 @@ homePageContent <-
                             <li>the failure of an iterative search algorithm causing the computation of an approximation instead of an exact value (see the documentations of the variance ratio and the tail ratio)</li>
                           </ul>
                         </p>
+                        <hr style='border:0.02em dotted; margin:0.5em'>
                         <p>
-                          Different ES interpretation guidelines provide different criteria for 
-                          what might consitute, for example, a small, medium, or large effect. Hence, 
-                          no interpretation guidelines are implemented in this app. Instead, we 
-                          encourage users to choose for themselves the guideline that appears the 
-                          most fitting for their specific aims and purposes. Moreover, with this app,
-                          we also want to provide users with the possibility to not use any guideline
-                          at all and instead come to their own conclusion what constitutes a small, 
-                          medium or large effect size given the context of the concrete research 
-                          question at hand (<a href=https://doi.org/10.1177/2515245919847202>Funder & Ozer, 2019</a>)
+                          In our <em>Effect Size Reference</em> pages we deliberately abstained from 
+                          providing, or advocating, the use of fixed benchmarks for evaluating the 
+                          size of the ESs provided by the app. What constitutes a “small” or “large”
+                          effect depends critically on the context and goals of a study; even 
+                          different guidelines provide different criteria for classifying effect 
+                          sizes into categories
+                          (<a href=https://doi.org/10.1177/2515245919847202>Funder & Ozer, 2019</a>).
+                          We actively encourage users to interpret ES values depending on the 
+                          specific research domain and research question at hand, and reach their 
+                          own conclusions about the practical significance of a given effect (see 
+                          <a href=https://doi.org/10.1007/978-3-030-84273-4_1>Del Giudice, 2022</a>;
+                          <a href=https://doi.org/10.1177/2515245919847202>Funder & Ozer, 2019</a>; 
+                          <a href=https://doi.org/10.1111/j.1750-8606.2008.00061.x>Hill et al., 2008</a>;
+                          <a href=https://psycnet.apa.org/doi/10.1037/0022-0167.51.4.473>Vacha-Haase & Thompson, 2004</a>
+                          ).
                         </p>
                       </div>
                     </div>

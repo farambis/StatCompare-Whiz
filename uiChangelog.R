@@ -17,6 +17,7 @@ changelogContent <-
                 <li>Fixed bug with computing the mann whitney U test for independent groups</li>
                 <li>Continued fixes of function equation rendering issues in 'Effect Size Reference' pages</li>
                 <li>Adjusted downloaded plot png width and height in order for all plots to fit properly onto the generated png</li>
+                <li>Adjusted reasoning for not including effect size benchmark guidlines.</li>
               </ul>
               <li>Version 1.0.1: As a part of the review process for publishing the companion journal article at [currently not published] following changes have been made:</li>
               <ul>
