@@ -20,7 +20,7 @@ install.packages("mvtnorm")
 ```
 To start the application run 
 ```
-library(shiny); runApp('ui.R')
+library(shiny); runApp('app.R')
 ```
 
 ## Context 

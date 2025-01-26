@@ -95,7 +95,7 @@ plot_parametric_overlap <- function(x = NULL, INDEX = NULL, y = NULL,
            y1 = c(max(y_group1), max(y_group2)), 
            lty = c("dashed", "dotted")
   )
-  title(main = "Visualisation of Cohen's d and the overlapping coefficient")
+  title(main = "Visualization of Cohen's d and the overlapping coefficient")
   mtext(text = "Homogeneity of variances assumed and thus pooled standard deviation is used for plotting")
   graphics::box()
   
@@ -203,7 +203,7 @@ plot_cohens_u1 <- function(x = NULL, INDEX = NULL, y = NULL,
            y1 = c(max(y_group1), max(y_group2)), 
            lty = c("dashed", "dotted")
   )
-  title(main = "Visualisation of Cohen's d, OVL2, and Cohen's U1")
+  title(main = "Visualization of Cohen's d, OVL2, and Cohen's U1")
   mtext(text = "Homogeneity of variances assumed and thus pooled standard deviation is used for plotting")
   graphics::box()
   
@@ -357,7 +357,7 @@ plot_cohens_u3 <- function(x = NULL, INDEX = NULL, y = NULL,
            y1 = c(max(y_group1), max(y_group2)), 
            lty = c("dashed", "dotted")
   )
-  title(main = "Visualisation of Cohen's d and Cohen's U3")
+  title(main = "Visualization of Cohen's d and Cohen's U3")
   mtext(text = "Homogeneity of variances assumed and thus pooled standard deviation is used for plotting")
   graphics::box()
   
@@ -449,7 +449,7 @@ plot_tail_ratio <- function(x = NULL, INDEX = NULL, y = NULL,
            y1 = c(max(y_group1), max(y_group2), max(y_group1, y_group2)), 
            lty = c("dashed", "dotted", "solid")
   )
-  title(main = "Visualisation of the tail ratio and Glass' d")
+  title(main = "Visualization of the tail ratio and Glass' d")
   graphics::box()
   
   eff_size_labs <- c(paste0("d[G]==~", 
@@ -543,7 +543,7 @@ plot_tail_ratio_zoom <- function(x = NULL, INDEX = NULL, y = NULL,
   lines(x, y_group1, col = col1)
   lines(x, y_group2, col = col2)
   segments(x0 = cutoff, x1 = cutoff, y0 = 0, y1 = y_to, lty = 1)
-  title(main = "Zoomed-in visualisation of the tail ratio")
+  title(main = "Zoomed-in visualization of the tail ratio")
   graphics::box()
   
   eff_size_labs <- c(paste0("d[G]==~", 
@@ -653,7 +653,7 @@ plot_non_parametric_tail_ratio <- function(x = NULL, INDEX = NULL, y = NULL,
                   max(d1$y, d2$y)),
            lty = c("dashed", "dotted", "solid"))
   rug(x = jitter(c(x,y)))
-  title(main = "Visualisation of the tail ratio")
+  title(main = "Visualization of the tail ratio")
   graphics::box()
   
   eff_size_labs <- c(paste0("VR==~", 
@@ -751,7 +751,7 @@ plot_non_parametric_tail_ratio_zoom <- function(x = NULL, INDEX = NULL, y = NULL
   lines(x_axis, f2(x_axis), col = col2)
   segments(x0 = cutoff, x1 = cutoff, y0 = 0, y1 = y_max, lty = 1)
   suppressWarnings(rug(x = jitter(c(x,y))))
-  title(main = "Zoomed-in visualisation of the tail ratio")
+  title(main = "Zoomed-in visualization of the tail ratio")
   graphics::box()
   
   eff_size_labs <- c(paste0("VR==~", 
@@ -846,7 +846,7 @@ plot_non_parametric_overlap <- function(x = NULL, INDEX = NULL, y = NULL,
            lty = c("dashed", "dotted")
   )
   rug(jitter(c(x,y)))
-  title(main = "Visualisation of the overlapping coefficient")
+  title(main = "Visualization of the overlapping coefficient")
   graphics::box()
   
   eff_size_labs <- paste0(
@@ -935,7 +935,7 @@ plot_non_parametric_u1 <- function(x = NULL, INDEX = NULL,  y = NULL,
            lty = c("dashed", "dotted")
   )
   rug(jitter(c(x,y)))
-  title(main = "Visualisation of OVL2 and Cohen's U1")
+  title(main = "Visualization of OVL2 and Cohen's U1")
   graphics::box()
   
   eff_size_labs <- c(paste0(
@@ -1078,7 +1078,7 @@ plot_non_parametric_u3 <- function(x = NULL, INDEX = NULL, y = NULL,
   lines(d1, col = col1)
   lines(d2, col = col2)
   rug(jitter(c(x,y)))
-  title(main = "Visualisation of OVL2 and Cohen's U1")
+  title(main = "Visualization of OVL2 and Cohen's U1")
   graphics::box()
   
   
@@ -1250,7 +1250,7 @@ plot_parametric_ppc_change <- function(x = NULL, INDEX = NULL, y = NULL,
            y1 = c(max(y_group1), max(y_group2)), 
            lty = c("dashed", "dotted")
   )
-  title(expression(paste("Visualising ", d["PPC-change"])))
+  title(expression(paste("Visualizing ", d["PPC-change"])))
   graphics::box()
   
   eff_size_lab <- paste0("d[PPC-change]:~", round(d_PPC_change(m1 = m1, m2 = m2, sdiff1 = sdiff1, m3 = m3, m4 = m4, sdiff2 = sdiff2), 2))
